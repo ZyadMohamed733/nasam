@@ -1,0 +1,24 @@
+{
+  "appName": "Nasam",
+  "loading": "Loading...",
+  "errorGeneric": "Something went wrong. Please try again.",
+  "errorNetwork": "No internet connection.",
+  "errorTimeout": "Request timed out. Please try again.",
+  "errorUnauthorized": "Your session has expired. Please log in again.",
+  "retry": "Retry",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "ok": "OK",
+  "emptyState": "No data available.",
+  "validationRequired": "{field} is required.",
+  "@validationRequired": {
+    "placeholders": {
+      "field": {
+        "type": "String"
+      }
+    }
+  },
+  "validationInvalidEmail": "Please enter a valid email address.",
+  "validationPasswordWeak": "Password must be at least 8 characters with uppercase, lowercase, number and symbol.",
+  "validationInvalidPhone": "Please enter a valid Saudi phone number."
+}

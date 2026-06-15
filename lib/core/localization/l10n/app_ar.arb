@@ -1,0 +1,24 @@
+{
+  "appName": "ناسم",
+  "loading": "جاري التحميل...",
+  "errorGeneric": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+  "errorNetwork": "لا يوجد اتصال بالإنترنت.",
+  "errorTimeout": "انتهت مهلة الطلب. يرجى المحاولة مرة أخرى.",
+  "errorUnauthorized": "انتهت صلاحية الجلسة. يرجى تسجيل الدخول مرة أخرى.",
+  "retry": "إعادة المحاولة",
+  "cancel": "إلغاء",
+  "confirm": "تأكيد",
+  "ok": "موافق",
+  "emptyState": "لا توجد بيانات متاحة.",
+  "validationRequired": "{field} مطلوب.",
+  "@validationRequired": {
+    "placeholders": {
+      "field": {
+        "type": "String"
+      }
+    }
+  },
+  "validationInvalidEmail": "يرجى إدخال بريد إلكتروني صحيح.",
+  "validationPasswordWeak": "يجب أن تكون كلمة المرور مكونة من 8 رموز على الأقل وتحتوي على حرف كبير، حرف صغير، رقم، ورمز خاص.",
+  "validationInvalidPhone": "يرجى إدخال رقم هاتف سعودي صحيح."
+}
