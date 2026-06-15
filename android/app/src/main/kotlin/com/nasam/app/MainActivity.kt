@@ -1,4 +1,4 @@
-package com.nasam.nasam
+package com.nasam.app
 
 import io.flutter.embedding.android.FlutterActivity
 
