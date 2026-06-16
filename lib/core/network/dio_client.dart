@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import '../../app/app_config.dart';
 import 'interceptors/auth_interceptor.dart';
 import 'interceptors/logging_interceptor.dart';
 import 'interceptors/error_interceptor.dart';
@@ -10,7 +11,7 @@ class DioClient {
     required LoggingInterceptor loggingInterceptor,
     required ErrorInterceptor errorInterceptor,
   }) {
-    final baseUrl = dotenv.env['BASE_URL'] ?? 'https://api.nasam.app/v1';
+    final   baseUrl =  AppConfig.baseUrl;
     final connectTimeout = int.tryParse(dotenv.env['CONNECT_TIMEOUT_MS'] ?? '15000') ?? 15000;
     final receiveTimeout = int.tryParse(dotenv.env['RECEIVE_TIMEOUT_MS'] ?? '30000') ?? 30000;
 

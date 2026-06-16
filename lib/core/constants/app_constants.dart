@@ -1,4 +1,10 @@
 class AppConstants {
+  static const String devAppName = 'Nasam-Dev';
+  static const String stageAppName = 'Nasam-Stage';
+  static const String appName = 'Nasam';
+  static const String devBaseUrl = 'https://api-dev.nasam.app';
+  static const String stageBaseUrl = 'https://api-stage.nasam.app';
+  static const String prodBaseUrl = 'https://api-prod.nasam.app';
   // Network connection configuration
   static const int connectTimeoutMs = 15000;
   static const int receiveTimeoutMs = 30000;

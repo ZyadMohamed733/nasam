@@ -1,8 +1,9 @@
 plugins {
     id("com.android.application")
-    id("kotlin-android")
+   // id("kotlin-android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
+
 }
 
 android {
@@ -29,7 +30,27 @@ android {
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
-
+    // --- Flavor setup ---
+    flavorDimensions += "environment"
+    productFlavors{
+        create("dev"){
+            dimension = "environment"
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
+            resValue(type = "string", name = "app_name", value = "Nasam Dev")
+        }
+        create("staging") {
+            dimension = "environment"
+            applicationIdSuffix = ".staging"
+            versionNameSuffix = "-staging"
+            resValue(type = "string", name = "app_name", value = "Nasam Staging")
+        }
+        create("prod") {
+            dimension = "environment"
+            // No suffix -> this is what ships to the Play Store as com.nasam.app
+            resValue(type = "string", name = "app_name", value = "Nasam")
+        }
+    }
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.

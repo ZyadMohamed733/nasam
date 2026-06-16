@@ -6,7 +6,9 @@ import 'app/app.dart';
 import 'app/app_bloc_observer.dart';
 import 'core/di/injection_container.dart';
 
-void main() async {
+
+Future<void> initShardLib() async {
+
   // 1. Ensure Flutter binding is initialized
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -25,6 +27,4 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  // 6. Bootstrap the application
-  runApp(const NasamApp());
 }

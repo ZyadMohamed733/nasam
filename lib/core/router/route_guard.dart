@@ -9,23 +9,19 @@ class RouteGuard {
   const RouteGuard(this._authService);
   final AuthService _authService;
 
-  Future<String?> initRoute(BuildContext context, GoRouterState state) async {
+  Future<String?> handleRedirect(BuildContext context, GoRouterState state) async {
+    // Let splash through immediately, no auth check needed
+    if (state.matchedLocation == AppRoutes.splash) return null;
+
     final isAuth = await _authService.isAuthenticated;
     final goingToLogin = state.matchedLocation == AppRoutes.login;
-    final goingToSplash = state.matchedLocation == AppRoutes.splash;
 
     if (!isAuth) {
-      // Redirect to login if user is not authenticated and trying to access restricted routes
-      if (!goingToLogin && !goingToSplash) {
-        return AppRoutes.login;
-      }
+      if (!goingToLogin) return AppRoutes.login;
     } else {
-      // Redirect to home if user is authenticated and trying to hit the login page
-      if (goingToLogin) {
-        return AppRoutes.home;
-      }
+      if (goingToLogin) return AppRoutes.home;
     }
 
-    return null; // No redirection required
+    return null;
   }
 }

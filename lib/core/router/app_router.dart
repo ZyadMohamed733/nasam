@@ -18,7 +18,7 @@ class AppRouter {
   late final GoRouter config = GoRouter(
     navigatorKey: navigatorKey,
     initialLocation: AppRoutes.splash,
-    redirect: (context, state) => _routeGuard.initRoute(context, state),
+    redirect: (context, state) => _routeGuard.handleRedirect(context, state),
     errorBuilder: (context, state) => AppErrorPage(error: state.error),
     routes: [
       GoRoute(
