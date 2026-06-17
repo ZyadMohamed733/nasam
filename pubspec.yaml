@@ -17,6 +17,9 @@ dependencies:
   flutter_bloc: ^9.1.1
   bloc_concurrency: ^0.3.0
 
+  # flavour
+  flutter_flavorizr: ^2.5.0
+
   # Dependency Injection
   get_it: ^9.2.1
   injectable: ^3.0.0
@@ -77,3 +80,44 @@ flutter:
   generate: true
   assets:
     - .env
+
+flavorizr:
+  flavors:
+    staging:
+      app:
+        name: "Nasam Staging"
+      ios:
+        bundleId: "com.nasam.staging"
+        generateDummyAssets: false
+        # icon: "assets/icon/icon.png"
+        firebase:
+          config: ".firebase/staging/GoogleService-Info.plist"
+        variables:
+          API_BASE_URL:
+            value: "https://api-stage.nasam.app/v1"
+    dev:
+      app:
+        name: "Nasam Dev"
+
+      ios:
+        bundleId: "com.nasam.dev"
+        generateDummyAssets: false
+        # icon: "assets/icon/icon.png"
+        firebase:
+          config: ".firebase/dev/GoogleService-Info.plist"
+        variables:
+          API_BASE_URL:
+            value: "https://api-dev.nasam.app/v1"
+
+    prod:
+      app:
+        name: "NASAM"
+      ios:
+        bundleId: "com.nasam.sts"
+        generateDummyAssets: false
+        # icon: "assets/icon/icon.png"
+        firebase:
+          config: ".firebase/production/GoogleService-Info.plist"
+        variables:
+          API_BASE_URL:
+            value: "https://api.nasam.app/v1"
