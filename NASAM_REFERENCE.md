@@ -1431,3 +1431,14 @@ Mirror the `lib/` structure exactly under `test/`.
 *This document must be updated whenever a new architectural decision is made,
 a package is added/removed, or a convention is changed.*
 *Treat it as living documentation — not a snapshot.*
+
+
+### run flavors 
+# Dev
+flutter run --flavor dev --target lib/main_dev.dart
+
+# Staging
+flutter run --flavor staging --target lib/main_staging.dart
+
+# Prod
+flutter run --flavor prod --target lib/main_prod.dart
