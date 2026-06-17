@@ -7,7 +7,7 @@ import 'app/app_bloc_observer.dart';
 import 'core/di/injection_container.dart';
 
 
-Future<void> initShardLib() async {
+Future<void> initSharedLib() async {
 
   // 1. Ensure Flutter binding is initialized
   WidgetsFlutterBinding.ensureInitialized();

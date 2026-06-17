@@ -348,7 +348,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_flavorizr:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: flutter_flavorizr
       sha256: eae954ce8f8678b5ae6899ad6b61731a336bc9b93578f277f119ca23c8e1128a

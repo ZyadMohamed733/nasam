@@ -2,9 +2,7 @@ class AppConstants {
   static const String devAppName = 'Nasam-Dev';
   static const String stageAppName = 'Nasam-Stage';
   static const String appName = 'Nasam';
-  static const String devBaseUrl = 'https://api-dev.nasam.app';
-  static const String stageBaseUrl = 'https://api-stage.nasam.app';
-  static const String prodBaseUrl = 'https://api-prod.nasam.app';
+
   // Network connection configuration
   static const int connectTimeoutMs = 15000;
   static const int receiveTimeoutMs = 30000;
@@ -20,5 +18,5 @@ class AppConstants {
   static const int wsPingIntervalSecs = 10;
 
   // Authentication configuration
-  static const int tokenExpirySafetyMarginSecs = 60; // Refresh token 60s before expiry
+  static const int tokenExpirySafetyMarginSecs = 60;
 }
