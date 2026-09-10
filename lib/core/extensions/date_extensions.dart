@@ -1,4 +1,6 @@
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+import 'context_extensions.dart';
 
 extension DateExtensions on DateTime {
   String toFormattedString([String pattern = 'yyyy-MM-dd HH:mm']) {
@@ -10,21 +12,30 @@ extension DateExtensions on DateTime {
     return year == now.year && month == now.month && day == now.day;
   }
 
-  String toRelativeTime() {
-    final difference = DateTime.now().difference(this);
+  /// Relative time resolved through the ARB plural rules.
+  ///
+  /// Takes a [BuildContext] because Arabic has six plural categories and its
+  /// dual form carries no number word at all ("منذ يومين"), so no amount of
+  /// `count == 1 ? a : b` in Dart can produce it — only ICU can.
+  String toRelativeTime(BuildContext context, {DateTime? now}) {
+    final l10n = context.l10n;
+    final difference = (now ?? DateTime.now()).difference(this);
+
     if (difference.inDays > 30) {
       return toFormattedString('yyyy-MM-dd');
-    } else if (difference.inDays >= 7) {
-      final weeks = (difference.inDays / 7).floor();
-      return weeks == 1 ? '1 week ago' : '$weeks weeks ago';
-    } else if (difference.inDays >= 1) {
-      return difference.inDays == 1 ? '1 day ago' : '${difference.inDays} days ago';
-    } else if (difference.inHours >= 1) {
-      return difference.inHours == 1 ? '1 hour ago' : '${difference.inHours} hours ago';
-    } else if (difference.inMinutes >= 1) {
-      return difference.inMinutes == 1 ? '1 minute ago' : '${difference.inMinutes} minutes ago';
-    } else {
-      return 'Just now';
     }
+    if (difference.inDays >= 7) {
+      return l10n.relativeWeeksAgo((difference.inDays / 7).floor());
+    }
+    if (difference.inDays >= 1) {
+      return l10n.relativeDaysAgo(difference.inDays);
+    }
+    if (difference.inHours >= 1) {
+      return l10n.relativeHoursAgo(difference.inHours);
+    }
+    if (difference.inMinutes >= 1) {
+      return l10n.relativeMinutesAgo(difference.inMinutes);
+    }
+    return l10n.relativeJustNow;
   }
 }

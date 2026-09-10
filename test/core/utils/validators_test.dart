@@ -1,5 +1,6 @@
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:nasam/core/utils/validation_error.dart';
 import 'package:nasam/core/utils/validators.dart';
 
 void main() {
@@ -7,68 +8,57 @@ void main() {
 
   group('AppValidators.required', () {
     test('should return null when value is non-empty', () {
-      final result = AppValidators.required('hello');
-      expect(result, isNull);
+      expect(AppValidators.required('hello'), isNull);
     });
 
-    test('should return error message when value is null or empty', () {
-      expect(AppValidators.required(null), isNotNull);
-      expect(AppValidators.required(''), isNotNull);
-      expect(AppValidators.required('   '), isNotNull);
+    test('should return RequiredFieldError when value is null or empty', () {
+      expect(AppValidators.required(null), isA<RequiredFieldError>());
+      expect(AppValidators.required(''), isA<RequiredFieldError>());
+      expect(AppValidators.required('   '), isA<RequiredFieldError>());
+    });
+
+    test('carries the field name when given one', () {
+      final error = AppValidators.required(null, fieldName: 'Email');
+      expect((error! as RequiredFieldError).fieldName, 'Email');
     });
   });
 
   group('AppValidators.email', () {
     test('should return null when email is valid', () {
-      final validEmail = localFaker.internet.email();
-      final result = AppValidators.email(validEmail);
-      expect(result, isNull);
+      expect(AppValidators.email(localFaker.internet.email()), isNull);
     });
 
-    test('should return error message when email is invalid', () {
-      expect(AppValidators.email('invalid-email'), isNotNull);
-      expect(AppValidators.email('test@domain'), isNotNull);
-      expect(AppValidators.email('@domain.com'), isNotNull);
-    });
-
-    test('should return null when email is null or empty', () {
-      expect(AppValidators.email(null), isNull);
-      expect(AppValidators.email(''), isNull);
+    test('should return InvalidEmailError when email is invalid', () {
+      expect(AppValidators.email('invalid-email'), isA<InvalidEmailError>());
+      expect(AppValidators.email('test@domain'), isA<InvalidEmailError>());
+      expect(AppValidators.email('@domain.com'), isA<InvalidEmailError>());
     });
   });
 
   group('AppValidators.password', () {
     test('should return null when password meets all strength criteria', () {
-      // Min 8 chars, 1 uppercase, 1 lowercase, 1 digit, 1 special char
-      final result = AppValidators.password('P@ssword123');
-      expect(result, isNull);
+      expect(AppValidators.password('P@ssword123'), isNull);
     });
 
-    test('should return error message when password lacks uppercase', () {
-      final result = AppValidators.password('p@ssword123');
-      expect(result, isNotNull);
+    test('should return PasswordTooWeakError when password lacks uppercase', () {
+      expect(AppValidators.password('p@ssword123'), isA<PasswordTooWeakError>());
     });
 
-    test('should return error message when password is too short', () {
-      final result = AppValidators.password('P@ss1');
-      expect(result, isNotNull);
-    });
-
-    test('should return null when password is null or empty', () {
-      expect(AppValidators.password(null), isNull);
-      expect(AppValidators.password(''), isNull);
+    test('should return PasswordTooWeakError when password is too short', () {
+      expect(AppValidators.password('P@ss1'), isA<PasswordTooWeakError>());
     });
   });
 
   group('AppValidators.confirmPassword', () {
     test('should return null when passwords match', () {
-      final result = AppValidators.confirmPassword('P@ss1234', 'P@ss1234');
-      expect(result, isNull);
+      expect(AppValidators.confirmPassword('P@ss1234', 'P@ss1234'), isNull);
     });
 
-    test('should return error message when passwords do not match', () {
-      final result = AppValidators.confirmPassword('P@ss1234', 'Diff1234');
-      expect(result, isNotNull);
+    test('should return PasswordMismatchError when they differ', () {
+      expect(
+        AppValidators.confirmPassword('P@ss1234', 'Diff1234'),
+        isA<PasswordMismatchError>(),
+      );
     });
   });
 
@@ -80,40 +70,60 @@ void main() {
       expect(AppValidators.saudiPhone('512345678'), isNull);
     });
 
-    test('should return error message when Saudi phone number is invalid', () {
-      expect(AppValidators.saudiPhone('0412345678'), isNotNull); // Non-5 starting number
-      expect(AppValidators.saudiPhone('0512345'), isNotNull); // Too short
-      expect(AppValidators.saudiPhone('051234567890'), isNotNull); // Too long
-      expect(AppValidators.saudiPhone('05abc45678'), isNotNull); // Non-numeric
+    test('should return InvalidPhoneError when the number is invalid', () {
+      expect(AppValidators.saudiPhone('0412345678'), isA<InvalidPhoneError>());
+      expect(AppValidators.saudiPhone('0512345'), isA<InvalidPhoneError>());
+      expect(AppValidators.saudiPhone('051234567890'), isA<InvalidPhoneError>());
+      expect(AppValidators.saudiPhone('05abc45678'), isA<InvalidPhoneError>());
+    });
+  });
+
+  // The previous behaviour reported every blank value as valid, so a submitted
+  // empty form passed validation entirely.
+  group('blank handling', () {
+    test('blank fails by default across every validator', () {
+      expect(AppValidators.email(''), isA<RequiredFieldError>());
+      expect(AppValidators.email(null), isA<RequiredFieldError>());
+      expect(AppValidators.password(''), isA<RequiredFieldError>());
+      expect(AppValidators.saudiPhone(''), isA<RequiredFieldError>());
+      expect(AppValidators.numeric('   '), isA<RequiredFieldError>());
+      expect(AppValidators.minLength('', 3), isA<RequiredFieldError>());
+      expect(AppValidators.maxLength('', 3), isA<RequiredFieldError>());
+      expect(AppValidators.arabicOnly(''), isA<RequiredFieldError>());
+      expect(AppValidators.latitude(''), isA<RequiredFieldError>());
+      expect(AppValidators.longitude(''), isA<RequiredFieldError>());
+      expect(AppValidators.saudiPlateNumber(''), isA<RequiredFieldError>());
     });
 
-    test('should return null when phone is null or empty', () {
-      expect(AppValidators.saudiPhone(null), isNull);
-      expect(AppValidators.saudiPhone(''), isNull);
+    test('blank passes when the field is explicitly optional', () {
+      expect(AppValidators.email('', required: false), isNull);
+      expect(AppValidators.password(null, required: false), isNull);
+      expect(AppValidators.saudiPhone('', required: false), isNull);
+      expect(AppValidators.latitude('', required: false), isNull);
     });
   });
 
   group('AppValidators.minLength', () {
     test('should return null when value meets minimum length', () {
-      final result = AppValidators.minLength('hello', 3);
-      expect(result, isNull);
+      expect(AppValidators.minLength('hello', 3), isNull);
     });
 
-    test('should return error when value is under minimum length', () {
-      final result = AppValidators.minLength('he', 3);
-      expect(result, isNotNull);
+    test('should return MinLengthError carrying the bound', () {
+      final error = AppValidators.minLength('he', 3);
+      expect(error, isA<MinLengthError>());
+      expect((error! as MinLengthError).min, 3);
     });
   });
 
   group('AppValidators.maxLength', () {
     test('should return null when value does not exceed maximum length', () {
-      final result = AppValidators.maxLength('hello', 8);
-      expect(result, isNull);
+      expect(AppValidators.maxLength('hello', 8), isNull);
     });
 
-    test('should return error when value exceeds maximum length', () {
-      final result = AppValidators.maxLength('helloworld', 8);
-      expect(result, isNotNull);
+    test('should return MaxLengthError carrying the bound', () {
+      final error = AppValidators.maxLength('helloworld', 8);
+      expect(error, isA<MaxLengthError>());
+      expect((error! as MaxLengthError).max, 8);
     });
   });
 
@@ -123,21 +133,19 @@ void main() {
       expect(AppValidators.numeric('-123.45'), isNull);
     });
 
-    test('should return error when value is non-numeric', () {
-      expect(AppValidators.numeric('123a'), isNotNull);
-      expect(AppValidators.numeric('abc'), isNotNull);
+    test('should return NotNumericError when value is non-numeric', () {
+      expect(AppValidators.numeric('123a'), isA<NotNumericError>());
+      expect(AppValidators.numeric('abc'), isA<NotNumericError>());
     });
   });
 
   group('AppValidators.arabicOnly', () {
     test('should return null when value contains Arabic text only', () {
-      final result = AppValidators.arabicOnly('مرحبا بك');
-      expect(result, isNull);
+      expect(AppValidators.arabicOnly('مرحبا بك'), isNull);
     });
 
-    test('should return error when value contains Latin text', () {
-      final result = AppValidators.arabicOnly('مرحبا بك welcome');
-      expect(result, isNotNull);
+    test('should return NotArabicError when value contains Latin text', () {
+      expect(AppValidators.arabicOnly('مرحبا بك welcome'), isA<NotArabicError>());
     });
   });
 
@@ -149,10 +157,10 @@ void main() {
       expect(AppValidators.latitude('-90.0'), isNull);
     });
 
-    test('should return error when latitude is outside boundaries', () {
-      expect(AppValidators.latitude('-90.1'), isNotNull);
-      expect(AppValidators.latitude('91.0'), isNotNull);
-      expect(AppValidators.latitude('abc'), isNotNull);
+    test('should return InvalidLatitudeError outside the boundaries', () {
+      expect(AppValidators.latitude('-90.1'), isA<InvalidLatitudeError>());
+      expect(AppValidators.latitude('91.0'), isA<InvalidLatitudeError>());
+      expect(AppValidators.latitude('abc'), isA<InvalidLatitudeError>());
     });
   });
 
@@ -164,10 +172,10 @@ void main() {
       expect(AppValidators.longitude('-180.0'), isNull);
     });
 
-    test('should return error when longitude is outside boundaries', () {
-      expect(AppValidators.longitude('-180.1'), isNotNull);
-      expect(AppValidators.longitude('180.5'), isNotNull);
-      expect(AppValidators.longitude('xyz'), isNotNull);
+    test('should return InvalidLongitudeError outside the boundaries', () {
+      expect(AppValidators.longitude('-180.1'), isA<InvalidLongitudeError>());
+      expect(AppValidators.longitude('180.5'), isA<InvalidLongitudeError>());
+      expect(AppValidators.longitude('xyz'), isA<InvalidLongitudeError>());
     });
   });
 
@@ -178,10 +186,19 @@ void main() {
       expect(AppValidators.saudiPlateNumber('123أبج'), isNull);
     });
 
-    test('should return error when Saudi plate format is incorrect', () {
-      expect(AppValidators.saudiPlateNumber('12345 abc'), isNotNull); // Too many digits
-      expect(AppValidators.saudiPlateNumber('123 ab'), isNotNull); // Too few letters
-      expect(AppValidators.saudiPlateNumber('abc 1234'), isNotNull); // Wrong order
+    test('should return InvalidPlateNumberError when the format is wrong', () {
+      expect(
+        AppValidators.saudiPlateNumber('12345 abc'),
+        isA<InvalidPlateNumberError>(),
+      );
+      expect(
+        AppValidators.saudiPlateNumber('123 ab'),
+        isA<InvalidPlateNumberError>(),
+      );
+      expect(
+        AppValidators.saudiPlateNumber('abc 1234'),
+        isA<InvalidPlateNumberError>(),
+      );
     });
   });
 
@@ -199,7 +216,8 @@ void main() {
         (val) => AppValidators.required(val, fieldName: 'Email'),
         (val) => AppValidators.email(val),
       ]);
-      expect(result, contains('Email is required.'));
+      expect(result, isA<RequiredFieldError>());
+      expect((result! as RequiredFieldError).fieldName, 'Email');
     });
   });
 }

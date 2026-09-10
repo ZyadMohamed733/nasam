@@ -1,4 +1,5 @@
 {
+  "@@locale": "en",
   "appName": "Nasam",
   "loading": "Loading...",
   "errorGeneric": "Something went wrong. Please try again.",
@@ -10,6 +11,7 @@
   "confirm": "Confirm",
   "ok": "OK",
   "emptyState": "No data available.",
+
   "validationRequired": "{field} is required.",
   "@validationRequired": {
     "placeholders": {
@@ -18,7 +20,74 @@
       }
     }
   },
+  "validationRequiredGeneric": "This field is required.",
   "validationInvalidEmail": "Please enter a valid email address.",
   "validationPasswordWeak": "Password must be at least 8 characters with uppercase, lowercase, number and symbol.",
-  "validationInvalidPhone": "Please enter a valid Saudi phone number."
+  "validationPasswordsDoNotMatch": "Passwords do not match.",
+  "validationInvalidPhone": "Please enter a valid Saudi phone number.",
+  "validationMinLength": "Minimum length is {min} characters.",
+  "@validationMinLength": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "validationMaxLength": "Maximum length is {max} characters.",
+  "@validationMaxLength": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "validationNotNumeric": "Value must be numeric.",
+  "validationNotArabic": "Only Arabic characters are allowed.",
+  "validationInvalidLatitude": "Latitude must be between -90.0 and 90.0.",
+  "validationInvalidLongitude": "Longitude must be between -180.0 and 180.0.",
+  "validationInvalidPlateNumber": "Please enter a valid Saudi plate number.",
+
+  "relativeJustNow": "Just now",
+  "relativeMinutesAgo": "{count, plural, one{1 minute ago} other{{count} minutes ago}}",
+  "@relativeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeHoursAgo": "{count, plural, one{1 hour ago} other{{count} hours ago}}",
+  "@relativeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeDaysAgo": "{count, plural, one{1 day ago} other{{count} days ago}}",
+  "@relativeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeWeeksAgo": "{count, plural, one{1 week ago} other{{count} weeks ago}}",
+  "@relativeWeeksAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "vehicleCount": "{count, plural, zero{No vehicles} one{1 vehicle} other{{count} vehicles}}",
+  "@vehicleCount": {
+    "description": "Reference plural for new features to copy. Arabic needs six categories where English needs two.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

@@ -16,6 +16,7 @@ class AppTextField extends StatefulWidget {
     this.errorText,
     this.readOnly = false,
     this.maxLines = 1,
+    this.forceLtr = false,
   });
 
   final String? label;
@@ -29,6 +30,10 @@ class AppTextField extends StatefulWidget {
   final String? errorText;
   final bool readOnly;
   final int maxLines;
+
+  /// Pins the field to LTR for content that is never RTL in this domain:
+  /// plate numbers, IMEIs, VINs, phone numbers, coordinates, email.
+  final bool forceLtr;
 
   @override
   State<AppTextField> createState() => _AppTextFieldState();
@@ -46,10 +51,6 @@ class _AppTextFieldState extends State<AppTextField> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
-    // Auto-detect direction based on current locale
-    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
-    final textDir = isArabic ? TextDirection.rtl : TextDirection.ltr;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,7 +72,9 @@ class _AppTextFieldState extends State<AppTextField> {
           obscureText: _obscureText,
           readOnly: widget.readOnly,
           maxLines: widget.obscureText ? 1 : widget.maxLines,
-          textDirection: textDir,
+          // Left null so Flutter infers direction per content: forcing it from
+          // the app locale mis-renders plate numbers, IMEIs and emails.
+          textDirection: widget.forceLtr ? TextDirection.ltr : null,
           style: Theme.of(context).textTheme.bodyMedium!.copyWith(
             color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimaryLight,
           ),

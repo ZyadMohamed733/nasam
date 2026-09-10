@@ -27,7 +27,7 @@ dependencies:
 
   # Functional Error Handling
   dartz: ^0.10.1
-
+  flutter_svg: ^2.3.0
   # Networking
   dio: ^5.4.3
   connectivity_plus: ^6.0.3
@@ -51,6 +51,7 @@ dependencies:
   # Utilities
   logger: ^2.3.0
   intl: ^0.20.2
+  hijri: ^3.0.1
 
 dev_dependencies:
   flutter_test:
@@ -79,4 +80,5 @@ flutter:
   uses-material-design: true
   generate: true
   assets:
+    - assets/images/
     - .env

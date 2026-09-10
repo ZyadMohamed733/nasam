@@ -15,6 +15,7 @@ import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
+import '../../app/app_settings_controller.dart' as _i461;
 import '../../features/_template/data/datasources/local/template_local_datasource.dart'
     as _i923;
 import '../../features/_template/data/datasources/remote/template_remote_datasource.dart'
@@ -74,6 +75,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i745.AuthInterceptor>(
       () => _i745.AuthInterceptor(gh<_i535.SecureStorageService>()),
+    );
+    gh.lazySingleton<_i461.AppSettingsController>(
+      () => _i461.AppSettingsController(gh<_i306.StorageService>()),
     );
     gh.factory<_i715.RouteGuard>(
       () => _i715.RouteGuard(gh<_i745.AuthService>()),

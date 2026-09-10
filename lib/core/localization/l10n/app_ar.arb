@@ -1,4 +1,5 @@
 {
+  "@@locale": "ar",
   "appName": "ناسم",
   "loading": "جاري التحميل...",
   "errorGeneric": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
@@ -10,6 +11,7 @@
   "confirm": "تأكيد",
   "ok": "موافق",
   "emptyState": "لا توجد بيانات متاحة.",
+
   "validationRequired": "{field} مطلوب.",
   "@validationRequired": {
     "placeholders": {
@@ -18,7 +20,73 @@
       }
     }
   },
+  "validationRequiredGeneric": "هذا الحقل مطلوب.",
   "validationInvalidEmail": "يرجى إدخال بريد إلكتروني صحيح.",
   "validationPasswordWeak": "يجب أن تكون كلمة المرور مكونة من 8 رموز على الأقل وتحتوي على حرف كبير، حرف صغير، رقم، ورمز خاص.",
-  "validationInvalidPhone": "يرجى إدخال رقم هاتف سعودي صحيح."
+  "validationPasswordsDoNotMatch": "كلمتا المرور غير متطابقتين.",
+  "validationInvalidPhone": "يرجى إدخال رقم هاتف سعودي صحيح.",
+  "validationMinLength": "الحد الأدنى {min} حرفاً.",
+  "@validationMinLength": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "validationMaxLength": "الحد الأقصى {max} حرفاً.",
+  "@validationMaxLength": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "validationNotNumeric": "يجب أن تكون القيمة رقمية.",
+  "validationNotArabic": "يُسمح بالأحرف العربية فقط.",
+  "validationInvalidLatitude": "يجب أن يكون خط العرض بين -90.0 و90.0.",
+  "validationInvalidLongitude": "يجب أن يكون خط الطول بين -180.0 و180.0.",
+  "validationInvalidPlateNumber": "يرجى إدخال رقم لوحة سعودي صحيح.",
+
+  "relativeJustNow": "الآن",
+  "relativeMinutesAgo": "{count, plural, zero{الآن} one{منذ دقيقة} two{منذ دقيقتين} few{منذ {count} دقائق} many{منذ {count} دقيقة} other{منذ {count} دقيقة}}",
+  "@relativeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeHoursAgo": "{count, plural, zero{الآن} one{منذ ساعة} two{منذ ساعتين} few{منذ {count} ساعات} many{منذ {count} ساعة} other{منذ {count} ساعة}}",
+  "@relativeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeDaysAgo": "{count, plural, zero{اليوم} one{منذ يوم} two{منذ يومين} few{منذ {count} أيام} many{منذ {count} يوماً} other{منذ {count} يوم}}",
+  "@relativeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeWeeksAgo": "{count, plural, zero{هذا الأسبوع} one{منذ أسبوع} two{منذ أسبوعين} few{منذ {count} أسابيع} many{منذ {count} أسبوعاً} other{منذ {count} أسبوع}}",
+  "@relativeWeeksAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "vehicleCount": "{count, plural, zero{لا توجد مركبات} one{مركبة واحدة} two{مركبتان} few{{count} مركبات} many{{count} مركبة} other{{count} مركبة}}",
+  "@vehicleCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

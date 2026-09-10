@@ -170,6 +170,12 @@ abstract class AppLocalizations {
   /// **'{field} is required.'**
   String validationRequired(String field);
 
+  /// No description provided for @validationRequiredGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required.'**
+  String get validationRequiredGeneric;
+
   /// No description provided for @validationInvalidEmail.
   ///
   /// In en, this message translates to:
@@ -182,11 +188,95 @@ abstract class AppLocalizations {
   /// **'Password must be at least 8 characters with uppercase, lowercase, number and symbol.'**
   String get validationPasswordWeak;
 
+  /// No description provided for @validationPasswordsDoNotMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match.'**
+  String get validationPasswordsDoNotMatch;
+
   /// No description provided for @validationInvalidPhone.
   ///
   /// In en, this message translates to:
   /// **'Please enter a valid Saudi phone number.'**
   String get validationInvalidPhone;
+
+  /// No description provided for @validationMinLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum length is {min} characters.'**
+  String validationMinLength(int min);
+
+  /// No description provided for @validationMaxLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum length is {max} characters.'**
+  String validationMaxLength(int max);
+
+  /// No description provided for @validationNotNumeric.
+  ///
+  /// In en, this message translates to:
+  /// **'Value must be numeric.'**
+  String get validationNotNumeric;
+
+  /// No description provided for @validationNotArabic.
+  ///
+  /// In en, this message translates to:
+  /// **'Only Arabic characters are allowed.'**
+  String get validationNotArabic;
+
+  /// No description provided for @validationInvalidLatitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Latitude must be between -90.0 and 90.0.'**
+  String get validationInvalidLatitude;
+
+  /// No description provided for @validationInvalidLongitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Longitude must be between -180.0 and 180.0.'**
+  String get validationInvalidLongitude;
+
+  /// No description provided for @validationInvalidPlateNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid Saudi plate number.'**
+  String get validationInvalidPlateNumber;
+
+  /// No description provided for @relativeJustNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Just now'**
+  String get relativeJustNow;
+
+  /// No description provided for @relativeMinutesAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{1 minute ago} other{{count} minutes ago}}'**
+  String relativeMinutesAgo(int count);
+
+  /// No description provided for @relativeHoursAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{1 hour ago} other{{count} hours ago}}'**
+  String relativeHoursAgo(int count);
+
+  /// No description provided for @relativeDaysAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{1 day ago} other{{count} days ago}}'**
+  String relativeDaysAgo(int count);
+
+  /// No description provided for @relativeWeeksAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{1 week ago} other{{count} weeks ago}}'**
+  String relativeWeeksAgo(int count);
+
+  /// Reference plural for new features to copy. Arabic needs six categories where English needs two.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, zero{No vehicles} one{1 vehicle} other{{count} vehicles}}'**
+  String vehicleCount(int count);
 }
 
 class _AppLocalizationsDelegate

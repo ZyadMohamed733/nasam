@@ -1,140 +1,138 @@
+import 'validation_error.dart';
+
+/// Field validators returning a typed [ValidationError] rather than a message,
+/// so the same rule renders in English or Arabic depending on where it is shown.
+///
+/// Every validator takes `required` (default true): a blank value is a
+/// [RequiredFieldError], not a pass. Pass `required: false` for optional fields.
 class AppValidators {
   /// Email: RFC-compliant regex
-  static String? email(String? value) {
-    if (value == null || value.trim().isEmpty) return null;
+  static ValidationError? email(String? value, {bool required = true}) {
+    if (_isBlank(value)) return _blankError(required: required);
+
     final regex = RegExp(
       r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$",
     );
-    if (!regex.hasMatch(value)) {
-      return 'Please enter a valid email address.';
-    }
-    return null;
+    return regex.hasMatch(value!) ? null : const InvalidEmailError();
   }
 
   /// Password: min 8 chars, 1 uppercase, 1 lowercase, 1 digit, 1 special char
-  static String? password(String? value) {
-    if (value == null || value.isEmpty) return null;
-    if (value.length < 8) {
-      return 'Password must be at least 8 characters long.';
-    }
+  static ValidationError? password(String? value, {bool required = true}) {
+    if (_isBlank(value)) return _blankError(required: required);
+
+    if (value!.length < 8) return const PasswordTooWeakError();
+
     final hasUppercase = value.contains(RegExp(r'[A-Z]'));
     final hasLowercase = value.contains(RegExp(r'[a-z]'));
     final hasDigits = value.contains(RegExp(r'[0-9]'));
     final hasSpecial = value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
 
     if (!hasUppercase || !hasLowercase || !hasDigits || !hasSpecial) {
-      return 'Password must contain uppercase, lowercase, number, and special character.';
+      return const PasswordTooWeakError();
     }
     return null;
   }
 
   /// Confirm password match
-  static String? confirmPassword(String? value, String original) {
-    if (value != original) {
-      return 'Passwords do not match.';
-    }
-    return null;
+  static ValidationError? confirmPassword(String? value, String original) {
+    return value != original ? const PasswordMismatchError() : null;
   }
 
   /// Phone: Saudi format (+966 or 05xxxxxxxx or 5xxxxxxxx)
-  static String? saudiPhone(String? value) {
-    if (value == null || value.trim().isEmpty) return null;
-    final cleanValue = value.trim();
-    // Saudi numbers start with +9665..., 009665..., 05... or 5... followed by 8 digits
+  static ValidationError? saudiPhone(String? value, {bool required = true}) {
+    if (_isBlank(value)) return _blankError(required: required);
+
+    // Saudi numbers start with +9665..., 009665..., 05... or 5... then 8 digits
     final regex = RegExp(r'^(?:\+966|00966|0)?5[0-9]{8}$');
-    if (!regex.hasMatch(cleanValue)) {
-      return 'Please enter a valid Saudi phone number.';
-    }
-    return null;
+    return regex.hasMatch(value!.trim()) ? null : const InvalidPhoneError();
   }
 
   /// Required field (non-null, non-empty, non-whitespace)
-  static String? required(String? value, {String? fieldName}) {
-    if (value == null || value.trim().isEmpty) {
-      return fieldName != null ? '$fieldName is required.' : 'This field is required.';
-    }
-    return null;
+  static ValidationError? required(String? value, {String? fieldName}) {
+    return _isBlank(value) ? RequiredFieldError(fieldName: fieldName) : null;
   }
 
-  /// Min length
-  static String? minLength(String? value, int min) {
-    if (value == null || value.isEmpty) return null;
-    if (value.length < min) {
-      return 'Minimum length is $min characters.';
-    }
-    return null;
+  static ValidationError? minLength(
+    String? value,
+    int min, {
+    bool required = true,
+  }) {
+    if (_isBlank(value)) return _blankError(required: required);
+    return value!.length < min ? MinLengthError(min) : null;
   }
 
-  /// Max length
-  static String? maxLength(String? value, int max) {
-    if (value == null || value.isEmpty) return null;
-    if (value.length > max) {
-      return 'Maximum length is $max characters.';
-    }
-    return null;
+  static ValidationError? maxLength(
+    String? value,
+    int max, {
+    bool required = true,
+  }) {
+    if (_isBlank(value)) return _blankError(required: required);
+    return value!.length > max ? MaxLengthError(max) : null;
   }
 
-  /// Numeric only
-  static String? numeric(String? value) {
-    if (value == null || value.trim().isEmpty) return null;
-    final num = double.tryParse(value.trim());
-    if (num == null) {
-      return 'Value must be numeric.';
-    }
-    return null;
+  static ValidationError? numeric(String? value, {bool required = true}) {
+    if (_isBlank(value)) return _blankError(required: required);
+    return double.tryParse(value!.trim()) == null
+        ? const NotNumericError()
+        : null;
   }
 
-  /// Arabic text only (Unicode range \u0600-\u06FF and spaces)
-  static String? arabicOnly(String? value) {
-    if (value == null || value.trim().isEmpty) return null;
+  /// Arabic text only (Unicode range U+0600-U+06FF and spaces)
+  static ValidationError? arabicOnly(String? value, {bool required = true}) {
+    if (_isBlank(value)) return _blankError(required: required);
+
     final regex = RegExp(r'^[\u0600-\u06FF\s]+$');
-    if (!regex.hasMatch(value)) {
-      return 'Only Arabic characters are allowed.';
-    }
-    return null;
+    return regex.hasMatch(value!) ? null : const NotArabicError();
   }
 
   /// GPS latitude: -90.0 to 90.0
-  static String? latitude(String? value) {
-    if (value == null || value.trim().isEmpty) return null;
-    final lat = double.tryParse(value.trim());
-    if (lat == null || lat < -90.0 || lat > 90.0) {
-      return 'Latitude must be between -90.0 and 90.0.';
-    }
-    return null;
+  static ValidationError? latitude(String? value, {bool required = true}) {
+    if (_isBlank(value)) return _blankError(required: required);
+
+    final lat = double.tryParse(value!.trim());
+    return (lat == null || lat < -90.0 || lat > 90.0)
+        ? const InvalidLatitudeError()
+        : null;
   }
 
   /// GPS longitude: -180.0 to 180.0
-  static String? longitude(String? value) {
-    if (value == null || value.trim().isEmpty) return null;
-    final lng = double.tryParse(value.trim());
-    if (lng == null || lng < -180.0 || lng > 180.0) {
-      return 'Longitude must be between -180.0 and 180.0.';
-    }
-    return null;
+  static ValidationError? longitude(String? value, {bool required = true}) {
+    if (_isBlank(value)) return _blankError(required: required);
+
+    final lng = double.tryParse(value!.trim());
+    return (lng == null || lng < -180.0 || lng > 180.0)
+        ? const InvalidLongitudeError()
+        : null;
   }
 
-  /// Vehicle plate number (Saudi format)
-  /// Saudi plates have 1 to 4 digits and 3 Arabic letters.
-  /// Example: 1234 أ ب ج or English equivalent. Let's make it accept alphanumeric characters and spaces.
-  static String? saudiPlateNumber(String? value) {
-    if (value == null || value.trim().isEmpty) return null;
-    // Match 1 to 4 digits followed by optional space, then 3 Arabic letters, or English letters (A-Z)
+  /// Vehicle plate number (Saudi format): 1-4 digits then 3 Arabic or Latin
+  /// letters, e.g. `1234 أ ب ج`.
+  static ValidationError? saudiPlateNumber(
+    String? value, {
+    bool required = true,
+  }) {
+    if (_isBlank(value)) return _blankError(required: required);
+
     final regex = RegExp(r'^[0-9]{1,4}\s?[a-zA-Z\u0600-\u06FF]{3}$');
-    if (!regex.hasMatch(value.trim())) {
-      return 'Please enter a valid Saudi plate number.';
-    }
-    return null;
+    return regex.hasMatch(value!.trim())
+        ? null
+        : const InvalidPlateNumberError();
   }
 
-  /// Compose multiple validators (runs all, returns first error)
-  static String? compose(String? value, List<String? Function(String?)> validators) {
+  /// Runs validators in order and returns the first error.
+  static ValidationError? compose(
+    String? value,
+    List<ValidationError? Function(String?)> validators,
+  ) {
     for (final validator in validators) {
       final error = validator(value);
-      if (error != null) {
-        return error;
-      }
+      if (error != null) return error;
     }
     return null;
   }
+
+  static bool _isBlank(String? value) => value == null || value.trim().isEmpty;
+
+  static ValidationError? _blankError({required bool required}) =>
+      required ? const RequiredFieldError() : null;
 }
