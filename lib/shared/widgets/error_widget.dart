@@ -17,7 +17,6 @@ class AppErrorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Padding(
       padding: const EdgeInsets.all(AppSizes.p24),
@@ -34,9 +33,7 @@ class AppErrorWidget extends StatelessWidget {
           Text(
             message,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimaryLight,
-            ),
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
           if (onRetry != null) ...[
             const SizedBox(height: AppSizes.p24),

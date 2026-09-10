@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../core/constants/app_colors.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/router/app_routes.dart';
 
@@ -29,10 +28,9 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     // Determine background color based on theme brightness
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Scaffold(
-      backgroundColor: isDark ? AppColors.backgroundDark : AppColors.backgroundLight,
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -41,13 +39,13 @@ class _SplashPageState extends State<SplashPage> {
               context.l10n.appName,
               style: Theme.of(context).textTheme.displaySmall!.copyWith(
                 fontSize: 40.sp,
-                color: isDark ? AppColors.textPrimaryDark : AppColors.primary,
+                color: Theme.of(context).colorScheme.primary,
               ),
             ),
             const SizedBox(height: 24),
             CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(
-                isDark ? AppColors.primaryLight : AppColors.primary,
+                Theme.of(context).colorScheme.primary,
               ),
             ),
           ],

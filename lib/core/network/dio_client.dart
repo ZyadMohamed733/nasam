@@ -1,25 +1,27 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../../app/app_config.dart';
+import '../constants/app_constants.dart';
 import 'interceptors/auth_interceptor.dart';
 import 'interceptors/logging_interceptor.dart';
 import 'interceptors/error_interceptor.dart';
 
 class DioClient {
   static Dio create({
+    required AppConfig config,
     required AuthInterceptor authInterceptor,
     required LoggingInterceptor loggingInterceptor,
     required ErrorInterceptor errorInterceptor,
   }) {
-    final   baseUrl =  AppConfig.baseUrl;
-    final connectTimeout = int.tryParse(dotenv.env['CONNECT_TIMEOUT_MS'] ?? '15000') ?? 15000;
-    final receiveTimeout = int.tryParse(dotenv.env['RECEIVE_TIMEOUT_MS'] ?? '30000') ?? 30000;
-
     final dio = Dio(
       BaseOptions(
-        baseUrl: baseUrl,
-        connectTimeout: Duration(milliseconds: connectTimeout),
-        receiveTimeout: Duration(milliseconds: receiveTimeout),
+        baseUrl: config.baseUrl,
+        connectTimeout: const Duration(
+          milliseconds: AppConstants.connectTimeoutMs,
+        ),
+        receiveTimeout: const Duration(
+          milliseconds: AppConstants.receiveTimeoutMs,
+        ),
+        sendTimeout: const Duration(milliseconds: AppConstants.sendTimeoutMs),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',

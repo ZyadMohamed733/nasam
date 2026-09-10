@@ -1,65 +1,74 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../../../app/app_config.dart';
-import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_sizes.dart';
+import '../../../../core/di/injection_container.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final config = getIt<AppConfig>();
+
+    // Never in a release build, and never in production: this prints the API
+    // and socket hosts to anyone who reaches the login screen.
+    final showFlavorBanner = kDebugMode && !config.isProd;
+
     return Scaffold(
-      backgroundColor: isDark ? AppColors.backgroundDark : AppColors.backgroundLight,
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               'Login Screen Placeholder',
-              style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimaryLight,
-              ),
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
-            const SizedBox(height: 24),
-            const _FlavorDebugBanner(),
+            if (showFlavorBanner) ...[
+              const SizedBox(height: AppSizes.p24),
+              _FlavorDebugBanner(config: config),
+            ],
           ],
         ),
       ),
     );
   }
 }
+
 class _FlavorDebugBanner extends StatelessWidget {
-  const _FlavorDebugBanner();
+  const _FlavorDebugBanner({required this.config});
+
+  final AppConfig config;
 
   @override
   Widget build(BuildContext context) {
-    final color = switch (AppConfig.flavor) {
+    final color = switch (config.flavor) {
       Flavor.dev => Colors.green,
       Flavor.staging => Colors.orange,
       Flavor.prod => Colors.red,
     };
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24),
-      padding: const EdgeInsets.all(12),
+      margin: const EdgeInsets.symmetric(horizontal: AppSizes.p24),
+      padding: const EdgeInsets.all(AppSizes.p12),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.12),
         border: Border.all(color: color),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppSizes.r8),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            AppConfig.flavor.name.toUpperCase(),
+            config.flavor.name.toUpperCase(),
             style: TextStyle(color: color, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 4),
-          Text('App name: ${AppConfig.appName}'),
-          Text('Base URL: ${AppConfig.baseUrl}'),
-          Text('WS URL: ${AppConfig.wsUrl}'),
-         // Text('Timeouts: ${AppConfig.connectTimeoutMs}ms / ${AppConfig.receiveTimeoutMs}ms'),
+          const SizedBox(height: AppSizes.p4),
+          Text('App name: ${config.appName}'),
+          Text('Base URL: ${config.baseUrl}'),
+          Text('WS URL: ${config.wsUrl}'),
         ],
       ),
     );

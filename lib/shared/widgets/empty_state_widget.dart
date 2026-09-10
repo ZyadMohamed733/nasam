@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_sizes.dart';
 import 'app_button.dart';
 
@@ -19,7 +18,6 @@ class EmptyStateWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Padding(
       padding: const EdgeInsets.all(AppSizes.p24),
@@ -30,15 +28,13 @@ class EmptyStateWidget extends StatelessWidget {
           Icon(
             icon,
             size: AppSizes.iconXl,
-            color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
           const SizedBox(height: AppSizes.p16),
           Text(
             message,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight,
-            ),
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
           if (actionLabel != null && onActionPressed != null) ...[
             const SizedBox(height: AppSizes.p24),

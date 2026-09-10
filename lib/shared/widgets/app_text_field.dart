@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_sizes.dart';
 
 class AppTextField extends StatefulWidget {
@@ -50,7 +49,6 @@ class _AppTextFieldState extends State<AppTextField> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,9 +57,7 @@ class _AppTextFieldState extends State<AppTextField> {
         if (widget.label != null) ...[
           Text(
             widget.label!,
-            style: Theme.of(context).textTheme.labelMedium!.copyWith(
-              color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimaryLight,
-            ),
+            style: Theme.of(context).textTheme.labelMedium,
           ),
           const SizedBox(height: AppSizes.p8),
         ],
@@ -75,9 +71,7 @@ class _AppTextFieldState extends State<AppTextField> {
           // Left null so Flutter infers direction per content: forcing it from
           // the app locale mis-renders plate numbers, IMEIs and emails.
           textDirection: widget.forceLtr ? TextDirection.ltr : null,
-          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-            color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimaryLight,
-          ),
+          style: Theme.of(context).textTheme.bodyMedium,
           decoration: InputDecoration(
             hintText: widget.hint,
             errorText: widget.errorText,

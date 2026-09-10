@@ -18,7 +18,6 @@ class NasamAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     
     // Resolve the WebSocketService from DI
     final wsService = getIt<WebSocketService>();
@@ -29,9 +28,7 @@ class NasamAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           Text(
             title,
-            style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-              color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimaryLight,
-            ),
+            style: Theme.of(context).textTheme.headlineSmall,
           ),
           const SizedBox(width: AppSizes.p8),
           // Connection Status Indicator
@@ -64,13 +61,13 @@ class NasamAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       centerTitle: true,
       elevation: 0.5,
-      shadowColor: isDark ? AppColors.borderDark : AppColors.borderLight,
-      backgroundColor: isDark ? AppColors.surfaceDark : AppColors.surfaceLight,
+      shadowColor: Theme.of(context).colorScheme.outline,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       leading: showLeading
           ? IconButton(
               icon: Icon(
                 Icons.menu_rounded,
-                color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimaryLight,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
               onPressed: () => Scaffold.of(context).openDrawer(),
             )

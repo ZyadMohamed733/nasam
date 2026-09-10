@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_sizes.dart';
 
 class LoadingWidget extends StatelessWidget {
@@ -14,7 +13,6 @@ class LoadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     
     final loader = Center(
       child: SizedBox(
@@ -23,7 +21,7 @@ class LoadingWidget extends StatelessWidget {
         child: CircularProgressIndicator(
           strokeWidth: 3,
           valueColor: AlwaysStoppedAnimation<Color>(
-            isDark ? AppColors.primaryLight : AppColors.primary,
+            Theme.of(context).colorScheme.primary,
           ),
         ),
       ),
@@ -31,9 +29,9 @@ class LoadingWidget extends StatelessWidget {
 
     if (isFullScreen) {
       return Scaffold(
-        backgroundColor: isDark
-            ? AppColors.backgroundDark.withValues(alpha: 0.8)
-            : AppColors.backgroundLight.withValues(alpha: 0.8),
+        backgroundColor: Theme.of(
+          context,
+        ).colorScheme.surfaceContainerLowest.withValues(alpha: 0.8),
         body: loader,
       );
     }

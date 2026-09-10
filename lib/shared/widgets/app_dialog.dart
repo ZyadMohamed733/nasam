@@ -90,10 +90,9 @@ class AppDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return AlertDialog(
-      backgroundColor: isDark ? AppColors.surfaceDark : AppColors.surfaceLight,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppSizes.r16),
       ),
@@ -122,18 +121,14 @@ class AppDialog extends StatelessWidget {
           Text(
             title,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-              color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimaryLight,
-            ),
+            style: Theme.of(context).textTheme.headlineSmall,
           ),
         ],
       ),
       content: Text(
         content,
         textAlign: TextAlign.center,
-        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-          color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight,
-        ),
+        style: Theme.of(context).textTheme.bodyMedium,
       ),
       actionsAlignment: MainAxisAlignment.center,
       actions: [
@@ -145,9 +140,7 @@ class AppDialog extends StatelessWidget {
             },
             child: Text(
               cancelLabel!,
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight,
-              ),
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
         ElevatedButton(

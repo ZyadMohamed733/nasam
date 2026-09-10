@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_sizes.dart';
 
 class AppBottomSheet extends StatelessWidget {
@@ -18,12 +17,11 @@ class AppBottomSheet extends StatelessWidget {
     bool showDragHandle = true,
     bool isDismissible = true,
   }) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return showModalBottomSheet<T>(
       context: context,
       isDismissible: isDismissible,
-      backgroundColor: isDark ? AppColors.backgroundDark : AppColors.surfaceLight,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(AppSizes.r24),
@@ -38,7 +36,6 @@ class AppBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return SafeArea(
       child: Column(
@@ -50,7 +47,7 @@ class AppBottomSheet extends StatelessWidget {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: isDark ? AppColors.borderDark : AppColors.borderLight,
+                color: Theme.of(context).colorScheme.outline,
                 borderRadius: BorderRadius.circular(AppSizes.r4),
               ),
             ),

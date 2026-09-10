@@ -1,17 +1,20 @@
 import 'dart:async';
 import 'dart:math';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+import '../../app/app_config.dart';
+import '../constants/app_constants.dart';
 import '../utils/app_logger.dart';
 
 enum WsConnectionState { connecting, connected, disconnected, error }
 
 @lazySingleton
 class WebSocketService {
-  WebSocketService() {
+  WebSocketService(this._config) {
     _stateController.add(WsConnectionState.disconnected);
   }
+
+  final AppConfig _config;
 
   WebSocketChannel? _channel;
   final StreamController<WsConnectionState> _stateController = StreamController<WsConnectionState>.broadcast();
@@ -22,7 +25,7 @@ class WebSocketService {
 
   bool _isDisposed = false;
   bool _shouldReconnect = false;
-  int _reconnectDelaySecs = 1;
+  int _reconnectDelaySecs = AppConstants.wsBaseReconnectDelaySecs;
 
   void connect() {
     if (_isDisposed) return;
@@ -33,14 +36,14 @@ class WebSocketService {
   void _establishConnection() {
     if (_channel != null || _isDisposed) return;
 
-    final wsUrl = dotenv.env['WS_URL'] ?? 'wss://ws.nasam.app';
+    final wsUrl = _config.wsUrl;
     AppLogger.i('Connecting to WebSocket: $wsUrl');
     _stateController.add(WsConnectionState.connecting);
 
     try {
       _channel = WebSocketChannel.connect(Uri.parse(wsUrl));
       _stateController.add(WsConnectionState.connected);
-      _reconnectDelaySecs = 1; // Reset backoff delay on successful connection
+      _reconnectDelaySecs = AppConstants.wsBaseReconnectDelaySecs;
 
       _channel!.stream.listen(
         (message) {
@@ -77,8 +80,10 @@ class WebSocketService {
           _establishConnection();
         }
       });
-      // Exponential backoff formula (capped at 30s)
-      _reconnectDelaySecs = min(30, _reconnectDelaySecs * 2);
+      _reconnectDelaySecs = min(
+        AppConstants.wsMaxReconnectDelaySecs,
+        _reconnectDelaySecs * 2,
+      );
     }
   }
 

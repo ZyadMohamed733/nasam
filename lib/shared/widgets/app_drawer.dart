@@ -12,24 +12,23 @@ class AppDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final authService = getIt<AuthService>();
 
     return Drawer(
-      backgroundColor: isDark ? AppColors.backgroundDark : AppColors.backgroundLight,
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
       child: Column(
         children: [
           // Drawer Header
           UserAccountsDrawerHeader(
             decoration: BoxDecoration(
-              color: isDark ? AppColors.surfaceDark : AppColors.primary,
+              color: Theme.of(context).colorScheme.primary,
             ),
             currentAccountPicture: CircleAvatar(
-              backgroundColor: isDark ? AppColors.primaryLight : Colors.white,
+              backgroundColor: Theme.of(context).colorScheme.onPrimary,
               child: Icon(
                 Icons.person_rounded,
                 size: AppSizes.iconLg,
-                color: isDark ? Colors.white : AppColors.primary,
+                color: Theme.of(context).colorScheme.primary,
               ),
             ),
             accountName: Text(
@@ -47,13 +46,11 @@ class AppDrawer extends StatelessWidget {
             ListTile(
               leading: Icon(
                 destination.icon,
-                color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
               title: Text(
                 destination.label,
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimaryLight,
-                ),
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
               onTap: () {
                 Navigator.pop(context); // Close drawer
@@ -66,7 +63,7 @@ class AppDrawer extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppSizes.p16, vertical: AppSizes.p16),
             child: Divider(
-              color: isDark ? AppColors.borderDark : AppColors.borderLight,
+              color: Theme.of(context).colorScheme.outline,
             ),
           ),
           ListTile(

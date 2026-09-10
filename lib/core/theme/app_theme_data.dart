@@ -38,6 +38,23 @@ class AppThemeData {
         ),
       );
 
+  static OutlinedButtonThemeData outlinedButtonTheme(
+    ColorScheme colorScheme,
+    TextTheme textTheme,
+  ) =>
+      OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          minimumSize: const Size.fromHeight(AppSizes.buttonHeight),
+          foregroundColor: colorScheme.primary,
+          disabledForegroundColor: colorScheme.onSurface.withValues(alpha: 0.38),
+          side: BorderSide(color: colorScheme.primary, width: 1.5),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppSizes.r12),
+          ),
+          textStyle: textTheme.labelLarge,
+        ),
+      );
+
   /// Fills in the text-dependent slots once the [TextTheme] exists.
   static InputDecorationTheme applyText(
     InputDecorationTheme base,

@@ -15,6 +15,7 @@ import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
+import '../../app/app_config.dart' as _i861;
 import '../../app/app_settings_controller.dart' as _i461;
 import '../../features/_template/data/datasources/local/template_local_datasource.dart'
     as _i923;
@@ -57,15 +58,15 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i558.FlutterSecureStorage>(
       () => storageModule.secureStorage,
     );
-    gh.lazySingleton<_i555.WebSocketService>(
-      () => _i555.WebSocketService(),
-      dispose: (i) => i.dispose(),
-    );
     gh.lazySingleton<_i535.SecureStorageService>(
       () => _i535.SecureStorageService(gh<_i558.FlutterSecureStorage>()),
     );
     gh.lazySingleton<_i306.StorageService>(
       () => _i306.StorageService(gh<_i460.SharedPreferences>()),
+    );
+    gh.lazySingleton<_i555.WebSocketService>(
+      () => _i555.WebSocketService(gh<_i861.AppConfig>()),
+      dispose: (i) => i.dispose(),
     );
     gh.lazySingleton<_i745.AuthService>(
       () => _i745.AuthServiceImpl(gh<_i535.SecureStorageService>()),
@@ -84,6 +85,7 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i361.Dio>(
       () => networkModule.dio(
+        gh<_i861.AppConfig>(),
         gh<_i745.AuthInterceptor>(),
         gh<_i344.LoggingInterceptor>(),
         gh<_i511.ErrorInterceptor>(),

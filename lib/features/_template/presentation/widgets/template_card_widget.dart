@@ -15,7 +15,6 @@ class TemplateCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return AppCard(
       onTap: onTap,
@@ -24,16 +23,12 @@ class TemplateCardWidget extends StatelessWidget {
         children: [
           Text(
             entity.title,
-            style: Theme.of(context).textTheme.titleLarge!.copyWith(
-              color: isDark ? Colors.white : Colors.black87,
-            ),
+            style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: AppSizes.p8),
           Text(
             entity.description,
-            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: isDark ? Colors.white70 : Colors.black54,
-            ),
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
         ],
       ),
