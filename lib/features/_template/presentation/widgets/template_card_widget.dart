@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/app_sizes.dart';
-import '../../../../core/constants/app_text_styles.dart';
 import '../../../../shared/widgets/app_card.dart';
 import '../../domain/entities/template_entity.dart';
 
@@ -26,14 +24,14 @@ class TemplateCardWidget extends StatelessWidget {
         children: [
           Text(
             entity.title,
-            style: AppTextStyles.h3.copyWith(
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(
               color: isDark ? Colors.white : Colors.black87,
             ),
           ),
-          SizedBox(height: AppSizes.p8.h),
+          const SizedBox(height: AppSizes.p8),
           Text(
             entity.description,
-            style: AppTextStyles.bodyMedium.copyWith(
+            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
               color: isDark ? Colors.white70 : Colors.black54,
             ),
           ),

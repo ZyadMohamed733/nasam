@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_sizes.dart';
 
@@ -19,8 +18,8 @@ class LoadingWidget extends StatelessWidget {
     
     final loader = Center(
       child: SizedBox(
-        width: size ?? AppSizes.iconLg.r,
-        height: size ?? AppSizes.iconLg.r,
+        width: size ?? AppSizes.iconLg,
+        height: size ?? AppSizes.iconLg,
         child: CircularProgressIndicator(
           strokeWidth: 3,
           valueColor: AlwaysStoppedAnimation<Color>(

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_sizes.dart';
-import '../../core/constants/app_text_styles.dart';
 import '../../core/di/injection_container.dart';
 import '../../core/services/websocket_service.dart';
 
@@ -31,11 +29,11 @@ class NasamAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           Text(
             title,
-            style: AppTextStyles.h2.copyWith(
+            style: Theme.of(context).textTheme.headlineSmall!.copyWith(
               color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimaryLight,
             ),
           ),
-          SizedBox(width: AppSizes.p8.w),
+          const SizedBox(width: AppSizes.p8),
           // Connection Status Indicator
           StreamBuilder<WsConnectionState>(
             stream: wsService.connectionState,
@@ -45,16 +43,16 @@ class NasamAppBar extends StatelessWidget implements PreferredSizeWidget {
               return Tooltip(
                 message: 'WebSocket: ${state.name.toUpperCase()}',
                 child: Container(
-                  width: 8.r,
-                  height: 8.r,
+                  width: 8,
+                  height: 8,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: _getConnectionColor(state),
                     boxShadow: [
                       BoxShadow(
                         color: _getConnectionColor(state).withValues(alpha: 0.4),
-                        blurRadius: 4.r,
-                        spreadRadius: 1.r,
+                        blurRadius: 4,
+                        spreadRadius: 1,
                       ),
                     ],
                   ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_sizes.dart';
 
@@ -25,9 +24,9 @@ class AppBottomSheet extends StatelessWidget {
       context: context,
       isDismissible: isDismissible,
       backgroundColor: isDark ? AppColors.backgroundDark : AppColors.surfaceLight,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
-          top: Radius.circular(AppSizes.r24.r),
+          top: Radius.circular(AppSizes.r24),
         ),
       ),
       builder: (context) => AppBottomSheet(
@@ -46,19 +45,19 @@ class AppBottomSheet extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (showDragHandle) ...[
-            SizedBox(height: AppSizes.p12.h),
+            const SizedBox(height: AppSizes.p12),
             Container(
-              width: 40.w,
-              height: 4.h,
+              width: 40,
+              height: 4,
               decoration: BoxDecoration(
                 color: isDark ? AppColors.borderDark : AppColors.borderLight,
-                borderRadius: BorderRadius.circular(AppSizes.r4.r),
+                borderRadius: BorderRadius.circular(AppSizes.r4),
               ),
             ),
           ],
           Flexible(
             child: SingleChildScrollView(
-              padding: EdgeInsets.all(AppSizes.p24.r),
+              padding: const EdgeInsets.all(AppSizes.p24),
               child: child,
             ),
           ),

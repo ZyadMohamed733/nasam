@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_sizes.dart';
-import '../../core/constants/app_text_styles.dart';
 
 enum AppButtonVariant { primary, secondary, outline, danger }
 
@@ -29,7 +27,7 @@ class AppButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final buttonHeight = height ?? AppSizes.buttonHeight.h;
+    final buttonHeight = height ?? AppSizes.buttonHeight;
     final isDisabled = onPressed == null || isLoading;
 
     return Opacity(
@@ -49,21 +47,21 @@ class AppButton extends StatelessWidget {
       children: [
         if (isLoading) ...[
           SizedBox(
-            width: 20.r,
-            height: 20.r,
+            width: 20,
+            height: 20,
             child: CircularProgressIndicator(
               strokeWidth: 2.5,
               valueColor: AlwaysStoppedAnimation<Color>(_getTextColor(isDark)),
             ),
           ),
-          SizedBox(width: AppSizes.p12.w),
+          const SizedBox(width: AppSizes.p12),
         ] else if (prefixIcon != null) ...[
-          Icon(prefixIcon, size: AppSizes.iconSm.r, color: _getTextColor(isDark)),
-          SizedBox(width: AppSizes.p8.w),
+          Icon(prefixIcon, size: AppSizes.iconSm, color: _getTextColor(isDark)),
+          const SizedBox(width: AppSizes.p8),
         ],
         Text(
           label,
-          style: AppTextStyles.button.copyWith(color: _getTextColor(isDark)),
+          style: Theme.of(context).textTheme.labelLarge!.copyWith(color: _getTextColor(isDark)),
         ),
       ],
     );
@@ -77,7 +75,7 @@ class AppButton extends StatelessWidget {
             width: 1.5,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSizes.r12.r),
+            borderRadius: BorderRadius.circular(AppSizes.r12),
           ),
         ),
         child: child,
@@ -90,7 +88,7 @@ class AppButton extends StatelessWidget {
         backgroundColor: _getBackgroundColor(isDark),
         elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppSizes.r12.r),
+          borderRadius: BorderRadius.circular(AppSizes.r12),
         ),
       ),
       child: child,

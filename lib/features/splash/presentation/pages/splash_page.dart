@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/router/app_routes.dart';
 
@@ -40,12 +39,12 @@ class _SplashPageState extends State<SplashPage> {
           children: [
             Text(
               context.l10n.appName,
-              style: AppTextStyles.display.copyWith(
+              style: Theme.of(context).textTheme.displaySmall!.copyWith(
                 fontSize: 40.sp,
                 color: isDark ? AppColors.textPrimaryDark : AppColors.primary,
               ),
             ),
-            SizedBox(height: 24.h),
+            const SizedBox(height: 24),
             CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(
                 isDark ? AppColors.primaryLight : AppColors.primary,

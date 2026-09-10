@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../constants/app_colors.dart';
-import '../constants/app_text_styles.dart';
 import 'app_routes.dart';
 
 class AppErrorPage extends StatelessWidget {
@@ -32,7 +31,7 @@ class AppErrorPage extends StatelessWidget {
               const SizedBox(height: 24),
               Text(
                 'Page Not Found',
-                style: AppTextStyles.h1.copyWith(
+                style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                   color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimaryLight,
                 ),
               ),
@@ -40,7 +39,7 @@ class AppErrorPage extends StatelessWidget {
               Text(
                 error != null ? error.toString() : 'The requested URL was not found on this device.',
                 textAlign: TextAlign.center,
-                style: AppTextStyles.bodyMedium.copyWith(
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                   color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight,
                 ),
               ),

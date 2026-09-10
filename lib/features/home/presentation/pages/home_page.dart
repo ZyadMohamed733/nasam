@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/constants/app_text_styles.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -13,7 +12,7 @@ class HomePage extends StatelessWidget {
       body: Center(
         child: Text(
           'Home Screen Placeholder',
-          style: AppTextStyles.h1.copyWith(
+          style: Theme.of(context).textTheme.headlineMedium!.copyWith(
             color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimaryLight,
           ),
         ),

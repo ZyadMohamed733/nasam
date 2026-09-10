@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_sizes.dart';
-import '../../core/constants/app_text_styles.dart';
 
 class AppDialog extends StatelessWidget {
   const AppDialog({
@@ -97,18 +95,18 @@ class AppDialog extends StatelessWidget {
     return AlertDialog(
       backgroundColor: isDark ? AppColors.surfaceDark : AppColors.surfaceLight,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppSizes.r16.r),
+        borderRadius: BorderRadius.circular(AppSizes.r16),
       ),
-      titlePadding: EdgeInsets.only(
-        top: AppSizes.p24.h,
-        left: AppSizes.p24.w,
-        right: AppSizes.p24.w,
+      titlePadding: const EdgeInsets.only(
+        top: AppSizes.p24,
+        left: AppSizes.p24,
+        right: AppSizes.p24,
       ),
-      contentPadding: EdgeInsets.all(AppSizes.p24.r),
-      actionsPadding: EdgeInsets.only(
-        bottom: AppSizes.p16.h,
-        left: AppSizes.p24.w,
-        right: AppSizes.p24.w,
+      contentPadding: const EdgeInsets.all(AppSizes.p24),
+      actionsPadding: const EdgeInsets.only(
+        bottom: AppSizes.p16,
+        left: AppSizes.p24,
+        right: AppSizes.p24,
       ),
       title: Column(
         mainAxisSize: MainAxisSize.min,
@@ -116,15 +114,15 @@ class AppDialog extends StatelessWidget {
           if (icon != null) ...[
             Icon(
               icon,
-              size: AppSizes.iconXl.r,
+              size: AppSizes.iconXl,
               color: iconColor ?? AppColors.primary,
             ),
-            SizedBox(height: AppSizes.p16.h),
+            const SizedBox(height: AppSizes.p16),
           ],
           Text(
             title,
             textAlign: TextAlign.center,
-            style: AppTextStyles.h2.copyWith(
+            style: Theme.of(context).textTheme.headlineSmall!.copyWith(
               color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimaryLight,
             ),
           ),
@@ -133,7 +131,7 @@ class AppDialog extends StatelessWidget {
       content: Text(
         content,
         textAlign: TextAlign.center,
-        style: AppTextStyles.bodyMedium.copyWith(
+        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
           color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight,
         ),
       ),
@@ -147,14 +145,14 @@ class AppDialog extends StatelessWidget {
             },
             child: Text(
               cancelLabel!,
-              style: AppTextStyles.bodyMedium.copyWith(
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                 color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight,
               ),
             ),
           ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            minimumSize: Size(100.w, 40.h),
+            minimumSize: const Size(100, 40),
             backgroundColor: iconColor ?? AppColors.primary,
           ),
           onPressed: () {

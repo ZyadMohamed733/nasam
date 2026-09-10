@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'app/app.dart';
 import 'app/app_bloc_observer.dart';
 import 'core/di/injection_container.dart';
 
-
 Future<void> initSharedLib() async {
-
   // 1. Ensure Flutter binding is initialized
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -20,11 +16,4 @@ Future<void> initSharedLib() async {
 
   // 4. Set global Bloc Observer
   Bloc.observer = AppBlocObserver();
-
-  // 5. Lock device orientation to portrait
-  await SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
-
 }

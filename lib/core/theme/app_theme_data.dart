@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_sizes.dart';
-import '../constants/app_text_styles.dart';
 
 class AppThemeData {
   static AppBarTheme get appBarThemeLight => const AppBarTheme(
@@ -20,16 +19,35 @@ class AppThemeData {
         actionsIconTheme: IconThemeData(color: AppColors.textPrimaryDark),
       );
 
-  static ElevatedButtonThemeData get elevatedButtonTheme => ElevatedButtonThemeData(
+  static ElevatedButtonThemeData elevatedButtonTheme(
+    ColorScheme colorScheme,
+    TextTheme textTheme,
+  ) =>
+      ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           minimumSize: const Size.fromHeight(AppSizes.buttonHeight),
-          backgroundColor: AppColors.primary,
-          foregroundColor: Colors.white,
+          backgroundColor: colorScheme.primary,
+          foregroundColor: colorScheme.onPrimary,
+          disabledBackgroundColor: colorScheme.onSurface.withValues(alpha: 0.12),
+          disabledForegroundColor: colorScheme.onSurface.withValues(alpha: 0.38),
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppSizes.r12),
           ),
-          textStyle: AppTextStyles.button,
+          textStyle: textTheme.labelLarge,
+        ),
+      );
+
+  /// Fills in the text-dependent slots once the [TextTheme] exists.
+  static InputDecorationTheme applyText(
+    InputDecorationTheme base,
+    TextTheme textTheme,
+    Color onSurfaceVariant,
+  ) =>
+      base.copyWith(
+        labelStyle: textTheme.bodyMedium?.copyWith(color: onSurfaceVariant),
+        hintStyle: textTheme.bodyMedium?.copyWith(
+          color: onSurfaceVariant.withValues(alpha: 0.6),
         ),
       );
 
@@ -60,10 +78,6 @@ class AppThemeData {
           borderRadius: BorderRadius.circular(AppSizes.r12),
           borderSide: const BorderSide(color: AppColors.error, width: 1.5),
         ),
-        labelStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondaryLight),
-        hintStyle: AppTextStyles.bodyMedium.copyWith(
-          color: AppColors.textSecondaryLight.withValues(alpha: 0.6),
-        ),
       );
 
   static InputDecorationTheme get inputDecorationThemeDark => InputDecorationTheme(
@@ -92,10 +106,6 @@ class AppThemeData {
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSizes.r12),
           borderSide: const BorderSide(color: AppColors.error, width: 1.5),
-        ),
-        labelStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondaryDark),
-        hintStyle: AppTextStyles.bodyMedium.copyWith(
-          color: AppColors.textSecondaryDark.withValues(alpha: 0.6),
         ),
       );
 

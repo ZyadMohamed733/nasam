@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_sizes.dart';
-import '../../core/constants/app_text_styles.dart';
 
 class AppTextField extends StatefulWidget {
   const AppTextField({
@@ -60,11 +58,11 @@ class _AppTextFieldState extends State<AppTextField> {
         if (widget.label != null) ...[
           Text(
             widget.label!,
-            style: AppTextStyles.label.copyWith(
+            style: Theme.of(context).textTheme.labelMedium!.copyWith(
               color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimaryLight,
             ),
           ),
-          SizedBox(height: AppSizes.p8.h),
+          const SizedBox(height: AppSizes.p8),
         ],
         TextFormField(
           controller: widget.controller,
@@ -74,7 +72,7 @@ class _AppTextFieldState extends State<AppTextField> {
           readOnly: widget.readOnly,
           maxLines: widget.obscureText ? 1 : widget.maxLines,
           textDirection: textDir,
-          style: AppTextStyles.bodyMedium.copyWith(
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
             color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimaryLight,
           ),
           decoration: InputDecoration(
@@ -85,7 +83,7 @@ class _AppTextFieldState extends State<AppTextField> {
                 ? IconButton(
                     icon: Icon(
                       _obscureText ? Icons.visibility_off_rounded : Icons.visibility_rounded,
-                      size: AppSizes.iconSm.r,
+                      size: AppSizes.iconSm,
                     ),
                     onPressed: () {
                       setState(() {

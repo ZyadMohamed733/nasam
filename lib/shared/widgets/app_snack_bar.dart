@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_sizes.dart';
-import '../../core/constants/app_text_styles.dart';
 
 class AppSnackBar {
   AppSnackBar._(); // Prevent instantiation
@@ -59,22 +57,22 @@ class AppSnackBar {
         backgroundColor: backgroundColor,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppSizes.r12.r),
+          borderRadius: BorderRadius.circular(AppSizes.r12),
         ),
-        margin: EdgeInsets.all(AppSizes.p16.r),
+        margin: const EdgeInsets.all(AppSizes.p16),
         duration: const Duration(seconds: 4),
         content: Row(
           children: [
             Icon(
               icon,
               color: Colors.white,
-              size: AppSizes.iconMd.r,
+              size: AppSizes.iconMd,
             ),
-            SizedBox(width: AppSizes.p12.w),
+            const SizedBox(width: AppSizes.p12),
             Expanded(
               child: Text(
                 message,
-                style: AppTextStyles.bodyMedium.copyWith(color: Colors.white),
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.white),
               ),
             ),
           ],

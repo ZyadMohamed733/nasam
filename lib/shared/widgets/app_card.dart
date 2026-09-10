@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_sizes.dart';
 
@@ -27,10 +26,10 @@ class AppCard extends StatelessWidget {
     final fallbackRadius = borderRadius ?? AppSizes.r12;
 
     final container = Container(
-      padding: padding ?? EdgeInsets.all(AppSizes.p16.r),
+      padding: padding ?? const EdgeInsets.all(AppSizes.p16),
       decoration: BoxDecoration(
         color: isDark ? AppColors.surfaceDark : AppColors.surfaceLight,
-        borderRadius: BorderRadius.circular(fallbackRadius.r),
+        borderRadius: BorderRadius.circular(fallbackRadius),
         border: Border.all(
           color: isDark ? AppColors.borderDark : AppColors.borderLight,
           width: 0.8,
@@ -41,8 +40,8 @@ class AppCard extends StatelessWidget {
                   color: AppColors.shadow.withValues(
                     alpha: isDark ? 0.2 : 0.05,
                   ),
-                  blurRadius: (elevation * 4).r,
-                  offset: Offset(0, (elevation * 2).h),
+                  blurRadius: elevation * 4,
+                  offset: Offset(0, elevation * 2),
                 )
               ]
             : null,
@@ -57,7 +56,7 @@ class AppCard extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(fallbackRadius.r),
+          borderRadius: BorderRadius.circular(fallbackRadius),
           child: container,
         ),
       );

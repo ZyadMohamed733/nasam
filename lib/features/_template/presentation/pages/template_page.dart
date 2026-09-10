@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/app_sizes.dart';
 import '../../../../core/di/injection_container.dart';
 import '../../../../shared/widgets/app_scaffold.dart';
@@ -32,7 +31,7 @@ class TemplatePage extends StatelessWidget {
               success: (entity) => AppScaffold(
                 title: 'Template Details',
                 body: Padding(
-                  padding: EdgeInsets.all(AppSizes.p16.r),
+                  padding: const EdgeInsets.all(AppSizes.p16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

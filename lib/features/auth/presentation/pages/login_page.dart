@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../app/app_config.dart';
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/constants/app_text_styles.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -17,7 +16,7 @@ class LoginPage extends StatelessWidget {
           children: [
             Text(
               'Login Screen Placeholder',
-              style: AppTextStyles.h1.copyWith(
+              style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                 color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimaryLight,
               ),
             ),
