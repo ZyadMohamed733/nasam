@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import '../../../../core/errors/exceptions.dart';
+import '../../../../core/errors/failure_mapper.dart';
 import '../../../../core/errors/failures.dart';
 import '../../domain/entities/template_entity.dart';
 import '../../domain/repositories/template_repository.dart';
@@ -21,23 +22,26 @@ class TemplateRepositoryImpl implements TemplateRepository {
       final remoteModel = await _remoteDataSource.getTemplate(id);
       await _localDataSource.cacheTemplate(remoteModel);
       return Right(TemplateMapper.toEntity(remoteModel));
-    } on DioException catch (e) {
-      // Fallback to local cache on request error
-      try {
-        final cachedModel = await _localDataSource.getCachedTemplate(id);
-        if (cachedModel != null) {
-          return Right(TemplateMapper.toEntity(cachedModel));
-        }
-      } catch (_) {
-        // Ignore cache fetch failures, bubble up request error instead
+    } on AppException catch (e) {
+      // Only a genuinely unreachable server justifies serving stale data. A
+      // 401/403/422 must surface, or an error quietly looks like success.
+      if (e is NetworkException || e is TimeoutException) {
+        final cached = await _cachedEntity(id);
+        if (cached != null) return Right(cached);
       }
-
-      if (e.error is Failure) {
-        return Left(e.error as Failure);
-      }
-      return Left(UnknownFailure(message: e.message ?? 'A network communication error occurred.', stackTrace: e.stackTrace));
+      return Left(FailureMapper.fromException(e));
     } catch (e, stack) {
       return Left(UnknownFailure(message: e.toString(), stackTrace: stack));
+    }
+  }
+
+  Future<TemplateEntity?> _cachedEntity(String id) async {
+    try {
+      final cachedModel = await _localDataSource.getCachedTemplate(id);
+      return cachedModel == null ? null : TemplateMapper.toEntity(cachedModel);
+    } on Object {
+      // A broken cache must not replace the request error the caller needs.
+      return null;
     }
   }
 }

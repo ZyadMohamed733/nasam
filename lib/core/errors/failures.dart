@@ -46,9 +46,51 @@ class CacheFailure extends Failure {
 class ValidationFailure extends Failure {
   const ValidationFailure({
     required super.message,
+    this.fieldErrors = const {},
     super.code,
     super.stackTrace,
   });
+
+  /// Per-field messages from a 422 response, keyed by the server's field name.
+  final Map<String, List<String>> fieldErrors;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ValidationFailure &&
+          runtimeType == other.runtimeType &&
+          message == other.message &&
+          code == other.code &&
+          _fieldErrorsEqual(fieldErrors, other.fieldErrors);
+
+  @override
+  int get hashCode =>
+      message.hashCode ^ code.hashCode ^ _fieldErrorsHash(fieldErrors);
+}
+
+bool _fieldErrorsEqual(
+  Map<String, List<String>> a,
+  Map<String, List<String>> b,
+) {
+  if (a.length != b.length) return false;
+  for (final entry in a.entries) {
+    final other = b[entry.key];
+    if (other == null || other.length != entry.value.length) return false;
+    for (var i = 0; i < other.length; i++) {
+      if (other[i] != entry.value[i]) return false;
+    }
+  }
+  return true;
+}
+
+int _fieldErrorsHash(Map<String, List<String>> fieldErrors) {
+  var hash = 0;
+  for (final entry in fieldErrors.entries) {
+    // XOR keeps the result order-independent, as map iteration order is not
+    // part of equality here.
+    hash ^= entry.key.hashCode ^ Object.hashAll(entry.value);
+  }
+  return hash;
 }
 
 class AuthFailure extends Failure {

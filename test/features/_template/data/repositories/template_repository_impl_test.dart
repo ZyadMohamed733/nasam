@@ -1,22 +1,18 @@
 import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:nasam/core/errors/exceptions.dart';
 import 'package:nasam/core/errors/failures.dart';
-import 'package:nasam/features/_template/data/datasources/local/template_local_datasource.dart';
-import 'package:nasam/features/_template/data/datasources/remote/template_remote_datasource.dart';
 import 'package:nasam/features/_template/data/models/template_model.dart';
 import 'package:nasam/features/_template/data/repositories/template_repository_impl.dart';
 import 'package:nasam/features/_template/domain/entities/template_entity.dart';
 
-class _MockRemoteDataSource extends Mock implements TemplateRemoteDataSource {}
-
-class _MockLocalDataSource extends Mock implements TemplateLocalDataSource {}
+import '../../../../helpers/mock_helper.dart';
 
 void main() {
   late TemplateRepositoryImpl repository;
-  late _MockRemoteDataSource remoteDataSource;
-  late _MockLocalDataSource localDataSource;
+  late MockTemplateRemoteDataSource remoteDataSource;
+  late MockTemplateLocalDataSource localDataSource;
 
   const templateId = 'template-1';
   const templateModel = TemplateModel(
@@ -30,64 +26,156 @@ void main() {
     description: 'Tracked vehicle',
   );
 
+  setUpAll(() {
+    registerFallbackValue(templateModel);
+  });
+
   setUp(() {
-    remoteDataSource = _MockRemoteDataSource();
-    localDataSource = _MockLocalDataSource();
+    remoteDataSource = MockTemplateRemoteDataSource();
+    localDataSource = MockTemplateLocalDataSource();
     repository = TemplateRepositoryImpl(remoteDataSource, localDataSource);
   });
 
   group('getTemplate', () {
     test('returns entity when remote fetch succeeds', () async {
-      when(() => remoteDataSource.getTemplate(templateId))
-          .thenAnswer((_) async => templateModel);
-      when(() => localDataSource.cacheTemplate(templateModel))
-          .thenAnswer((_) async {});
+      when(
+        () => remoteDataSource.getTemplate(templateId),
+      ).thenAnswer((_) async => templateModel);
+      when(
+        () => localDataSource.cacheTemplate(templateModel),
+      ).thenAnswer((_) async {});
 
       final result = await repository.getTemplate(templateId);
 
-      expect(result, const Right(templateEntity));
+      expect(result, const Right<Failure, TemplateEntity>(templateEntity));
       verify(() => remoteDataSource.getTemplate(templateId)).called(1);
       verify(() => localDataSource.cacheTemplate(templateModel)).called(1);
       verifyNever(() => localDataSource.getCachedTemplate(any()));
     });
 
-    test('returns cached entity when remote fails and cache exists', () async {
-      final dioException = DioException(
-        requestOptions: RequestOptions(path: '/templates/$templateId'),
-        type: DioExceptionType.connectionTimeout,
-      );
-
-      when(() => remoteDataSource.getTemplate(templateId))
-          .thenThrow(dioException);
-      when(() => localDataSource.getCachedTemplate(templateId))
-          .thenAnswer((_) async => templateModel);
+    test('falls back to cache on NetworkException', () async {
+      when(
+        () => remoteDataSource.getTemplate(templateId),
+      ).thenThrow(const NetworkException(message: 'No internet connection.'));
+      when(
+        () => localDataSource.getCachedTemplate(templateId),
+      ).thenAnswer((_) async => templateModel);
 
       final result = await repository.getTemplate(templateId);
 
-      expect(result, const Right(templateEntity));
+      expect(result, const Right<Failure, TemplateEntity>(templateEntity));
       verify(() => localDataSource.getCachedTemplate(templateId)).called(1);
     });
 
-    test('returns Failure when remote fails and cache is empty', () async {
-      const failure = NetworkFailure(message: 'No connection');
-      final dioException = DioException(
-        requestOptions: RequestOptions(path: '/templates/$templateId'),
-        type: DioExceptionType.connectionTimeout,
-        error: failure,
-      );
+    test('falls back to cache on TimeoutException', () async {
+      when(
+        () => remoteDataSource.getTemplate(templateId),
+      ).thenThrow(const TimeoutException(message: 'Request timed out.'));
+      when(
+        () => localDataSource.getCachedTemplate(templateId),
+      ).thenAnswer((_) async => templateModel);
 
-      when(() => remoteDataSource.getTemplate(templateId))
-          .thenThrow(dioException);
-      when(() => localDataSource.getCachedTemplate(templateId))
-          .thenAnswer((_) async => null);
+      final result = await repository.getTemplate(templateId);
+
+      expect(result, const Right<Failure, TemplateEntity>(templateEntity));
+    });
+
+    test('returns NetworkFailure when offline and cache is empty', () async {
+      when(
+        () => remoteDataSource.getTemplate(templateId),
+      ).thenThrow(const NetworkException(message: 'No internet connection.'));
+      when(
+        () => localDataSource.getCachedTemplate(templateId),
+      ).thenAnswer((_) async => null);
+
+      final result = await repository.getTemplate(templateId);
+
+      expect(
+        result,
+        const Left<Failure, TemplateEntity>(
+          NetworkFailure(message: 'No internet connection.'),
+        ),
+      );
+    });
+
+    test('surfaces the request error when the cache itself throws', () async {
+      when(
+        () => remoteDataSource.getTemplate(templateId),
+      ).thenThrow(const NetworkException(message: 'No internet connection.'));
+      when(
+        () => localDataSource.getCachedTemplate(templateId),
+      ).thenThrow(const CacheException(message: 'Corrupt cache entry.'));
+
+      final result = await repository.getTemplate(templateId);
+
+      expect(
+        result,
+        const Left<Failure, TemplateEntity>(
+          NetworkFailure(message: 'No internet connection.'),
+        ),
+      );
+    });
+
+    // The bug this contract exists to prevent: a 401 served from cache looks
+    // to the caller exactly like a healthy session.
+    test('does NOT serve cache on AuthException', () async {
+      when(() => remoteDataSource.getTemplate(templateId)).thenThrow(
+        const AuthException(message: 'Session expired.', code: '401'),
+      );
+      when(
+        () => localDataSource.getCachedTemplate(templateId),
+      ).thenAnswer((_) async => templateModel);
+
+      final result = await repository.getTemplate(templateId);
+
+      expect(
+        result,
+        const Left<Failure, TemplateEntity>(
+          AuthFailure(message: 'Session expired.', code: '401'),
+        ),
+      );
+      verifyNever(() => localDataSource.getCachedTemplate(any()));
+    });
+
+    test('does NOT serve cache on PermissionException', () async {
+      when(() => remoteDataSource.getTemplate(templateId)).thenThrow(
+        const PermissionException(message: 'Forbidden.', code: '403'),
+      );
+      when(
+        () => localDataSource.getCachedTemplate(templateId),
+      ).thenAnswer((_) async => templateModel);
 
       final result = await repository.getTemplate(templateId);
 
       expect(result.isLeft(), isTrue);
-      result.fold(
-        (left) => expect(left, failure),
-        (_) => fail('Expected Left'),
+      verifyNever(() => localDataSource.getCachedTemplate(any()));
+    });
+
+    test('preserves fieldErrors through to ValidationFailure', () async {
+      when(() => remoteDataSource.getTemplate(templateId)).thenThrow(
+        const ValidationException(
+          message: 'Validation failed.',
+          fieldErrors: {
+            'plate_number': ['Plate number is already registered.'],
+          },
+          code: '422',
+        ),
       );
+      when(
+        () => localDataSource.getCachedTemplate(templateId),
+      ).thenAnswer((_) async => templateModel);
+
+      final result = await repository.getTemplate(templateId);
+
+      final failure = result.fold((l) => l, (_) => null);
+      expect(failure, isA<ValidationFailure>());
+      expect(
+        (failure! as ValidationFailure).fieldErrors,
+        {
+          'plate_number': ['Plate number is already registered.'],
+        },
+      );
+      verifyNever(() => localDataSource.getCachedTemplate(any()));
     });
   });
 }

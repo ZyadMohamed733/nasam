@@ -35,9 +35,13 @@ class CacheException extends AppException {
 class ValidationException extends AppException {
   const ValidationException({
     required super.message,
+    this.fieldErrors = const {},
     super.code,
     super.stackTrace,
   });
+
+  /// Per-field messages from a 422 response, keyed by the server's field name.
+  final Map<String, List<String>> fieldErrors;
 }
 
 class AuthException extends AppException {

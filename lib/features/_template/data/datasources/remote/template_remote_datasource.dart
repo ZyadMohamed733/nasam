@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import '../../../../../core/errors/exception_mapper.dart';
+import '../../../../../core/errors/exceptions.dart';
 import '../../models/template_model.dart';
 
 abstract class TemplateRemoteDataSource {
@@ -13,14 +15,24 @@ class TemplateRemoteDataSourceImpl implements TemplateRemoteDataSource {
 
   @override
   Future<TemplateModel> getTemplate(String id) async {
-    final response = await _dio.get<Map<String, dynamic>>('/templates/$id');
-    if (response.data != null) {
-      return TemplateModel.fromJson(response.data!);
-    } else {
-      throw DioException(
-        requestOptions: response.requestOptions,
-        response: response,
-        type: DioExceptionType.badResponse,
+    try {
+      final response = await _dio.get<Map<String, dynamic>>('/templates/$id');
+      final data = response.data;
+      if (data == null) {
+        throw ServerException(
+          message: 'Server returned an empty body.',
+          code: response.statusCode?.toString(),
+        );
+      }
+      return TemplateModel.fromJson(data);
+    } on DioException catch (e) {
+      throw ExceptionMapper.fromDioException(e);
+    } on FormatException catch (e, stack) {
+      throw ServerException(message: e.message, stackTrace: stack);
+    } on TypeError catch (_, stack) {
+      throw ServerException(
+        message: 'Server returned a template in an unexpected shape.',
+        stackTrace: stack,
       );
     }
   }

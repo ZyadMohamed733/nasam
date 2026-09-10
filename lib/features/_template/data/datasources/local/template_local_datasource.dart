@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../../../core/errors/exceptions.dart';
 import '../../models/template_model.dart';
 
 abstract class TemplateLocalDataSource {
@@ -24,9 +25,12 @@ class TemplateLocalDataSourceImpl implements TemplateLocalDataSource {
   @override
   Future<TemplateModel?> getCachedTemplate(String id) async {
     final jsonStr = _prefs.getString('$_keyPrefix$id');
-    if (jsonStr != null) {
+    if (jsonStr == null) return null;
+    try {
       return TemplateModel.fromJson(jsonDecode(jsonStr) as Map<String, dynamic>);
+    } on Object catch (e, stack) {
+      // A cache entry written by an older model version no longer parses.
+      throw CacheException(message: e.toString(), stackTrace: stack);
     }
-    return null;
   }
 }
