@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
    // id("kotlin-android")
@@ -5,6 +7,16 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 
 }
+
+// Release signing credentials, kept out of version control. See
+// android/key.properties.example for the required keys.
+val keystorePropertiesFile = rootProject.file("key.properties")
+val keystoreProperties = Properties().apply {
+    if (keystorePropertiesFile.exists()) {
+        keystorePropertiesFile.inputStream().use { load(it) }
+    }
+}
+val hasReleaseKeystore = keystoreProperties.getProperty("storeFile") != null
 
 android {
     namespace = "com.nasam.app"
@@ -51,11 +63,26 @@ android {
             resValue(type = "string", name = "app_name", value = "Nasam")
         }
     }
+    signingConfigs {
+        if (hasReleaseKeystore) {
+            create("release") {
+                storeFile = file(keystoreProperties.getProperty("storeFile"))
+                storePassword = keystoreProperties.getProperty("storePassword")
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            // Never fall back to the debug keystore: that key ships inside every
+            // Android SDK, Play rejects it, and the failure is silent.
+            signingConfig = if (hasReleaseKeystore) {
+                signingConfigs.getByName("release")
+            } else {
+                null
+            }
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
@@ -63,6 +90,19 @@ android {
                 "proguard-rules.pro"
             )
         }
+    }
+}
+
+// Fails the build rather than quietly emitting an unsigned or debug-signed
+// release artifact. Only fires when a release task is actually in the graph.
+gradle.taskGraph.whenReady {
+    val buildingRelease = allTasks.any { it.name.contains("Release") }
+    if (buildingRelease && !hasReleaseKeystore) {
+        throw GradleException(
+            "Release build requested but android/key.properties is missing. " +
+                "Copy android/key.properties.example, point storeFile at your " +
+                "keystore, and keep both out of version control."
+        )
     }
 }
 

@@ -1,0 +1,5 @@
+{
+  "FLAVOR": "prod",
+  "BASE_URL": "https://api.nasam.app/v1",
+  "WS_URL": "wss://ws.nasam.app"
+}

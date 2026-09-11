@@ -1,0 +1,10 @@
+# Copy to android/key.properties and fill in. Never commit the real file or the
+# keystore it points at -- android/.gitignore already excludes both.
+#
+# Generate a keystore with:
+#   keytool -genkey -v -keystore ~/nasam-release.jks -keyalg RSA \
+#     -keysize 2048 -validity 10000 -alias nasam
+storeFile=/absolute/path/to/nasam-release.jks
+storePassword=
+keyAlias=nasam
+keyPassword=

@@ -1,3 +1,11 @@
+# NOTE: android.applicationId here is the BASE id only. The per-flavor
+# distinction is applied by applicationIdSuffix in android/app/build.gradle.kts
+# (.dev / .staging / none), which resolves to:
+#   dev     -> com.nasam.app.dev
+#   staging -> com.nasam.app.staging
+#   prod    -> com.nasam.app
+# Re-running flavorizr rewrites build.gradle.kts, so re-apply those suffixes and
+# the release signingConfig afterwards, or the flavors collapse onto one id.
 flavors:
   dev:
     app:
@@ -26,5 +34,10 @@ flavors:
       applicationId: "com.nasam.app"
       generateDummyAssets: false
     ios:
+      # DELIBERATE INCONSISTENCY - VERIFY BEFORE THE FIRST TESTFLIGHT BUILD.
+      # dev and staging follow com.nasam.<flavor>, but prod is com.nasam.sts.
+      # A bundle ID cannot be changed after the first App Store submission, so
+      # this must match the existing App Store Connect record exactly. If no
+      # such record exists, change this to com.nasam.app to match Android.
       bundleId: "com.nasam.sts"
       generateDummyAssets: false

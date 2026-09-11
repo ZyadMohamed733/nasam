@@ -1,0 +1,5 @@
+{
+  "FLAVOR": "staging",
+  "BASE_URL": "https://api-stage.nasam.app/v1",
+  "WS_URL": "wss://ws-stage.nasam.app"
+}
