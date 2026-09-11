@@ -10,6 +10,14 @@
 -keep class io.flutter.plugins.** { *; }
 -keep class io.flutter.embedding.** { *; }
 
+# Keeping io.flutter.** retains PlayStoreDeferredComponentManager, which
+# references Play Core classes that are not on the classpath unless deferred
+# components are used. Without these R8 fails the release build outright.
+-dontwarn com.google.android.play.core.**
+-dontwarn com.google.android.play.core.splitcompat.**
+-dontwarn com.google.android.play.core.splitinstall.**
+-dontwarn com.google.android.play.core.tasks.**
+
 # flutter_secure_storage relies on the AndroidX security/crypto stack.
 -keep class androidx.security.crypto.** { *; }
 -dontwarn androidx.security.crypto.**
