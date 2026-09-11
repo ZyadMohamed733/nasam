@@ -169,12 +169,9 @@ void main() {
 
       final failure = result.fold((l) => l, (_) => null);
       expect(failure, isA<ValidationFailure>());
-      expect(
-        (failure! as ValidationFailure).fieldErrors,
-        {
-          'plate_number': ['Plate number is already registered.'],
-        },
-      );
+      expect((failure! as ValidationFailure).fieldErrors, {
+        'plate_number': ['Plate number is already registered.'],
+      });
       verifyNever(() => localDataSource.getCachedTemplate(any()));
     });
   });

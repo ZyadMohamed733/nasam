@@ -17,19 +17,11 @@ class NetworkException extends AppException {
 }
 
 class ServerException extends AppException {
-  const ServerException({
-    required super.message,
-    super.code,
-    super.stackTrace,
-  });
+  const ServerException({required super.message, super.code, super.stackTrace});
 }
 
 class CacheException extends AppException {
-  const CacheException({
-    required super.message,
-    super.code,
-    super.stackTrace,
-  });
+  const CacheException({required super.message, super.code, super.stackTrace});
 }
 
 class ValidationException extends AppException {
@@ -45,11 +37,7 @@ class ValidationException extends AppException {
 }
 
 class AuthException extends AppException {
-  const AuthException({
-    required super.message,
-    super.code,
-    super.stackTrace,
-  });
+  const AuthException({required super.message, super.code, super.stackTrace});
 }
 
 class PermissionException extends AppException {

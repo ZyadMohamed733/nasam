@@ -33,16 +33,8 @@ abstract final class AppTypography {
         height: 1.35,
         color: onSurface,
       ),
-      bodyLarge: TextStyle(
-        fontSize: 16.sp,
-        height: 1.5,
-        color: onSurface,
-      ),
-      bodyMedium: TextStyle(
-        fontSize: 14.sp,
-        height: 1.45,
-        color: onSurface,
-      ),
+      bodyLarge: TextStyle(fontSize: 16.sp, height: 1.5, color: onSurface),
+      bodyMedium: TextStyle(fontSize: 14.sp, height: 1.45, color: onSurface),
       bodySmall: TextStyle(
         fontSize: 12.sp,
         height: 1.4,

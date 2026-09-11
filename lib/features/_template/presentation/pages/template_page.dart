@@ -11,10 +11,7 @@ import '../bloc/template_state.dart';
 import '../widgets/template_card_widget.dart';
 
 class TemplatePage extends StatelessWidget {
-  const TemplatePage({
-    super.key,
-    required this.id,
-  });
+  const TemplatePage({super.key, required this.id});
 
   final String id;
 
@@ -34,9 +31,7 @@ class TemplatePage extends StatelessWidget {
                   padding: const EdgeInsets.all(AppSizes.p16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TemplateCardWidget(entity: entity),
-                    ],
+                    children: [TemplateCardWidget(entity: entity)],
                   ),
                 ),
               ),
@@ -44,7 +39,8 @@ class TemplatePage extends StatelessWidget {
                 title: 'Error',
                 body: AppErrorWidget(
                   message: failure.message,
-                  onRetry: () => context.read<TemplateBloc>().add(LoadTemplate(id)),
+                  onRetry: () =>
+                      context.read<TemplateBloc>().add(LoadTemplate(id)),
                 ),
               ),
             );

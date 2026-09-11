@@ -1,5 +1,5 @@
-import 'secure_storage_service.dart';
 import 'package:injectable/injectable.dart';
+import 'secure_storage_service.dart';
 
 abstract class AuthService {
   Future<bool> get isAuthenticated;
@@ -26,8 +26,12 @@ class AuthServiceImpl implements AuthService {
   Future<void> login(String username, String password) async {
     // Scaffold implementation: mock-saving an access and refresh token.
     // In production, this would make an API call via Dio, mapping to DTO.
-    await _secureStorage.saveAccessToken('mock_access_token_${DateTime.now().millisecondsSinceEpoch}');
-    await _secureStorage.saveRefreshToken('mock_refresh_token_${DateTime.now().millisecondsSinceEpoch}');
+    await _secureStorage.saveAccessToken(
+      'mock_access_token_${DateTime.now().millisecondsSinceEpoch}',
+    );
+    await _secureStorage.saveRefreshToken(
+      'mock_refresh_token_${DateTime.now().millisecondsSinceEpoch}',
+    );
   }
 
   @override

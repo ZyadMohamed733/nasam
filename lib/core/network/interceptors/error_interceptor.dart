@@ -4,7 +4,7 @@ import '../../errors/exception_mapper.dart';
 
 /// Normalises the human-readable message on a failed request.
 ///
-/// It deliberately does not put an [AppException] or a `Failure` into
+/// It deliberately does not put an `AppException` or a `Failure` into
 /// [DioException.error]: datasources translate transport errors themselves via
 /// [ExceptionMapper], so the error contract does not depend on this
 /// interceptor being present in the chain.

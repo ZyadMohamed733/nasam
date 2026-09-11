@@ -4,71 +4,69 @@ import '../constants/app_sizes.dart';
 
 class AppThemeData {
   static AppBarTheme get appBarThemeLight => const AppBarTheme(
-        backgroundColor: AppColors.surfaceLight,
-        elevation: 0,
-        centerTitle: true,
-        iconTheme: IconThemeData(color: AppColors.textPrimaryLight),
-        actionsIconTheme: IconThemeData(color: AppColors.textPrimaryLight),
-      );
+    backgroundColor: AppColors.surfaceLight,
+    elevation: 0,
+    centerTitle: true,
+    iconTheme: IconThemeData(color: AppColors.textPrimaryLight),
+    actionsIconTheme: IconThemeData(color: AppColors.textPrimaryLight),
+  );
 
   static AppBarTheme get appBarThemeDark => const AppBarTheme(
-        backgroundColor: AppColors.surfaceDark,
-        elevation: 0,
-        centerTitle: true,
-        iconTheme: IconThemeData(color: AppColors.textPrimaryDark),
-        actionsIconTheme: IconThemeData(color: AppColors.textPrimaryDark),
-      );
+    backgroundColor: AppColors.surfaceDark,
+    elevation: 0,
+    centerTitle: true,
+    iconTheme: IconThemeData(color: AppColors.textPrimaryDark),
+    actionsIconTheme: IconThemeData(color: AppColors.textPrimaryDark),
+  );
 
   static ElevatedButtonThemeData elevatedButtonTheme(
     ColorScheme colorScheme,
     TextTheme textTheme,
-  ) =>
-      ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          minimumSize: const Size.fromHeight(AppSizes.buttonHeight),
-          backgroundColor: colorScheme.primary,
-          foregroundColor: colorScheme.onPrimary,
-          disabledBackgroundColor: colorScheme.onSurface.withValues(alpha: 0.12),
-          disabledForegroundColor: colorScheme.onSurface.withValues(alpha: 0.38),
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSizes.r12),
-          ),
-          textStyle: textTheme.labelLarge,
-        ),
-      );
+  ) => ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      minimumSize: const Size.fromHeight(AppSizes.buttonHeight),
+      backgroundColor: colorScheme.primary,
+      foregroundColor: colorScheme.onPrimary,
+      disabledBackgroundColor: colorScheme.onSurface.withValues(alpha: 0.12),
+      disabledForegroundColor: colorScheme.onSurface.withValues(alpha: 0.38),
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppSizes.r12),
+      ),
+      textStyle: textTheme.labelLarge,
+    ),
+  );
 
   static OutlinedButtonThemeData outlinedButtonTheme(
     ColorScheme colorScheme,
     TextTheme textTheme,
-  ) =>
-      OutlinedButtonThemeData(
-        style: OutlinedButton.styleFrom(
-          minimumSize: const Size.fromHeight(AppSizes.buttonHeight),
-          foregroundColor: colorScheme.primary,
-          disabledForegroundColor: colorScheme.onSurface.withValues(alpha: 0.38),
-          side: BorderSide(color: colorScheme.primary, width: 1.5),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSizes.r12),
-          ),
-          textStyle: textTheme.labelLarge,
-        ),
-      );
+  ) => OutlinedButtonThemeData(
+    style: OutlinedButton.styleFrom(
+      minimumSize: const Size.fromHeight(AppSizes.buttonHeight),
+      foregroundColor: colorScheme.primary,
+      disabledForegroundColor: colorScheme.onSurface.withValues(alpha: 0.38),
+      side: BorderSide(color: colorScheme.primary, width: 1.5),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppSizes.r12),
+      ),
+      textStyle: textTheme.labelLarge,
+    ),
+  );
 
   /// Fills in the text-dependent slots once the [TextTheme] exists.
   static InputDecorationTheme applyText(
     InputDecorationTheme base,
     TextTheme textTheme,
     Color onSurfaceVariant,
-  ) =>
-      base.copyWith(
-        labelStyle: textTheme.bodyMedium?.copyWith(color: onSurfaceVariant),
-        hintStyle: textTheme.bodyMedium?.copyWith(
-          color: onSurfaceVariant.withValues(alpha: 0.6),
-        ),
-      );
+  ) => base.copyWith(
+    labelStyle: textTheme.bodyMedium?.copyWith(color: onSurfaceVariant),
+    hintStyle: textTheme.bodyMedium?.copyWith(
+      color: onSurfaceVariant.withValues(alpha: 0.6),
+    ),
+  );
 
-  static InputDecorationTheme get inputDecorationThemeLight => InputDecorationTheme(
+  static InputDecorationTheme get inputDecorationThemeLight =>
+      InputDecorationTheme(
         filled: true,
         fillColor: AppColors.backgroundLight,
         contentPadding: const EdgeInsets.symmetric(
@@ -97,7 +95,8 @@ class AppThemeData {
         ),
       );
 
-  static InputDecorationTheme get inputDecorationThemeDark => InputDecorationTheme(
+  static InputDecorationTheme get inputDecorationThemeDark =>
+      InputDecorationTheme(
         filled: true,
         fillColor: AppColors.surfaceDark,
         contentPadding: const EdgeInsets.symmetric(
@@ -114,7 +113,10 @@ class AppThemeData {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSizes.r12),
-          borderSide: const BorderSide(color: AppColors.primaryLight, width: 1.5),
+          borderSide: const BorderSide(
+            color: AppColors.primaryLight,
+            width: 1.5,
+          ),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSizes.r12),
@@ -127,22 +129,22 @@ class AppThemeData {
       );
 
   static CardThemeData get cardThemeLight => CardThemeData(
-        color: AppColors.surfaceLight,
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppSizes.r12),
-          side: const BorderSide(color: AppColors.borderLight, width: 0.5),
-        ),
-        margin: EdgeInsets.zero,
-      );
+    color: AppColors.surfaceLight,
+    elevation: 2,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(AppSizes.r12),
+      side: const BorderSide(color: AppColors.borderLight, width: 0.5),
+    ),
+    margin: EdgeInsets.zero,
+  );
 
   static CardThemeData get cardThemeDark => CardThemeData(
-        color: AppColors.surfaceDark,
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppSizes.r12),
-          side: const BorderSide(color: AppColors.borderDark, width: 0.5),
-        ),
-        margin: EdgeInsets.zero,
-      );
+    color: AppColors.surfaceDark,
+    elevation: 2,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(AppSizes.r12),
+      side: const BorderSide(color: AppColors.borderDark, width: 0.5),
+    ),
+    margin: EdgeInsets.zero,
+  );
 }

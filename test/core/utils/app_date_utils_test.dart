@@ -19,14 +19,13 @@ void main() {
 
   group('toHijri matches the official Umm al-Qura calendar', () {
     ummAlQuraAnchors.forEach((gregorian, expected) {
-      test('$gregorian converts to ${expected.$1}-${expected.$2}-${expected.$3}',
-          () {
-        final hijri = AppDateUtils.toHijri(DateTime.parse(gregorian));
-        expect(
-          (hijri.hYear, hijri.hMonth, hijri.hDay),
-          expected,
-        );
-      });
+      test(
+        '$gregorian converts to ${expected.$1}-${expected.$2}-${expected.$3}',
+        () {
+          final hijri = AppDateUtils.toHijri(DateTime.parse(gregorian));
+          expect((hijri.hYear, hijri.hMonth, hijri.hDay), expected);
+        },
+      );
     });
   });
 

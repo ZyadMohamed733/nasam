@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:nasam/core/localization/l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:nasam/core/localization/l10n/app_localizations.dart';
 
 class AppLocalizationsSetup {
-  static const List<Locale> supportedLocales = [
-    Locale('en'),
-    Locale('ar'),
-  ];
+  static const List<Locale> supportedLocales = [Locale('en'), Locale('ar')];
 
   static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = [
     AppLocalizations.delegate,

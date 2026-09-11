@@ -30,21 +30,35 @@ void main() {
 
   group('English', () {
     testWidgets('uses singular and plural forms', (tester) async {
-      expect(await relative(tester, Duration.zero, const Locale('en')),
-          'Just now');
-      expect(await relative(tester, const Duration(minutes: 1), const Locale('en')),
-          '1 minute ago');
-      expect(await relative(tester, const Duration(minutes: 5), const Locale('en')),
-          '5 minutes ago');
-      expect(await relative(tester, const Duration(hours: 1), const Locale('en')),
-          '1 hour ago');
-      expect(await relative(tester, const Duration(days: 1), const Locale('en')),
-          '1 day ago');
-      expect(await relative(tester, const Duration(days: 14), const Locale('en')),
-          '2 weeks ago');
+      expect(
+        await relative(tester, Duration.zero, const Locale('en')),
+        'Just now',
+      );
+      expect(
+        await relative(tester, const Duration(minutes: 1), const Locale('en')),
+        '1 minute ago',
+      );
+      expect(
+        await relative(tester, const Duration(minutes: 5), const Locale('en')),
+        '5 minutes ago',
+      );
+      expect(
+        await relative(tester, const Duration(hours: 1), const Locale('en')),
+        '1 hour ago',
+      );
+      expect(
+        await relative(tester, const Duration(days: 1), const Locale('en')),
+        '1 day ago',
+      );
+      expect(
+        await relative(tester, const Duration(days: 14), const Locale('en')),
+        '2 weeks ago',
+      );
     });
 
-    testWidgets('falls back to an absolute date beyond 30 days', (tester) async {
+    testWidgets('falls back to an absolute date beyond 30 days', (
+      tester,
+    ) async {
       expect(
         await relative(tester, const Duration(days: 40), const Locale('en')),
         '2026-02-08',

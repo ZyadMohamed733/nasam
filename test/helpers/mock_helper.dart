@@ -12,15 +12,25 @@ import 'package:nasam/features/_template/domain/usecases/get_template_usecase.da
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MockDio extends Mock implements Dio {}
+
 class MockTemplateRepository extends Mock implements TemplateRepository {}
+
 class MockGetTemplateUseCase extends Mock implements GetTemplateUseCase {}
+
 class MockTemplateRemoteDataSource extends Mock
     implements TemplateRemoteDataSource {}
+
 class MockTemplateLocalDataSource extends Mock
     implements TemplateLocalDataSource {}
+
 class MockSharedPreferences extends Mock implements SharedPreferences {}
+
 class MockFlutterSecureStorage extends Mock implements FlutterSecureStorage {}
+
 class MockWebSocketService extends Mock implements WebSocketService {}
+
 class MockAuthService extends Mock implements AuthService {}
+
 class MockSecureStorageService extends Mock implements SecureStorageService {}
+
 class MockStorageService extends Mock implements StorageService {}

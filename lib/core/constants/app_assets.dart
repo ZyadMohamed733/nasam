@@ -6,7 +6,8 @@ class AppAssets {
   static const String logoLight = '$_baseImages/logo_light.png';
   static const String logoDark = '$_baseImages/logo_dark.png';
   static const String splashBackground = '$_baseImages/splash_bg.png';
-  static const String vehiclePlaceholder = '$_baseImages/vehicle_placeholder.png';
+  static const String vehiclePlaceholder =
+      '$_baseImages/vehicle_placeholder.png';
 
   // Icons
   static const String icMapMarker = '$_baseIcons/ic_map_marker.png';

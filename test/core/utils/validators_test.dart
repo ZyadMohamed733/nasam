@@ -40,9 +40,15 @@ void main() {
       expect(AppValidators.password('P@ssword123'), isNull);
     });
 
-    test('should return PasswordTooWeakError when password lacks uppercase', () {
-      expect(AppValidators.password('p@ssword123'), isA<PasswordTooWeakError>());
-    });
+    test(
+      'should return PasswordTooWeakError when password lacks uppercase',
+      () {
+        expect(
+          AppValidators.password('p@ssword123'),
+          isA<PasswordTooWeakError>(),
+        );
+      },
+    );
 
     test('should return PasswordTooWeakError when password is too short', () {
       expect(AppValidators.password('P@ss1'), isA<PasswordTooWeakError>());
@@ -73,7 +79,10 @@ void main() {
     test('should return InvalidPhoneError when the number is invalid', () {
       expect(AppValidators.saudiPhone('0412345678'), isA<InvalidPhoneError>());
       expect(AppValidators.saudiPhone('0512345'), isA<InvalidPhoneError>());
-      expect(AppValidators.saudiPhone('051234567890'), isA<InvalidPhoneError>());
+      expect(
+        AppValidators.saudiPhone('051234567890'),
+        isA<InvalidPhoneError>(),
+      );
       expect(AppValidators.saudiPhone('05abc45678'), isA<InvalidPhoneError>());
     });
   });
@@ -145,7 +154,10 @@ void main() {
     });
 
     test('should return NotArabicError when value contains Latin text', () {
-      expect(AppValidators.arabicOnly('مرحبا بك welcome'), isA<NotArabicError>());
+      expect(
+        AppValidators.arabicOnly('مرحبا بك welcome'),
+        isA<NotArabicError>(),
+      );
     });
   });
 

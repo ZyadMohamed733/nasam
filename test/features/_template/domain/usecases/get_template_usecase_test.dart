@@ -25,23 +25,25 @@ void main() {
   });
 
   test('returns entity when repository succeeds', () async {
-    when(() => repository.getTemplate(templateId))
-        .thenAnswer((_) async => const Right(templateEntity));
+    when(() => repository.getTemplate(templateId)).thenAnswer(
+      (_) async => const Right<Failure, TemplateEntity>(templateEntity),
+    );
 
     final result = await useCase(templateId);
 
-    expect(result, const Right(templateEntity));
+    expect(result, const Right<Failure, TemplateEntity>(templateEntity));
     verify(() => repository.getTemplate(templateId)).called(1);
   });
 
   test('returns failure when repository fails', () async {
     const failure = NetworkFailure(message: 'No connection');
-    when(() => repository.getTemplate(templateId))
-        .thenAnswer((_) async => const Left(failure));
+    when(
+      () => repository.getTemplate(templateId),
+    ).thenAnswer((_) async => const Left<Failure, TemplateEntity>(failure));
 
     final result = await useCase(templateId);
 
-    expect(result, const Left(failure));
+    expect(result, const Left<Failure, TemplateEntity>(failure));
     verify(() => repository.getTemplate(templateId)).called(1);
   });
 }

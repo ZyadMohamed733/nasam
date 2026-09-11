@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/constants/app_sizes.dart';
+import '../../core/di/injection_container.dart';
 import '../../core/responsive/responsive_layout.dart';
 import '../../core/router/app_routes.dart';
+import '../../core/services/auth_service.dart';
+import '../../core/services/websocket_service.dart';
 import 'app_bar_widget.dart';
 import 'app_drawer.dart';
 
@@ -41,6 +44,8 @@ class AppScaffold extends StatelessWidget {
     this.useSafeArea = false,
     this.floatingActionButton,
     this.bottomNavigationBar,
+    this.wsService,
+    this.authService,
   });
 
   final Widget body;
@@ -57,32 +62,49 @@ class AppScaffold extends StatelessWidget {
   final Widget? floatingActionButton;
   final Widget? bottomNavigationBar;
 
+  /// Overridable for tests. This shared shell is the single place the chrome's
+  /// dependencies are resolved, so the leaf widgets take theirs by constructor
+  /// and never reach for the service locator themselves.
+  final WebSocketService? wsService;
+  final AuthService? authService;
+
   @override
   Widget build(BuildContext context) {
+    final ws = wsService ?? getIt<WebSocketService>();
+    final auth = authService ?? getIt<AuthService>();
+
     return ResponsiveLayout(
-      mobile: _buildMobile(context),
-      tablet: _buildWide(context),
+      mobile: _buildMobile(context, ws, auth),
+      tablet: _buildWide(context, ws),
     );
   }
 
   Widget _wrappedBody() => useSafeArea ? SafeArea(child: body) : body;
 
-  Widget _buildMobile(BuildContext context) {
+  Widget _buildMobile(
+    BuildContext context,
+    WebSocketService ws,
+    AuthService auth,
+  ) {
     return Scaffold(
       appBar: showAppBar
-          ? NasamAppBar(title: title ?? '', showLeading: showDrawer)
+          ? NasamAppBar(
+              title: title ?? '',
+              wsService: ws,
+              showLeading: showDrawer,
+            )
           : null,
-      drawer: showDrawer ? const AppDrawer() : null,
+      drawer: showDrawer ? AppDrawer(authService: auth) : null,
       body: _wrappedBody(),
       floatingActionButton: floatingActionButton,
       bottomNavigationBar: bottomNavigationBar,
     );
   }
 
-  Widget _buildWide(BuildContext context) {
+  Widget _buildWide(BuildContext context, WebSocketService ws) {
     return Scaffold(
       appBar: showAppBar
-          ? NasamAppBar(title: title ?? '', showLeading: false)
+          ? NasamAppBar(title: title ?? '', wsService: ws, showLeading: false)
           : null,
       body: Row(
         children: [
@@ -123,8 +145,7 @@ class _NavigationRail extends StatelessWidget {
             label: Text(destination.label),
           ),
       ],
-      onDestinationSelected: (index) =>
-          context.go(destinations[index].route),
+      onDestinationSelected: (index) => context.go(destinations[index].route),
     );
   }
 }

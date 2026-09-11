@@ -90,7 +90,6 @@ class AppDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return AlertDialog(
       backgroundColor: Theme.of(context).colorScheme.surface,
       shape: RoundedRectangleBorder(

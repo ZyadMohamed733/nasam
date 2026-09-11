@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_sizes.dart';
-import '../../core/di/injection_container.dart';
 import '../../core/router/app_routes.dart';
 import '../../core/services/auth_service.dart';
 import 'app_scaffold.dart';
 
 class AppDrawer extends StatelessWidget {
-  const AppDrawer({super.key});
+  const AppDrawer({super.key, required this.authService});
+
+  /// Injected rather than resolved from getIt inside build(), so the drawer is
+  /// testable with a fake auth service.
+  final AuthService authService;
 
   @override
   Widget build(BuildContext context) {
-    final authService = getIt<AuthService>();
-
     return Drawer(
       backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
       child: Column(
@@ -33,14 +34,18 @@ class AppDrawer extends StatelessWidget {
             ),
             accountName: Text(
               'Nasam Fleet Operator',
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.white),
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge!.copyWith(color: Colors.white),
             ),
             accountEmail: Text(
               'operator@nasam.app',
-              style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.white70),
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall!.copyWith(color: Colors.white70),
             ),
           ),
-          
+
           // Navigation Items — shared with the tablet/desktop NavigationRail.
           for (final destination in kAppDestinations)
             ListTile(
@@ -58,19 +63,17 @@ class AppDrawer extends StatelessWidget {
               },
             ),
           const Spacer(),
-          
+
           // Logout Button
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSizes.p16, vertical: AppSizes.p16),
-            child: Divider(
-              color: Theme.of(context).colorScheme.outline,
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSizes.p16,
+              vertical: AppSizes.p16,
             ),
+            child: Divider(color: Theme.of(context).colorScheme.outline),
           ),
           ListTile(
-            leading: const Icon(
-              Icons.logout_rounded,
-              color: AppColors.error,
-            ),
+            leading: const Icon(Icons.logout_rounded, color: AppColors.error),
             title: Text(
               'Logout',
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(

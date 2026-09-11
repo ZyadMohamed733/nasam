@@ -82,7 +82,9 @@ class AppTheme {
       colorScheme: colorScheme,
       scaffoldBackgroundColor: scaffoldBackground,
       textTheme: textTheme,
-      appBarTheme: appBarTheme.copyWith(titleTextStyle: textTheme.headlineSmall),
+      appBarTheme: appBarTheme.copyWith(
+        titleTextStyle: textTheme.headlineSmall,
+      ),
       elevatedButtonTheme: AppThemeData.elevatedButtonTheme(
         colorScheme,
         textTheme,

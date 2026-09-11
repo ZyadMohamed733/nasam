@@ -36,8 +36,9 @@ void main() {
   blocTest<TemplateBloc, TemplateState>(
     'emits [loading, success] when load succeeds',
     build: () {
-      when(() => getTemplateUseCase(templateId))
-          .thenAnswer((_) async => const Right(templateEntity));
+      when(
+        () => getTemplateUseCase(templateId),
+      ).thenAnswer((_) async => const Right(templateEntity));
       return bloc;
     },
     act: (bloc) => bloc.add(const TemplateEvent.load(templateId)),
@@ -54,8 +55,9 @@ void main() {
     'emits [loading, failure] when load fails',
     build: () {
       const failure = NetworkFailure(message: 'No connection');
-      when(() => getTemplateUseCase(templateId))
-          .thenAnswer((_) async => const Left(failure));
+      when(
+        () => getTemplateUseCase(templateId),
+      ).thenAnswer((_) async => const Left(failure));
       return bloc;
     },
     act: (bloc) => bloc.add(const TemplateEvent.load(templateId)),

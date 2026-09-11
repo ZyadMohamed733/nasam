@@ -9,11 +9,7 @@ void main() {
   final requestOptions = RequestOptions(path: '/templates/1');
 
   DioException dioError(DioExceptionType type, {Object? error}) =>
-      DioException(
-        requestOptions: requestOptions,
-        type: type,
-        error: error,
-      );
+      DioException(requestOptions: requestOptions, type: type, error: error);
 
   DioException httpError(int statusCode, {Object? data}) => DioException(
     requestOptions: requestOptions,
@@ -64,7 +60,9 @@ void main() {
 
     test('sendTimeout maps to TimeoutException', () {
       expect(
-        ExceptionMapper.fromDioException(dioError(DioExceptionType.sendTimeout)),
+        ExceptionMapper.fromDioException(
+          dioError(DioExceptionType.sendTimeout),
+        ),
         isA<TimeoutException>(),
       );
     });
@@ -179,7 +177,12 @@ void main() {
       expect(ExceptionMapper.parseFieldErrors(null), isEmpty);
       expect(ExceptionMapper.parseFieldErrors('nope'), isEmpty);
       expect(ExceptionMapper.parseFieldErrors({'errors': 'nope'}), isEmpty);
-      expect(ExceptionMapper.parseFieldErrors({'other': {}}), isEmpty);
+      expect(
+        ExceptionMapper.parseFieldErrors(<String, Object>{
+          'other': <String, Object>{},
+        }),
+        isEmpty,
+      );
       expect(
         ExceptionMapper.parseFieldErrors({
           'errors': {

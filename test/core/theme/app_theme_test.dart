@@ -54,10 +54,8 @@ void main() {
         harness(
           textScaler: scaler,
           child: Builder(
-            builder: (context) => Text(
-              'Fleet',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
+            builder: (context) =>
+                Text('Fleet', style: Theme.of(context).textTheme.bodyMedium),
           ),
         ),
       );

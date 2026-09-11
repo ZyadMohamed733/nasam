@@ -48,7 +48,7 @@ class AppSnackBar {
     required IconData icon,
   }) {
     final messenger = ScaffoldMessenger.of(context);
-    
+
     // Clear current snackbars
     messenger.removeCurrentSnackBar();
 
@@ -63,16 +63,14 @@ class AppSnackBar {
         duration: const Duration(seconds: 4),
         content: Row(
           children: [
-            Icon(
-              icon,
-              color: Colors.white,
-              size: AppSizes.iconMd,
-            ),
+            Icon(icon, color: Colors.white, size: AppSizes.iconMd),
             const SizedBox(width: AppSizes.p12),
             Expanded(
               child: Text(
                 message,
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.white),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium!.copyWith(color: Colors.white),
               ),
             ),
           ],

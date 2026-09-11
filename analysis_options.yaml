@@ -5,24 +5,51 @@
 # IDEs (https://dart.dev/tools#ides-and-editors). The analyzer can also be
 # invoked from the command line by running `flutter analyze`.
 
-# The following line activates a set of recommended lints for Flutter apps,
-# packages, and plugins designed to encourage good coding practices.
 include: package:flutter_lints/flutter.yaml
 
-linter:
-  # The lint rules applied to this project can be customized in the
-  # section below to disable rules from the `package:flutter_lints/flutter.yaml`
-  # included above or to enable additional rules. A list of all available lints
-  # and their documentation is published at https://dart.dev/lints.
-  #
-  # Instead of disabling a lint rule for the entire project in the
-  # section below, it can also be suppressed for a single line of code
-  # or a specific dart file by using the `// ignore: name_of_lint` and
-  # `// ignore_for_file: name_of_lint` syntax on the line or in the file
-  # producing the lint.
-  rules:
-    # avoid_print: false  # Uncomment to disable the `avoid_print` rule
-    # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
+analyzer:
+  language:
+    # strict-casts is what would have caught the `e.error as Failure` cast that
+    # silently degraded every error to UnknownFailure.
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
 
-# Additional information about this file can be found at
-# https://dart.dev/guides/language/analysis-options
+  errors:
+    # Promoted from warning to error: these break the build rather than
+    # accumulating in the log.
+    missing_required_param: error
+    missing_return: error
+    unused_import: error
+    unused_local_variable: error
+    dead_code: error
+    invalid_use_of_protected_member: error
+    body_might_complete_normally_nullable: error
+
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "**/*.config.dart"
+    - "lib/core/localization/l10n/app_localizations*.dart"
+
+linter:
+  rules:
+    - always_declare_return_types
+    - avoid_dynamic_calls
+    - avoid_empty_else
+    - avoid_slow_async_io
+    - cancel_subscriptions
+    - close_sinks
+    - comment_references
+    - directives_ordering
+    - prefer_final_locals
+    - prefer_single_quotes
+    - require_trailing_commas
+    # sort_pub_dependencies is deliberately off: pubspec.yaml groups
+    # dependencies by purpose, which reads better than one alphabetical list.
+    - test_types_in_equals
+    - throw_in_finally
+    - unawaited_futures
+    - unnecessary_await_in_return
+    - unnecessary_parenthesis
+    - use_build_context_synchronously

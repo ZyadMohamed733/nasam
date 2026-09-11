@@ -37,11 +37,13 @@ class AppCard extends StatelessWidget {
             ? [
                 BoxShadow(
                   color: AppColors.shadow.withValues(
-                    alpha: Theme.of(context).brightness == Brightness.dark ? 0.2 : 0.05,
+                    alpha: Theme.of(context).brightness == Brightness.dark
+                        ? 0.2
+                        : 0.05,
                   ),
                   blurRadius: elevation * 4,
                   offset: Offset(0, elevation * 2),
-                )
+                ),
               ]
             : null,
       ),
@@ -61,9 +63,6 @@ class AppCard extends StatelessWidget {
       );
     }
 
-    return Padding(
-      padding: margin ?? EdgeInsets.zero,
-      child: container,
-    );
+    return Padding(padding: margin ?? EdgeInsets.zero, child: container);
   }
 }

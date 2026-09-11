@@ -9,7 +9,10 @@ class RouteGuard {
   const RouteGuard(this._authService);
   final AuthService _authService;
 
-  Future<String?> handleRedirect(BuildContext context, GoRouterState state) async {
+  Future<String?> handleRedirect(
+    BuildContext context,
+    GoRouterState state,
+  ) async {
     // Let splash through immediately, no auth check needed
     if (state.matchedLocation == AppRoutes.splash) return null;
 

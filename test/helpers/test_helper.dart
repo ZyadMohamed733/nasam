@@ -8,8 +8,6 @@ class TestHelper {
     registerFallbackValue(
       const TemplateEntity(id: '1', title: 'Test', description: 'Desc'),
     );
-    registerFallbackValue(
-      const UnknownFailure(message: 'Error'),
-    );
+    registerFallbackValue(const UnknownFailure(message: 'Error'));
   }
 }

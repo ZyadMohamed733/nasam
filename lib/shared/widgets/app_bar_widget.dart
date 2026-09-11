@@ -1,35 +1,33 @@
 import 'package:flutter/material.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_sizes.dart';
-import '../../core/di/injection_container.dart';
 import '../../core/services/websocket_service.dart';
 
 class NasamAppBar extends StatelessWidget implements PreferredSizeWidget {
   const NasamAppBar({
     super.key,
     required this.title,
+    required this.wsService,
     this.showLeading = true,
     this.actions,
   });
 
   final String title;
+
+  /// Injected rather than resolved from getIt inside build(), so the bar is
+  /// testable with a fake socket.
+  final WebSocketService wsService;
+
   final bool showLeading;
   final List<Widget>? actions;
 
   @override
   Widget build(BuildContext context) {
-    
-    // Resolve the WebSocketService from DI
-    final wsService = getIt<WebSocketService>();
-
     return AppBar(
       title: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            title,
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
+          Text(title, style: Theme.of(context).textTheme.headlineSmall),
           const SizedBox(width: AppSizes.p8),
           // Connection Status Indicator
           StreamBuilder<WsConnectionState>(
@@ -47,7 +45,9 @@ class NasamAppBar extends StatelessWidget implements PreferredSizeWidget {
                     color: _getConnectionColor(state),
                     boxShadow: [
                       BoxShadow(
-                        color: _getConnectionColor(state).withValues(alpha: 0.4),
+                        color: _getConnectionColor(
+                          state,
+                        ).withValues(alpha: 0.4),
                         blurRadius: 4,
                         spreadRadius: 1,
                       ),

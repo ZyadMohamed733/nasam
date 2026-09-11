@@ -20,27 +20,15 @@ sealed class Failure {
 }
 
 class NetworkFailure extends Failure {
-  const NetworkFailure({
-    required super.message,
-    super.code,
-    super.stackTrace,
-  });
+  const NetworkFailure({required super.message, super.code, super.stackTrace});
 }
 
 class ServerFailure extends Failure {
-  const ServerFailure({
-    required super.message,
-    super.code,
-    super.stackTrace,
-  });
+  const ServerFailure({required super.message, super.code, super.stackTrace});
 }
 
 class CacheFailure extends Failure {
-  const CacheFailure({
-    required super.message,
-    super.code,
-    super.stackTrace,
-  });
+  const CacheFailure({required super.message, super.code, super.stackTrace});
 }
 
 class ValidationFailure extends Failure {
@@ -94,11 +82,7 @@ int _fieldErrorsHash(Map<String, List<String>> fieldErrors) {
 }
 
 class AuthFailure extends Failure {
-  const AuthFailure({
-    required super.message,
-    super.code,
-    super.stackTrace,
-  });
+  const AuthFailure({required super.message, super.code, super.stackTrace});
 }
 
 class PermissionFailure extends Failure {
@@ -110,17 +94,9 @@ class PermissionFailure extends Failure {
 }
 
 class TimeoutFailure extends Failure {
-  const TimeoutFailure({
-    required super.message,
-    super.code,
-    super.stackTrace,
-  });
+  const TimeoutFailure({required super.message, super.code, super.stackTrace});
 }
 
 class UnknownFailure extends Failure {
-  const UnknownFailure({
-    required super.message,
-    super.code,
-    super.stackTrace,
-  });
+  const UnknownFailure({required super.message, super.code, super.stackTrace});
 }

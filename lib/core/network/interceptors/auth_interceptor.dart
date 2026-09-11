@@ -26,7 +26,7 @@ class AuthInterceptor extends Interceptor {
     ErrorInterceptorHandler handler,
   ) async {
     final response = err.response;
-    
+
     // Check if the error is 401 Unauthorized
     if (response != null && response.statusCode == 401) {
       // Avoid infinite retry loop
@@ -52,7 +52,8 @@ class AuthInterceptor extends Interceptor {
             data: {'refreshToken': refreshToken},
           );
 
-          if (refreshResponse.statusCode == 200 && refreshResponse.data != null) {
+          if (refreshResponse.statusCode == 200 &&
+              refreshResponse.data != null) {
             final data = refreshResponse.data!;
             final newAccessToken = data['accessToken'] as String?;
             final newRefreshToken = data['refreshToken'] as String?;
@@ -66,7 +67,8 @@ class AuthInterceptor extends Interceptor {
               // Retry original request with the new token
               final options = err.requestOptions;
               options.extra['isRetry'] = true;
-              options.headers[AppStrings.headerAuthorization] = 'Bearer $newAccessToken';
+              options.headers[AppStrings.headerAuthorization] =
+                  'Bearer $newAccessToken';
 
               final retryResponse = await refreshDio.fetch<dynamic>(options);
               handler.resolve(retryResponse);
@@ -81,7 +83,7 @@ class AuthInterceptor extends Interceptor {
         await _secureStorageService.clearAll();
       }
     }
-    
+
     handler.next(err);
   }
 }

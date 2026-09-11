@@ -49,16 +49,12 @@ class _AppTextFieldState extends State<AppTextField> {
 
   @override
   Widget build(BuildContext context) {
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
         if (widget.label != null) ...[
-          Text(
-            widget.label!,
-            style: Theme.of(context).textTheme.labelMedium,
-          ),
+          Text(widget.label!, style: Theme.of(context).textTheme.labelMedium),
           const SizedBox(height: AppSizes.p8),
         ],
         TextFormField(
@@ -79,7 +75,9 @@ class _AppTextFieldState extends State<AppTextField> {
             suffixIcon: widget.obscureText
                 ? IconButton(
                     icon: Icon(
-                      _obscureText ? Icons.visibility_off_rounded : Icons.visibility_rounded,
+                      _obscureText
+                          ? Icons.visibility_off_rounded
+                          : Icons.visibility_rounded,
                       size: AppSizes.iconSm,
                     ),
                     onPressed: () {

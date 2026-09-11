@@ -6,7 +6,8 @@ import 'template_state.dart';
 
 @injectable
 class TemplateBloc extends Bloc<TemplateEvent, TemplateState> {
-  TemplateBloc(this._getTemplateUseCase) : super(const TemplateState.initial()) {
+  TemplateBloc(this._getTemplateUseCase)
+    : super(const TemplateState.initial()) {
     on<LoadTemplate>(_onLoadTemplate);
   }
 

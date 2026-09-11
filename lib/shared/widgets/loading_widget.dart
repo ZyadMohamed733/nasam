@@ -2,18 +2,13 @@ import 'package:flutter/material.dart';
 import '../../core/constants/app_sizes.dart';
 
 class LoadingWidget extends StatelessWidget {
-  const LoadingWidget({
-    super.key,
-    this.isFullScreen = false,
-    this.size,
-  });
+  const LoadingWidget({super.key, this.isFullScreen = false, this.size});
 
   final bool isFullScreen;
   final double? size;
 
   @override
   Widget build(BuildContext context) {
-    
     final loader = Center(
       child: SizedBox(
         width: size ?? AppSizes.iconLg,

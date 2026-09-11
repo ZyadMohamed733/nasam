@@ -11,9 +11,10 @@ extension ValidationErrorL10n on ValidationError {
   String resolve(BuildContext context) {
     final l10n = context.l10n;
     return switch (this) {
-      RequiredFieldError(:final fieldName) => fieldName == null
-          ? l10n.validationRequiredGeneric
-          : l10n.validationRequired(fieldName),
+      RequiredFieldError(:final fieldName) =>
+        fieldName == null
+            ? l10n.validationRequiredGeneric
+            : l10n.validationRequired(fieldName),
       InvalidEmailError() => l10n.validationInvalidEmail,
       PasswordTooWeakError() => l10n.validationPasswordWeak,
       PasswordMismatchError() => l10n.validationPasswordsDoNotMatch,
@@ -30,7 +31,7 @@ extension ValidationErrorL10n on ValidationError {
 }
 
 /// Adapts a typed validator to the `String?` callback `TextFormField.validator`
-/// expects, resolving the message against [context].
+/// expects, resolving the message against `context`.
 extension ValidationErrorResolver on BuildContext {
   String? Function(String?) validator(
     ValidationError? Function(String?) validate,

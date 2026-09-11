@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../core/errors/error_reporter.dart';
 import '../core/utils/app_logger.dart';
 
 class AppBlocObserver extends BlocObserver {
@@ -17,13 +18,20 @@ class AppBlocObserver extends BlocObserver {
   @override
   void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
     super.onChange(bloc, change);
-    AppLogger.d('Bloc Change: ${bloc.runtimeType} | CurrentState: ${change.currentState} -> NextState: ${change.nextState}');
+    AppLogger.d(
+      'Bloc Change: ${bloc.runtimeType} | CurrentState: ${change.currentState} -> NextState: ${change.nextState}',
+    );
   }
 
   @override
   void onError(BlocBase<dynamic> bloc, Object error, StackTrace stackTrace) {
     super.onError(bloc, error, stackTrace);
-    AppLogger.e('Bloc Error: ${bloc.runtimeType}', error: error, stackTrace: stackTrace);
+    reportError(
+      error,
+      stackTrace,
+      source: ErrorSource.bloc,
+      context: bloc.runtimeType.toString(),
+    );
   }
 
   @override

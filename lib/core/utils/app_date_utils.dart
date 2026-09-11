@@ -19,8 +19,7 @@ class AppDateUtils {
   /// table; arithmetic Julian-day approximations drift from it by one to two
   /// days, which is a correctness bug when a date has to match an official
   /// record such as an inspection expiry or a violation date.
-  static HijriCalendar toHijri(DateTime date) =>
-      HijriCalendar.fromDate(date);
+  static HijriCalendar toHijri(DateTime date) => HijriCalendar.fromDate(date);
 
   /// Returns a localised Hijri string, e.g. `15 رمضان 1447 هـ`.
   static String formatHijri(DateTime date, {required Locale locale}) {

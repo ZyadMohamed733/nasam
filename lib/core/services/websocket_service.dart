@@ -17,8 +17,10 @@ class WebSocketService {
   final AppConfig _config;
 
   WebSocketChannel? _channel;
-  final StreamController<WsConnectionState> _stateController = StreamController<WsConnectionState>.broadcast();
-  final StreamController<dynamic> _messageController = StreamController<dynamic>.broadcast();
+  final StreamController<WsConnectionState> _stateController =
+      StreamController<WsConnectionState>.broadcast();
+  final StreamController<dynamic> _messageController =
+      StreamController<dynamic>.broadcast();
 
   Stream<WsConnectionState> get connectionState => _stateController.stream;
   Stream<dynamic> get messages => _messageController.stream;
@@ -51,7 +53,7 @@ class WebSocketService {
             _messageController.add(message);
           }
         },
-        onError: (err) {
+        onError: (Object err) {
           AppLogger.e('WebSocket stream error', error: err);
           _stateController.add(WsConnectionState.error);
           _handleConnectionClosedOrFailed();
@@ -64,7 +66,11 @@ class WebSocketService {
         cancelOnError: true,
       );
     } catch (e, stack) {
-      AppLogger.e('Failed to initiate WebSocket connection', error: e, stackTrace: stack);
+      AppLogger.e(
+        'Failed to initiate WebSocket connection',
+        error: e,
+        stackTrace: stack,
+      );
       _stateController.add(WsConnectionState.error);
       _handleConnectionClosedOrFailed();
     }

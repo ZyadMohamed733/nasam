@@ -1,6 +1,6 @@
 /// The result of a failed validation, as a value rather than a message.
 ///
-/// Validators are static and have no [BuildContext], so they cannot reach
+/// Validators are static and have no `BuildContext`, so they cannot reach
 /// `context.l10n`. Returning a typed error instead of a `String` moves the
 /// translation to the widget layer, where the context exists — see
 /// `ValidationErrorL10n.resolve`.

@@ -17,26 +17,20 @@ class AppBottomSheet extends StatelessWidget {
     bool showDragHandle = true,
     bool isDismissible = true,
   }) {
-
     return showModalBottomSheet<T>(
       context: context,
       isDismissible: isDismissible,
       backgroundColor: Theme.of(context).colorScheme.surface,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(AppSizes.r24),
-        ),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(AppSizes.r24)),
       ),
-      builder: (context) => AppBottomSheet(
-        showDragHandle: showDragHandle,
-        child: child,
-      ),
+      builder: (context) =>
+          AppBottomSheet(showDragHandle: showDragHandle, child: child),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
       child: Column(
         mainAxisSize: MainAxisSize.min,

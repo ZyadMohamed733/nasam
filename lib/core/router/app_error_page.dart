@@ -9,7 +9,6 @@ class AppErrorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
       appBar: AppBar(
@@ -34,7 +33,9 @@ class AppErrorPage extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                error != null ? error.toString() : 'The requested URL was not found on this device.',
+                error != null
+                    ? error.toString()
+                    : 'The requested URL was not found on this device.',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
