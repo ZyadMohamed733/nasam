@@ -74,7 +74,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i923.TemplateLocalDataSource>(
       () => _i923.TemplateLocalDataSourceImpl(gh<_i460.SharedPreferences>()),
     );
-    gh.factory<_i745.AuthInterceptor>(
+    gh.lazySingleton<_i745.AuthInterceptor>(
       () => _i745.AuthInterceptor(gh<_i535.SecureStorageService>()),
     );
     gh.lazySingleton<_i461.AppSettingsController>(

@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TemplateEntity {
 
- String get id; String get title; String get description;
+ String get id; String get title; String get description; String get driverName; DateTime get createdAt; bool get isActive;
 /// Create a copy of TemplateEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $TemplateEntityCopyWith<TemplateEntity> get copyWith => _$TemplateEntityCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TemplateEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TemplateEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.driverName, driverName) || other.driverName == driverName)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.isActive, isActive) || other.isActive == isActive));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,title,description);
+int get hashCode => Object.hash(runtimeType,id,title,description,driverName,createdAt,isActive);
 
 @override
 String toString() {
-  return 'TemplateEntity(id: $id, title: $title, description: $description)';
+  return 'TemplateEntity(id: $id, title: $title, description: $description, driverName: $driverName, createdAt: $createdAt, isActive: $isActive)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $TemplateEntityCopyWith<$Res>  {
   factory $TemplateEntityCopyWith(TemplateEntity value, $Res Function(TemplateEntity) _then) = _$TemplateEntityCopyWithImpl;
 @useResult
 $Res call({
- String id, String title, String description
+ String id, String title, String description, String driverName, DateTime createdAt, bool isActive
 });
 
 
@@ -62,12 +62,15 @@ class _$TemplateEntityCopyWithImpl<$Res>
 
 /// Create a copy of TemplateEntity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? description = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? description = null,Object? driverName = null,Object? createdAt = null,Object? isActive = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String,
+as String,driverName: null == driverName ? _self.driverName : driverName // ignore: cast_nullable_to_non_nullable
+as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -152,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String title,  String description)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String title,  String description,  String driverName,  DateTime createdAt,  bool isActive)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TemplateEntity() when $default != null:
-return $default(_that.id,_that.title,_that.description);case _:
+return $default(_that.id,_that.title,_that.description,_that.driverName,_that.createdAt,_that.isActive);case _:
   return orElse();
 
 }
@@ -173,10 +176,10 @@ return $default(_that.id,_that.title,_that.description);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String title,  String description)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String title,  String description,  String driverName,  DateTime createdAt,  bool isActive)  $default,) {final _that = this;
 switch (_that) {
 case _TemplateEntity():
-return $default(_that.id,_that.title,_that.description);case _:
+return $default(_that.id,_that.title,_that.description,_that.driverName,_that.createdAt,_that.isActive);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -193,10 +196,10 @@ return $default(_that.id,_that.title,_that.description);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String title,  String description)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String title,  String description,  String driverName,  DateTime createdAt,  bool isActive)?  $default,) {final _that = this;
 switch (_that) {
 case _TemplateEntity() when $default != null:
-return $default(_that.id,_that.title,_that.description);case _:
+return $default(_that.id,_that.title,_that.description,_that.driverName,_that.createdAt,_that.isActive);case _:
   return null;
 
 }
@@ -208,12 +211,15 @@ return $default(_that.id,_that.title,_that.description);case _:
 
 
 class _TemplateEntity implements TemplateEntity {
-  const _TemplateEntity({required this.id, required this.title, required this.description});
+  const _TemplateEntity({required this.id, required this.title, required this.description, required this.driverName, required this.createdAt, required this.isActive});
   
 
 @override final  String id;
 @override final  String title;
 @override final  String description;
+@override final  String driverName;
+@override final  DateTime createdAt;
+@override final  bool isActive;
 
 /// Create a copy of TemplateEntity
 /// with the given fields replaced by the non-null parameter values.
@@ -225,16 +231,16 @@ _$TemplateEntityCopyWith<_TemplateEntity> get copyWith => __$TemplateEntityCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TemplateEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TemplateEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.driverName, driverName) || other.driverName == driverName)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.isActive, isActive) || other.isActive == isActive));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,title,description);
+int get hashCode => Object.hash(runtimeType,id,title,description,driverName,createdAt,isActive);
 
 @override
 String toString() {
-  return 'TemplateEntity(id: $id, title: $title, description: $description)';
+  return 'TemplateEntity(id: $id, title: $title, description: $description, driverName: $driverName, createdAt: $createdAt, isActive: $isActive)';
 }
 
 
@@ -245,7 +251,7 @@ abstract mixin class _$TemplateEntityCopyWith<$Res> implements $TemplateEntityCo
   factory _$TemplateEntityCopyWith(_TemplateEntity value, $Res Function(_TemplateEntity) _then) = __$TemplateEntityCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String title, String description
+ String id, String title, String description, String driverName, DateTime createdAt, bool isActive
 });
 
 
@@ -262,12 +268,15 @@ class __$TemplateEntityCopyWithImpl<$Res>
 
 /// Create a copy of TemplateEntity
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? description = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? description = null,Object? driverName = null,Object? createdAt = null,Object? isActive = null,}) {
   return _then(_TemplateEntity(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String,
+as String,driverName: null == driverName ? _self.driverName : driverName // ignore: cast_nullable_to_non_nullable
+as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

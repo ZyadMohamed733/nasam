@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:math';
+
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import '../../app/app_config.dart';
@@ -11,10 +13,17 @@ enum WsConnectionState { connecting, connected, disconnected, error }
 @lazySingleton
 class WebSocketService {
   WebSocketService(this._config) {
-    _stateController.add(WsConnectionState.disconnected);
+    _emitState(WsConnectionState.disconnected);
   }
 
   final AppConfig _config;
+
+  /// Swappable so the reconnect/backoff behaviour is testable without a server.
+  @visibleForTesting
+  WebSocketChannel Function(Uri url)? channelFactory;
+
+  @visibleForTesting
+  int get reconnectDelaySecs => _reconnectDelaySecs;
 
   WebSocketChannel? _channel;
   final StreamController<WsConnectionState> _stateController =
@@ -35,16 +44,26 @@ class WebSocketService {
     _establishConnection();
   }
 
+  /// Closing the sink makes the stream fire onDone, which arrives after
+  /// dispose() has already closed the controller. Without this guard that
+  /// throws "Cannot add new events after calling close" on every disposal.
+  void _emitState(WsConnectionState state) {
+    if (_stateController.isClosed) return;
+    _stateController.add(state);
+  }
+
   void _establishConnection() {
     if (_channel != null || _isDisposed) return;
 
     final wsUrl = _config.wsUrl;
     AppLogger.i('Connecting to WebSocket: $wsUrl');
-    _stateController.add(WsConnectionState.connecting);
+    _emitState(WsConnectionState.connecting);
 
     try {
-      _channel = WebSocketChannel.connect(Uri.parse(wsUrl));
-      _stateController.add(WsConnectionState.connected);
+      final factory = channelFactory;
+      final uri = Uri.parse(wsUrl);
+      _channel = factory == null ? WebSocketChannel.connect(uri) : factory(uri);
+      _emitState(WsConnectionState.connected);
       _reconnectDelaySecs = AppConstants.wsBaseReconnectDelaySecs;
 
       _channel!.stream.listen(
@@ -55,12 +74,12 @@ class WebSocketService {
         },
         onError: (Object err) {
           AppLogger.e('WebSocket stream error', error: err);
-          _stateController.add(WsConnectionState.error);
+          _emitState(WsConnectionState.error);
           _handleConnectionClosedOrFailed();
         },
         onDone: () {
           AppLogger.i('WebSocket stream completed/closed');
-          _stateController.add(WsConnectionState.disconnected);
+          _emitState(WsConnectionState.disconnected);
           _handleConnectionClosedOrFailed();
         },
         cancelOnError: true,
@@ -71,7 +90,7 @@ class WebSocketService {
         error: e,
         stackTrace: stack,
       );
-      _stateController.add(WsConnectionState.error);
+      _emitState(WsConnectionState.error);
       _handleConnectionClosedOrFailed();
     }
   }
@@ -107,7 +126,7 @@ class WebSocketService {
       _channel!.sink.close();
       _channel = null;
     }
-    _stateController.add(WsConnectionState.disconnected);
+    _emitState(WsConnectionState.disconnected);
   }
 
   @disposeMethod

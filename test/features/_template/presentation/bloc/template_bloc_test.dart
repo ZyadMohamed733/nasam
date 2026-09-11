@@ -3,27 +3,22 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:nasam/core/errors/failures.dart';
-import 'package:nasam/features/_template/domain/entities/template_entity.dart';
-import 'package:nasam/features/_template/domain/usecases/get_template_usecase.dart';
 import 'package:nasam/features/_template/presentation/bloc/template_bloc.dart';
 import 'package:nasam/features/_template/presentation/bloc/template_event.dart';
 import 'package:nasam/features/_template/presentation/bloc/template_state.dart';
 
-class _MockGetTemplateUseCase extends Mock implements GetTemplateUseCase {}
+import '../../../../helpers/fixtures.dart';
+import '../../../../helpers/mock_helper.dart';
 
 void main() {
   late TemplateBloc bloc;
-  late _MockGetTemplateUseCase getTemplateUseCase;
+  late MockGetTemplateUseCase getTemplateUseCase;
 
-  const templateId = 'template-1';
-  const templateEntity = TemplateEntity(
-    id: templateId,
-    title: 'Fleet Unit',
-    description: 'Tracked vehicle',
-  );
+  const templateId = Fixtures.templateId;
+  final templateEntity = Fixtures.templateEntity;
 
   setUp(() {
-    getTemplateUseCase = _MockGetTemplateUseCase();
+    getTemplateUseCase = MockGetTemplateUseCase();
     bloc = TemplateBloc(getTemplateUseCase);
   });
 
@@ -38,13 +33,13 @@ void main() {
     build: () {
       when(
         () => getTemplateUseCase(templateId),
-      ).thenAnswer((_) async => const Right(templateEntity));
+      ).thenAnswer((_) async => Right(templateEntity));
       return bloc;
     },
     act: (bloc) => bloc.add(const TemplateEvent.load(templateId)),
     expect: () => [
       const TemplateState.loading(),
-      const TemplateState.success(templateEntity),
+      TemplateState.success(templateEntity),
     ],
     verify: (_) {
       verify(() => getTemplateUseCase(templateId)).called(1);

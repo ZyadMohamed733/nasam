@@ -3,10 +3,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:nasam/core/errors/exceptions.dart';
 import 'package:nasam/core/errors/failures.dart';
-import 'package:nasam/features/_template/data/models/template_model.dart';
 import 'package:nasam/features/_template/data/repositories/template_repository_impl.dart';
 import 'package:nasam/features/_template/domain/entities/template_entity.dart';
 
+import '../../../../helpers/fixtures.dart';
 import '../../../../helpers/mock_helper.dart';
 
 void main() {
@@ -14,17 +14,9 @@ void main() {
   late MockTemplateRemoteDataSource remoteDataSource;
   late MockTemplateLocalDataSource localDataSource;
 
-  const templateId = 'template-1';
-  const templateModel = TemplateModel(
-    id: templateId,
-    title: 'Fleet Unit',
-    description: 'Tracked vehicle',
-  );
-  const templateEntity = TemplateEntity(
-    id: templateId,
-    title: 'Fleet Unit',
-    description: 'Tracked vehicle',
-  );
+  const templateId = Fixtures.templateId;
+  const templateModel = Fixtures.templateModel;
+  final templateEntity = Fixtures.templateEntity;
 
   setUpAll(() {
     registerFallbackValue(templateModel);
@@ -47,7 +39,7 @@ void main() {
 
       final result = await repository.getTemplate(templateId);
 
-      expect(result, const Right<Failure, TemplateEntity>(templateEntity));
+      expect(result, Right<Failure, TemplateEntity>(templateEntity));
       verify(() => remoteDataSource.getTemplate(templateId)).called(1);
       verify(() => localDataSource.cacheTemplate(templateModel)).called(1);
       verifyNever(() => localDataSource.getCachedTemplate(any()));
@@ -63,7 +55,7 @@ void main() {
 
       final result = await repository.getTemplate(templateId);
 
-      expect(result, const Right<Failure, TemplateEntity>(templateEntity));
+      expect(result, Right<Failure, TemplateEntity>(templateEntity));
       verify(() => localDataSource.getCachedTemplate(templateId)).called(1);
     });
 
@@ -77,7 +69,7 @@ void main() {
 
       final result = await repository.getTemplate(templateId);
 
-      expect(result, const Right<Failure, TemplateEntity>(templateEntity));
+      expect(result, Right<Failure, TemplateEntity>(templateEntity));
     });
 
     test('returns NetworkFailure when offline and cache is empty', () async {

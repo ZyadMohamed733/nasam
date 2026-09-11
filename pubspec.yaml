@@ -74,6 +74,7 @@ dev_dependencies:
 
   # flavour
   flutter_flavorizr: ^2.5.0
+  fake_async: ^1.3.3
 
 flutter:
   uses-material-design: true
