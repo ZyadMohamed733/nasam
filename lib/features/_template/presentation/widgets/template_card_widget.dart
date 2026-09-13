@@ -16,7 +16,7 @@ class TemplateCardWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(entity.title, style: Theme.of(context).textTheme.titleLarge),
+          Text(entity.title, style: Theme.of(context).textTheme.headlineMedium),
           const SizedBox(height: AppSizes.p8),
           Text(
             entity.description,

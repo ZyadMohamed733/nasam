@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nasam/core/constants/app_colors.dart';
+import 'package:nasam/core/constants/app_sizes.dart';
 import 'package:nasam/core/theme/app_theme.dart';
 
 void main() {
   Widget harness({required Widget child, TextScaler? textScaler}) {
     return ScreenUtilInit(
-      designSize: const Size(375, 812),
+      designSize: const Size(AppSizes.designWidth, AppSizes.designHeight),
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, _) => MaterialApp(
@@ -42,7 +43,7 @@ void main() {
 
     expect(textTheme.headlineMedium?.fontSize, isNotNull);
     expect(textTheme.bodyMedium?.fontSize, isNotNull);
-    expect(textTheme.labelLarge?.fontWeight, FontWeight.w600);
+    expect(textTheme.labelLarge?.fontWeight, FontWeight.w400);
   });
 
   // The accessibility regression the scaffold previously had: system font size

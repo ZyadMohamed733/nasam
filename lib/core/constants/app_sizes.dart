@@ -1,4 +1,11 @@
 class AppSizes {
+  // The design frame: iPhone 16 Pro, the device every screen in
+  // `Nasam _ Mobile.fig` is drawn on. Every `.sp` and `.w` in the app is
+  // scaled against this, so it lives here rather than being repeated at each
+  // ScreenUtilInit call site.
+  static const double designWidth = 402.0;
+  static const double designHeight = 874.0;
+
   // Spacing and Padding
   static const double p2 = 2.0;
   static const double p4 = 4.0;

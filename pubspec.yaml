@@ -82,3 +82,14 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+
+  # Almarai is SIL OFL 1.1; assets/fonts/OFL.txt is the licence, and it ships
+  # with the font as that licence requires. The family carries only 400 and
+  # 700 upstream, which is why AppTypography has no true semibold.
+  fonts:
+    - family: Almarai
+      fonts:
+        - asset: assets/fonts/Almarai-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Almarai-Bold.ttf
+          weight: 700

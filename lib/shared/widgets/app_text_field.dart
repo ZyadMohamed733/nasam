@@ -70,6 +70,12 @@ class _AppTextFieldState extends State<AppTextField> {
           style: Theme.of(context).textTheme.bodyMedium,
           decoration: InputDecoration(
             hintText: widget.hint,
+            // `textDirection` above governs typed text only; the hint is laid
+            // out by InputDecorator in the ambient directionality. Without
+            // this, a plate-number hint of "1234 ABC" is bidi-reordered to
+            // "ABC 1234" inside an Arabic build — the placeholder then shows a
+            // format the field will not produce.
+            hintTextDirection: widget.forceLtr ? TextDirection.ltr : null,
             errorText: widget.errorText,
             prefixIcon: widget.prefixIcon,
             suffixIcon: widget.obscureText

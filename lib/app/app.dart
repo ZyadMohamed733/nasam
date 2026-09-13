@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../core/constants/app_sizes.dart';
 import '../core/di/injection_container.dart';
 import '../core/localization/app_localizations_setup.dart';
 import '../core/router/app_router.dart';
@@ -15,7 +16,7 @@ class NasamApp extends StatelessWidget {
     final settings = getIt<AppSettingsController>();
 
     return ScreenUtilInit(
-      designSize: const Size(375, 812),
+      designSize: const Size(AppSizes.designWidth, AppSizes.designHeight),
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {

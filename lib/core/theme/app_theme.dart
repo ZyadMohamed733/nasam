@@ -85,6 +85,11 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: brightness,
+      // The design sets essentially all text in Almarai. Declared here rather
+      // than per-style so anything Material draws for us — dialogs, pickers,
+      // tooltips — picks it up too, instead of falling back to the platform
+      // face and rendering Arabic in whatever the OS happens to ship.
+      fontFamily: 'Almarai',
       colorScheme: colorScheme,
       // Carries the tokens M3 has no role for — button and icon states — so
       // widgets never have to import AppColors to get a themed colour.

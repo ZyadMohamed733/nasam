@@ -4,9 +4,12 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:nasam/core/constants/app_sizes.dart';
 import 'package:nasam/core/localization/app_localizations_setup.dart';
 import 'package:nasam/core/theme/app_theme.dart';
 import 'package:nasam/shared/widgets/app_text_field.dart';
+
+import '../helpers/font_loader.dart';
 
 /// Golden files are rendered by the host platform's font stack, so these are
 /// tagged `golden` and excluded on CI, which runs Linux while the goldens are
@@ -14,9 +17,13 @@ import 'package:nasam/shared/widgets/app_text_field.dart';
 ///   flutter test --tags golden
 ///   flutter test --tags golden --update-goldens
 void main() {
+  // Without this the goldens are drawn in the built-in test face and say
+  // nothing about Almarai. See loadAppFonts.
+  setUpAll(loadAppFonts);
+
   Widget harness({required Locale locale, required Widget child}) {
     return ScreenUtilInit(
-      designSize: const Size(375, 812),
+      designSize: const Size(AppSizes.designWidth, AppSizes.designHeight),
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, _) => MaterialApp(

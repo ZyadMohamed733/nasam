@@ -35,7 +35,7 @@ class AppDrawer extends StatelessWidget {
               'Nasam Fleet Operator',
               style: Theme.of(
                 context,
-              ).textTheme.titleLarge!.copyWith(color: Colors.white),
+              ).textTheme.headlineMedium!.copyWith(color: Colors.white),
             ),
             accountEmail: Text(
               'operator@nasam.app',
