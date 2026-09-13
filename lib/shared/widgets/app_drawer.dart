@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_sizes.dart';
 import '../../core/router/app_routes.dart';
 import '../../core/services/auth_service.dart';
@@ -73,11 +72,14 @@ class AppDrawer extends StatelessWidget {
             child: Divider(color: Theme.of(context).colorScheme.outline),
           ),
           ListTile(
-            leading: const Icon(Icons.logout_rounded, color: AppColors.error),
+            leading: Icon(
+              Icons.logout_rounded,
+              color: Theme.of(context).colorScheme.error,
+            ),
             title: Text(
               'Logout',
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                color: AppColors.error,
+                color: Theme.of(context).colorScheme.error,
                 fontWeight: FontWeight.w600,
               ),
             ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_sizes.dart';
 import 'app_button.dart';
 
@@ -23,10 +22,10 @@ class AppErrorWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
+            Icon(
               Icons.error_outline_rounded,
               size: AppSizes.iconXl,
-              color: AppColors.error,
+              color: Theme.of(context).colorScheme.error,
             ),
             const SizedBox(height: AppSizes.p16),
             Text(

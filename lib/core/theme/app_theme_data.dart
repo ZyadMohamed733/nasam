@@ -2,54 +2,68 @@ import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_sizes.dart';
 
+/// Component themes, each built from the semantic token set for one brightness.
+///
+/// These used to exist as hand-duplicated `...Light` / `...Dark` pairs. Now
+/// that both modes are described by the same [AppSemanticColors] field names,
+/// one builder per component covers both and the two modes cannot drift.
 class AppThemeData {
-  static AppBarTheme get appBarThemeLight => const AppBarTheme(
-    backgroundColor: AppColors.surfaceLight,
+  static AppBarTheme appBarTheme(AppSemanticColors s) => AppBarTheme(
+    backgroundColor: s.containerBackground,
     elevation: 0,
     centerTitle: true,
-    iconTheme: IconThemeData(color: AppColors.textPrimaryLight),
-    actionsIconTheme: IconThemeData(color: AppColors.textPrimaryLight),
-  );
-
-  static AppBarTheme get appBarThemeDark => const AppBarTheme(
-    backgroundColor: AppColors.surfaceDark,
-    elevation: 0,
-    centerTitle: true,
-    iconTheme: IconThemeData(color: AppColors.textPrimaryDark),
-    actionsIconTheme: IconThemeData(color: AppColors.textPrimaryDark),
+    iconTheme: IconThemeData(color: s.iconPrimary),
+    actionsIconTheme: IconThemeData(color: s.iconPrimary),
   );
 
   static ElevatedButtonThemeData elevatedButtonTheme(
-    ColorScheme colorScheme,
+    AppSemanticColors s,
     TextTheme textTheme,
   ) => ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       minimumSize: const Size.fromHeight(AppSizes.buttonHeight),
-      backgroundColor: colorScheme.primary,
-      foregroundColor: colorScheme.onPrimary,
-      disabledBackgroundColor: colorScheme.onSurface.withValues(alpha: 0.12),
-      disabledForegroundColor: colorScheme.onSurface.withValues(alpha: 0.38),
+      backgroundColor: s.primaryButtonBackground,
+      foregroundColor: s.primaryButtonText,
+      // The design specifies a real disabled fill rather than an opacity, but
+      // says nothing about disabled *text*; white on the light-mode 30% tint is
+      // thin. AppButton owns the button states properly in step 06 — this is
+      // only the fallback for bare ElevatedButtons.
+      disabledBackgroundColor: s.primaryButtonDisabled,
+      disabledForegroundColor: s.primaryButtonText,
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppSizes.r12),
       ),
       textStyle: textTheme.labelLarge,
+    ).copyWith(
+      overlayColor: WidgetStateProperty.resolveWith(
+        (states) => states.contains(WidgetState.hovered)
+            ? s.primaryButtonHover
+            : null,
+      ),
     ),
   );
 
   static OutlinedButtonThemeData outlinedButtonTheme(
-    ColorScheme colorScheme,
+    AppSemanticColors s,
     TextTheme textTheme,
   ) => OutlinedButtonThemeData(
     style: OutlinedButton.styleFrom(
       minimumSize: const Size.fromHeight(AppSizes.buttonHeight),
-      foregroundColor: colorScheme.primary,
-      disabledForegroundColor: colorScheme.onSurface.withValues(alpha: 0.38),
-      side: BorderSide(color: colorScheme.primary, width: 1.5),
+      backgroundColor: s.secondaryButtonBackground,
+      foregroundColor: s.secondaryButtonText,
+      disabledForegroundColor: s.iconDisabled,
+      side: BorderSide(color: s.secondaryButtonOutline),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppSizes.r12),
       ),
       textStyle: textTheme.labelLarge,
+    ).copyWith(
+      overlayColor: WidgetStateProperty.resolveWith(
+        (states) => states.contains(WidgetState.hovered)
+            ? s.secondaryButtonHover
+            : null,
+      ),
     ),
   );
 
@@ -65,85 +79,34 @@ class AppThemeData {
     ),
   );
 
-  static InputDecorationTheme get inputDecorationThemeLight =>
-      InputDecorationTheme(
-        filled: true,
-        fillColor: AppColors.backgroundLight,
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: AppSizes.p16,
-          vertical: AppSizes.p12,
-        ),
-        border: OutlineInputBorder(
+  static InputDecorationTheme inputDecorationTheme(AppSemanticColors s) {
+    OutlineInputBorder border(Color color, [double width = 1.0]) =>
+        OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSizes.r12),
-          borderSide: const BorderSide(color: AppColors.borderLight),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSizes.r12),
-          borderSide: const BorderSide(color: AppColors.borderLight),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSizes.r12),
-          borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSizes.r12),
-          borderSide: const BorderSide(color: AppColors.error),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSizes.r12),
-          borderSide: const BorderSide(color: AppColors.error, width: 1.5),
-        ),
-      );
+          borderSide: BorderSide(color: color, width: width),
+        );
 
-  static InputDecorationTheme get inputDecorationThemeDark =>
-      InputDecorationTheme(
-        filled: true,
-        fillColor: AppColors.surfaceDark,
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: AppSizes.p16,
-          vertical: AppSizes.p12,
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSizes.r12),
-          borderSide: const BorderSide(color: AppColors.borderDark),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSizes.r12),
-          borderSide: const BorderSide(color: AppColors.borderDark),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSizes.r12),
-          borderSide: const BorderSide(
-            color: AppColors.primaryLight,
-            width: 1.5,
-          ),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSizes.r12),
-          borderSide: const BorderSide(color: AppColors.error),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSizes.r12),
-          borderSide: const BorderSide(color: AppColors.error, width: 1.5),
-        ),
-      );
+    return InputDecorationTheme(
+      filled: true,
+      fillColor: s.containerBackground,
+      contentPadding: const EdgeInsets.symmetric(
+        horizontal: AppSizes.p16,
+        vertical: AppSizes.p12,
+      ),
+      border: border(s.containerBorder),
+      enabledBorder: border(s.containerBorder),
+      focusedBorder: border(s.primary, 1.5),
+      errorBorder: border(s.failText),
+      focusedErrorBorder: border(s.failText, 1.5),
+    );
+  }
 
-  static CardThemeData get cardThemeLight => CardThemeData(
-    color: AppColors.surfaceLight,
+  static CardThemeData cardTheme(AppSemanticColors s) => CardThemeData(
+    color: s.containerBackground,
     elevation: 2,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(AppSizes.r12),
-      side: const BorderSide(color: AppColors.borderLight, width: 0.5),
-    ),
-    margin: EdgeInsets.zero,
-  );
-
-  static CardThemeData get cardThemeDark => CardThemeData(
-    color: AppColors.surfaceDark,
-    elevation: 2,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(AppSizes.r12),
-      side: const BorderSide(color: AppColors.borderDark, width: 0.5),
+      side: BorderSide(color: s.containerBorder, width: 0.5),
     ),
     margin: EdgeInsets.zero,
   );

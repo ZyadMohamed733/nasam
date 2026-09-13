@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_sizes.dart';
+import '../../core/extensions/context_extensions.dart';
 
 class AppSnackBar {
   AppSnackBar._(); // Prevent instantiation
@@ -9,7 +9,7 @@ class AppSnackBar {
     _show(
       context: context,
       message: message,
-      backgroundColor: AppColors.success,
+      backgroundColor: context.semanticColors.successText,
       icon: Icons.check_circle_outline_rounded,
     );
   }
@@ -18,7 +18,7 @@ class AppSnackBar {
     _show(
       context: context,
       message: message,
-      backgroundColor: AppColors.error,
+      backgroundColor: context.colorScheme.error,
       icon: Icons.error_outline_rounded,
     );
   }
@@ -27,7 +27,7 @@ class AppSnackBar {
     _show(
       context: context,
       message: message,
-      backgroundColor: AppColors.info,
+      backgroundColor: context.semanticColors.infoText,
       icon: Icons.info_outline_rounded,
     );
   }
@@ -36,7 +36,7 @@ class AppSnackBar {
     _show(
       context: context,
       message: message,
-      backgroundColor: AppColors.warning,
+      backgroundColor: context.semanticColors.warningText,
       icon: Icons.warning_amber_rounded,
     );
   }

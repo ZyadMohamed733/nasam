@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_sizes.dart';
 
 class AppCard extends StatelessWidget {
@@ -36,7 +35,7 @@ class AppCard extends StatelessWidget {
         boxShadow: elevation > 0
             ? [
                 BoxShadow(
-                  color: AppColors.shadow.withValues(
+                  color: Theme.of(context).colorScheme.shadow.withValues(
                     alpha: Theme.of(context).brightness == Brightness.dark
                         ? 0.2
                         : 0.05,

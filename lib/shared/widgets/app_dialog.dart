@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_sizes.dart';
+import '../../core/extensions/context_extensions.dart';
 
 class AppDialog extends StatelessWidget {
   const AppDialog({
@@ -43,7 +43,7 @@ class AppDialog extends StatelessWidget {
         onConfirm: onConfirm,
         onCancel: onCancel,
         icon: Icons.help_outline_rounded,
-        iconColor: AppColors.primaryLight,
+        iconColor: Theme.of(context).colorScheme.primary,
       ),
     );
   }
@@ -63,7 +63,7 @@ class AppDialog extends StatelessWidget {
         confirmLabel: confirmLabel,
         onConfirm: onConfirm,
         icon: Icons.info_outline_rounded,
-        iconColor: AppColors.info,
+        iconColor: context.semanticColors.infoText,
       ),
     );
   }
@@ -83,7 +83,7 @@ class AppDialog extends StatelessWidget {
         confirmLabel: confirmLabel,
         onConfirm: onConfirm,
         icon: Icons.error_outline_rounded,
-        iconColor: AppColors.error,
+        iconColor: Theme.of(context).colorScheme.error,
       ),
     );
   }
@@ -113,7 +113,7 @@ class AppDialog extends StatelessWidget {
             Icon(
               icon,
               size: AppSizes.iconXl,
-              color: iconColor ?? AppColors.primary,
+              color: iconColor ?? Theme.of(context).colorScheme.primary,
             ),
             const SizedBox(height: AppSizes.p16),
           ],
@@ -145,7 +145,7 @@ class AppDialog extends StatelessWidget {
         ElevatedButton(
           style: ElevatedButton.styleFrom(
             minimumSize: const Size(100, 40),
-            backgroundColor: iconColor ?? AppColors.primary,
+            backgroundColor: iconColor ?? Theme.of(context).colorScheme.primary,
           ),
           onPressed: () {
             Navigator.of(context).pop(true);

@@ -2,6 +2,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+import '../../../../core/constants/app_colors.dart';
+
 /// Nasam splash — "pixel swap" reveal.
 ///
 /// Direct port of the HTML/canvas controller. Zero dependencies: pure Flutter,
@@ -30,12 +32,12 @@ import 'package:flutter/material.dart';
 @immutable
 class PixelSwapConfig {
   const PixelSwapConfig({
-    this.background = const Color(0xFF1D0B3E),
-    this.glow = const Color(0xFF9354C9),
+    this.background = AppColors.darkPurple800,
+    this.glow = AppColors.bluePurple400,
     this.dotColors = const [
-      Color(0xFFA020B0),
-      Color(0xFF9354C9),
-      Color(0xFF5B3BD6),
+      AppColors.purple500,
+      AppColors.bluePurple400,
+      AppColors.bluePurple500,
     ],
     this.reveal = const Duration(milliseconds: 1350),
     this.hold = const Duration(milliseconds: 550),

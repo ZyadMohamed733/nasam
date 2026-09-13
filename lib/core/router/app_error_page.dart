@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../constants/app_colors.dart';
 import 'app_routes.dart';
 
 class AppErrorPage extends StatelessWidget {
@@ -21,10 +20,10 @@ class AppErrorPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(
+              Icon(
                 Icons.error_outline_rounded,
                 size: 80,
-                color: AppColors.error,
+                color: Theme.of(context).colorScheme.error,
               ),
               const SizedBox(height: 24),
               Text(

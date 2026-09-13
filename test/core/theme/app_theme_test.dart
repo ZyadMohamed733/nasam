@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:nasam/core/constants/app_colors.dart';
 import 'package:nasam/core/theme/app_theme.dart';
 
 void main() {
@@ -87,5 +88,32 @@ void main() {
   testWidgets('the theme is built once, not per rebuild', (tester) async {
     await tester.pumpWidget(harness(child: const SizedBox()));
     expect(identical(AppTheme.light, AppTheme.light), isTrue);
+  });
+
+  // Guards the design-token migration: the scheme must be built from the
+  // semantic layer, not from a placeholder palette.
+  test('both schemes carry the brand primary from the design tokens', () {
+    expect(AppTheme.light.colorScheme.primary, AppColors.bluePurple500);
+    expect(AppTheme.dark.colorScheme.primary, AppColors.bluePurple500);
+  });
+
+  // These two roles were previously the same colour in both modes, which left
+  // elevation levels indistinguishable.
+  test('dark elevation levels are distinguishable', () {
+    expect(
+      AppTheme.dark.colorScheme.surfaceContainerLowest,
+      isNot(AppTheme.dark.colorScheme.surfaceContainerHighest),
+    );
+  });
+
+  test('the semantic token set is attached to both themes', () {
+    expect(
+      AppTheme.light.extension<AppSemanticColors>(),
+      same(AppSemanticColors.light),
+    );
+    expect(
+      AppTheme.dark.extension<AppSemanticColors>(),
+      same(AppSemanticColors.dark),
+    );
   });
 }

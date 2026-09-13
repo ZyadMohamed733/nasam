@@ -52,3 +52,6 @@ app.*.map.json
 # Local secret overrides for --dart-define-from-file.
 # config/*.json are committed and must stay secret-free; put secrets here instead.
 config/*.local.json
+
+# Golden-test diff output, written on every failed run.
+test/goldens/failures/

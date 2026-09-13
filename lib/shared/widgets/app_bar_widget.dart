@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_sizes.dart';
+import '../../core/extensions/context_extensions.dart';
 import '../../core/services/websocket_service.dart';
 
 class NasamAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -42,10 +42,11 @@ class NasamAppBar extends StatelessWidget implements PreferredSizeWidget {
                   height: 8,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: _getConnectionColor(state),
+                    color: _connectionColor(context, state),
                     boxShadow: [
                       BoxShadow(
-                        color: _getConnectionColor(
+                        color: _connectionColor(
+                          context,
                           state,
                         ).withValues(alpha: 0.4),
                         blurRadius: 4,
@@ -76,15 +77,15 @@ class NasamAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  Color _getConnectionColor(WsConnectionState state) {
+  Color _connectionColor(BuildContext context, WsConnectionState state) {
     switch (state) {
       case WsConnectionState.connected:
-        return AppColors.success;
+        return context.semanticColors.successText;
       case WsConnectionState.connecting:
-        return AppColors.warning;
+        return context.semanticColors.warningText;
       case WsConnectionState.disconnected:
       case WsConnectionState.error:
-        return AppColors.error;
+        return context.colorScheme.error;
     }
   }
 
