@@ -48,3 +48,7 @@ app.*.map.json
 .env
 *.env
 /build/debug-info/
+
+# Local secret overrides for --dart-define-from-file.
+# config/*.json are committed and must stay secret-free; put secrets here instead.
+config/*.local.json
