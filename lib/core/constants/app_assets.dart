@@ -1,17 +1,33 @@
-class AppAssets {
-  static const String _baseImages = 'assets/images';
-  static const String _baseIcons = 'assets/icons';
+/// The single registry for every asset bundled with the app.
+///
+/// Paths are `const`, so a typo is a compile error rather than a grey box at
+/// runtime, and `app_assets_test.dart` walks [all] to prove each file exists on
+/// disk and is actually declared in pubspec.yaml. Nothing outside this file
+/// should spell an asset path as a string literal.
+///
+/// Adding an asset means three things: drop the file in `assets/`, add a const
+/// here, and add it to [all]. The test fails if you skip either of the last
+/// two.
+abstract final class AppAssets {
+  static const String _images = 'assets/images';
 
-  // Images
-  static const String logoLight = '$_baseImages/logo_light.png';
-  static const String logoDark = '$_baseImages/logo_dark.png';
-  static const String splashBackground = '$_baseImages/splash_bg.png';
-  static const String vehiclePlaceholder =
-      '$_baseImages/vehicle_placeholder.png';
+  // Images.
+  static const String logoMark = '$_images/logo_mark.png';
+  static const String logoVector = '$_images/Vector.svg';
+  static const String onboarding1 = '$_images/onboarding_1.jpg';
+  static const String onboarding2 = '$_images/onboarding_2.png';
+  static const String onboarding3 = '$_images/onboarding_3.jpg';
+  static const String mapPlaceholder = '$_images/map_placeholder.png';
 
-  // Icons
-  static const String icMapMarker = '$_baseIcons/ic_map_marker.png';
-  static const String icDashboard = '$_baseIcons/ic_dashboard.png';
-  static const String icNotifications = '$_baseIcons/ic_notifications.png';
-  static const String icSettings = '$_baseIcons/ic_settings.png';
+  /// Every path above. Dart has no runtime reflection here, so this list is
+  /// what the test iterates — and the test also re-reads this source file to
+  /// check the list did not fall behind the constants.
+  static const List<String> all = <String>[
+    logoMark,
+    logoVector,
+    onboarding1,
+    onboarding2,
+    onboarding3,
+    mapPlaceholder,
+  ];
 }

@@ -34,8 +34,39 @@ class AppSizes {
   static const double iconLg = 32.0;
   static const double iconXl = 48.0;
 
-  // Button and Input Heights
-  static const double buttonHeight = 50.0;
-  static const double inputHeight = 50.0;
-  static const double appBarHeight = 56.0;
+  // Button and Input Heights, measured from the Figma components.
+  static const double buttonHeight = 44.0;
+  static const double inputHeight = 44.0;
+  static const double appBarHeight = 44.0;
+
+  // Layout values measured from the design, named for the job they do rather
+  // than their number: unlike the p*/r*/icon* scales above these are semantic,
+  // so a screen that needs "the auth form column" should not have to know that
+  // it happens to be 328 wide this month.
+  //
+  // All are design points against the 402x874 frame.
+
+  /// Side padding on onboarding and general screens.
+  static const double screenPadding = 16.0;
+
+  /// Auth form column width — 328 inside the 402pt frame, so 37 a side.
+  static const double formContentWidth = 328.0;
+
+  /// Onboarding content column width — 370 inside the frame, so 16 a side.
+  static const double onboardingContentWidth = 370.0;
+
+  static const double iconButtonMedium = 40.0;
+  static const double iconButtonSmall = 32.0;
+
+  /// Label row + field, no helper text.
+  static const double inputBlockHeight = 72.0;
+
+  /// Label row + field + helper text.
+  static const double inputBlockWithHelper = 91.0;
+
+  /// The logo as it appears on the auth screens.
+  static const double logoAuth = 48.0;
+
+  /// The OTP entry block: digit fields, countdown line and resend action.
+  static const double otpBlockHeight = 294.0;
 }

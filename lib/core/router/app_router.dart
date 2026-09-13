@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/splash/presentation/widgets/pixel_swap_splash.dart';
+import '../constants/app_assets.dart';
 import 'app_error_page.dart';
 import 'app_routes.dart';
 import 'route_guard.dart';
@@ -26,7 +27,7 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.splash,
         builder: (context, state) => PixelSwapSplash(
-          emblem: SvgPicture.asset('assets/images/Vector.svg'),
+          emblem: SvgPicture.asset(AppAssets.logoVector),
           next: Container(),
           onCompleted: () => {},
         ),
