@@ -55,13 +55,18 @@ class AppSizes {
   /// Onboarding content column width — 370 inside the frame, so 16 a side.
   static const double onboardingContentWidth = 370.0;
 
+  /// The onboarding call-to-action button, narrower than its content column.
+  static const double onboardingButtonWidth = 297.0;
+
   static const double iconButtonMedium = 40.0;
   static const double iconButtonSmall = 32.0;
 
-  /// Label row + field, no helper text.
+  /// Label row + field, no helper text, at the design's own text scale. The
+  /// block grows past this when the user raises the system font size, so treat
+  /// it as the space to reserve, not as a fixed height to impose.
   static const double inputBlockHeight = 72.0;
 
-  /// Label row + field + helper text.
+  /// Label row + field + helper text, at the design's own text scale.
   static const double inputBlockWithHelper = 91.0;
 
   /// The logo as it appears on the auth screens.

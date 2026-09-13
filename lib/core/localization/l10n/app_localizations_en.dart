@@ -150,4 +150,23 @@ class AppLocalizationsEn extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String otpExpiresIn(String time) {
+    return 'Code expires in $time';
+  }
+
+  @override
+  String get otpExpired => 'The code has expired.';
+
+  @override
+  String get otpNotReceived => 'Didn\'t receive the code?';
+
+  @override
+  String get otpResend => 'Resend code';
+
+  @override
+  String otpFieldLabel(int position, int count) {
+    return 'Digit $position of $count';
+  }
 }

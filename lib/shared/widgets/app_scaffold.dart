@@ -89,7 +89,7 @@ class AppScaffold extends StatelessWidget {
     return Scaffold(
       appBar: showAppBar
           ? NasamAppBar(
-              title: title ?? '',
+              title: title,
               wsService: ws,
               showLeading: showDrawer,
             )
@@ -104,7 +104,7 @@ class AppScaffold extends StatelessWidget {
   Widget _buildWide(BuildContext context, WebSocketService ws) {
     return Scaffold(
       appBar: showAppBar
-          ? NasamAppBar(title: title ?? '', wsService: ws, showLeading: false)
+          ? NasamAppBar(title: title, wsService: ws, showLeading: false)
           : null,
       body: Row(
         children: [

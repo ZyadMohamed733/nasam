@@ -32,7 +32,7 @@ class AppThemeData {
       disabledForegroundColor: s.primaryButtonText,
       elevation: 0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppSizes.r12),
+        borderRadius: BorderRadius.circular(AppSizes.r8),
       ),
       textStyle: textTheme.labelLarge,
     ).copyWith(
@@ -55,7 +55,7 @@ class AppThemeData {
       disabledForegroundColor: s.iconDisabled,
       side: BorderSide(color: s.secondaryButtonOutline),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppSizes.r12),
+        borderRadius: BorderRadius.circular(AppSizes.r8),
       ),
       textStyle: textTheme.labelLarge,
     ).copyWith(
@@ -82,7 +82,7 @@ class AppThemeData {
   static InputDecorationTheme inputDecorationTheme(AppSemanticColors s) {
     OutlineInputBorder border(Color color, [double width = 1.0]) =>
         OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppSizes.r12),
+          borderRadius: BorderRadius.circular(AppSizes.r8),
           borderSide: BorderSide(color: color, width: width),
         );
 
@@ -90,8 +90,8 @@ class AppThemeData {
       filled: true,
       fillColor: s.containerBackground,
       contentPadding: const EdgeInsets.symmetric(
-        horizontal: AppSizes.p16,
-        vertical: AppSizes.p12,
+        horizontal: AppSizes.p8,
+        vertical: AppSizes.p4,
       ),
       border: border(s.containerBorder),
       enabledBorder: border(s.containerBorder),

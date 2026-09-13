@@ -39,7 +39,6 @@ class EmptyStateWidget extends StatelessWidget {
               const SizedBox(height: AppSizes.p24),
               AppButton(
                 width: 160,
-                height: 40,
                 onPressed: onActionPressed,
                 label: actionLabel!,
               ),

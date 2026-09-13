@@ -11,7 +11,6 @@
   "confirm": "Confirm",
   "ok": "OK",
   "emptyState": "No data available.",
-
   "validationRequired": "{field} is required.",
   "@validationRequired": {
     "placeholders": {
@@ -46,7 +45,6 @@
   "validationInvalidLatitude": "Latitude must be between -90.0 and 90.0.",
   "validationInvalidLongitude": "Longitude must be between -180.0 and 180.0.",
   "validationInvalidPlateNumber": "Please enter a valid Saudi plate number.",
-
   "relativeJustNow": "Just now",
   "relativeMinutesAgo": "{count, plural, one{1 minute ago} other{{count} minutes ago}}",
   "@relativeMinutesAgo": {
@@ -80,11 +78,34 @@
       }
     }
   },
-
   "vehicleCount": "{count, plural, zero{No vehicles} one{1 vehicle} other{{count} vehicles}}",
   "@vehicleCount": {
     "description": "Reference plural for new features to copy. Arabic needs six categories where English needs two.",
     "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "otpExpiresIn": "Code expires in {time}",
+  "@otpExpiresIn": {
+    "description": "Countdown beneath the OTP fields. {time} is mm:ss.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "otpExpired": "The code has expired.",
+  "otpNotReceived": "Didn't receive the code?",
+  "otpResend": "Resend code",
+  "otpFieldLabel": "Digit {position} of {count}",
+  "@otpFieldLabel": {
+    "description": "Screen-reader label for a single OTP box.",
+    "placeholders": {
+      "position": {
+        "type": "int"
+      },
       "count": {
         "type": "int"
       }

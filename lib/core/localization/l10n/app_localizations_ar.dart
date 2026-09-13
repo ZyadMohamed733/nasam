@@ -167,4 +167,23 @@ class AppLocalizationsAr extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String otpExpiresIn(String time) {
+    return 'ينتهي صلاحية الرمز خلال $time';
+  }
+
+  @override
+  String get otpExpired => 'انتهت صلاحية الرمز.';
+
+  @override
+  String get otpNotReceived => 'لم يصلك الرمز؟';
+
+  @override
+  String get otpResend => 'أعد إرسال الرمز';
+
+  @override
+  String otpFieldLabel(int position, int count) {
+    return 'الرقم $position من $count';
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../core/constants/app_icons.dart';
 import '../../core/constants/app_sizes.dart';
 import '../../core/extensions/context_extensions.dart';
 import '../../core/services/websocket_service.dart';
@@ -6,13 +7,15 @@ import '../../core/services/websocket_service.dart';
 class NasamAppBar extends StatelessWidget implements PreferredSizeWidget {
   const NasamAppBar({
     super.key,
-    required this.title,
+    this.title,
     required this.wsService,
     this.showLeading = true,
     this.actions,
   });
 
-  final String title;
+  /// Optional: the design's auth screens carry a back affordance and no title.
+  /// When present it is centred.
+  final String? title;
 
   /// Injected rather than resolved from getIt inside build(), so the bar is
   /// testable with a fake socket.
@@ -27,8 +30,10 @@ class NasamAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(title, style: Theme.of(context).textTheme.headlineSmall),
-          const SizedBox(width: AppSizes.p8),
+          if (title != null) ...[
+            Text(title!, style: Theme.of(context).textTheme.headlineSmall),
+            const SizedBox(width: AppSizes.p8),
+          ],
           // Connection Status Indicator
           StreamBuilder<WsConnectionState>(
             stream: wsService.connectionState,
@@ -61,14 +66,16 @@ class NasamAppBar extends StatelessWidget implements PreferredSizeWidget {
         ],
       ),
       centerTitle: true,
+      toolbarHeight: AppSizes.appBarHeight,
       elevation: 0.5,
       shadowColor: Theme.of(context).colorScheme.outline,
       backgroundColor: Theme.of(context).colorScheme.surface,
       leading: showLeading
           ? IconButton(
               icon: Icon(
-                Icons.menu_rounded,
-                color: Theme.of(context).colorScheme.onSurface,
+                AppIcons.menu,
+                size: AppIconSize.medium.value,
+                color: context.semanticColors.iconPrimary,
               ),
               onPressed: () => Scaffold.of(context).openDrawer(),
             )

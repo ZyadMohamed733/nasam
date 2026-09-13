@@ -37,7 +37,6 @@ class AppErrorWidget extends StatelessWidget {
               const SizedBox(height: AppSizes.p24),
               AppButton(
                 width: 140,
-                height: 40,
                 onPressed: onRetry,
                 label: retryLabel,
               ),

@@ -277,6 +277,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count, plural, zero{No vehicles} one{1 vehicle} other{{count} vehicles}}'**
   String vehicleCount(int count);
+
+  /// Countdown beneath the OTP fields. {time} is mm:ss.
+  ///
+  /// In en, this message translates to:
+  /// **'Code expires in {time}'**
+  String otpExpiresIn(String time);
+
+  /// No description provided for @otpExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'The code has expired.'**
+  String get otpExpired;
+
+  /// No description provided for @otpNotReceived.
+  ///
+  /// In en, this message translates to:
+  /// **'Didn\'t receive the code?'**
+  String get otpNotReceived;
+
+  /// No description provided for @otpResend.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend code'**
+  String get otpResend;
+
+  /// Screen-reader label for a single OTP box.
+  ///
+  /// In en, this message translates to:
+  /// **'Digit {position} of {count}'**
+  String otpFieldLabel(int position, int count);
 }
 
 class _AppLocalizationsDelegate

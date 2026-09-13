@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/splash/presentation/widgets/pixel_swap_splash.dart';
-import '../constants/app_assets.dart';
+import '../../shared/widgets/app_logo.dart';
 import 'app_error_page.dart';
 import 'app_routes.dart';
 import 'route_guard.dart';
@@ -27,7 +26,7 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.splash,
         builder: (context, state) => PixelSwapSplash(
-          emblem: SvgPicture.asset(AppAssets.logoVector),
+          emblem: const AppLogo(size: AppLogoSize.large),
           next: Container(),
           onCompleted: () => {},
         ),

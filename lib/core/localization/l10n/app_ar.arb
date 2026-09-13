@@ -11,7 +11,6 @@
   "confirm": "تأكيد",
   "ok": "موافق",
   "emptyState": "لا توجد بيانات متاحة.",
-
   "validationRequired": "{field} مطلوب.",
   "@validationRequired": {
     "placeholders": {
@@ -46,7 +45,6 @@
   "validationInvalidLatitude": "يجب أن يكون خط العرض بين -90.0 و90.0.",
   "validationInvalidLongitude": "يجب أن يكون خط الطول بين -180.0 و180.0.",
   "validationInvalidPlateNumber": "يرجى إدخال رقم لوحة سعودي صحيح.",
-
   "relativeJustNow": "الآن",
   "relativeMinutesAgo": "{count, plural, zero{الآن} one{منذ دقيقة} two{منذ دقيقتين} few{منذ {count} دقائق} many{منذ {count} دقيقة} other{منذ {count} دقيقة}}",
   "@relativeMinutesAgo": {
@@ -80,10 +78,31 @@
       }
     }
   },
-
   "vehicleCount": "{count, plural, zero{لا توجد مركبات} one{مركبة واحدة} two{مركبتان} few{{count} مركبات} many{{count} مركبة} other{{count} مركبة}}",
   "@vehicleCount": {
     "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "otpExpiresIn": "ينتهي صلاحية الرمز خلال {time}",
+  "@otpExpiresIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "otpExpired": "انتهت صلاحية الرمز.",
+  "otpNotReceived": "لم يصلك الرمز؟",
+  "otpResend": "أعد إرسال الرمز",
+  "otpFieldLabel": "الرقم {position} من {count}",
+  "@otpFieldLabel": {
+    "placeholders": {
+      "position": {
+        "type": "int"
+      },
       "count": {
         "type": "int"
       }

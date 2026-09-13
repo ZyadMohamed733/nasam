@@ -1,39 +1,42 @@
-import 'dart:io';
+import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-/// Registers the app's bundled fonts with the test engine.
+/// Registers every bundled font with the test engine.
 ///
-/// `flutter test` does not load the fonts declared in pubspec.yaml: every
-/// glyph is drawn with the built-in `FlutterTest` face, which renders Latin as
-/// filled rectangles and anything else — Arabic included — as tofu. Goldens
-/// taken without this therefore prove nothing about the typeface, only about
-/// layout and colour.
+/// `flutter test` does not load the fonts an app declares: text is drawn with
+/// the built-in `FlutterTest` face, which renders Latin as filled rectangles
+/// and anything else — Arabic included — as tofu, and icons as empty boxes.
+/// Goldens taken without this prove nothing about the typeface or the icons,
+/// only about layout and colour.
 ///
-/// Call from `setUpAll` in any golden test so the file under review shows the
-/// face a device would actually draw.
+/// Reads `FontManifest.json`, so it covers both the app's own families and
+/// `MaterialIcons`, and keeps covering whatever is added to pubspec later
+/// without this file needing to change.
+///
+/// Call from `setUpAll` in any golden test.
 Future<void> loadAppFonts() async {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  // Read from disk rather than through rootBundle: tests run from the package
-  // root, and this stays true whether or not a test asset bundle was built.
-  final loader = FontLoader('Almarai');
-  for (final path in const [
-    'assets/fonts/Almarai-Regular.ttf',
-    'assets/fonts/Almarai-Bold.ttf',
-  ]) {
-    final file = File(path);
-    if (!file.existsSync()) {
-      throw StateError(
-        'Missing font $path. pubspec.yaml declares the Almarai family, so a '
-        'missing file here means the goldens would silently fall back.',
-      );
-    }
-    final bytes = file.readAsBytesSync();
-    loader.addFont(
-      Future<ByteData>.value(ByteData.sublistView(Uint8List.fromList(bytes))),
+  final manifest =
+      json.decode(await rootBundle.loadString('FontManifest.json'))
+          as List<dynamic>;
+
+  if (manifest.isEmpty) {
+    throw StateError(
+      'FontManifest.json is empty, so the goldens would silently fall back to '
+      'the test face. Has the asset bundle been built?',
     );
   }
-  await loader.load();
+
+  for (final entry in manifest.cast<Map<String, dynamic>>()) {
+    final family = entry['family'] as String;
+    final loader = FontLoader(family);
+    for (final font in (entry['fonts'] as List<dynamic>)
+        .cast<Map<String, dynamic>>()) {
+      loader.addFont(rootBundle.load(font['asset'] as String));
+    }
+    await loader.load();
+  }
 }
