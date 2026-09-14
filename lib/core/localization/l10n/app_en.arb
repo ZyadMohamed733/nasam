@@ -67,5 +67,9 @@
   "passwordRuleUppercase": "One uppercase letter",
   "passwordRuleLowercase": "One lowercase letter",
   "passwordRuleDigit": "One number",
-  "passwordRuleSpecialCharacter": "One special character"
+  "passwordRuleSpecialCharacter": "One special character",
+  "loginUsernameLabel": "Username",
+  "loginUsernameHint": "Username",
+  "authBackToLogin": "Back to sign in",
+  "newPasswordSubtitle": "Enter your details to create a new password."
 }

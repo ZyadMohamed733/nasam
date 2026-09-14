@@ -27,6 +27,9 @@ class OtpVerificationPage extends StatefulWidget {
 }
 
 class _OtpVerificationPageState extends State<OtpVerificationPage> {
+  /// The design draws five boxes, not the six a one-time code usually has.
+  static const int _codeLength = 5;
+
   String _code = '';
 
   @override
@@ -57,25 +60,24 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
           return AuthScaffold(
             title: l10n.otpTitle,
             subtitle: l10n.otpSubtitle(widget.email),
-            children: [
-              Align(
-                child: AppOtpInput(
-                  onChanged: (value) => setState(() => _code = value),
-                  onCompleted: (value) {
-                    _code = value;
-                    cubit.submit(email: widget.email, code: value);
-                  },
-                  onResend: () => cubit.resend(widget.email),
-                  errorText: state is AuthFormFailed
-                      ? state.failure.message
-                      : null,
-                ),
+            card: [
+              AppOtpInput(
+                length: _codeLength,
+                onChanged: (value) => setState(() => _code = value),
+                onCompleted: (value) {
+                  _code = value;
+                  cubit.submit(email: widget.email, code: value);
+                },
+                onResend: () => cubit.resend(widget.email),
+                errorText: state is AuthFormFailed
+                    ? state.failure.message
+                    : null,
               ),
-              const SizedBox(height: AppSizes.p24),
+              const SizedBox(height: AppSizes.p16),
               AppButton(
                 // Completing the last box submits on its own; this is the
                 // explicit path for anyone who pastes or edits a digit.
-                onPressed: _code.length < 6
+                onPressed: _code.length < _codeLength
                     ? null
                     : () => cubit.submit(email: widget.email, code: _code),
                 label: l10n.otpSubmit,

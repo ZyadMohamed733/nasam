@@ -54,9 +54,11 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
 
           return AuthScaffold(
             title: l10n.newPasswordTitle,
-            children: [
+            subtitle: l10n.newPasswordSubtitle,
+            card: [
               AppTextField(
                 label: l10n.newPasswordLabel,
+                isRequired: true,
                 obscureText: true,
                 enabled: !busy,
                 forceLtr: true,
@@ -64,14 +66,10 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                 autofillHints: const [AutofillHints.newPassword],
                 onChanged: cubit.onPasswordChanged,
               ),
-              const SizedBox(height: AppSizes.p16),
-              // The checklist is the error display for this field, so the
-              // field itself carries no validator — two things saying the same
-              // thing in different words is worse than one.
-              PasswordRuleChecklist(rules: state.rules),
-              const SizedBox(height: AppSizes.p16),
+              const SizedBox(height: AppSizes.p8),
               AppTextField(
                 label: l10n.newPasswordConfirmLabel,
+                isRequired: true,
                 obscureText: true,
                 enabled: !busy,
                 forceLtr: true,
@@ -82,7 +80,7 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                     ? l10n.validationPasswordsDoNotMatch
                     : null,
               ),
-              const SizedBox(height: AppSizes.p24),
+              const SizedBox(height: AppSizes.p16),
               AppButton(
                 onPressed: state.canSubmit
                     ? () => cubit.submit(widget.resetToken)
@@ -91,6 +89,9 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                 isLoading: busy,
               ),
             ],
+            // The design puts the checklist on the backdrop under the card,
+            // not inside it, so the card stays the height of the form.
+            below: [PasswordRuleChecklist(rules: state.rules)],
           );
         },
       ),

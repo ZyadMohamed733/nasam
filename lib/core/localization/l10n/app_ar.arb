@@ -156,25 +156,25 @@
   "@onboardingStart": {
     "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
   },
-  "loginTitle": "أهلاً بعودتك",
+  "loginTitle": "تسجيل الدخول",
   "@loginTitle": {
-    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file."
   },
-  "loginSubtitle": "سجّل الدخول لمتابعة أسطولك.",
+  "loginSubtitle": "من فضلك ادخل البيانات ل تسجيل الدخول",
   "@loginSubtitle": {
-    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file."
   },
-  "loginEmailLabel": "البريد الإلكتروني",
+  "loginEmailLabel": "البريد الالكتروني",
   "@loginEmailLabel": {
-    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file."
   },
-  "loginEmailHint": "name@company.com",
+  "loginEmailHint": "a.hassan@tracking.sa",
   "@loginEmailHint": {
-    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file."
   },
   "loginPasswordLabel": "كلمة المرور",
   "@loginPasswordLabel": {
-    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file."
   },
   "loginPasswordHint": "كلمة المرور",
   "@loginPasswordHint": {
@@ -182,84 +182,100 @@
   },
   "loginSubmit": "تسجيل الدخول",
   "@loginSubmit": {
-    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file."
   },
-  "loginForgotPassword": "نسيت كلمة المرور؟",
+  "loginForgotPassword": "هل نسيت كلمه المرور!",
   "@loginForgotPassword": {
-    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file."
   },
-  "forgotPasswordTitle": "إعادة تعيين كلمة المرور",
+  "forgotPasswordTitle": "نسيت كلمه المرور",
   "@forgotPasswordTitle": {
-    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file."
   },
-  "forgotPasswordSubtitle": "أدخل بريدك الإلكتروني وسنرسل لك رمزاً.",
+  "forgotPasswordSubtitle": "أدخل بريدك الإلكتروني المسجل وسنرسل لك تعليمات لاستعادة حسابك.",
   "@forgotPasswordSubtitle": {
-    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file."
   },
-  "forgotPasswordSubmit": "إرسال الرمز",
+  "forgotPasswordSubmit": "ارسال",
   "@forgotPasswordSubmit": {
-    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file."
   },
-  "otpTitle": "أدخل الرمز",
+  "otpTitle": "تحقق من رمزك",
   "@otpTitle": {
-    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file."
   },
-  "otpSubtitle": "أرسلنا رمزاً من ستة أرقام إلى {email}.",
+  "otpSubtitle": "أدخل رمز المرور الذي استلمته للتو على عنوان بريدك الإلكتروني الذي ينتهي بـ {email}",
   "@otpSubtitle": {
-    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.",
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file.",
     "placeholders": {
       "email": {
         "type": "String"
       }
     }
   },
-  "otpSubmit": "تحقق",
+  "otpSubmit": "ارسال",
   "@otpSubmit": {
-    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file."
   },
-  "newPasswordTitle": "اختر كلمة مرور جديدة",
+  "newPasswordTitle": "كلمه مرور جديده",
   "@newPasswordTitle": {
-    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file."
   },
-  "newPasswordLabel": "كلمة المرور الجديدة",
+  "newPasswordLabel": "كلمه المرور",
   "@newPasswordLabel": {
-    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file."
   },
-  "newPasswordConfirmLabel": "تأكيد كلمة المرور",
+  "newPasswordConfirmLabel": "تأكيد كلمه المرور",
   "@newPasswordConfirmLabel": {
-    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file."
   },
-  "newPasswordSubmit": "حفظ كلمة المرور",
+  "newPasswordSubmit": "حفظ",
   "@newPasswordSubmit": {
-    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file."
   },
-  "newPasswordDone": "تم تغيير كلمة المرور. سجّل الدخول للمتابعة.",
+  "newPasswordDone": "تم تغير كلمة المرور بنجاح",
   "@newPasswordDone": {
-    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file."
   },
-  "passwordRuleMinLength": "{count} رموز على الأقل",
+  "passwordRuleMinLength": "يجب أن يحتوي على {count} أحرف على الأقل",
   "@passwordRuleMinLength": {
-    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.",
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file.",
     "placeholders": {
       "count": {
         "type": "int"
       }
     }
   },
-  "passwordRuleUppercase": "حرف كبير واحد",
+  "passwordRuleUppercase": "حرف كبير واحد A-Z",
   "@passwordRuleUppercase": {
-    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file."
   },
-  "passwordRuleLowercase": "حرف صغير واحد",
+  "passwordRuleLowercase": "حرف واحد صغير a-z",
   "@passwordRuleLowercase": {
-    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file."
   },
-  "passwordRuleDigit": "رقم واحد",
+  "passwordRuleDigit": "رقم واحد على الأقل",
   "@passwordRuleDigit": {
-    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file."
   },
-  "passwordRuleSpecialCharacter": "رمز خاص واحد",
+  "passwordRuleSpecialCharacter": "رمز واحد علي الاقل @!#$%^&*",
   "@passwordRuleSpecialCharacter": {
-    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file."
+  },
+  "loginUsernameLabel": "اسم المستخدم",
+  "@loginUsernameLabel": {
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file."
+  },
+  "loginUsernameHint": "اسم المستخدم",
+  "@loginUsernameHint": {
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file."
+  },
+  "authBackToLogin": "العوده لتسجيل الدخول",
+  "@authBackToLogin": {
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file."
+  },
+  "newPasswordSubtitle": "من فضلك ادخل البيانات ل انشاء كلمه مرور جديده",
+  "@newPasswordSubtitle": {
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file."
   }
 }

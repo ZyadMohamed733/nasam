@@ -15,6 +15,7 @@ import '../../../../shared/widgets/app_snack_bar.dart';
 import '../../../../shared/widgets/app_text_field.dart';
 import '../cubit/auth_form_status.dart';
 import '../cubit/login_cubit.dart';
+import '../widgets/auth_link.dart';
 import '../widgets/auth_scaffold.dart';
 
 class LoginPage extends StatefulWidget {
@@ -29,12 +30,12 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  final _email = TextEditingController();
+  final _username = TextEditingController();
   final _password = TextEditingController();
 
   @override
   void dispose() {
-    _email.dispose();
+    _username.dispose();
     _password.dispose();
     super.dispose();
   }
@@ -42,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
   void _submit(BuildContext context) {
     if (!(_formKey.currentState?.validate() ?? false)) return;
     context.read<LoginCubit>().submit(
-      email: _email.text,
+      email: _username.text,
       password: _password.text,
     );
   }
@@ -72,30 +73,29 @@ class _LoginPageState extends State<LoginPage> {
           return AuthScaffold(
             title: l10n.loginTitle,
             subtitle: l10n.loginSubtitle,
-            showBack: false,
-            children: [
+            card: [
               Form(
                 key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     AppTextField(
-                      controller: _email,
-                      label: l10n.loginEmailLabel,
-                      hint: l10n.loginEmailHint,
-                      keyboardType: TextInputType.emailAddress,
+                      controller: _username,
+                      label: l10n.loginUsernameLabel,
+                      isRequired: true,
+                      hint: l10n.loginUsernameHint,
                       textInputAction: TextInputAction.next,
                       autofillHints: const [AutofillHints.username],
                       enabled: !busy,
-                      // An address is never RTL, whatever the interface is.
-                      forceLtr: true,
-                      validator: context.validator(AppValidators.email),
+                      validator: context.validator(
+                        (v) => AppValidators.required(v),
+                      ),
                     ),
-                    const SizedBox(height: AppSizes.p16),
+                    const SizedBox(height: AppSizes.p8),
                     AppTextField(
                       controller: _password,
                       label: l10n.loginPasswordLabel,
-                      hint: l10n.loginPasswordHint,
+                      isRequired: true,
                       obscureText: true,
                       textInputAction: TextInputAction.done,
                       autofillHints: const [AutofillHints.password],
@@ -112,28 +112,25 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
               ),
-              const SizedBox(height: AppSizes.p8),
               Align(
-                alignment: AlignmentDirectional.centerEnd,
-                child: AppButton(
+                alignment: AlignmentDirectional.centerStart,
+                child: AuthLink(
                   onPressed: busy
                       ? null
                       : () => context.push(AppRoutes.forgotPassword),
                   label: l10n.loginForgotPassword,
-                  variant: AppButtonVariant.tertiary,
-                  width: AppSizes.formContentWidth * 0.6,
                 ),
               ),
-              const SizedBox(height: AppSizes.p24),
+              const SizedBox(height: AppSizes.p16),
               AppButton(
                 onPressed: () => _submit(context),
                 label: l10n.loginSubmit,
                 isLoading: busy,
               ),
-              if (kDebugMode && !getIt<AppConfig>().isProd) ...[
-                const SizedBox(height: AppSizes.p24),
+            ],
+            below: [
+              if (kDebugMode && !getIt<AppConfig>().isProd)
                 _FlavorDebugBanner(config: getIt<AppConfig>()),
-              ],
             ],
           );
         },

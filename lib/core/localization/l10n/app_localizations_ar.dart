@@ -216,16 +216,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get onboardingStart => 'ابدأ الآن';
 
   @override
-  String get loginTitle => 'أهلاً بعودتك';
+  String get loginTitle => 'تسجيل الدخول';
 
   @override
-  String get loginSubtitle => 'سجّل الدخول لمتابعة أسطولك.';
+  String get loginSubtitle => 'من فضلك ادخل البيانات ل تسجيل الدخول';
 
   @override
-  String get loginEmailLabel => 'البريد الإلكتروني';
+  String get loginEmailLabel => 'البريد الالكتروني';
 
   @override
-  String get loginEmailHint => 'name@company.com';
+  String get loginEmailHint => 'a.hassan@tracking.sa';
 
   @override
   String get loginPasswordLabel => 'كلمة المرور';
@@ -237,57 +237,71 @@ class AppLocalizationsAr extends AppLocalizations {
   String get loginSubmit => 'تسجيل الدخول';
 
   @override
-  String get loginForgotPassword => 'نسيت كلمة المرور؟';
+  String get loginForgotPassword => 'هل نسيت كلمه المرور!';
 
   @override
-  String get forgotPasswordTitle => 'إعادة تعيين كلمة المرور';
+  String get forgotPasswordTitle => 'نسيت كلمه المرور';
 
   @override
-  String get forgotPasswordSubtitle => 'أدخل بريدك الإلكتروني وسنرسل لك رمزاً.';
+  String get forgotPasswordSubtitle =>
+      'أدخل بريدك الإلكتروني المسجل وسنرسل لك تعليمات لاستعادة حسابك.';
 
   @override
-  String get forgotPasswordSubmit => 'إرسال الرمز';
+  String get forgotPasswordSubmit => 'ارسال';
 
   @override
-  String get otpTitle => 'أدخل الرمز';
+  String get otpTitle => 'تحقق من رمزك';
 
   @override
   String otpSubtitle(String email) {
-    return 'أرسلنا رمزاً من ستة أرقام إلى $email.';
+    return 'أدخل رمز المرور الذي استلمته للتو على عنوان بريدك الإلكتروني الذي ينتهي بـ $email';
   }
 
   @override
-  String get otpSubmit => 'تحقق';
+  String get otpSubmit => 'ارسال';
 
   @override
-  String get newPasswordTitle => 'اختر كلمة مرور جديدة';
+  String get newPasswordTitle => 'كلمه مرور جديده';
 
   @override
-  String get newPasswordLabel => 'كلمة المرور الجديدة';
+  String get newPasswordLabel => 'كلمه المرور';
 
   @override
-  String get newPasswordConfirmLabel => 'تأكيد كلمة المرور';
+  String get newPasswordConfirmLabel => 'تأكيد كلمه المرور';
 
   @override
-  String get newPasswordSubmit => 'حفظ كلمة المرور';
+  String get newPasswordSubmit => 'حفظ';
 
   @override
-  String get newPasswordDone => 'تم تغيير كلمة المرور. سجّل الدخول للمتابعة.';
+  String get newPasswordDone => 'تم تغير كلمة المرور بنجاح';
 
   @override
   String passwordRuleMinLength(int count) {
-    return '$count رموز على الأقل';
+    return 'يجب أن يحتوي على $count أحرف على الأقل';
   }
 
   @override
-  String get passwordRuleUppercase => 'حرف كبير واحد';
+  String get passwordRuleUppercase => 'حرف كبير واحد A-Z';
 
   @override
-  String get passwordRuleLowercase => 'حرف صغير واحد';
+  String get passwordRuleLowercase => 'حرف واحد صغير a-z';
 
   @override
-  String get passwordRuleDigit => 'رقم واحد';
+  String get passwordRuleDigit => 'رقم واحد على الأقل';
 
   @override
-  String get passwordRuleSpecialCharacter => 'رمز خاص واحد';
+  String get passwordRuleSpecialCharacter => 'رمز واحد علي الاقل @!#\$%^&*';
+
+  @override
+  String get loginUsernameLabel => 'اسم المستخدم';
+
+  @override
+  String get loginUsernameHint => 'اسم المستخدم';
+
+  @override
+  String get authBackToLogin => 'العوده لتسجيل الدخول';
+
+  @override
+  String get newPasswordSubtitle =>
+      'من فضلك ادخل البيانات ل انشاء كلمه مرور جديده';
 }

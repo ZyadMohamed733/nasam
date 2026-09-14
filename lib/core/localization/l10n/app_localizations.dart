@@ -362,31 +362,31 @@ abstract class AppLocalizations {
   /// **'ابدأ الآن'**
   String get onboardingStart;
 
-  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
   ///
   /// In ar, this message translates to:
-  /// **'أهلاً بعودتك'**
+  /// **'تسجيل الدخول'**
   String get loginTitle;
 
-  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
   ///
   /// In ar, this message translates to:
-  /// **'سجّل الدخول لمتابعة أسطولك.'**
+  /// **'من فضلك ادخل البيانات ل تسجيل الدخول'**
   String get loginSubtitle;
 
-  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
   ///
   /// In ar, this message translates to:
-  /// **'البريد الإلكتروني'**
+  /// **'البريد الالكتروني'**
   String get loginEmailLabel;
 
-  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
   ///
   /// In ar, this message translates to:
-  /// **'name@company.com'**
+  /// **'a.hassan@tracking.sa'**
   String get loginEmailHint;
 
-  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
   ///
   /// In ar, this message translates to:
   /// **'كلمة المرور'**
@@ -398,113 +398,137 @@ abstract class AppLocalizations {
   /// **'كلمة المرور'**
   String get loginPasswordHint;
 
-  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
   ///
   /// In ar, this message translates to:
   /// **'تسجيل الدخول'**
   String get loginSubmit;
 
-  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
   ///
   /// In ar, this message translates to:
-  /// **'نسيت كلمة المرور؟'**
+  /// **'هل نسيت كلمه المرور!'**
   String get loginForgotPassword;
 
-  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
   ///
   /// In ar, this message translates to:
-  /// **'إعادة تعيين كلمة المرور'**
+  /// **'نسيت كلمه المرور'**
   String get forgotPasswordTitle;
 
-  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
   ///
   /// In ar, this message translates to:
-  /// **'أدخل بريدك الإلكتروني وسنرسل لك رمزاً.'**
+  /// **'أدخل بريدك الإلكتروني المسجل وسنرسل لك تعليمات لاستعادة حسابك.'**
   String get forgotPasswordSubtitle;
 
-  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
   ///
   /// In ar, this message translates to:
-  /// **'إرسال الرمز'**
+  /// **'ارسال'**
   String get forgotPasswordSubmit;
 
-  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
   ///
   /// In ar, this message translates to:
-  /// **'أدخل الرمز'**
+  /// **'تحقق من رمزك'**
   String get otpTitle;
 
-  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
   ///
   /// In ar, this message translates to:
-  /// **'أرسلنا رمزاً من ستة أرقام إلى {email}.'**
+  /// **'أدخل رمز المرور الذي استلمته للتو على عنوان بريدك الإلكتروني الذي ينتهي بـ {email}'**
   String otpSubtitle(String email);
 
-  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
   ///
   /// In ar, this message translates to:
-  /// **'تحقق'**
+  /// **'ارسال'**
   String get otpSubmit;
 
-  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
   ///
   /// In ar, this message translates to:
-  /// **'اختر كلمة مرور جديدة'**
+  /// **'كلمه مرور جديده'**
   String get newPasswordTitle;
 
-  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
   ///
   /// In ar, this message translates to:
-  /// **'كلمة المرور الجديدة'**
+  /// **'كلمه المرور'**
   String get newPasswordLabel;
 
-  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
   ///
   /// In ar, this message translates to:
-  /// **'تأكيد كلمة المرور'**
+  /// **'تأكيد كلمه المرور'**
   String get newPasswordConfirmLabel;
 
-  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
   ///
   /// In ar, this message translates to:
-  /// **'حفظ كلمة المرور'**
+  /// **'حفظ'**
   String get newPasswordSubmit;
 
-  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
   ///
   /// In ar, this message translates to:
-  /// **'تم تغيير كلمة المرور. سجّل الدخول للمتابعة.'**
+  /// **'تم تغير كلمة المرور بنجاح'**
   String get newPasswordDone;
 
-  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
   ///
   /// In ar, this message translates to:
-  /// **'{count} رموز على الأقل'**
+  /// **'يجب أن يحتوي على {count} أحرف على الأقل'**
   String passwordRuleMinLength(int count);
 
-  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
   ///
   /// In ar, this message translates to:
-  /// **'حرف كبير واحد'**
+  /// **'حرف كبير واحد A-Z'**
   String get passwordRuleUppercase;
 
-  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
   ///
   /// In ar, this message translates to:
-  /// **'حرف صغير واحد'**
+  /// **'حرف واحد صغير a-z'**
   String get passwordRuleLowercase;
 
-  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
   ///
   /// In ar, this message translates to:
-  /// **'رقم واحد'**
+  /// **'رقم واحد على الأقل'**
   String get passwordRuleDigit;
 
-  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
   ///
   /// In ar, this message translates to:
-  /// **'رمز خاص واحد'**
+  /// **'رمز واحد علي الاقل @!#\$%^&*'**
   String get passwordRuleSpecialCharacter;
+
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
+  ///
+  /// In ar, this message translates to:
+  /// **'اسم المستخدم'**
+  String get loginUsernameLabel;
+
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
+  ///
+  /// In ar, this message translates to:
+  /// **'اسم المستخدم'**
+  String get loginUsernameHint;
+
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
+  ///
+  /// In ar, this message translates to:
+  /// **'العوده لتسجيل الدخول'**
+  String get authBackToLogin;
+
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
+  ///
+  /// In ar, this message translates to:
+  /// **'من فضلك ادخل البيانات ل انشاء كلمه مرور جديده'**
+  String get newPasswordSubtitle;
 }
 
 class _AppLocalizationsDelegate

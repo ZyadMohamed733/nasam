@@ -33,6 +33,7 @@ class AppTextField extends StatefulWidget {
   const AppTextField({
     super.key,
     this.label,
+    this.isRequired = false,
     this.hint,
     this.helperText,
     this.controller,
@@ -54,6 +55,12 @@ class AppTextField extends StatefulWidget {
   });
 
   final String? label;
+
+  /// Appends the design's red asterisk to the label. It marks the field as
+  /// required to a sighted reader; the semantics flag is what says so to
+  /// everyone else.
+  final bool isRequired;
+
   final String? hint;
 
   /// Drawn on the helper line when there is no error. Its presence is what
@@ -126,11 +133,24 @@ class _AppTextFieldState extends State<AppTextField> {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (widget.label != null) ...[
-          Text(
-            widget.label!,
-            style: context.textTheme.labelMedium,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
+          Semantics(
+            label: widget.label,
+            child: Text.rich(
+              TextSpan(
+                text: widget.label,
+                children: widget.isRequired
+                    ? [
+                        TextSpan(
+                          text: ' *',
+                          style: TextStyle(color: semantic.failText),
+                        ),
+                      ]
+                    : null,
+              ),
+              style: context.textTheme.labelMedium,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
           const SizedBox(height: AppSizes.p8),
         ],

@@ -277,4 +277,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get passwordRuleSpecialCharacter => 'One special character';
+
+  @override
+  String get loginUsernameLabel => 'Username';
+
+  @override
+  String get loginUsernameHint => 'Username';
+
+  @override
+  String get authBackToLogin => 'Back to sign in';
+
+  @override
+  String get newPasswordSubtitle =>
+      'Enter your details to create a new password.';
 }

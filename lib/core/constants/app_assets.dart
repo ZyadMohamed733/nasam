@@ -19,6 +19,10 @@ abstract final class AppAssets {
   static const String onboarding3 = '$_images/onboarding_3.jpg';
   static const String mapPlaceholder = '$_images/map_placeholder.png';
 
+  /// The full-bleed backdrop behind every auth screen. A real vector, unlike
+  /// `logoVector` — no `<pattern>` fill, so flutter_svg draws it.
+  static const String authBackground = '$_images/auth_background.svg';
+
   /// Every path above. Dart has no runtime reflection here, so this list is
   /// what the test iterates — and the test also re-reads this source file to
   /// check the list did not fall behind the constants.
@@ -29,5 +33,6 @@ abstract final class AppAssets {
     onboarding2,
     onboarding3,
     mapPlaceholder,
+    authBackground,
   ];
 }

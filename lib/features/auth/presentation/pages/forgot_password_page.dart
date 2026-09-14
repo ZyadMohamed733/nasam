@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/constants/app_icons.dart';
+import '../../../../core/constants/app_sizes.dart';
 import '../../../../core/di/injection_container.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/localization/validation_error_l10n.dart';
@@ -12,6 +14,7 @@ import '../../../../shared/widgets/app_snack_bar.dart';
 import '../../../../shared/widgets/app_text_field.dart';
 import '../cubit/auth_form_status.dart';
 import '../cubit/forgot_password_cubit.dart';
+import '../widgets/auth_link.dart';
 import '../widgets/auth_scaffold.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
@@ -61,12 +64,13 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           return AuthScaffold(
             title: l10n.forgotPasswordTitle,
             subtitle: l10n.forgotPasswordSubtitle,
-            children: [
+            card: [
               Form(
                 key: _formKey,
                 child: AppTextField(
                   controller: _email,
                   label: l10n.loginEmailLabel,
+                  isRequired: true,
                   hint: l10n.loginEmailHint,
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.done,
@@ -76,7 +80,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   validator: context.validator(AppValidators.email),
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppSizes.p16),
               AppButton(
                 onPressed: () {
                   if (!(_formKey.currentState?.validate() ?? false)) return;
@@ -84,6 +88,14 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 },
                 label: l10n.forgotPasswordSubmit,
                 isLoading: busy,
+              ),
+              const SizedBox(height: AppSizes.p8),
+              Align(
+                child: AuthLink(
+                  onPressed: busy ? null : context.pop,
+                  label: l10n.authBackToLogin,
+                  trailingIcon: AppIcons.forward,
+                ),
               ),
             ],
           );
