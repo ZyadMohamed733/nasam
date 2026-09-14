@@ -5,6 +5,7 @@ class AppStrings {
   static const String keyUserLocale = 'user_locale';
   static const String keyThemeMode = 'theme_mode';
   static const String keyUserData = 'user_data';
+  static const String keyOnboardingSeen = 'onboarding_seen';
 
   // Network & Headers
   static const String headerAuthorization = 'Authorization';

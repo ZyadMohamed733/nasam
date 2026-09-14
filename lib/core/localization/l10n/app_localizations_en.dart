@@ -169,4 +169,34 @@ class AppLocalizationsEn extends AppLocalizations {
   String otpFieldLabel(int position, int count) {
     return 'Digit $position of $count';
   }
+
+  @override
+  String get onboardingTitle1 => 'Every vehicle, on one screen';
+
+  @override
+  String get onboardingBody1 =>
+      'Follow your whole fleet live, wherever it is on the road.';
+
+  @override
+  String get onboardingTitle2 => 'Routes that plan themselves';
+
+  @override
+  String get onboardingBody2 =>
+      'See the fastest way through, and know the moment it changes.';
+
+  @override
+  String get onboardingTitle3 => 'Your team, in step';
+
+  @override
+  String get onboardingBody3 =>
+      'Share plans and updates so everyone is working from the same picture.';
+
+  @override
+  String get onboardingSkip => 'Skip';
+
+  @override
+  String get onboardingNext => 'Next';
+
+  @override
+  String get onboardingStart => 'Get started';
 }

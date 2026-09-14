@@ -28,6 +28,8 @@ import '../../features/_template/domain/repositories/template_repository.dart'
 import '../../features/_template/domain/usecases/get_template_usecase.dart'
     as _i932;
 import '../../features/_template/presentation/bloc/template_bloc.dart' as _i884;
+import '../../features/onboarding/presentation/cubit/onboarding_cubit.dart'
+    as _i807;
 import '../network/interceptors/auth_interceptor.dart' as _i745;
 import '../network/interceptors/error_interceptor.dart' as _i511;
 import '../network/interceptors/logging_interceptor.dart' as _i344;
@@ -76,6 +78,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i745.AuthInterceptor>(
       () => _i745.AuthInterceptor(gh<_i535.SecureStorageService>()),
+    );
+    gh.factory<_i807.OnboardingCubit>(
+      () => _i807.OnboardingCubit(gh<_i306.StorageService>()),
     );
     gh.lazySingleton<_i461.AppSettingsController>(
       () => _i461.AppSettingsController(gh<_i306.StorageService>()),

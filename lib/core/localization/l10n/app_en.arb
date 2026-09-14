@@ -110,5 +110,32 @@
         "type": "int"
       }
     }
-  }
+  },
+  "onboardingTitle1": "Every vehicle, on one screen",
+  "@onboardingTitle1": {
+    "description": "PLACEHOLDER COPY — not from the design file, which supplies the artwork but no text for this slide. Replace with the approved wording."
+  },
+  "onboardingBody1": "Follow your whole fleet live, wherever it is on the road.",
+  "@onboardingBody1": {
+    "description": "PLACEHOLDER COPY — not from the design file, which supplies the artwork but no text for this slide. Replace with the approved wording."
+  },
+  "onboardingTitle2": "Routes that plan themselves",
+  "@onboardingTitle2": {
+    "description": "PLACEHOLDER COPY — not from the design file, which supplies the artwork but no text for this slide. Replace with the approved wording."
+  },
+  "onboardingBody2": "See the fastest way through, and know the moment it changes.",
+  "@onboardingBody2": {
+    "description": "PLACEHOLDER COPY — not from the design file, which supplies the artwork but no text for this slide. Replace with the approved wording."
+  },
+  "onboardingTitle3": "Your team, in step",
+  "@onboardingTitle3": {
+    "description": "PLACEHOLDER COPY — not from the design file, which supplies the artwork but no text for this slide. Replace with the approved wording."
+  },
+  "onboardingBody3": "Share plans and updates so everyone is working from the same picture.",
+  "@onboardingBody3": {
+    "description": "PLACEHOLDER COPY — not from the design file, which supplies the artwork but no text for this slide. Replace with the approved wording."
+  },
+  "onboardingSkip": "Skip",
+  "onboardingNext": "Next",
+  "onboardingStart": "Get started"
 }

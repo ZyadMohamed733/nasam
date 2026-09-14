@@ -307,6 +307,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Digit {position} of {count}'**
   String otpFieldLabel(int position, int count);
+
+  /// PLACEHOLDER COPY — not from the design file, which supplies the artwork but no text for this slide. Replace with the approved wording.
+  ///
+  /// In en, this message translates to:
+  /// **'Every vehicle, on one screen'**
+  String get onboardingTitle1;
+
+  /// PLACEHOLDER COPY — not from the design file, which supplies the artwork but no text for this slide. Replace with the approved wording.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow your whole fleet live, wherever it is on the road.'**
+  String get onboardingBody1;
+
+  /// PLACEHOLDER COPY — not from the design file, which supplies the artwork but no text for this slide. Replace with the approved wording.
+  ///
+  /// In en, this message translates to:
+  /// **'Routes that plan themselves'**
+  String get onboardingTitle2;
+
+  /// PLACEHOLDER COPY — not from the design file, which supplies the artwork but no text for this slide. Replace with the approved wording.
+  ///
+  /// In en, this message translates to:
+  /// **'See the fastest way through, and know the moment it changes.'**
+  String get onboardingBody2;
+
+  /// PLACEHOLDER COPY — not from the design file, which supplies the artwork but no text for this slide. Replace with the approved wording.
+  ///
+  /// In en, this message translates to:
+  /// **'Your team, in step'**
+  String get onboardingTitle3;
+
+  /// PLACEHOLDER COPY — not from the design file, which supplies the artwork but no text for this slide. Replace with the approved wording.
+  ///
+  /// In en, this message translates to:
+  /// **'Share plans and updates so everyone is working from the same picture.'**
+  String get onboardingBody3;
+
+  /// No description provided for @onboardingSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get onboardingSkip;
+
+  /// No description provided for @onboardingNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get onboardingNext;
+
+  /// No description provided for @onboardingStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Get started'**
+  String get onboardingStart;
 }
 
 class _AppLocalizationsDelegate

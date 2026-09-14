@@ -34,6 +34,18 @@ class StorageService {
     return _prefs.getString(AppStrings.keyUserData);
   }
 
+  // Onboarding
+  //
+  // Deliberately in SharedPreferences rather than secure storage: it is not a
+  // secret, and it must survive a logout — someone who signs out has still
+  // seen the intro and should not be shown it again.
+  Future<void> setOnboardingSeen() async {
+    await _prefs.setBool(AppStrings.keyOnboardingSeen, true);
+  }
+
+  bool get hasSeenOnboarding =>
+      _prefs.getBool(AppStrings.keyOnboardingSeen) ?? false;
+
   Future<void> clearAll() async {
     await _prefs.clear();
   }

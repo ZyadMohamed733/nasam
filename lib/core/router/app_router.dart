@@ -3,8 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
-import '../../features/splash/presentation/widgets/pixel_swap_splash.dart';
-import '../../shared/widgets/app_logo.dart';
+import '../../features/onboarding/presentation/pages/onboarding_page.dart';
+import '../../features/splash/presentation/pages/splash_page.dart';
 import 'app_error_page.dart';
 import 'app_routes.dart';
 import 'route_guard.dart';
@@ -25,11 +25,11 @@ class AppRouter {
     routes: [
       GoRoute(
         path: AppRoutes.splash,
-        builder: (context, state) => PixelSwapSplash(
-          emblem: const AppLogo(size: AppLogoSize.large),
-          next: Container(),
-          onCompleted: () => {},
-        ),
+        builder: (context, state) => const SplashPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.onboarding,
+        builder: (context, state) => const OnboardingPage(),
       ),
       GoRoute(
         path: AppRoutes.login,

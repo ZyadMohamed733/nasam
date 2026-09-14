@@ -107,5 +107,14 @@
         "type": "int"
       }
     }
-  }
+  },
+  "onboardingTitle1": "كل مركبة على شاشة واحدة",
+  "onboardingBody1": "تابع أسطولك مباشرة أينما كان على الطريق.",
+  "onboardingTitle2": "مسارات تُخطَّط تلقائياً",
+  "onboardingBody2": "اعرف أسرع طريق، واعرف لحظة تغيّره.",
+  "onboardingTitle3": "فريقك على تناغم",
+  "onboardingBody3": "شارك الخطط والتحديثات ليعمل الجميع على الصورة نفسها.",
+  "onboardingSkip": "تخطٍ",
+  "onboardingNext": "التالي",
+  "onboardingStart": "ابدأ الآن"
 }
