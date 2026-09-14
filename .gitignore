@@ -55,3 +55,7 @@ config/*.local.json
 
 # Golden-test diff output, written on every failed run.
 test/goldens/failures/
+
+# Written by `flutter gen-l10n` to report keys missing from a translation.
+# A build artefact, not a checked-in list.
+l10n_untranslated.json

@@ -1,4 +1,11 @@
 arb-dir: lib/core/localization/l10n
-template-arb-file: app_en.arb
+# Arabic is the source language: the design supplies Arabic and English is
+# translated from it afterwards. The template is what gen_l10n reads placeholder
+# and plural declarations from, so it has to be the file the copy is authored in.
+template-arb-file: app_ar.arb
 output-localization-file: app_localizations.dart
 output-class: AppLocalizations
+# Any key present in the template but missing from a translation is written here
+# at build time. Without it a missing English string silently falls back to the
+# Arabic, which looks like a rendering bug rather than a missing translation.
+untranslated-messages-file: l10n_untranslated.json

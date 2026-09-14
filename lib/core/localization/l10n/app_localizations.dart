@@ -100,410 +100,410 @@ abstract class AppLocalizations {
 
   /// No description provided for @appName.
   ///
-  /// In en, this message translates to:
-  /// **'Nasam'**
+  /// In ar, this message translates to:
+  /// **'ناسم'**
   String get appName;
 
   /// No description provided for @loading.
   ///
-  /// In en, this message translates to:
-  /// **'Loading...'**
+  /// In ar, this message translates to:
+  /// **'جاري التحميل...'**
   String get loading;
 
   /// No description provided for @errorGeneric.
   ///
-  /// In en, this message translates to:
-  /// **'Something went wrong. Please try again.'**
+  /// In ar, this message translates to:
+  /// **'حدث خطأ ما. يرجى المحاولة مرة أخرى.'**
   String get errorGeneric;
 
   /// No description provided for @errorNetwork.
   ///
-  /// In en, this message translates to:
-  /// **'No internet connection.'**
+  /// In ar, this message translates to:
+  /// **'لا يوجد اتصال بالإنترنت.'**
   String get errorNetwork;
 
   /// No description provided for @errorTimeout.
   ///
-  /// In en, this message translates to:
-  /// **'Request timed out. Please try again.'**
+  /// In ar, this message translates to:
+  /// **'انتهت مهلة الطلب. يرجى المحاولة مرة أخرى.'**
   String get errorTimeout;
 
   /// No description provided for @errorUnauthorized.
   ///
-  /// In en, this message translates to:
-  /// **'Your session has expired. Please log in again.'**
+  /// In ar, this message translates to:
+  /// **'انتهت صلاحية الجلسة. يرجى تسجيل الدخول مرة أخرى.'**
   String get errorUnauthorized;
 
   /// No description provided for @retry.
   ///
-  /// In en, this message translates to:
-  /// **'Retry'**
+  /// In ar, this message translates to:
+  /// **'إعادة المحاولة'**
   String get retry;
 
   /// No description provided for @cancel.
   ///
-  /// In en, this message translates to:
-  /// **'Cancel'**
+  /// In ar, this message translates to:
+  /// **'إلغاء'**
   String get cancel;
 
   /// No description provided for @confirm.
   ///
-  /// In en, this message translates to:
-  /// **'Confirm'**
+  /// In ar, this message translates to:
+  /// **'تأكيد'**
   String get confirm;
 
   /// No description provided for @ok.
   ///
-  /// In en, this message translates to:
-  /// **'OK'**
+  /// In ar, this message translates to:
+  /// **'موافق'**
   String get ok;
 
   /// No description provided for @emptyState.
   ///
-  /// In en, this message translates to:
-  /// **'No data available.'**
+  /// In ar, this message translates to:
+  /// **'لا توجد بيانات متاحة.'**
   String get emptyState;
 
   /// No description provided for @validationRequired.
   ///
-  /// In en, this message translates to:
-  /// **'{field} is required.'**
+  /// In ar, this message translates to:
+  /// **'{field} مطلوب.'**
   String validationRequired(String field);
 
   /// No description provided for @validationRequiredGeneric.
   ///
-  /// In en, this message translates to:
-  /// **'This field is required.'**
+  /// In ar, this message translates to:
+  /// **'هذا الحقل مطلوب.'**
   String get validationRequiredGeneric;
 
   /// No description provided for @validationInvalidEmail.
   ///
-  /// In en, this message translates to:
-  /// **'Please enter a valid email address.'**
+  /// In ar, this message translates to:
+  /// **'يرجى إدخال بريد إلكتروني صحيح.'**
   String get validationInvalidEmail;
 
   /// No description provided for @validationPasswordWeak.
   ///
-  /// In en, this message translates to:
-  /// **'Password must be at least 8 characters with uppercase, lowercase, number and symbol.'**
+  /// In ar, this message translates to:
+  /// **'يجب أن تكون كلمة المرور مكونة من 8 رموز على الأقل وتحتوي على حرف كبير، حرف صغير، رقم، ورمز خاص.'**
   String get validationPasswordWeak;
 
   /// No description provided for @validationPasswordsDoNotMatch.
   ///
-  /// In en, this message translates to:
-  /// **'Passwords do not match.'**
+  /// In ar, this message translates to:
+  /// **'كلمتا المرور غير متطابقتين.'**
   String get validationPasswordsDoNotMatch;
 
   /// No description provided for @validationInvalidPhone.
   ///
-  /// In en, this message translates to:
-  /// **'Please enter a valid Saudi phone number.'**
+  /// In ar, this message translates to:
+  /// **'يرجى إدخال رقم هاتف سعودي صحيح.'**
   String get validationInvalidPhone;
 
   /// No description provided for @validationMinLength.
   ///
-  /// In en, this message translates to:
-  /// **'Minimum length is {min} characters.'**
+  /// In ar, this message translates to:
+  /// **'الحد الأدنى {min} حرفاً.'**
   String validationMinLength(int min);
 
   /// No description provided for @validationMaxLength.
   ///
-  /// In en, this message translates to:
-  /// **'Maximum length is {max} characters.'**
+  /// In ar, this message translates to:
+  /// **'الحد الأقصى {max} حرفاً.'**
   String validationMaxLength(int max);
 
   /// No description provided for @validationNotNumeric.
   ///
-  /// In en, this message translates to:
-  /// **'Value must be numeric.'**
+  /// In ar, this message translates to:
+  /// **'يجب أن تكون القيمة رقمية.'**
   String get validationNotNumeric;
 
   /// No description provided for @validationNotArabic.
   ///
-  /// In en, this message translates to:
-  /// **'Only Arabic characters are allowed.'**
+  /// In ar, this message translates to:
+  /// **'يُسمح بالأحرف العربية فقط.'**
   String get validationNotArabic;
 
   /// No description provided for @validationInvalidLatitude.
   ///
-  /// In en, this message translates to:
-  /// **'Latitude must be between -90.0 and 90.0.'**
+  /// In ar, this message translates to:
+  /// **'يجب أن يكون خط العرض بين -90.0 و90.0.'**
   String get validationInvalidLatitude;
 
   /// No description provided for @validationInvalidLongitude.
   ///
-  /// In en, this message translates to:
-  /// **'Longitude must be between -180.0 and 180.0.'**
+  /// In ar, this message translates to:
+  /// **'يجب أن يكون خط الطول بين -180.0 و180.0.'**
   String get validationInvalidLongitude;
 
   /// No description provided for @validationInvalidPlateNumber.
   ///
-  /// In en, this message translates to:
-  /// **'Please enter a valid Saudi plate number.'**
+  /// In ar, this message translates to:
+  /// **'يرجى إدخال رقم لوحة سعودي صحيح.'**
   String get validationInvalidPlateNumber;
 
   /// No description provided for @relativeJustNow.
   ///
-  /// In en, this message translates to:
-  /// **'Just now'**
+  /// In ar, this message translates to:
+  /// **'الآن'**
   String get relativeJustNow;
 
   /// No description provided for @relativeMinutesAgo.
   ///
-  /// In en, this message translates to:
-  /// **'{count, plural, one{1 minute ago} other{{count} minutes ago}}'**
+  /// In ar, this message translates to:
+  /// **'{count, plural, zero{الآن} one{منذ دقيقة} two{منذ دقيقتين} few{منذ {count} دقائق} many{منذ {count} دقيقة} other{منذ {count} دقيقة}}'**
   String relativeMinutesAgo(int count);
 
   /// No description provided for @relativeHoursAgo.
   ///
-  /// In en, this message translates to:
-  /// **'{count, plural, one{1 hour ago} other{{count} hours ago}}'**
+  /// In ar, this message translates to:
+  /// **'{count, plural, zero{الآن} one{منذ ساعة} two{منذ ساعتين} few{منذ {count} ساعات} many{منذ {count} ساعة} other{منذ {count} ساعة}}'**
   String relativeHoursAgo(int count);
 
   /// No description provided for @relativeDaysAgo.
   ///
-  /// In en, this message translates to:
-  /// **'{count, plural, one{1 day ago} other{{count} days ago}}'**
+  /// In ar, this message translates to:
+  /// **'{count, plural, zero{اليوم} one{منذ يوم} two{منذ يومين} few{منذ {count} أيام} many{منذ {count} يوماً} other{منذ {count} يوم}}'**
   String relativeDaysAgo(int count);
 
   /// No description provided for @relativeWeeksAgo.
   ///
-  /// In en, this message translates to:
-  /// **'{count, plural, one{1 week ago} other{{count} weeks ago}}'**
+  /// In ar, this message translates to:
+  /// **'{count, plural, zero{هذا الأسبوع} one{منذ أسبوع} two{منذ أسبوعين} few{منذ {count} أسابيع} many{منذ {count} أسبوعاً} other{منذ {count} أسبوع}}'**
   String relativeWeeksAgo(int count);
 
   /// Reference plural for new features to copy. Arabic needs six categories where English needs two.
   ///
-  /// In en, this message translates to:
-  /// **'{count, plural, zero{No vehicles} one{1 vehicle} other{{count} vehicles}}'**
+  /// In ar, this message translates to:
+  /// **'{count, plural, zero{لا توجد مركبات} one{مركبة واحدة} two{مركبتان} few{{count} مركبات} many{{count} مركبة} other{{count} مركبة}}'**
   String vehicleCount(int count);
 
-  /// Countdown beneath the OTP fields. {time} is mm:ss.
+  /// Countdown beneath the OTP fields. {time} is mm:ss. DESIGN-VERIFIED. This Arabic is verbatim from the design file.
   ///
-  /// In en, this message translates to:
-  /// **'Code expires in {time}'**
+  /// In ar, this message translates to:
+  /// **'ينتهي صلاحية الرمز خلال {time}'**
   String otpExpiresIn(String time);
 
-  /// No description provided for @otpExpired.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'The code has expired.'**
+  /// In ar, this message translates to:
+  /// **'انتهت صلاحية الرمز.'**
   String get otpExpired;
 
-  /// No description provided for @otpNotReceived.
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file, which sets it as one sentence with otpResend.
   ///
-  /// In en, this message translates to:
-  /// **'Didn\'t receive the code?'**
+  /// In ar, this message translates to:
+  /// **'لم يصلك الرمز؟'**
   String get otpNotReceived;
 
-  /// No description provided for @otpResend.
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file, which sets it as one sentence with otpNotReceived.
   ///
-  /// In en, this message translates to:
-  /// **'Resend code'**
+  /// In ar, this message translates to:
+  /// **'أعد إرسال الرمز'**
   String get otpResend;
 
-  /// Screen-reader label for a single OTP box.
+  /// Screen-reader label for a single OTP box. AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'Digit {position} of {count}'**
+  /// In ar, this message translates to:
+  /// **'الرقم {position} من {count}'**
   String otpFieldLabel(int position, int count);
 
-  /// PLACEHOLDER COPY — not from the design file, which supplies the artwork but no text for this slide. Replace with the approved wording.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'Every vehicle, on one screen'**
+  /// In ar, this message translates to:
+  /// **'كل مركبة على شاشة واحدة'**
   String get onboardingTitle1;
 
-  /// PLACEHOLDER COPY — not from the design file, which supplies the artwork but no text for this slide. Replace with the approved wording.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'Follow your whole fleet live, wherever it is on the road.'**
+  /// In ar, this message translates to:
+  /// **'تابع أسطولك مباشرة أينما كان على الطريق.'**
   String get onboardingBody1;
 
-  /// PLACEHOLDER COPY — not from the design file, which supplies the artwork but no text for this slide. Replace with the approved wording.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'Routes that plan themselves'**
+  /// In ar, this message translates to:
+  /// **'مسارات تُخطَّط تلقائياً'**
   String get onboardingTitle2;
 
-  /// PLACEHOLDER COPY — not from the design file, which supplies the artwork but no text for this slide. Replace with the approved wording.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'See the fastest way through, and know the moment it changes.'**
+  /// In ar, this message translates to:
+  /// **'اعرف أسرع طريق، واعرف لحظة تغيّره.'**
   String get onboardingBody2;
 
-  /// PLACEHOLDER COPY — not from the design file, which supplies the artwork but no text for this slide. Replace with the approved wording.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'Your team, in step'**
+  /// In ar, this message translates to:
+  /// **'فريقك على تناغم'**
   String get onboardingTitle3;
 
-  /// PLACEHOLDER COPY — not from the design file, which supplies the artwork but no text for this slide. Replace with the approved wording.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'Share plans and updates so everyone is working from the same picture.'**
+  /// In ar, this message translates to:
+  /// **'شارك الخطط والتحديثات ليعمل الجميع على الصورة نفسها.'**
   String get onboardingBody3;
 
-  /// No description provided for @onboardingSkip.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'Skip'**
+  /// In ar, this message translates to:
+  /// **'تخطٍ'**
   String get onboardingSkip;
 
-  /// No description provided for @onboardingNext.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'Next'**
+  /// In ar, this message translates to:
+  /// **'التالي'**
   String get onboardingNext;
 
-  /// No description provided for @onboardingStart.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'Get started'**
+  /// In ar, this message translates to:
+  /// **'ابدأ الآن'**
   String get onboardingStart;
 
-  /// PLACEHOLDER COPY — the design file was not available for this string. Replace with the approved wording.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'Welcome back'**
+  /// In ar, this message translates to:
+  /// **'أهلاً بعودتك'**
   String get loginTitle;
 
-  /// PLACEHOLDER COPY — the design file was not available for this string. Replace with the approved wording.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'Sign in to follow your fleet.'**
+  /// In ar, this message translates to:
+  /// **'سجّل الدخول لمتابعة أسطولك.'**
   String get loginSubtitle;
 
-  /// No description provided for @loginEmailLabel.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'Email'**
+  /// In ar, this message translates to:
+  /// **'البريد الإلكتروني'**
   String get loginEmailLabel;
 
-  /// No description provided for @loginEmailHint.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
+  /// In ar, this message translates to:
   /// **'name@company.com'**
   String get loginEmailHint;
 
-  /// No description provided for @loginPasswordLabel.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'Password'**
+  /// In ar, this message translates to:
+  /// **'كلمة المرور'**
   String get loginPasswordLabel;
 
-  /// No description provided for @loginPasswordHint.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'Your password'**
+  /// In ar, this message translates to:
+  /// **'كلمة المرور'**
   String get loginPasswordHint;
 
-  /// No description provided for @loginSubmit.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'Sign in'**
+  /// In ar, this message translates to:
+  /// **'تسجيل الدخول'**
   String get loginSubmit;
 
-  /// No description provided for @loginForgotPassword.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'Forgot your password?'**
+  /// In ar, this message translates to:
+  /// **'نسيت كلمة المرور؟'**
   String get loginForgotPassword;
 
-  /// PLACEHOLDER COPY — the design file was not available for this string. Replace with the approved wording.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'Reset your password'**
+  /// In ar, this message translates to:
+  /// **'إعادة تعيين كلمة المرور'**
   String get forgotPasswordTitle;
 
-  /// PLACEHOLDER COPY — the design file was not available for this string. Replace with the approved wording.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'Enter your email and we will send you a code.'**
+  /// In ar, this message translates to:
+  /// **'أدخل بريدك الإلكتروني وسنرسل لك رمزاً.'**
   String get forgotPasswordSubtitle;
 
-  /// No description provided for @forgotPasswordSubmit.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'Send code'**
+  /// In ar, this message translates to:
+  /// **'إرسال الرمز'**
   String get forgotPasswordSubmit;
 
-  /// PLACEHOLDER COPY — the design file was not available for this string. Replace with the approved wording.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'Enter the code'**
+  /// In ar, this message translates to:
+  /// **'أدخل الرمز'**
   String get otpTitle;
 
-  /// PLACEHOLDER COPY — the design file was not available for this string. Replace with the approved wording.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'We sent a six-digit code to {email}.'**
+  /// In ar, this message translates to:
+  /// **'أرسلنا رمزاً من ستة أرقام إلى {email}.'**
   String otpSubtitle(String email);
 
-  /// No description provided for @otpSubmit.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'Verify'**
+  /// In ar, this message translates to:
+  /// **'تحقق'**
   String get otpSubmit;
 
-  /// PLACEHOLDER COPY — the design file was not available for this string. Replace with the approved wording.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'Choose a new password'**
+  /// In ar, this message translates to:
+  /// **'اختر كلمة مرور جديدة'**
   String get newPasswordTitle;
 
-  /// No description provided for @newPasswordLabel.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'New password'**
+  /// In ar, this message translates to:
+  /// **'كلمة المرور الجديدة'**
   String get newPasswordLabel;
 
-  /// No description provided for @newPasswordConfirmLabel.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'Confirm password'**
+  /// In ar, this message translates to:
+  /// **'تأكيد كلمة المرور'**
   String get newPasswordConfirmLabel;
 
-  /// No description provided for @newPasswordSubmit.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'Save password'**
+  /// In ar, this message translates to:
+  /// **'حفظ كلمة المرور'**
   String get newPasswordSubmit;
 
-  /// PLACEHOLDER COPY — the design file was not available for this string. Replace with the approved wording.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'Your password has been changed. Sign in to continue.'**
+  /// In ar, this message translates to:
+  /// **'تم تغيير كلمة المرور. سجّل الدخول للمتابعة.'**
   String get newPasswordDone;
 
-  /// No description provided for @passwordRuleMinLength.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'At least {count} characters'**
+  /// In ar, this message translates to:
+  /// **'{count} رموز على الأقل'**
   String passwordRuleMinLength(int count);
 
-  /// No description provided for @passwordRuleUppercase.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'One uppercase letter'**
+  /// In ar, this message translates to:
+  /// **'حرف كبير واحد'**
   String get passwordRuleUppercase;
 
-  /// No description provided for @passwordRuleLowercase.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'One lowercase letter'**
+  /// In ar, this message translates to:
+  /// **'حرف صغير واحد'**
   String get passwordRuleLowercase;
 
-  /// No description provided for @passwordRuleDigit.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'One number'**
+  /// In ar, this message translates to:
+  /// **'رقم واحد'**
   String get passwordRuleDigit;
 
-  /// No description provided for @passwordRuleSpecialCharacter.
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
-  /// In en, this message translates to:
-  /// **'One special character'**
+  /// In ar, this message translates to:
+  /// **'رمز خاص واحد'**
   String get passwordRuleSpecialCharacter;
 }
 

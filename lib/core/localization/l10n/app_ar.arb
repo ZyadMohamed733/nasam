@@ -80,6 +80,7 @@
   },
   "vehicleCount": "{count, plural, zero{لا توجد مركبات} one{مركبة واحدة} two{مركبتان} few{{count} مركبات} many{{count} مركبة} other{{count} مركبة}}",
   "@vehicleCount": {
+    "description": "Reference plural for new features to copy. Arabic needs six categories where English needs two.",
     "placeholders": {
       "count": {
         "type": "int"
@@ -88,6 +89,7 @@
   },
   "otpExpiresIn": "ينتهي صلاحية الرمز خلال {time}",
   "@otpExpiresIn": {
+    "description": "Countdown beneath the OTP fields. {time} is mm:ss. DESIGN-VERIFIED. This Arabic is verbatim from the design file.",
     "placeholders": {
       "time": {
         "type": "String"
@@ -95,10 +97,20 @@
     }
   },
   "otpExpired": "انتهت صلاحية الرمز.",
+  "@otpExpired": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
   "otpNotReceived": "لم يصلك الرمز؟",
+  "@otpNotReceived": {
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file, which sets it as one sentence with otpResend."
+  },
   "otpResend": "أعد إرسال الرمز",
+  "@otpResend": {
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file, which sets it as one sentence with otpNotReceived."
+  },
   "otpFieldLabel": "الرقم {position} من {count}",
   "@otpFieldLabel": {
+    "description": "Screen-reader label for a single OTP box. AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.",
     "placeholders": {
       "position": {
         "type": "int"
@@ -109,28 +121,92 @@
     }
   },
   "onboardingTitle1": "كل مركبة على شاشة واحدة",
+  "@onboardingTitle1": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
   "onboardingBody1": "تابع أسطولك مباشرة أينما كان على الطريق.",
+  "@onboardingBody1": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
   "onboardingTitle2": "مسارات تُخطَّط تلقائياً",
+  "@onboardingTitle2": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
   "onboardingBody2": "اعرف أسرع طريق، واعرف لحظة تغيّره.",
+  "@onboardingBody2": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
   "onboardingTitle3": "فريقك على تناغم",
+  "@onboardingTitle3": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
   "onboardingBody3": "شارك الخطط والتحديثات ليعمل الجميع على الصورة نفسها.",
+  "@onboardingBody3": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
   "onboardingSkip": "تخطٍ",
+  "@onboardingSkip": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
   "onboardingNext": "التالي",
+  "@onboardingNext": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
   "onboardingStart": "ابدأ الآن",
+  "@onboardingStart": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
   "loginTitle": "أهلاً بعودتك",
+  "@loginTitle": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
   "loginSubtitle": "سجّل الدخول لمتابعة أسطولك.",
+  "@loginSubtitle": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
   "loginEmailLabel": "البريد الإلكتروني",
+  "@loginEmailLabel": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
   "loginEmailHint": "name@company.com",
+  "@loginEmailHint": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
   "loginPasswordLabel": "كلمة المرور",
+  "@loginPasswordLabel": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
   "loginPasswordHint": "كلمة المرور",
+  "@loginPasswordHint": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
   "loginSubmit": "تسجيل الدخول",
+  "@loginSubmit": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
   "loginForgotPassword": "نسيت كلمة المرور؟",
+  "@loginForgotPassword": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
   "forgotPasswordTitle": "إعادة تعيين كلمة المرور",
+  "@forgotPasswordTitle": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
   "forgotPasswordSubtitle": "أدخل بريدك الإلكتروني وسنرسل لك رمزاً.",
+  "@forgotPasswordSubtitle": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
   "forgotPasswordSubmit": "إرسال الرمز",
+  "@forgotPasswordSubmit": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
   "otpTitle": "أدخل الرمز",
+  "@otpTitle": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
   "otpSubtitle": "أرسلنا رمزاً من ستة أرقام إلى {email}.",
   "@otpSubtitle": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.",
     "placeholders": {
       "email": {
         "type": "String"
@@ -138,13 +214,32 @@
     }
   },
   "otpSubmit": "تحقق",
+  "@otpSubmit": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
   "newPasswordTitle": "اختر كلمة مرور جديدة",
+  "@newPasswordTitle": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
   "newPasswordLabel": "كلمة المرور الجديدة",
+  "@newPasswordLabel": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
   "newPasswordConfirmLabel": "تأكيد كلمة المرور",
+  "@newPasswordConfirmLabel": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
   "newPasswordSubmit": "حفظ كلمة المرور",
+  "@newPasswordSubmit": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
   "newPasswordDone": "تم تغيير كلمة المرور. سجّل الدخول للمتابعة.",
+  "@newPasswordDone": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
   "passwordRuleMinLength": "{count} رموز على الأقل",
   "@passwordRuleMinLength": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.",
     "placeholders": {
       "count": {
         "type": "int"
@@ -152,7 +247,19 @@
     }
   },
   "passwordRuleUppercase": "حرف كبير واحد",
+  "@passwordRuleUppercase": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
   "passwordRuleLowercase": "حرف صغير واحد",
+  "@passwordRuleLowercase": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
   "passwordRuleDigit": "رقم واحد",
-  "passwordRuleSpecialCharacter": "رمز خاص واحد"
+  "@passwordRuleDigit": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
+  "passwordRuleSpecialCharacter": "رمز خاص واحد",
+  "@passwordRuleSpecialCharacter": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  }
 }
