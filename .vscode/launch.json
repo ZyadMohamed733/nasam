@@ -1,0 +1,47 @@
+{
+  // Committed on purpose. The URLs in config/*.json are compile-time defines,
+  // so an entrypoint launched without --dart-define-from-file throws
+  // "Missing BASE_URL or WS_URL" at startup. Keeping these in the repo means
+  // nobody has to rediscover that.
+  //
+  // The flags live in "toolArgs", not "args". The Dart extension builds the
+  // command as:
+  //
+  //     flutter run (toolArgs) -t lib/main.dart (args)
+  //
+  // so "args" would land after the entrypoint and go to the app rather than to
+  // the Flutter tool, the defines would never reach compilation, and the app
+  // would fail exactly as it does with no flags at all.
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "nasam dev",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_dev.dart",
+      "toolArgs": ["--flavor", "dev", "--dart-define-from-file=config/dev.json"]
+    },
+    {
+      "name": "nasam staging",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_staging.dart",
+      "toolArgs": [
+        "--flavor",
+        "staging",
+        "--dart-define-from-file=config/staging.json"
+      ]
+    },
+    {
+      "name": "nasam prod",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_prod.dart",
+      "toolArgs": [
+        "--flavor",
+        "prod",
+        "--dart-define-from-file=config/prod.json"
+      ]
+    }
+  ]
+}

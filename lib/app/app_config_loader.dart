@@ -30,8 +30,21 @@ abstract final class AppConfigLoader {
   }) {
     if (baseUrl.isEmpty || wsUrl.isEmpty) {
       throw StateError(
-        'Missing BASE_URL or WS_URL. Run with '
-        '--dart-define-from-file=config/${flavor.name}.json',
+        'Missing BASE_URL or WS_URL for the "${flavor.name}" flavor.\n'
+        '\n'
+        'These are compile-time defines, so they have to be supplied to the '
+        'build — a hot restart cannot add them.\n'
+        '\n'
+        'From the CLI:\n'
+        '  flutter run --flavor ${flavor.name} '
+        '-t lib/main_${flavor.name}.dart '
+        '--dart-define-from-file=config/${flavor.name}.json\n'
+        '\n'
+        'From an IDE, pick the "nasam ${flavor.name}" configuration rather '
+        'than running the file directly: Android Studio and IntelliJ read '
+        '.run/nasam_${flavor.name}.run.xml, VS Code reads .vscode/launch.json. '
+        'Running lib/main_${flavor.name}.dart with no configuration is what '
+        'produces this error.',
       );
     }
 
