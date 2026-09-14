@@ -214,7 +214,16 @@ class _SkipAction extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(label, style: context.textTheme.labelLarge),
+            // Every style in the scale carries a colour, so this has to be
+            // overridden explicitly — the TextButton's foregroundColor loses
+            // to the Text's own style and the label came out near-black on
+            // the photograph.
+            Text(
+              label,
+              style: context.textTheme.labelLarge?.copyWith(
+                color: AppColors.neutralWhite,
+              ),
+            ),
             const SizedBox(width: AppSizes.p4),
             Icon(icon, size: AppIconSize.small.value),
           ],

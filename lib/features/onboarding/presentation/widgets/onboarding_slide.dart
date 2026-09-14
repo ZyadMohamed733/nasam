@@ -11,6 +11,11 @@ import '../../../../core/extensions/context_extensions.dart';
 /// what makes white status-bar glyphs and the skip action readable against any
 /// photograph, and a fade to the page colour at the bottom, so the image meets
 /// the copy without a hard seam.
+///
+/// Both ramps are sampled from the design's own overlay export rather than
+/// guessed — colour, opacity and stops all come from reading its pixels down
+/// the middle. The violet is opaque at the very top, which is the point: it has
+/// to carry white status-bar glyphs over whatever photograph is behind it.
 class OnboardingSlide extends StatelessWidget {
   const OnboardingSlide({
     super.key,
@@ -22,6 +27,13 @@ class OnboardingSlide extends StatelessWidget {
   final String image;
   final String title;
   final String body;
+
+  /// Sampled from `Over Lay.png`, the design's overlay layer exported on its
+  /// own. It is not one of the palette's violets — the nearest, bluePurple500,
+  /// is duller and reads as a different wash — so it is kept here, next to the
+  /// thing it belongs to, rather than added to the token set as a colour the
+  /// design system does not actually define.
+  static const Color _overlayViolet = Color(0xFF5B21B6);
 
   /// The design draws the artwork 501 tall in an 874 frame. Held as a
   /// proportion rather than a fixed 501 so it keeps that share of a screen
@@ -47,16 +59,13 @@ class OnboardingSlide extends StatelessWidget {
                 // The copy says everything the artwork does.
                 excludeFromSemantics: true,
               ),
-              DecoratedBox(
+              const DecoratedBox(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: [
-                      semantic.primary.withValues(alpha: 0.55),
-                      semantic.primary.withValues(alpha: 0.0),
-                    ],
-                    stops: const [0.0, 0.45],
+                    colors: [_overlayViolet, Color(0x005B21B6)],
+                    stops: [0.0, 0.58],
                   ),
                 ),
               ),
@@ -65,8 +74,15 @@ class OnboardingSlide extends StatelessWidget {
                   gradient: LinearGradient(
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,
-                    colors: [page, page.withValues(alpha: 0.0)],
-                    stops: const [0.0, 0.28],
+                    // Three stops, not two: the export holds near-full opacity
+                    // for the first stretch and only then falls away, so a
+                    // straight ramp leaves the seam visible.
+                    colors: [
+                      page,
+                      page.withValues(alpha: 0.85),
+                      page.withValues(alpha: 0.0),
+                    ],
+                    stops: const [0.0, 0.15, 0.46],
                   ),
                 ),
               ),
