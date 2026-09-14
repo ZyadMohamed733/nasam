@@ -41,6 +41,7 @@ class AppButton extends StatelessWidget {
     this.variant = AppButtonVariant.primary,
     this.isLoading = false,
     this.icon,
+    this.trailingIcon,
     this.width,
   });
 
@@ -49,8 +50,12 @@ class AppButton extends StatelessWidget {
   final AppButtonVariant variant;
   final bool isLoading;
 
-  /// Drawn at 16 beside the label, per the design's inline icon size.
+  /// Drawn at 16 before the label, per the design's inline icon size.
   final IconData? icon;
+
+  /// Drawn at 16 after the label — which under RTL puts it on the left, the
+  /// way the onboarding and auth buttons carry their onward arrow.
+  final IconData? trailingIcon;
 
   /// Defaults to full width.
   final double? width;
@@ -182,6 +187,10 @@ class AppButton extends StatelessWidget {
         Flexible(
           child: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis),
         ),
+        if (trailingIcon != null) ...[
+          const SizedBox(width: AppSizes.p4),
+          Icon(trailingIcon, size: AppIconSize.small.value),
+        ],
       ],
     );
   }

@@ -30,6 +30,15 @@ abstract final class AppIcons {
 
   /// Solar / Hamburger Menu / Outline.
   static const IconData menu = Icons.menu_rounded;
+
+  /// "Onward" — the arrow the onboarding and auth buttons carry.
+  ///
+  /// A plain constant, and it must stay one: `arrow_forward_rounded` is
+  /// declared with `matchTextDirection: true`, so Flutter already mirrors it
+  /// under RTL and it points left in Arabic on its own. Picking
+  /// `arrow_back_rounded` for RTL instead flips an already-flipped glyph and
+  /// lands back where it started, pointing the wrong way.
+  static const IconData forward = Icons.arrow_forward_rounded;
 }
 
 /// The two sizes the design draws icons at: 16 inline beside text, 24

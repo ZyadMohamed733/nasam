@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_assets.dart';
+import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_icons.dart';
 import '../../../../core/constants/app_sizes.dart';
 import '../../../../core/di/injection_container.dart';
 import '../../../../core/extensions/context_extensions.dart';
@@ -97,63 +99,125 @@ class _OnboardingView extends StatelessWidget {
     final cubit = context.read<OnboardingCubit>();
 
     return Scaffold(
-      body: SafeArea(
-        child: BlocBuilder<OnboardingCubit, OnboardingState>(
-          builder: (context, state) {
-            final isLast = state.pageIndex == pages.length - 1;
+      backgroundColor: context.semanticColors.pageBackground,
+      // Deliberately no SafeArea around the whole page: the artwork runs up
+      // under the status bar. Only the bottom inset is honoured, for the home
+      // indicator.
+      body: Stack(
+        children: [
+          SafeArea(
+            top: false,
+            child: BlocBuilder<OnboardingCubit, OnboardingState>(
+              builder: (context, state) {
+                final isLast = state.pageIndex == pages.length - 1;
 
-            return Padding(
-              padding: const EdgeInsets.all(AppSizes.screenPadding),
-              child: Column(
-                children: [
-                  Align(
-                    alignment: AlignmentDirectional.centerEnd,
-                    child: AppButton(
-                      // Skip disappears on the last slide, where the primary
-                      // action already finishes.
-                      onPressed: isLast ? null : cubit.finish,
-                      label: l10n.onboardingSkip,
-                      variant: AppButtonVariant.tertiary,
-                      width: AppSizes.iconButtonMedium * 2,
-                    ),
-                  ),
-                  Expanded(
-                    child: PageView.builder(
-                      controller: controller,
-                      onPageChanged: cubit.onPageChanged,
-                      itemCount: pages.length,
-                      itemBuilder: (context, i) => OnboardingSlide(
-                        image: pages[i].image,
-                        title: pages[i].title,
-                        body: pages[i].body,
+                return Column(
+                  children: [
+                    Expanded(
+                      child: PageView.builder(
+                        controller: controller,
+                        onPageChanged: cubit.onPageChanged,
+                        itemCount: pages.length,
+                        itemBuilder: (context, i) => OnboardingSlide(
+                          image: pages[i].image,
+                          title: pages[i].title,
+                          body: pages[i].body,
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: AppSizes.p24),
-                  AppPageDots(
-                    count: pages.length,
-                    activeIndex: state.pageIndex,
-                  ),
-                  const SizedBox(height: AppSizes.p24),
-                  AppButton(
-                    onPressed: () {
-                      if (isLast) {
-                        cubit.finish();
-                      } else {
-                        controller.nextPage(
-                          duration: const Duration(milliseconds: 250),
-                          curve: Curves.easeOut,
-                        );
-                      }
-                    },
-                    label: isLast ? l10n.onboardingStart : l10n.onboardingNext,
-                    width: AppSizes.onboardingButtonWidth,
-                  ),
-                  const SizedBox(height: AppSizes.p16),
-                ],
-              ),
-            );
-          },
+                    AppButton(
+                      onPressed: () {
+                        if (isLast) {
+                          cubit.finish();
+                        } else {
+                          controller.nextPage(
+                            duration: const Duration(milliseconds: 250),
+                            curve: Curves.easeOut,
+                          );
+                        }
+                      },
+                      label: isLast
+                          ? l10n.onboardingStart
+                          : l10n.onboardingNext,
+                      trailingIcon: AppIcons.forward,
+                      width: AppSizes.onboardingButtonWidth,
+                    ),
+                    const SizedBox(height: AppSizes.p16),
+                    AppPageDots(
+                      count: pages.length,
+                      activeIndex: state.pageIndex,
+                    ),
+                    const SizedBox(height: AppSizes.p24),
+                  ],
+                );
+              },
+            ),
+          ),
+          // Sits on the artwork rather than above it, so it reads as part of
+          // the image the way the design draws it. `end` is the left edge under
+          // Arabic, which is where it belongs.
+          PositionedDirectional(
+            top: MediaQuery.paddingOf(context).top + AppSizes.p8,
+            end: AppSizes.p8,
+            child: BlocBuilder<OnboardingCubit, OnboardingState>(
+              buildWhen: (a, b) => a.pageIndex != b.pageIndex,
+              builder: (context, state) {
+                final isLast = state.pageIndex == pages.length - 1;
+                return _SkipAction(
+                  // Skip disappears on the last slide, where the primary action
+                  // already finishes.
+                  onPressed: isLast ? null : cubit.finish,
+                  label: l10n.onboardingSkip,
+                  icon: AppIcons.forward,
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// The skip affordance, drawn over the artwork.
+///
+/// Not an [AppButton]: it is white-on-photograph rather than theme-coloured,
+/// which no button variant describes, and inventing a fourth variant for one
+/// call site would put a rule in the design system the design does not have.
+class _SkipAction extends StatelessWidget {
+  const _SkipAction({
+    required this.onPressed,
+    required this.label,
+    required this.icon,
+  });
+
+  final VoidCallback? onPressed;
+  final String label;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedOpacity(
+      opacity: onPressed == null ? 0 : 1,
+      duration: const Duration(milliseconds: 150),
+      child: TextButton(
+        onPressed: onPressed,
+        style: TextButton.styleFrom(
+          foregroundColor: AppColors.neutralWhite,
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSizes.p12,
+            vertical: AppSizes.p8,
+          ),
+          minimumSize: Size.zero,
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(label, style: context.textTheme.labelLarge),
+            const SizedBox(width: AppSizes.p4),
+            Icon(icon, size: AppIconSize.small.value),
+          ],
         ),
       ),
     );
