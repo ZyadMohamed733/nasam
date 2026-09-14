@@ -59,3 +59,10 @@ test/goldens/failures/
 # Written by `flutter gen-l10n` to report keys missing from a translation.
 # A build artefact, not a checked-in list.
 l10n_untranslated.json
+
+# Design references and working notes.
+# The exported screenshots in here are large and are not worth versioning, but
+# the markdown is a deliverable — NASAM_REFERENCE.md links to
+# docs/FEATURE_CONVENTIONS.md as the layer rules — so it stays trackable.
+docs/*
+!docs/*.md
