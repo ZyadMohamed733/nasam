@@ -108,18 +108,6 @@
   "@otpResend": {
     "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file, which sets it as one sentence with otpNotReceived."
   },
-  "otpFieldLabel": "الرقم {position} من {count}",
-  "@otpFieldLabel": {
-    "description": "Screen-reader label for a single OTP box. AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.",
-    "placeholders": {
-      "position": {
-        "type": "int"
-      },
-      "count": {
-        "type": "int"
-      }
-    }
-  },
   "onboardingTitle1": "كل مركبة على شاشة واحدة",
   "@onboardingTitle1": {
     "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."

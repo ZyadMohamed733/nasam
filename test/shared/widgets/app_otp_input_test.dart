@@ -1,69 +1,66 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nasam/shared/widgets/app_otp_input.dart';
+import 'package:pinput/pinput.dart';
 
 import '../../helpers/widget_harness.dart';
 
 void main() {
   group('AppOtpInput', () {
-    Finder boxAt(int i) => find
-        .descendant(of: find.byType(AppOtpInput), matching: find.byType(TextField))
-        .at(i);
+    // Pinput presents the code as one field and draws the boxes itself, so
+    // these reach for its editable rather than for a box.
+    Finder editable() => find.descendant(
+      of: find.byType(Pinput),
+      matching: find.byType(EditableText),
+    );
 
     // Teardown matters here: the countdown is a periodic timer, and a test
     // that leaves one pending fails the whole file.
     Future<void> unmount(WidgetTester tester) =>
         tester.pumpWidget(const SizedBox());
 
-    testWidgets('renders one box per digit', (tester) async {
+    testWidgets('asks Pinput for one box per digit', (tester) async {
       await pumpInApp(tester, const AppOtpInput(length: 4));
-      expect(
-        find.descendant(
-          of: find.byType(AppOtpInput),
-          matching: find.byType(TextField),
-        ),
-        findsNWidgets(4),
-      );
-      await unmount(tester);
-    });
-
-    testWidgets('typing a digit advances to the next box', (tester) async {
-      await pumpInApp(tester, const AppOtpInput(length: 4));
-
-      await tester.enterText(boxAt(0), '1');
-      await tester.pump();
-
-      expect(tester.widget<TextField>(boxAt(1)).focusNode?.hasFocus, isTrue);
+      expect(tester.widget<Pinput>(find.byType(Pinput)).length, 4);
       await unmount(tester);
     });
 
     testWidgets('reports the code once every box is filled', (tester) async {
       String? completed;
+      final changes = <String>[];
       await pumpInApp(
         tester,
-        AppOtpInput(length: 4, onCompleted: (v) => completed = v),
+        AppOtpInput(
+          length: 4,
+          onChanged: changes.add,
+          onCompleted: (v) => completed = v,
+        ),
       );
 
-      for (var i = 0; i < 4; i++) {
-        await tester.enterText(boxAt(i), '${i + 1}');
-        await tester.pump();
-      }
+      await tester.enterText(editable(), '12');
+      await tester.pump();
+      expect(completed, isNull, reason: 'not complete yet');
+      expect(changes.last, '12');
 
+      await tester.enterText(editable(), '1234');
+      await tester.pump();
       expect(completed, '1234');
       await unmount(tester);
     });
 
+    // Pinput ships with no input formatters, so without ours a paste or a
+    // hardware keyboard puts letters in a numeric code.
     testWidgets('rejects non-digits', (tester) async {
-      String? changed;
+      final changes = <String>[];
       await pumpInApp(
         tester,
-        AppOtpInput(length: 4, onChanged: (v) => changed = v),
+        AppOtpInput(length: 4, onChanged: changes.add),
       );
 
-      await tester.enterText(boxAt(0), 'a');
+      await tester.enterText(editable(), 'a1b2');
       await tester.pump();
 
-      expect(changed ?? '', isEmpty);
+      expect(changes.last, '12');
       await unmount(tester);
     });
 
@@ -77,10 +74,8 @@ void main() {
       );
 
       expect(find.textContaining('01:30'), findsOneWidget);
-
       await tester.pump(const Duration(seconds: 1));
       expect(find.textContaining('01:29'), findsOneWidget);
-
       await unmount(tester);
     });
 
@@ -122,9 +117,22 @@ void main() {
       tester,
     ) async {
       await pumpInApp(tester, const AppOtpInput());
+      expect(tester.widget<TextButton>(find.byType(TextButton)).onPressed,
+          isNull);
+      await unmount(tester);
+    });
 
-      final button = tester.widget<TextButton>(find.byType(TextButton));
-      expect(button.onPressed, isNull);
+    testWidgets('renders the submit action between countdown and resend', (
+      tester,
+    ) async {
+      await pumpInApp(
+        tester,
+        const AppOtpInput(action: Text('SUBMIT')),
+      );
+
+      final submitY = tester.getTopLeft(find.text('SUBMIT')).dy;
+      final resendY = tester.getTopLeft(find.text('Resend code')).dy;
+      expect(submitY, lessThan(resendY));
       await unmount(tester);
     });
   });

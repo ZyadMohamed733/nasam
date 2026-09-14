@@ -166,11 +166,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get otpResend => 'Resend code';
 
   @override
-  String otpFieldLabel(int position, int count) {
-    return 'Digit $position of $count';
-  }
-
-  @override
   String get onboardingTitle1 => 'Every vehicle, on one screen';
 
   @override

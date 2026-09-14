@@ -183,11 +183,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get otpResend => 'أعد إرسال الرمز';
 
   @override
-  String otpFieldLabel(int position, int count) {
-    return 'الرقم $position من $count';
-  }
-
-  @override
   String get onboardingTitle1 => 'كل مركبة على شاشة واحدة';
 
   @override

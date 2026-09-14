@@ -302,12 +302,6 @@ abstract class AppLocalizations {
   /// **'أعد إرسال الرمز'**
   String get otpResend;
 
-  /// Screen-reader label for a single OTP box. AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
-  ///
-  /// In ar, this message translates to:
-  /// **'الرقم {position} من {count}'**
-  String otpFieldLabel(int position, int count);
-
   /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
   ///
   /// In ar, this message translates to:

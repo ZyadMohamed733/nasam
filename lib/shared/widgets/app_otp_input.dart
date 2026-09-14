@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pinput/pinput.dart';
 
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_sizes.dart';
@@ -10,14 +11,16 @@ import '../../core/extensions/context_extensions.dart';
 /// The design's one-time-code block: a row of boxed digit fields, an expiry
 /// countdown, the submit action and a resend link, in that order.
 ///
-/// The digit count and the countdown are parameters rather than constants —
-/// the code length and validity window are a backend decision, and the design
-/// drawing five boxes at 03:30 is one case, not a rule.
+/// The boxes are [Pinput]. It was a hand-rolled row of single-character
+/// `TextField`s, which meant owning focus advance, backspace-to-previous and
+/// paste-spreading by hand — and still not having SMS autofill, cursor
+/// animation, or a single accessible field rather than five unlabelled ones.
+/// What is kept here is what the design specifies: the sizes, the per-state
+/// colours, and the order of the three things under the boxes.
 ///
-/// The row follows the ambient [Directionality] rather than being pinned LTR.
-/// Under Arabic that means the first box is the rightmost and the code fills
-/// right to left, which is how the design draws a partly-entered code. The
-/// advance logic is index-based, so it needs no direction of its own.
+/// The row follows the ambient [Directionality]. Under Arabic that means the
+/// first box is the rightmost and the code fills right to left, which is how
+/// the design draws a partly-entered code.
 class AppOtpInput extends StatefulWidget {
   const AppOtpInput({
     super.key,
@@ -56,16 +59,17 @@ class AppOtpInput extends StatefulWidget {
 }
 
 class _AppOtpInputState extends State<AppOtpInput> {
-  late final List<TextEditingController> _controllers;
-  late final List<FocusNode> _focusNodes;
+  late final TextEditingController _controller;
   Timer? _timer;
   late Duration _remaining;
+
+  /// Measured from the design: 52 square, 8 radius.
+  static const double _boxSize = 52.0;
 
   @override
   void initState() {
     super.initState();
-    _controllers = List.generate(widget.length, (_) => TextEditingController());
-    _focusNodes = List.generate(widget.length, (_) => FocusNode());
+    _controller = TextEditingController();
     _remaining = widget.validity;
     _startCountdown();
   }
@@ -73,12 +77,7 @@ class _AppOtpInputState extends State<AppOtpInput> {
   @override
   void dispose() {
     _timer?.cancel();
-    for (final c in _controllers) {
-      c.dispose();
-    }
-    for (final f in _focusNodes) {
-      f.dispose();
-    }
+    _controller.dispose();
     super.dispose();
   }
 
@@ -96,30 +95,7 @@ class _AppOtpInputState extends State<AppOtpInput> {
     });
   }
 
-  String get _value => _controllers.map((c) => c.text).join();
-
   bool get _expired => _remaining == Duration.zero;
-
-  void _onDigitChanged(int index, String value) {
-    // A paste lands as several characters in one box; spread it across the row.
-    if (value.length > 1) {
-      final digits = value.replaceAll(RegExp(r'\D'), '');
-      for (var i = 0; i < digits.length && index + i < widget.length; i++) {
-        _controllers[index + i].text = digits[i];
-      }
-      final next = (index + digits.length).clamp(0, widget.length - 1);
-      _focusNodes[next].requestFocus();
-    } else if (value.isNotEmpty && index < widget.length - 1) {
-      _focusNodes[index + 1].requestFocus();
-    } else if (value.isEmpty && index > 0) {
-      _focusNodes[index - 1].requestFocus();
-    }
-
-    final joined = _value;
-    widget.onChanged?.call(joined);
-    if (joined.length == widget.length) widget.onCompleted?.call(joined);
-    setState(() {});
-  }
 
   static String _format(Duration d) {
     final minutes = d.inMinutes.toString().padLeft(2, '0');
@@ -127,31 +103,67 @@ class _AppOtpInputState extends State<AppOtpInput> {
     return '$minutes:$seconds';
   }
 
+  PinTheme _theme(BuildContext context, {required Color border, Color? text}) {
+    final semantic = context.semanticColors;
+    return PinTheme(
+      width: _boxSize,
+      height: _boxSize,
+      textStyle: context.textTheme.displaySmall?.copyWith(
+        color: text ?? semantic.primary,
+      ),
+      decoration: BoxDecoration(
+        color: semantic.containerBackground,
+        borderRadius: BorderRadius.circular(AppSizes.r8),
+        border: Border.all(color: border),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final semantic = context.semanticColors;
+    final hasError = widget.errorText != null;
+
+    final empty = _theme(context, border: semantic.containerBorder);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Row(
-          children: [
-            for (var i = 0; i < widget.length; i++) ...[
-              if (i > 0) const SizedBox(width: AppSizes.p16),
-              // Flexible rather than a fixed 52: the boxes fill the card on
-              // whatever width it has, and stay square doing it.
-              Expanded(child: _digitBox(context, semantic, i)),
-            ],
-          ],
+        Pinput(
+          length: widget.length,
+          controller: _controller,
+          // spaceBetween rather than a separator: the boxes are a fixed 52 and
+          // the card width varies, so the slack belongs in the gaps.
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          defaultPinTheme: empty,
+          followingPinTheme: empty,
+          focusedPinTheme: _theme(
+            context,
+            border: hasError ? semantic.failText : semantic.primary,
+          ),
+          // A filled box carries the brand colour, which is what separates it
+          // from an empty one at a glance.
+          submittedPinTheme: _theme(context, border: semantic.primary),
+          errorPinTheme: _theme(
+            context,
+            border: semantic.failText,
+            text: semantic.failText,
+          ),
+          // Pinput defaults to no formatters, so a numeric keyboard is the
+          // only thing keeping letters out — and that is a suggestion, not a
+          // guarantee: a paste or a hardware keyboard walks straight past it.
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+          forceErrorState: hasError,
+          // The error is drawn below with the rest of the block's copy, so
+          // Pinput must not draw its own underneath the boxes as well.
+          errorBuilder: (_, _) => const SizedBox.shrink(),
+          onChanged: widget.onChanged,
+          onCompleted: widget.onCompleted,
         ),
         const SizedBox(height: AppSizes.p16),
-        _Countdown(
-          remaining: _remaining,
-          expired: _expired,
-          format: _format,
-        ),
-        if (widget.errorText != null) ...[
+        _Countdown(remaining: _remaining, expired: _expired, format: _format),
+        if (hasError) ...[
           const SizedBox(height: AppSizes.p8),
           Text(
             widget.errorText!,
@@ -170,57 +182,6 @@ class _AppOtpInputState extends State<AppOtpInput> {
       ],
     );
   }
-
-  Widget _digitBox(BuildContext context, AppSemanticColors semantic, int i) {
-    final hasError = widget.errorText != null;
-    final filled = _controllers[i].text.isNotEmpty;
-
-    return AspectRatio(
-      aspectRatio: 1,
-      child: Semantics(
-        label: context.l10n.otpFieldLabel(i + 1, widget.length),
-        child: TextField(
-          controller: _controllers[i],
-          focusNode: _focusNodes[i],
-          keyboardType: TextInputType.number,
-          textAlign: TextAlign.center,
-          maxLength: 1,
-          style: context.textTheme.displaySmall?.copyWith(
-            // A filled box carries the brand colour, which is what separates
-            // it from an empty one at a glance.
-            color: hasError ? semantic.failText : semantic.primary,
-          ),
-          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          onChanged: (value) => _onDigitChanged(i, value),
-          decoration: InputDecoration(
-            counterText: '',
-            isDense: true,
-            filled: true,
-            fillColor: semantic.containerBackground,
-            contentPadding: EdgeInsets.zero,
-            border: _border(semantic.containerBorder),
-            enabledBorder: _border(
-              hasError
-                  ? semantic.failText
-                  : filled
-                  ? semantic.primary
-                  : semantic.containerBorder,
-            ),
-            focusedBorder: _border(
-              hasError ? semantic.failText : semantic.primary,
-              1.5,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  static OutlineInputBorder _border(Color color, [double width = 1.0]) =>
-      OutlineInputBorder(
-        borderRadius: BorderRadius.circular(AppSizes.r8),
-        borderSide: BorderSide(color: color, width: width),
-      );
 }
 
 /// The expiry line, with the clock picked out in the fail colour.
@@ -266,10 +227,7 @@ class _Countdown extends StatelessWidget {
       TextSpan(
         children: [
           TextSpan(text: sentence.substring(0, at)),
-          TextSpan(
-            text: clock,
-            style: TextStyle(color: semantic.failText),
-          ),
+          TextSpan(text: clock, style: TextStyle(color: semantic.failText)),
           TextSpan(text: sentence.substring(at + clock.length)),
         ],
       ),

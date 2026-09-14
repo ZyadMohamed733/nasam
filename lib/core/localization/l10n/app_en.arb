@@ -34,7 +34,6 @@
   "otpExpired": "The code has expired.",
   "otpNotReceived": "Didn't receive the code?",
   "otpResend": "Resend code",
-  "otpFieldLabel": "Digit {position} of {count}",
   "onboardingTitle1": "Every vehicle, on one screen",
   "onboardingBody1": "Follow your whole fleet live, wherever it is on the road.",
   "onboardingTitle2": "Routes that plan themselves",
