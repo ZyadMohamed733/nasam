@@ -89,9 +89,11 @@ class AppThemeData {
     return InputDecorationTheme(
       filled: true,
       fillColor: s.containerBackground,
+      // 20pt line box + 2*12 = the design's 44pt field. See AppTextField for
+      // why this is padding rather than a height constraint.
       contentPadding: const EdgeInsets.symmetric(
         horizontal: AppSizes.p8,
-        vertical: AppSizes.p4,
+        vertical: AppSizes.p12,
       ),
       border: border(s.containerBorder),
       enabledBorder: border(s.containerBorder),

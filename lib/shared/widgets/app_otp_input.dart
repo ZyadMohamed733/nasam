@@ -138,7 +138,7 @@ class _AppOtpInputState extends State<AppOtpInput> {
         Row(
           children: [
             for (var i = 0; i < widget.length; i++) ...[
-              if (i > 0) const SizedBox(width: AppSizes.p12),
+              if (i > 0) const SizedBox(width: AppSizes.p16),
               // Flexible rather than a fixed 52: the boxes fill the card on
               // whatever width it has, and stay square doing it.
               Expanded(child: _digitBox(context, semantic, i)),

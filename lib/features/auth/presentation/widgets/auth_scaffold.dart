@@ -58,8 +58,10 @@ class AuthScaffold extends StatelessWidget {
           ),
           SafeArea(
             child: SingleChildScrollView(
+              // The design insets the auth card 21 a side, giving it 360 of a
+              // 402 frame — wider than the 16 general screens use.
               padding: const EdgeInsets.symmetric(
-                horizontal: AppSizes.screenPadding,
+                horizontal: AppSizes.p20,
                 vertical: AppSizes.p24,
               ),
               child: Column(
@@ -111,7 +113,13 @@ class _FormCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(AppSizes.p16),
+      // Horizontal 20 is measured; vertical reads larger than that in the
+      // reference, though the card's rounded corners make its true top edge
+      // hard to pin from a screenshot. Worth confirming against the Figma.
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSizes.p20,
+        vertical: AppSizes.p24,
+      ),
       decoration: BoxDecoration(
         color: AppColors.neutralWhite,
         borderRadius: BorderRadius.circular(AppSizes.r16),

@@ -66,7 +66,7 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                 autofillHints: const [AutofillHints.newPassword],
                 onChanged: cubit.onPasswordChanged,
               ),
-              const SizedBox(height: AppSizes.p8),
+              const SizedBox(height: AppSizes.p16),
               AppTextField(
                 label: l10n.newPasswordConfirmLabel,
                 isRequired: true,

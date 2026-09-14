@@ -91,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
                         (v) => AppValidators.required(v),
                       ),
                     ),
-                    const SizedBox(height: AppSizes.p8),
+                    const SizedBox(height: AppSizes.p16),
                     AppTextField(
                       controller: _password,
                       label: l10n.loginPasswordLabel,

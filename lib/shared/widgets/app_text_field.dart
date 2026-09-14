@@ -154,10 +154,7 @@ class _AppTextFieldState extends State<AppTextField> {
           ),
           const SizedBox(height: AppSizes.p8),
         ],
-        ConstrainedBox(
-          constraints: const BoxConstraints(minHeight: AppSizes.inputHeight),
-          child: _input(context, field, semantic, hasError: error != null),
-        ),
+        _input(context, field, semantic, hasError: error != null),
         if (message != null) ...[
           const SizedBox(height: AppSizes.p8),
           Text(
@@ -218,9 +215,23 @@ class _AppTextFieldState extends State<AppTextField> {
         fillColor: enabled
             ? semantic.containerBackground
             : semantic.hover,
+        // Vertical padding is what sizes the drawn box, and 12 is not a taste
+        // decision: bodyMedium is 16 on a 20/16 line, so its line box is 20,
+        // and 20 + 2*12 is the design's 44. Setting a BoxConstraints minHeight
+        // instead grows the decorator without growing the painted container,
+        // which is how this shipped as a 28-tall outline floating in a 44 slot.
+        // Padding still gives way to a larger text scale rather than clipping.
         contentPadding: const EdgeInsets.symmetric(
           horizontal: AppSizes.p8,
-          vertical: AppSizes.p4,
+          vertical: AppSizes.p12,
+        ),
+        // Without this the decorator imposes a 48 interactive minimum on the
+        // suffix and the password field ends up 4 taller than every other
+        // field on the form. The button keeps its own 32-wide tap target.
+        suffixIconConstraints: const BoxConstraints(
+          minWidth: AppSizes.iconButtonSmall,
+          minHeight: AppSizes.p24,
+          maxHeight: AppSizes.inputHeight,
         ),
         hintText: widget.hint,
         // `textDirection` above governs typed text only; the hint is laid out
@@ -240,6 +251,11 @@ class _AppTextFieldState extends State<AppTextField> {
                       ? Icons.visibility_off_rounded
                       : Icons.visibility_rounded,
                   size: AppSizes.iconSm,
+                ),
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(
+                  minWidth: AppSizes.iconButtonSmall,
+                  minHeight: AppSizes.p24,
                 ),
                 onPressed: () => setState(() => _obscureText = !_obscureText),
               )
