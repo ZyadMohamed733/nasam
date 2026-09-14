@@ -199,4 +199,82 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingStart => 'Get started';
+
+  @override
+  String get loginTitle => 'Welcome back';
+
+  @override
+  String get loginSubtitle => 'Sign in to follow your fleet.';
+
+  @override
+  String get loginEmailLabel => 'Email';
+
+  @override
+  String get loginEmailHint => 'name@company.com';
+
+  @override
+  String get loginPasswordLabel => 'Password';
+
+  @override
+  String get loginPasswordHint => 'Your password';
+
+  @override
+  String get loginSubmit => 'Sign in';
+
+  @override
+  String get loginForgotPassword => 'Forgot your password?';
+
+  @override
+  String get forgotPasswordTitle => 'Reset your password';
+
+  @override
+  String get forgotPasswordSubtitle =>
+      'Enter your email and we will send you a code.';
+
+  @override
+  String get forgotPasswordSubmit => 'Send code';
+
+  @override
+  String get otpTitle => 'Enter the code';
+
+  @override
+  String otpSubtitle(String email) {
+    return 'We sent a six-digit code to $email.';
+  }
+
+  @override
+  String get otpSubmit => 'Verify';
+
+  @override
+  String get newPasswordTitle => 'Choose a new password';
+
+  @override
+  String get newPasswordLabel => 'New password';
+
+  @override
+  String get newPasswordConfirmLabel => 'Confirm password';
+
+  @override
+  String get newPasswordSubmit => 'Save password';
+
+  @override
+  String get newPasswordDone =>
+      'Your password has been changed. Sign in to continue.';
+
+  @override
+  String passwordRuleMinLength(int count) {
+    return 'At least $count characters';
+  }
+
+  @override
+  String get passwordRuleUppercase => 'One uppercase letter';
+
+  @override
+  String get passwordRuleLowercase => 'One lowercase letter';
+
+  @override
+  String get passwordRuleDigit => 'One number';
+
+  @override
+  String get passwordRuleSpecialCharacter => 'One special character';
 }

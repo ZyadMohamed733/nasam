@@ -361,6 +361,150 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Get started'**
   String get onboardingStart;
+
+  /// PLACEHOLDER COPY — the design file was not available for this string. Replace with the approved wording.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back'**
+  String get loginTitle;
+
+  /// PLACEHOLDER COPY — the design file was not available for this string. Replace with the approved wording.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to follow your fleet.'**
+  String get loginSubtitle;
+
+  /// No description provided for @loginEmailLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get loginEmailLabel;
+
+  /// No description provided for @loginEmailHint.
+  ///
+  /// In en, this message translates to:
+  /// **'name@company.com'**
+  String get loginEmailHint;
+
+  /// No description provided for @loginPasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get loginPasswordLabel;
+
+  /// No description provided for @loginPasswordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your password'**
+  String get loginPasswordHint;
+
+  /// No description provided for @loginSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get loginSubmit;
+
+  /// No description provided for @loginForgotPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot your password?'**
+  String get loginForgotPassword;
+
+  /// PLACEHOLDER COPY — the design file was not available for this string. Replace with the approved wording.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset your password'**
+  String get forgotPasswordTitle;
+
+  /// PLACEHOLDER COPY — the design file was not available for this string. Replace with the approved wording.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email and we will send you a code.'**
+  String get forgotPasswordSubtitle;
+
+  /// No description provided for @forgotPasswordSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Send code'**
+  String get forgotPasswordSubmit;
+
+  /// PLACEHOLDER COPY — the design file was not available for this string. Replace with the approved wording.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the code'**
+  String get otpTitle;
+
+  /// PLACEHOLDER COPY — the design file was not available for this string. Replace with the approved wording.
+  ///
+  /// In en, this message translates to:
+  /// **'We sent a six-digit code to {email}.'**
+  String otpSubtitle(String email);
+
+  /// No description provided for @otpSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify'**
+  String get otpSubmit;
+
+  /// PLACEHOLDER COPY — the design file was not available for this string. Replace with the approved wording.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a new password'**
+  String get newPasswordTitle;
+
+  /// No description provided for @newPasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'New password'**
+  String get newPasswordLabel;
+
+  /// No description provided for @newPasswordConfirmLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm password'**
+  String get newPasswordConfirmLabel;
+
+  /// No description provided for @newPasswordSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Save password'**
+  String get newPasswordSubmit;
+
+  /// PLACEHOLDER COPY — the design file was not available for this string. Replace with the approved wording.
+  ///
+  /// In en, this message translates to:
+  /// **'Your password has been changed. Sign in to continue.'**
+  String get newPasswordDone;
+
+  /// No description provided for @passwordRuleMinLength.
+  ///
+  /// In en, this message translates to:
+  /// **'At least {count} characters'**
+  String passwordRuleMinLength(int count);
+
+  /// No description provided for @passwordRuleUppercase.
+  ///
+  /// In en, this message translates to:
+  /// **'One uppercase letter'**
+  String get passwordRuleUppercase;
+
+  /// No description provided for @passwordRuleLowercase.
+  ///
+  /// In en, this message translates to:
+  /// **'One lowercase letter'**
+  String get passwordRuleLowercase;
+
+  /// No description provided for @passwordRuleDigit.
+  ///
+  /// In en, this message translates to:
+  /// **'One number'**
+  String get passwordRuleDigit;
+
+  /// No description provided for @passwordRuleSpecialCharacter.
+  ///
+  /// In en, this message translates to:
+  /// **'One special character'**
+  String get passwordRuleSpecialCharacter;
 }
 
 class _AppLocalizationsDelegate

@@ -137,5 +137,65 @@
   },
   "onboardingSkip": "Skip",
   "onboardingNext": "Next",
-  "onboardingStart": "Get started"
+  "onboardingStart": "Get started",
+  "loginTitle": "Welcome back",
+  "@loginTitle": {
+    "description": "PLACEHOLDER COPY — the design file was not available for this string. Replace with the approved wording."
+  },
+  "loginSubtitle": "Sign in to follow your fleet.",
+  "@loginSubtitle": {
+    "description": "PLACEHOLDER COPY — the design file was not available for this string. Replace with the approved wording."
+  },
+  "loginEmailLabel": "Email",
+  "loginEmailHint": "name@company.com",
+  "loginPasswordLabel": "Password",
+  "loginPasswordHint": "Your password",
+  "loginSubmit": "Sign in",
+  "loginForgotPassword": "Forgot your password?",
+  "forgotPasswordTitle": "Reset your password",
+  "@forgotPasswordTitle": {
+    "description": "PLACEHOLDER COPY — the design file was not available for this string. Replace with the approved wording."
+  },
+  "forgotPasswordSubtitle": "Enter your email and we will send you a code.",
+  "@forgotPasswordSubtitle": {
+    "description": "PLACEHOLDER COPY — the design file was not available for this string. Replace with the approved wording."
+  },
+  "forgotPasswordSubmit": "Send code",
+  "otpTitle": "Enter the code",
+  "@otpTitle": {
+    "description": "PLACEHOLDER COPY — the design file was not available for this string. Replace with the approved wording."
+  },
+  "otpSubtitle": "We sent a six-digit code to {email}.",
+  "@otpSubtitle": {
+    "description": "PLACEHOLDER COPY — the design file was not available for this string. Replace with the approved wording.",
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "otpSubmit": "Verify",
+  "newPasswordTitle": "Choose a new password",
+  "@newPasswordTitle": {
+    "description": "PLACEHOLDER COPY — the design file was not available for this string. Replace with the approved wording."
+  },
+  "newPasswordLabel": "New password",
+  "newPasswordConfirmLabel": "Confirm password",
+  "newPasswordSubmit": "Save password",
+  "newPasswordDone": "Your password has been changed. Sign in to continue.",
+  "@newPasswordDone": {
+    "description": "PLACEHOLDER COPY — the design file was not available for this string. Replace with the approved wording."
+  },
+  "passwordRuleMinLength": "At least {count} characters",
+  "@passwordRuleMinLength": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "passwordRuleUppercase": "One uppercase letter",
+  "passwordRuleLowercase": "One lowercase letter",
+  "passwordRuleDigit": "One number",
+  "passwordRuleSpecialCharacter": "One special character"
 }

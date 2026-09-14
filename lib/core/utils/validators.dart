@@ -1,3 +1,4 @@
+import 'password_rules.dart';
 import 'validation_error.dart';
 
 /// Field validators returning a typed [ValidationError] rather than a message,
@@ -16,21 +17,18 @@ class AppValidators {
     return regex.hasMatch(value!) ? null : const InvalidEmailError();
   }
 
-  /// Password: min 8 chars, 1 uppercase, 1 lowercase, 1 digit, 1 special char
+  /// Password: min 8 chars, 1 uppercase, 1 lowercase, 1 digit, 1 special char.
+  ///
+  /// Defined in terms of [PasswordRules] rather than repeating the rules, so
+  /// the field error and the new-password checklist cannot disagree about what
+  /// a valid password is. Use [PasswordRules.of] directly where the UI needs to
+  /// show which individual rules are outstanding.
   static ValidationError? password(String? value, {bool required = true}) {
     if (_isBlank(value)) return _blankError(required: required);
 
-    if (value!.length < 8) return const PasswordTooWeakError();
-
-    final hasUppercase = value.contains(RegExp(r'[A-Z]'));
-    final hasLowercase = value.contains(RegExp(r'[a-z]'));
-    final hasDigits = value.contains(RegExp(r'[0-9]'));
-    final hasSpecial = value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
-
-    if (!hasUppercase || !hasLowercase || !hasDigits || !hasSpecial) {
-      return const PasswordTooWeakError();
-    }
-    return null;
+    return PasswordRules.of(value).isValid
+        ? null
+        : const PasswordTooWeakError();
   }
 
   /// Confirm password match

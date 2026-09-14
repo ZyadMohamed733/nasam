@@ -116,5 +116,43 @@
   "onboardingBody3": "شارك الخطط والتحديثات ليعمل الجميع على الصورة نفسها.",
   "onboardingSkip": "تخطٍ",
   "onboardingNext": "التالي",
-  "onboardingStart": "ابدأ الآن"
+  "onboardingStart": "ابدأ الآن",
+  "loginTitle": "أهلاً بعودتك",
+  "loginSubtitle": "سجّل الدخول لمتابعة أسطولك.",
+  "loginEmailLabel": "البريد الإلكتروني",
+  "loginEmailHint": "name@company.com",
+  "loginPasswordLabel": "كلمة المرور",
+  "loginPasswordHint": "كلمة المرور",
+  "loginSubmit": "تسجيل الدخول",
+  "loginForgotPassword": "نسيت كلمة المرور؟",
+  "forgotPasswordTitle": "إعادة تعيين كلمة المرور",
+  "forgotPasswordSubtitle": "أدخل بريدك الإلكتروني وسنرسل لك رمزاً.",
+  "forgotPasswordSubmit": "إرسال الرمز",
+  "otpTitle": "أدخل الرمز",
+  "otpSubtitle": "أرسلنا رمزاً من ستة أرقام إلى {email}.",
+  "@otpSubtitle": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "otpSubmit": "تحقق",
+  "newPasswordTitle": "اختر كلمة مرور جديدة",
+  "newPasswordLabel": "كلمة المرور الجديدة",
+  "newPasswordConfirmLabel": "تأكيد كلمة المرور",
+  "newPasswordSubmit": "حفظ كلمة المرور",
+  "newPasswordDone": "تم تغيير كلمة المرور. سجّل الدخول للمتابعة.",
+  "passwordRuleMinLength": "{count} رموز على الأقل",
+  "@passwordRuleMinLength": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "passwordRuleUppercase": "حرف كبير واحد",
+  "passwordRuleLowercase": "حرف صغير واحد",
+  "passwordRuleDigit": "رقم واحد",
+  "passwordRuleSpecialCharacter": "رمز خاص واحد"
 }

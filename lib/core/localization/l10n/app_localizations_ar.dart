@@ -214,4 +214,80 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get onboardingStart => 'ابدأ الآن';
+
+  @override
+  String get loginTitle => 'أهلاً بعودتك';
+
+  @override
+  String get loginSubtitle => 'سجّل الدخول لمتابعة أسطولك.';
+
+  @override
+  String get loginEmailLabel => 'البريد الإلكتروني';
+
+  @override
+  String get loginEmailHint => 'name@company.com';
+
+  @override
+  String get loginPasswordLabel => 'كلمة المرور';
+
+  @override
+  String get loginPasswordHint => 'كلمة المرور';
+
+  @override
+  String get loginSubmit => 'تسجيل الدخول';
+
+  @override
+  String get loginForgotPassword => 'نسيت كلمة المرور؟';
+
+  @override
+  String get forgotPasswordTitle => 'إعادة تعيين كلمة المرور';
+
+  @override
+  String get forgotPasswordSubtitle => 'أدخل بريدك الإلكتروني وسنرسل لك رمزاً.';
+
+  @override
+  String get forgotPasswordSubmit => 'إرسال الرمز';
+
+  @override
+  String get otpTitle => 'أدخل الرمز';
+
+  @override
+  String otpSubtitle(String email) {
+    return 'أرسلنا رمزاً من ستة أرقام إلى $email.';
+  }
+
+  @override
+  String get otpSubmit => 'تحقق';
+
+  @override
+  String get newPasswordTitle => 'اختر كلمة مرور جديدة';
+
+  @override
+  String get newPasswordLabel => 'كلمة المرور الجديدة';
+
+  @override
+  String get newPasswordConfirmLabel => 'تأكيد كلمة المرور';
+
+  @override
+  String get newPasswordSubmit => 'حفظ كلمة المرور';
+
+  @override
+  String get newPasswordDone => 'تم تغيير كلمة المرور. سجّل الدخول للمتابعة.';
+
+  @override
+  String passwordRuleMinLength(int count) {
+    return '$count رموز على الأقل';
+  }
+
+  @override
+  String get passwordRuleUppercase => 'حرف كبير واحد';
+
+  @override
+  String get passwordRuleLowercase => 'حرف صغير واحد';
+
+  @override
+  String get passwordRuleDigit => 'رقم واحد';
+
+  @override
+  String get passwordRuleSpecialCharacter => 'رمز خاص واحد';
 }

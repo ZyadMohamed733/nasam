@@ -9,6 +9,16 @@ class RouteGuard {
   const RouteGuard(this._authService);
   final AuthService _authService;
 
+  /// Reachable without a session — the whole point of them is that the user
+  /// cannot sign in yet. Password reset belongs here too: a user who has
+  /// forgotten their password is by definition not authenticated.
+  static const Set<String> _publicRoutes = {
+    AppRoutes.login,
+    AppRoutes.forgotPassword,
+    AppRoutes.otpVerification,
+    AppRoutes.newPassword,
+  };
+
   Future<String?> handleRedirect(
     BuildContext context,
     GoRouterState state,
@@ -22,14 +32,12 @@ class RouteGuard {
     }
 
     final isAuth = await _authService.isAuthenticated;
-    final goingToLogin = state.matchedLocation == AppRoutes.login;
+    final isPublic = _publicRoutes.contains(state.matchedLocation);
 
     if (!isAuth) {
-      if (!goingToLogin) return AppRoutes.login;
-    } else {
-      if (goingToLogin) return AppRoutes.home;
+      return isPublic ? null : AppRoutes.login;
     }
-
-    return null;
+    // Someone already signed in has no business in the sign-in flow.
+    return isPublic ? AppRoutes.home : null;
   }
 }

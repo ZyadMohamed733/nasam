@@ -1,41 +1,149 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+
 import '../../../../app/app_config.dart';
 import '../../../../core/constants/app_sizes.dart';
 import '../../../../core/di/injection_container.dart';
+import '../../../../core/extensions/context_extensions.dart';
+import '../../../../core/localization/validation_error_l10n.dart';
+import '../../../../core/router/app_routes.dart';
+import '../../../../core/utils/validators.dart';
+import '../../../../shared/widgets/app_button.dart';
+import '../../../../shared/widgets/app_snack_bar.dart';
+import '../../../../shared/widgets/app_text_field.dart';
+import '../cubit/auth_form_status.dart';
+import '../cubit/login_cubit.dart';
+import '../widgets/auth_scaffold.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key, this.cubit});
+
+  /// Injected in tests; resolved from the container otherwise.
+  final LoginCubit? cubit;
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final _formKey = GlobalKey<FormState>();
+  final _email = TextEditingController();
+  final _password = TextEditingController();
+
+  @override
+  void dispose() {
+    _email.dispose();
+    _password.dispose();
+    super.dispose();
+  }
+
+  void _submit(BuildContext context) {
+    if (!(_formKey.currentState?.validate() ?? false)) return;
+    context.read<LoginCubit>().submit(
+      email: _email.text,
+      password: _password.text,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    final config = getIt<AppConfig>();
+    final l10n = context.l10n;
 
-    // Never in a release build, and never in production: this prints the API
-    // and socket hosts to anyone who reaches the login screen.
-    final showFlavorBanner = kDebugMode && !config.isProd;
+    return BlocProvider<LoginCubit>(
+      create: (_) => widget.cubit ?? getIt<LoginCubit>(),
+      child: BlocConsumer<LoginCubit, AuthFormStatus>(
+        listener: (context, state) {
+          switch (state) {
+            case AuthFormSucceeded():
+              // The repository has already stored the tokens, so RouteGuard
+              // will let this through.
+              context.go(AppRoutes.home);
+            case AuthFormFailed(:final failure):
+              AppSnackBar.showError(context, failure.message);
+            case AuthFormIdle() || AuthFormSubmitting():
+              break;
+          }
+        },
+        builder: (context, state) {
+          final busy = state is AuthFormSubmitting;
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'Login Screen Placeholder',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            if (showFlavorBanner) ...[
+          return AuthScaffold(
+            title: l10n.loginTitle,
+            subtitle: l10n.loginSubtitle,
+            showBack: false,
+            children: [
+              Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    AppTextField(
+                      controller: _email,
+                      label: l10n.loginEmailLabel,
+                      hint: l10n.loginEmailHint,
+                      keyboardType: TextInputType.emailAddress,
+                      textInputAction: TextInputAction.next,
+                      autofillHints: const [AutofillHints.username],
+                      enabled: !busy,
+                      // An address is never RTL, whatever the interface is.
+                      forceLtr: true,
+                      validator: context.validator(AppValidators.email),
+                    ),
+                    const SizedBox(height: AppSizes.p16),
+                    AppTextField(
+                      controller: _password,
+                      label: l10n.loginPasswordLabel,
+                      hint: l10n.loginPasswordHint,
+                      obscureText: true,
+                      textInputAction: TextInputAction.done,
+                      autofillHints: const [AutofillHints.password],
+                      enabled: !busy,
+                      forceLtr: true,
+                      // Only that something was entered. Applying the strength
+                      // rules here would tell an attacker which of the stored
+                      // passwords could not exist, and would lock out any user
+                      // whose password predates the current policy.
+                      validator: context.validator(
+                        (v) => AppValidators.required(v),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: AppSizes.p8),
+              Align(
+                alignment: AlignmentDirectional.centerEnd,
+                child: AppButton(
+                  onPressed: busy
+                      ? null
+                      : () => context.push(AppRoutes.forgotPassword),
+                  label: l10n.loginForgotPassword,
+                  variant: AppButtonVariant.tertiary,
+                  width: AppSizes.formContentWidth * 0.6,
+                ),
+              ),
               const SizedBox(height: AppSizes.p24),
-              _FlavorDebugBanner(config: config),
+              AppButton(
+                onPressed: () => _submit(context),
+                label: l10n.loginSubmit,
+                isLoading: busy,
+              ),
+              if (kDebugMode && !getIt<AppConfig>().isProd) ...[
+                const SizedBox(height: AppSizes.p24),
+                _FlavorDebugBanner(config: getIt<AppConfig>()),
+              ],
             ],
-          ],
-        ),
+          );
+        },
       ),
     );
   }
 }
 
+/// Never in a release build, and never in production: this prints the API and
+/// socket hosts to anyone who reaches the login screen.
 class _FlavorDebugBanner extends StatelessWidget {
   const _FlavorDebugBanner({required this.config});
 
@@ -50,7 +158,6 @@ class _FlavorDebugBanner extends StatelessWidget {
     };
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: AppSizes.p24),
       padding: const EdgeInsets.all(AppSizes.p12),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.12),
