@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The plate behind the adaptive launcher icon. Kept as a colour rather
+         than baked into the foreground PNG, because the launcher animates the
+         two layers independently. -->
+    <color name="ic_launcher_background">#FFFFFFFF</color>
+</resources>
