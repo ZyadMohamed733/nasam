@@ -1000,9 +1000,16 @@ Future<void> submit() async {
 
 ## 9. How to Add a New Feature
 
+The layer rules live in **[docs/FEATURE_CONVENTIONS.md](docs/FEATURE_CONVENTIONS.md)**,
+and `lib/features/auth/` is the worked example — read both before starting. The
+`_template` slice these steps used to say to copy has been deleted: auth is a real
+feature that demonstrates the same rules, so the placeholder was one more thing to
+keep in sync for no benefit.
+
 Follow these steps in order. Do not skip any.
 
-1. Copy `lib/features/_template` → `lib/features/<feature_name>`
+1. Create `lib/features/<feature_name>/` with `data/`, `domain/` and
+   `presentation/`, modelled on `lib/features/auth/`
 2. Define the **Entity** (Domain) — pure Dart, Freezed, zero Flutter imports
 3. Define the **Repository Interface** (Domain) — abstract class, `Either` return types
 4. Define **Use Cases** (Domain) — one file per use case, single `call()` method
@@ -1010,10 +1017,13 @@ Follow these steps in order. Do not skip any.
 6. Create the **Mapper** (Data) — pure top-level functions, DTO → Entity only
 7. Create **DataSources** (Data) — abstract interface + `@Injectable` implementation
 8. Implement the **Repository** (Data) — `try/catch` every call, map to `Failure`
-9. Create **BLoC** (Presentation) — `initial/loading/loaded/failure` states, Freezed sealed
+9. Create the **BLoC or Cubit** (Presentation) — a cubit where the screen calls one
+   method per action, a bloc where events carry data worth logging or replaying;
+   see the auth cubits and the shared `AuthFormStatus`
 10. Run code generation: `dart run build_runner build --delete-conflicting-outputs`
 11. Add **Route** in `app_routes.dart` and `app_router.dart`
-12. Add **Localization keys** in `app_en.arb` and `app_ar.arb`
+12. Add **Localization keys** to `app_ar.arb` first — it is the template, since
+    Arabic is the source language — then the English in `app_en.arb`
 13. Write **Tests** — usecase + repository + bloc (minimum 3 test files)
 14. Verify: `flutter analyze` + `flutter test`
 

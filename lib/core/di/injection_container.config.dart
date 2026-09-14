@@ -17,17 +17,6 @@ import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
 import '../../app/app_config.dart' as _i861;
 import '../../app/app_settings_controller.dart' as _i461;
-import '../../features/_template/data/datasources/local/template_local_datasource.dart'
-    as _i923;
-import '../../features/_template/data/datasources/remote/template_remote_datasource.dart'
-    as _i79;
-import '../../features/_template/data/repositories/template_repository_impl.dart'
-    as _i483;
-import '../../features/_template/domain/repositories/template_repository.dart'
-    as _i43;
-import '../../features/_template/domain/usecases/get_template_usecase.dart'
-    as _i932;
-import '../../features/_template/presentation/bloc/template_bloc.dart' as _i884;
 import '../../features/auth/data/datasources/remote/auth_remote_datasource.dart'
     as _i1022;
 import '../../features/auth/data/repositories/auth_repository_impl.dart'
@@ -115,9 +104,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i236.NewPasswordCubit>(
       () => _i236.NewPasswordCubit(gh<_i474.ResetPasswordUseCase>()),
     );
-    gh.lazySingleton<_i923.TemplateLocalDataSource>(
-      () => _i923.TemplateLocalDataSourceImpl(gh<_i460.SharedPreferences>()),
-    );
     gh.factory<_i104.ForgotPasswordCubit>(
       () => _i104.ForgotPasswordCubit(gh<_i438.RequestPasswordResetUseCase>()),
     );
@@ -152,21 +138,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i81.AppRouter>(
       () => _i81.AppRouter(gh<_i715.RouteGuard>()),
-    );
-    gh.lazySingleton<_i79.TemplateRemoteDataSource>(
-      () => _i79.TemplateRemoteDataSourceImpl(gh<_i361.Dio>()),
-    );
-    gh.lazySingleton<_i43.TemplateRepository>(
-      () => _i483.TemplateRepositoryImpl(
-        gh<_i79.TemplateRemoteDataSource>(),
-        gh<_i923.TemplateLocalDataSource>(),
-      ),
-    );
-    gh.lazySingleton<_i932.GetTemplateUseCase>(
-      () => _i932.GetTemplateUseCase(gh<_i43.TemplateRepository>()),
-    );
-    gh.factory<_i884.TemplateBloc>(
-      () => _i884.TemplateBloc(gh<_i932.GetTemplateUseCase>()),
     );
     return this;
   }
