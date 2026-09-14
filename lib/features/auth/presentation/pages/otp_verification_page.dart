@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/constants/app_sizes.dart';
 import '../../../../core/di/injection_container.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/router/app_routes.dart';
@@ -72,16 +71,15 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
                 errorText: state is AuthFormFailed
                     ? state.failure.message
                     : null,
-              ),
-              const SizedBox(height: AppSizes.p16),
-              AppButton(
-                // Completing the last box submits on its own; this is the
-                // explicit path for anyone who pastes or edits a digit.
-                onPressed: _code.length < _codeLength
-                    ? null
-                    : () => cubit.submit(email: widget.email, code: _code),
-                label: l10n.otpSubmit,
-                isLoading: busy,
+                action: AppButton(
+                  // Completing the last box submits on its own; this is the
+                  // explicit path for anyone who pastes or edits a digit.
+                  onPressed: _code.length < _codeLength
+                      ? null
+                      : () => cubit.submit(email: widget.email, code: _code),
+                  label: l10n.otpSubmit,
+                  isLoading: busy,
+                ),
               ),
             ],
           );

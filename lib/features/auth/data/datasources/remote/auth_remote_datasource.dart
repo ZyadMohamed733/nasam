@@ -35,7 +35,7 @@ abstract class AuthRemoteDataSource {
 ///
 ///  * any password but [_validPassword] fails sign-in
 ///  * [_unknownEmail] is not recognised for a reset
-///  * any code but [_validCode] is rejected
+///  * any complete code is accepted — see [verifyResetCode]
 ///
 /// Each call waits [_latency], because a form that never shows its loading
 /// state is a form whose loading state has never been looked at.
@@ -46,7 +46,6 @@ class AuthRemoteDataSourceMock implements AuthRemoteDataSource {
   static const Duration _latency = Duration(milliseconds: 600);
   static const String _validPassword = 'Nasam@123';
   static const String _unknownEmail = 'unknown@nasam.sa';
-  static const String _validCode = '123456';
   static const String _resetToken = 'mock-reset-token';
 
   @override
@@ -82,6 +81,17 @@ class AuthRemoteDataSourceMock implements AuthRemoteDataSource {
     }
   }
 
+  /// Accepts any code.
+  ///
+  /// There is no backend to check one against, and a hard-coded "correct" code
+  /// only tests whether the tester remembered it. Anything the user can
+  /// actually type gets them to the next screen, which is what makes this
+  /// walkable end to end.
+  ///
+  /// The empty-code rejection stays: it is the one failure the UI can reach on
+  /// its own, so the error path still has something to demonstrate. When the
+  /// real endpoint lands this whole class is replaced, and the rejection comes
+  /// back with it.
   @override
   Future<String> verifyResetCode({
     required String email,
@@ -89,9 +99,9 @@ class AuthRemoteDataSourceMock implements AuthRemoteDataSource {
   }) async {
     await Future<void>.delayed(_latency);
 
-    if (code != _validCode) {
+    if (code.trim().isEmpty) {
       throw const AuthException(
-        message: 'That code is not correct.',
+        message: 'Enter the code from your email.',
         code: '400',
       );
     }

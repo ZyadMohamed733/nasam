@@ -8,25 +8,26 @@ import '../../core/constants/app_sizes.dart';
 import '../../core/extensions/context_extensions.dart';
 
 /// The design's one-time-code block: a row of boxed digit fields, an expiry
-/// countdown and a resend action.
+/// countdown, the submit action and a resend link, in that order.
 ///
 /// The digit count and the countdown are parameters rather than constants —
 /// the code length and validity window are a backend decision, and the design
-/// drawing a six-box row at 03:30 is an illustration of one case, not a rule.
+/// drawing five boxes at 03:30 is one case, not a rule.
 ///
-/// Digits are pinned LTR. A one-time code is a number, and Arabic renders
-/// numerals left-to-right inside an RTL page; letting the boxes inherit RTL
-/// would put the first digit the user types on the right of the row while the
-/// value reads the other way.
+/// The row follows the ambient [Directionality] rather than being pinned LTR.
+/// Under Arabic that means the first box is the rightmost and the code fills
+/// right to left, which is how the design draws a partly-entered code. The
+/// advance logic is index-based, so it needs no direction of its own.
 class AppOtpInput extends StatefulWidget {
   const AppOtpInput({
     super.key,
-    this.length = 6,
+    this.length = 5,
     this.validity = const Duration(minutes: 3, seconds: 30),
     this.onCompleted,
     this.onChanged,
     this.onResend,
     this.errorText,
+    this.action,
   });
 
   final int length;
@@ -45,6 +46,11 @@ class AppOtpInput extends StatefulWidget {
 
   final String? errorText;
 
+  /// The submit button. It sits between the countdown and the resend link, so
+  /// the block owns the order rather than the page assembling it around this
+  /// widget and getting it wrong.
+  final Widget? action;
+
   @override
   State<AppOtpInput> createState() => _AppOtpInputState();
 }
@@ -58,10 +64,7 @@ class _AppOtpInputState extends State<AppOtpInput> {
   @override
   void initState() {
     super.initState();
-    _controllers = List.generate(
-      widget.length,
-      (_) => TextEditingController(),
-    );
+    _controllers = List.generate(widget.length, (_) => TextEditingController());
     _focusNodes = List.generate(widget.length, (_) => FocusNode());
     _remaining = widget.validity;
     _startCountdown();
@@ -127,97 +130,53 @@ class _AppOtpInputState extends State<AppOtpInput> {
   @override
   Widget build(BuildContext context) {
     final semantic = context.semanticColors;
-    final l10n = context.l10n;
 
-    return SizedBox(
-      width: _blockWidth,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // The row itself is always LTR; see the class doc.
-          Directionality(
-            textDirection: TextDirection.ltr,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                for (var i = 0; i < widget.length; i++)
-                  _digitBox(context, semantic, i),
-              ],
-            ),
-          ),
-          const SizedBox(height: AppSizes.p16),
-          Text(
-            _expired
-                ? l10n.otpExpired
-                : l10n.otpExpiresIn(_format(_remaining)),
-            style: context.textTheme.labelLarge?.copyWith(
-              color: _expired ? semantic.failText : semantic.textPlaceholder,
-            ),
-          ),
-          if (widget.errorText != null) ...[
-            const SizedBox(height: AppSizes.p8),
-            Text(
-              widget.errorText!,
-              textAlign: TextAlign.center,
-              style: context.textTheme.labelSmall?.copyWith(
-                color: semantic.failText,
-              ),
-            ),
-          ],
-          const SizedBox(height: AppSizes.p16),
-          // A Wrap, not a Row: the prompt and its action are one sentence, and
-          // it does not fit the design's 360pt block in every language — the
-          // English pair is 439pt wide and overflowed before this.
-          Wrap(
-            alignment: WrapAlignment.center,
-            crossAxisAlignment: WrapCrossAlignment.center,
-            children: [
-              Text(
-                l10n.otpNotReceived,
-                style: context.textTheme.labelLarge?.copyWith(
-                  color: semantic.textPlaceholder,
-                ),
-              ),
-              const SizedBox(width: AppSizes.p4),
-              TextButton(
-                onPressed: widget.onResend == null
-                    ? null
-                    : () {
-                        widget.onResend!.call();
-                        _startCountdown();
-                      },
-                style: TextButton.styleFrom(
-                  minimumSize: Size.zero,
-                  padding: const EdgeInsets.symmetric(horizontal: AppSizes.p4),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
-                child: Text(
-                  l10n.otpResend,
-                  style: context.textTheme.labelLarge?.copyWith(
-                    color: semantic.primary,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          children: [
+            for (var i = 0; i < widget.length; i++) ...[
+              if (i > 0) const SizedBox(width: AppSizes.p12),
+              // Flexible rather than a fixed 52: the boxes fill the card on
+              // whatever width it has, and stay square doing it.
+              Expanded(child: _digitBox(context, semantic, i)),
             ],
+          ],
+        ),
+        const SizedBox(height: AppSizes.p16),
+        _Countdown(
+          remaining: _remaining,
+          expired: _expired,
+          format: _format,
+        ),
+        if (widget.errorText != null) ...[
+          const SizedBox(height: AppSizes.p8),
+          Text(
+            widget.errorText!,
+            textAlign: TextAlign.center,
+            style: context.textTheme.labelSmall?.copyWith(
+              color: semantic.failText,
+            ),
           ),
         ],
-      ),
+        if (widget.action != null) ...[
+          const SizedBox(height: AppSizes.p16),
+          widget.action!,
+        ],
+        const SizedBox(height: AppSizes.p8),
+        _ResendRow(onResend: widget.onResend, restart: _startCountdown),
+      ],
     );
   }
-
-  /// The design draws the block at 360x294. Width is fixed here; height is
-  /// left to the content so the block still lays out when the error line
-  /// appears or the user's text scale is above the default.
-  static const double _blockWidth = 360.0;
 
   Widget _digitBox(BuildContext context, AppSemanticColors semantic, int i) {
     final hasError = widget.errorText != null;
     final filled = _controllers[i].text.isNotEmpty;
 
-    return SizedBox(
-      width: AppSizes.iconButtonMedium,
-      height: AppSizes.buttonHeight,
+    return AspectRatio(
+      aspectRatio: 1,
       child: Semantics(
         label: context.l10n.otpFieldLabel(i + 1, widget.length),
         child: TextField(
@@ -226,8 +185,10 @@ class _AppOtpInputState extends State<AppOtpInput> {
           keyboardType: TextInputType.number,
           textAlign: TextAlign.center,
           maxLength: 1,
-          style: context.textTheme.bodyLarge?.copyWith(
-            color: semantic.textColor,
+          style: context.textTheme.displaySmall?.copyWith(
+            // A filled box carries the brand colour, which is what separates
+            // it from an empty one at a glance.
+            color: hasError ? semantic.failText : semantic.primary,
           ),
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           onChanged: (value) => _onDigitChanged(i, value),
@@ -260,4 +221,113 @@ class _AppOtpInputState extends State<AppOtpInput> {
         borderRadius: BorderRadius.circular(AppSizes.r8),
         borderSide: BorderSide(color: color, width: width),
       );
+}
+
+/// The expiry line, with the clock picked out in the fail colour.
+///
+/// The time is found inside the translated sentence rather than the sentence
+/// being split in the ARB, so the two languages can put the clock wherever
+/// their grammar wants it without the widget caring.
+class _Countdown extends StatelessWidget {
+  const _Countdown({
+    required this.remaining,
+    required this.expired,
+    required this.format,
+  });
+
+  final Duration remaining;
+  final bool expired;
+  final String Function(Duration) format;
+
+  @override
+  Widget build(BuildContext context) {
+    final semantic = context.semanticColors;
+    final base = context.textTheme.labelLarge?.copyWith(
+      color: semantic.textPlaceholder,
+    );
+
+    if (expired) {
+      return Text(
+        context.l10n.otpExpired,
+        textAlign: TextAlign.center,
+        style: base?.copyWith(color: semantic.failText),
+      );
+    }
+
+    final clock = format(remaining);
+    final sentence = context.l10n.otpExpiresIn(clock);
+    final at = sentence.indexOf(clock);
+
+    if (at < 0) {
+      return Text(sentence, textAlign: TextAlign.center, style: base);
+    }
+
+    return Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(text: sentence.substring(0, at)),
+          TextSpan(
+            text: clock,
+            style: TextStyle(color: semantic.failText),
+          ),
+          TextSpan(text: sentence.substring(at + clock.length)),
+        ],
+      ),
+      textAlign: TextAlign.center,
+      style: base,
+    );
+  }
+}
+
+class _ResendRow extends StatelessWidget {
+  const _ResendRow({required this.onResend, required this.restart});
+
+  final VoidCallback? onResend;
+  final VoidCallback restart;
+
+  @override
+  Widget build(BuildContext context) {
+    final semantic = context.semanticColors;
+    final l10n = context.l10n;
+    final enabled = onResend != null;
+
+    // A Wrap, not a Row: the prompt and its action are one sentence, and it
+    // does not fit a phone-width card in every language.
+    return Wrap(
+      alignment: WrapAlignment.center,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      children: [
+        Text(
+          l10n.otpNotReceived,
+          style: context.textTheme.labelLarge?.copyWith(
+            color: semantic.textPlaceholder,
+          ),
+        ),
+        const SizedBox(width: AppSizes.p4),
+        TextButton(
+          onPressed: enabled
+              ? () {
+                  onResend!.call();
+                  restart();
+                }
+              : null,
+          style: TextButton.styleFrom(
+            minimumSize: Size.zero,
+            padding: const EdgeInsets.symmetric(horizontal: AppSizes.p4),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+          child: Text(
+            l10n.otpResend,
+            style: context.textTheme.labelLarge?.copyWith(
+              color: enabled ? semantic.secondary : semantic.textPlaceholder,
+              decoration: TextDecoration.underline,
+              decorationColor: enabled
+                  ? semantic.secondary
+                  : AppColors.transparent,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }

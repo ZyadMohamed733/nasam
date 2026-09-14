@@ -148,8 +148,10 @@ All implemented as specified; none are blocking.
 
 The mock answers predictably so every error path can be reached by hand:
 
-- Sign in with any email and `Nasam@123`
-- Use `123456` as the verification code
+- Sign in with any username and `Nasam@123`
+- Any five-digit verification code is accepted — there is no backend to check
+  one against, and a hard-coded "correct" code only tests whether the tester
+  remembered it
 - Use `unknown@nasam.sa` to see the unrecognised-address path
 
 Any other password or code takes the failure branch. Each call waits 600 ms, so the
