@@ -377,7 +377,7 @@ abstract class AppLocalizations {
   /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
   ///
   /// In ar, this message translates to:
-  /// **'a.hassan@tracking.sa'**
+  /// **'name@company.com'**
   String get loginEmailHint;
 
   /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.

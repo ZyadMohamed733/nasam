@@ -5,6 +5,7 @@ import '../../features/auth/presentation/pages/forgot_password_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/new_password_page.dart';
 import '../../features/auth/presentation/pages/otp_verification_page.dart';
+import '../../features/auth/presentation/pages/password_reset_success_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/onboarding/presentation/pages/onboarding_page.dart';
 import '../../features/splash/presentation/pages/splash_page.dart';
@@ -90,6 +91,14 @@ class AppRouter {
           state: state,
           slide: true,
           child: NewPasswordPage(resetToken: state.extra! as String),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.passwordResetSuccess,
+        pageBuilder: (context, state) => appTransitionPage(
+          context: context,
+          state: state,
+          child: const PasswordResetSuccessPage(),
         ),
       ),
       GoRoute(

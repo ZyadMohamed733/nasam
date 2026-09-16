@@ -17,6 +17,7 @@ class RouteGuard {
     AppRoutes.forgotPassword,
     AppRoutes.otpVerification,
     AppRoutes.newPassword,
+    AppRoutes.passwordResetSuccess,
   };
 
   Future<String?> handleRedirect(

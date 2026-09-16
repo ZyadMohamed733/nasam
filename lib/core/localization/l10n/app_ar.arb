@@ -156,7 +156,7 @@
   "@loginEmailLabel": {
     "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file."
   },
-  "loginEmailHint": "a.hassan@tracking.sa",
+  "loginEmailHint": "name@company.com",
   "@loginEmailHint": {
     "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file."
   },

@@ -49,6 +49,10 @@ void main() {
       expect(await redirectFor(AppRoutes.home), AppRoutes.login);
     });
 
+    test('can reach password-reset success without signing in', () async {
+      expect(await redirectFor(AppRoutes.passwordResetSuccess), isNull);
+    });
+
     test('is left alone on login', () async {
       expect(await redirectFor(AppRoutes.login), isNull);
     });

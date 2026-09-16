@@ -220,7 +220,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get loginEmailLabel => 'البريد الالكتروني';
 
   @override
-  String get loginEmailHint => 'a.hassan@tracking.sa';
+  String get loginEmailHint => 'name@company.com';
 
   @override
   String get loginPasswordLabel => 'كلمة المرور';

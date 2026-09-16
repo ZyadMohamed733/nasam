@@ -38,10 +38,9 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
         listener: (context, state) {
           switch (state.status) {
             case AuthFormSucceeded():
-              AppSnackBar.showSuccess(context, l10n.newPasswordDone);
-              // Back to the start of the flow, not back a screen: the code and
-              // the reset token are both spent now.
-              context.go(AppRoutes.login);
+              FocusManager.instance.primaryFocus?.unfocus();
+              // Replace the flow: the code and reset token are spent.
+              context.go(AppRoutes.passwordResetSuccess);
             case AuthFormFailed(:final failure):
               AppSnackBar.showError(context, failure.message);
             case AuthFormIdle() || AuthFormSubmitting():

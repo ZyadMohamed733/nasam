@@ -40,7 +40,8 @@ class AppSettingsController extends ChangeNotifier {
   static const String _systemValue = 'system';
 
   static Locale? _parseLocale(String? code) {
-    if (code == null || code.isEmpty || code == _systemValue) return null;
+    if (code == null || code.isEmpty) return const Locale('ar');
+    if (code == _systemValue) return null;
     return Locale(code);
   }
 

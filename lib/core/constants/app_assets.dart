@@ -12,6 +12,8 @@ abstract final class AppAssets {
   static const String _images = 'assets/images';
 
   // Images.
+  static const String passwordResetSuccess =
+      '$_images/password_reset_success.png';
   static const String splashBackground = '$_images/splash_background.png';
   static const String splashParticles = '$_images/signal_particles_splash.gif';
   static const String logoMark = '$_images/logo_mark.png';
@@ -29,6 +31,7 @@ abstract final class AppAssets {
   /// what the test iterates — and the test also re-reads this source file to
   /// check the list did not fall behind the constants.
   static const List<String> all = <String>[
+    passwordResetSuccess,
     splashBackground,
     splashParticles,
     logoMark,
