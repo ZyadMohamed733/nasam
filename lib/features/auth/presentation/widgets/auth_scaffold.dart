@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/constants/app_assets.dart';
 import '../../../../core/constants/app_colors.dart';
@@ -47,13 +46,12 @@ class AuthScaffold extends StatelessWidget {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // Drawn at its own 402x874 aspect and cropped, rather than stretched
-          // to whatever the device is: the artwork carries a dot grid that
-          // skews visibly if it is scaled unevenly.
-          SvgPicture.asset(
-            AppAssets.authBackground,
+          // Reuse the splash raster and image cache so the handoff has no
+          // background jump or first-use SVG parsing during navigation.
+          Image.asset(
+            AppAssets.splashBackground,
             fit: BoxFit.cover,
-            alignment: Alignment.topCenter,
+            alignment: Alignment.center,
             excludeFromSemantics: true,
           ),
           SafeArea(

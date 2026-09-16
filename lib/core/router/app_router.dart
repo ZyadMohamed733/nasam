@@ -10,6 +10,7 @@ import '../../features/onboarding/presentation/pages/onboarding_page.dart';
 import '../../features/splash/presentation/pages/splash_page.dart';
 import 'app_error_page.dart';
 import 'app_routes.dart';
+import 'app_transition_page.dart';
 import 'route_guard.dart';
 
 @lazySingleton
@@ -24,23 +25,45 @@ class AppRouter {
     navigatorKey: navigatorKey,
     initialLocation: AppRoutes.splash,
     redirect: (context, state) => _routeGuard.handleRedirect(context, state),
-    errorBuilder: (context, state) => AppErrorPage(error: state.error),
+    errorPageBuilder: (context, state) => appTransitionPage(
+      context: context,
+      state: state,
+      child: AppErrorPage(error: state.error),
+    ),
     routes: [
       GoRoute(
         path: AppRoutes.splash,
-        builder: (context, state) => const SplashPage(),
+        pageBuilder: (context, state) => NoTransitionPage<void>(
+          key: state.pageKey,
+          child: const SplashPage(),
+        ),
       ),
       GoRoute(
         path: AppRoutes.onboarding,
-        builder: (context, state) => const OnboardingPage(),
+        pageBuilder: (context, state) => appTransitionPage(
+          context: context,
+          state: state,
+          slide: false,
+          child: const OnboardingPage(),
+        ),
       ),
       GoRoute(
         path: AppRoutes.login,
-        builder: (context, state) => const LoginPage(),
+        pageBuilder: (context, state) => appTransitionPage(
+          context: context,
+          state: state,
+          slide: false,
+          child: const LoginPage(),
+        ),
       ),
       GoRoute(
         path: AppRoutes.forgotPassword,
-        builder: (context, state) => const ForgotPasswordPage(),
+        pageBuilder: (context, state) => appTransitionPage(
+          context: context,
+          state: state,
+          slide: true,
+          child: const ForgotPasswordPage(),
+        ),
       ),
       // The two steps below carry state from the previous one — the address,
       // then the reset token — and neither means anything without it. Rather
@@ -51,19 +74,32 @@ class AppRouter {
         path: AppRoutes.otpVerification,
         redirect: (context, state) =>
             state.extra is String ? null : AppRoutes.forgotPassword,
-        builder: (context, state) =>
-            OtpVerificationPage(email: state.extra! as String),
+        pageBuilder: (context, state) => appTransitionPage(
+          context: context,
+          state: state,
+          slide: true,
+          child: OtpVerificationPage(email: state.extra! as String),
+        ),
       ),
       GoRoute(
         path: AppRoutes.newPassword,
         redirect: (context, state) =>
             state.extra is String ? null : AppRoutes.forgotPassword,
-        builder: (context, state) =>
-            NewPasswordPage(resetToken: state.extra! as String),
+        pageBuilder: (context, state) => appTransitionPage(
+          context: context,
+          state: state,
+          slide: true,
+          child: NewPasswordPage(resetToken: state.extra! as String),
+        ),
       ),
       GoRoute(
         path: AppRoutes.home,
-        builder: (context, state) => const HomePage(),
+        pageBuilder: (context, state) => appTransitionPage(
+          context: context,
+          state: state,
+          slide: false,
+          child: const HomePage(),
+        ),
       ),
     ],
   );
