@@ -262,6 +262,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get passwordRuleMatches => 'Passwords match';
+
+  @override
   String get passwordRuleUppercase => 'One uppercase letter';
 
   @override

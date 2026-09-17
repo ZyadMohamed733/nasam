@@ -234,6 +234,7 @@
       }
     }
   },
+  "passwordRuleMatches": "تطابق كلمتي المرور",
   "passwordRuleUppercase": "حرف كبير واحد A-Z",
   "@passwordRuleUppercase": {
     "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file."

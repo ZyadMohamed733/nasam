@@ -63,6 +63,7 @@
   "newPasswordSubmit": "Save password",
   "newPasswordDone": "Your password has been changed. Sign in to continue.",
   "passwordRuleMinLength": "At least {count} characters",
+  "passwordRuleMatches": "Passwords match",
   "passwordRuleUppercase": "One uppercase letter",
   "passwordRuleLowercase": "One lowercase letter",
   "passwordRuleDigit": "One number",

@@ -10,9 +10,14 @@ import '../../../../core/utils/password_rules.dart';
 /// outstanding ones: a list that shrinks as you type moves the fields under
 /// your cursor, and you cannot see what you have already satisfied.
 class PasswordRuleChecklist extends StatelessWidget {
-  const PasswordRuleChecklist({super.key, required this.rules});
+  const PasswordRuleChecklist({
+    super.key,
+    required this.rules,
+    required this.matches,
+  });
 
   final PasswordRules rules;
+  final bool matches;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +29,7 @@ class PasswordRuleChecklist extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: AppSizes.p4),
             child: _RuleRow(label: _label(context, rule), met: rules.has(rule)),
           ),
+        _RuleRow(label: context.l10n.passwordRuleMatches, met: matches),
       ],
     );
   }
@@ -51,7 +57,7 @@ class _RuleRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final semantic = context.semanticColors;
-    final colour = met ? semantic.successText : semantic.textPlaceholder;
+    final colour = met ? semantic.successText : semantic.failText;
 
     return Row(
       children: [

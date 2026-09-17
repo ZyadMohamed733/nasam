@@ -276,6 +276,9 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get passwordRuleMatches => 'تطابق كلمتي المرور';
+
+  @override
   String get passwordRuleUppercase => 'حرف كبير واحد A-Z';
 
   @override

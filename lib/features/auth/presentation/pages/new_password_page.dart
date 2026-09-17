@@ -75,9 +75,6 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                 textInputAction: TextInputAction.done,
                 autofillHints: const [AutofillHints.newPassword],
                 onChanged: cubit.onConfirmationChanged,
-                errorText: state.rules.isValid && !state.matches
-                    ? l10n.validationPasswordsDoNotMatch
-                    : null,
               ),
               const SizedBox(height: AppSizes.p16),
               AppButton(
@@ -90,7 +87,9 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
             ],
             // The design puts the checklist on the backdrop under the card,
             // not inside it, so the card stays the height of the form.
-            below: [PasswordRuleChecklist(rules: state.rules)],
+            below: [
+              PasswordRuleChecklist(rules: state.rules, matches: state.matches),
+            ],
           );
         },
       ),

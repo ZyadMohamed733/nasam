@@ -476,6 +476,12 @@ abstract class AppLocalizations {
   /// **'يجب أن يحتوي على {count} أحرف على الأقل'**
   String passwordRuleMinLength(int count);
 
+  /// No description provided for @passwordRuleMatches.
+  ///
+  /// In ar, this message translates to:
+  /// **'تطابق كلمتي المرور'**
+  String get passwordRuleMatches;
+
   /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
   ///
   /// In ar, this message translates to:
