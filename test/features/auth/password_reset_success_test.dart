@@ -17,7 +17,7 @@ import 'package:nasam/features/auth/domain/usecases/reset_password_usecase.dart'
 import 'package:nasam/features/auth/presentation/cubit/new_password_cubit.dart';
 import 'package:nasam/features/auth/presentation/pages/new_password_page.dart';
 import 'package:nasam/features/auth/presentation/pages/password_reset_success_page.dart';
-import 'package:nasam/features/auth/presentation/widgets/animated_success_icon.dart';
+import 'package:nasam/shared/widgets/animated_success_icon.dart';
 
 import '../../helpers/font_loader.dart';
 
@@ -83,7 +83,7 @@ void main() {
     await tester.runAsync(() async {
       await Future.wait([
         precacheImage(
-          const AssetImage(AppAssets.passwordResetSuccess),
+          const AssetImage(AppAssets.successMark),
           captureKey.currentContext!,
         ),
         precacheImage(
@@ -128,6 +128,41 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('login destination'), findsOneWidget);
     expect(router.canPop(), isFalse);
+  });
+
+  testWidgets('confetti runs once and content appears after the badge', (
+    tester,
+  ) async {
+    await mount(tester);
+    await tester.pump(const Duration(milliseconds: 1000));
+    final fade = tester.widget<FadeTransition>(
+      find
+          .ancestor(
+            of: find.text('تسجيل الدخول'),
+            matching: find.byType(FadeTransition),
+          )
+          .first,
+    );
+    expect(fade.opacity.value, 0);
+    await tester.pump(const Duration(milliseconds: 1800));
+    expect(fade.opacity.value, greaterThan(0.9));
+    expect(tester.binding.transientCallbackCount, greaterThan(0));
+    if (const bool.fromEnvironment('CAPTURE_SUCCESS')) {
+      await tester.runAsync(() async {
+        final boundary =
+            captureKey.currentContext!.findRenderObject()!
+                as RenderRepaintBoundary;
+        final image = await boundary.toImage();
+        final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
+        await File(
+          '/tmp/nasam-password-reset-celebration.png',
+        ).writeAsBytes(bytes!.buffer.asUint8List());
+        image.dispose();
+      });
+    }
+    await tester.pumpAndSettle();
+    expect(tester.binding.transientCallbackCount, 0);
+    expect(tester.takeException(), isNull);
   });
 
   testWidgets('successful reset replaces form with confirmation', (

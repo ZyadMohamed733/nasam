@@ -2,14 +2,15 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../../../../core/constants/app_assets.dart';
-import '../../../../core/constants/app_colors.dart';
+import '../../core/constants/app_assets.dart';
+import '../../core/constants/app_colors.dart';
 
 /// A single circular sweep that resolves into the supplied success artwork.
 class AnimatedSuccessIcon extends StatefulWidget {
-  const AnimatedSuccessIcon({super.key, this.size = 96});
+  const AnimatedSuccessIcon({super.key, this.size = 96, this.icon});
 
   final double size;
+  final Widget? icon;
 
   @override
   State<AnimatedSuccessIcon> createState() => _AnimatedSuccessIconState();
@@ -46,10 +47,9 @@ class _AnimatedSuccessIconState extends State<AnimatedSuccessIcon>
           dimension: widget.size,
           child: AnimatedBuilder(
             animation: _controller,
-            child: Image.asset(
-              AppAssets.passwordResetSuccess,
-              fit: BoxFit.contain,
-            ),
+            child:
+                widget.icon ??
+                Image.asset(AppAssets.successMark, fit: BoxFit.contain),
             builder: (context, child) {
               final progress = _controller.value;
               final reveal = const Interval(
