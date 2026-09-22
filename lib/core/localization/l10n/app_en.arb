@@ -94,5 +94,6 @@
   "trackingLayers": "Layers",
   "trackingZoomIn": "Zoom in",
   "trackingZoomOut": "Zoom out",
-  "trackingMenu": "Menu"
+  "trackingMenu": "Menu",
+  "trackingLogout": "Logout"
 }

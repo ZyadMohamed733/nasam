@@ -290,5 +290,6 @@
   "trackingLayers": "الطبقات",
   "trackingZoomIn": "تكبير",
   "trackingZoomOut": "تصغير",
-  "trackingMenu": "القائمة"
+  "trackingMenu": "القائمة",
+  "trackingLogout": "تسجيل الخروج"
 }

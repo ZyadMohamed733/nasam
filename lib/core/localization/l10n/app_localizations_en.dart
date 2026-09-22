@@ -357,4 +357,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get trackingMenu => 'Menu';
+
+  @override
+  String get trackingLogout => 'Logout';
 }

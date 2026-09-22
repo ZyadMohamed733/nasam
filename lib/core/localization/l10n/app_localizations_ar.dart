@@ -371,4 +371,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get trackingMenu => 'القائمة';
+
+  @override
+  String get trackingLogout => 'تسجيل الخروج';
 }

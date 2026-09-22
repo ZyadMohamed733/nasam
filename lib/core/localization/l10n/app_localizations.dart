@@ -667,6 +667,12 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'القائمة'**
   String get trackingMenu;
+
+  /// No description provided for @trackingLogout.
+  ///
+  /// In ar, this message translates to:
+  /// **'تسجيل الخروج'**
+  String get trackingLogout;
 }
 
 class _AppLocalizationsDelegate

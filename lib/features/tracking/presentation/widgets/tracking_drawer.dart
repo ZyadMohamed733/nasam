@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_assets.dart';
+import '../../../../core/di/injection_container.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
+import '../../../../core/router/app_routes.dart';
+import '../../../auth/domain/usecases/logout_usecase.dart';
 import '../../../../shared/widgets/app_logo.dart';
 import '../tracking_style.dart';
 
 class TrackingDrawer extends StatelessWidget {
-  const TrackingDrawer({super.key});
+  const TrackingDrawer({super.key, this.logout});
+
+  /// Injected in tests; resolved from the container otherwise.
+  final LogoutUseCase? logout;
+
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
@@ -96,6 +104,14 @@ class TrackingDrawer extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
+                _LogoutRow(
+                  label: l.trackingLogout,
+                  onTap: () async {
+                    await (logout ?? getIt<LogoutUseCase>())();
+                    if (context.mounted) context.go(AppRoutes.login);
+                  },
+                ),
+                const SizedBox(height: 12),
                 Row(
                   children: [
                     const CircleAvatar(
@@ -163,6 +179,39 @@ class TrackingDrawer extends StatelessWidget {
             color: Colors.white,
           ),
       ],
+    ),
+  );
+}
+
+class _LogoutRow extends StatelessWidget {
+  const _LogoutRow({required this.label, required this.onTap});
+
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) => InkWell(
+    onTap: onTap,
+    borderRadius: BorderRadius.circular(8),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        children: [
+          const Icon(
+            Icons.logout_rounded,
+            size: 19,
+            color: TrackingStyle.drawerText,
+          ),
+          const SizedBox(width: 12),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 14,
+              color: TrackingStyle.drawerText,
+            ),
+          ),
+        ],
+      ),
     ),
   );
 }
