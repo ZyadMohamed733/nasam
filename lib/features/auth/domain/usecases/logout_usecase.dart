@@ -5,10 +5,9 @@ import '../../../../core/errors/failures.dart';
 import '../repositories/auth_repository.dart';
 
 @lazySingleton
-class RequestPasswordResetUseCase {
-  const RequestPasswordResetUseCase(this._repository);
+class LogoutUseCase {
+  const LogoutUseCase(this._repository);
   final AuthRepository _repository;
 
-  Future<Either<Failure, Unit>> call(String email) =>
-      _repository.requestPasswordReset(email);
+  Future<Either<Failure, Unit>> call() => _repository.logout();
 }
