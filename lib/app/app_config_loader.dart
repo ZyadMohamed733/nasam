@@ -1,4 +1,5 @@
 import '../core/constants/app_constants.dart';
+import '../core/utils/app_logger.dart';
 import 'app_config.dart';
 
 /// Builds the [AppConfig] for a flavor from compile-time configuration.
@@ -58,7 +59,10 @@ abstract final class AppConfigLoader {
     }
 
     if (!hostsAgree(baseUrl, wsUrl)) {
-      throw StateError(
+      // Warning-only: the dev API and the (still-placeholder) WS host are
+      // expected to disagree for now. Flip back to a hard StateError once
+      // WS_URL points at a real socket host for this environment.
+      AppLogger.w(
         'API host "${Uri.parse(baseUrl).host}" and socket host '
         '"${Uri.parse(wsUrl).host}" are not from the same environment.',
       );

@@ -25,6 +25,12 @@ class DioClient {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
+          // Tells the backend to deliver the refresh token in the response
+          // body instead of an HttpOnly cookie -- native clients have no
+          // cookie jar for the API host to write into.
+          'X-Client': 'mobile',
+          // Multi-tenancy: every request must be scoped to a tenant.
+          'x-tenant': 'saudi-tracking',
         },
       ),
     );

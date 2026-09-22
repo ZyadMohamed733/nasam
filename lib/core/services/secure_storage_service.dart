@@ -31,6 +31,22 @@ class SecureStorageService {
     await _storage.delete(key: AppStrings.keyRefreshToken);
   }
 
+  // User profile (identity, roles, tenant, etc. from /auth/login and
+  // /auth/verify-otp) -- stored as its raw JSON string alongside the
+  // tokens, in secure storage rather than SharedPreferences, since it is
+  // account data rather than a disposable UI cache.
+  Future<void> saveUser(String json) async {
+    await _storage.write(key: AppStrings.keyUserData, value: json);
+  }
+
+  Future<String?> getUser() async {
+    return _storage.read(key: AppStrings.keyUserData);
+  }
+
+  Future<void> deleteUser() async {
+    await _storage.delete(key: AppStrings.keyUserData);
+  }
+
   Future<void> clearAll() async {
     await _storage.deleteAll();
   }

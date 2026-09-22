@@ -25,15 +25,6 @@ class StorageService {
     return _prefs.getString(AppStrings.keyThemeMode);
   }
 
-  // User data caching (non-sensitive layout caches, etc.)
-  Future<void> saveUserData(String jsonString) async {
-    await _prefs.setString(AppStrings.keyUserData, jsonString);
-  }
-
-  String? getUserData() {
-    return _prefs.getString(AppStrings.keyUserData);
-  }
-
   // Onboarding
   //
   // Deliberately in SharedPreferences rather than secure storage: it is not a

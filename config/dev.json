@@ -1,6 +1,6 @@
 {
   "_README": "NO SECRETS IN THIS FILE. It is committed to git and compiled into the app binary, where any user can read it. Hostnames and flavour names are fine. For anything secret, use config/<flavor>.local.json (gitignored) and pass it with a second --dart-define-from-file.",
   "FLAVOR": "dev",
-  "BASE_URL": "https://api-dev.nasam.app/v1",
+  "BASE_URL": "https://nasam-v2-api-dev.nasam.net/api/v1",
   "WS_URL": "wss://ws-dev.nasam.app"
 }
