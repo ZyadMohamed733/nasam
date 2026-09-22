@@ -1,11 +1,27 @@
 import 'package:injectable/injectable.dart';
 import 'secure_storage_service.dart';
 
+/// A read-only view of the current session for code that only needs to ask
+/// "is someone signed in" -- `RouteGuard`, the shared app chrome.
+///
+/// This is deliberately not where sign-in/out happens: those are credential
+/// exchanges with side effects (persisting or clearing tokens and the user
+/// profile) and belong to `AuthRepositoryImpl`, in `features/auth/data/`,
+/// which is the only place that should write these keys. Core services stay
+/// feature-agnostic, so this cannot depend on the auth feature's usecases --
+/// callers that need to act (sign in, sign out) use
+/// `features/auth/domain/usecases/` directly.
 abstract class AuthService {
   Future<bool> get isAuthenticated;
   Future<String?> get accessToken;
-  Future<void> login(String username, String password);
-  Future<void> logout();
+
+  /// The signed-in user's profile, as raw JSON (whatever
+  /// `AuthRepositoryImpl` last persisted via `SecureStorageService.saveUser`).
+  /// Kept as a string rather than a typed entity: parsing it into a domain
+  /// `UserEntity` needs the auth feature's mapper, which this feature-agnostic
+  /// service must not import. A caller that wants the typed user reads this
+  /// feature's own state instead (e.g. via its cubit).
+  Future<String?> get currentUser;
 }
 
 @LazySingleton(as: AuthService)
@@ -23,19 +39,5 @@ class AuthServiceImpl implements AuthService {
   Future<String?> get accessToken => _secureStorage.getAccessToken();
 
   @override
-  Future<void> login(String username, String password) async {
-    // Scaffold implementation: mock-saving an access and refresh token.
-    // In production, this would make an API call via Dio, mapping to DTO.
-    await _secureStorage.saveAccessToken(
-      'mock_access_token_${DateTime.now().millisecondsSinceEpoch}',
-    );
-    await _secureStorage.saveRefreshToken(
-      'mock_refresh_token_${DateTime.now().millisecondsSinceEpoch}',
-    );
-  }
-
-  @override
-  Future<void> logout() async {
-    await _secureStorage.clearAll();
-  }
+  Future<String?> get currentUser => _secureStorage.getUser();
 }

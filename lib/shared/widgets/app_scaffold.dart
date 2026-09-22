@@ -4,8 +4,8 @@ import '../../core/constants/app_sizes.dart';
 import '../../core/di/injection_container.dart';
 import '../../core/responsive/responsive_layout.dart';
 import '../../core/router/app_routes.dart';
-import '../../core/services/auth_service.dart';
 import '../../core/services/websocket_service.dart';
+import '../../features/auth/domain/usecases/logout_usecase.dart';
 import 'app_bar_widget.dart';
 import 'app_drawer.dart';
 
@@ -45,7 +45,7 @@ class AppScaffold extends StatelessWidget {
     this.floatingActionButton,
     this.bottomNavigationBar,
     this.wsService,
-    this.authService,
+    this.logout,
   });
 
   final Widget body;
@@ -66,15 +66,15 @@ class AppScaffold extends StatelessWidget {
   /// dependencies are resolved, so the leaf widgets take theirs by constructor
   /// and never reach for the service locator themselves.
   final WebSocketService? wsService;
-  final AuthService? authService;
+  final LogoutUseCase? logout;
 
   @override
   Widget build(BuildContext context) {
     final ws = wsService ?? getIt<WebSocketService>();
-    final auth = authService ?? getIt<AuthService>();
+    final logoutUseCase = logout ?? getIt<LogoutUseCase>();
 
     return ResponsiveLayout(
-      mobile: _buildMobile(context, ws, auth),
+      mobile: _buildMobile(context, ws, logoutUseCase),
       tablet: _buildWide(context, ws),
     );
   }
@@ -84,7 +84,7 @@ class AppScaffold extends StatelessWidget {
   Widget _buildMobile(
     BuildContext context,
     WebSocketService ws,
-    AuthService auth,
+    LogoutUseCase logout,
   ) {
     return Scaffold(
       appBar: showAppBar
@@ -94,7 +94,7 @@ class AppScaffold extends StatelessWidget {
               showLeading: showDrawer,
             )
           : null,
-      drawer: showDrawer ? AppDrawer(authService: auth) : null,
+      drawer: showDrawer ? AppDrawer(logout: logout) : null,
       body: _wrappedBody(),
       floatingActionButton: floatingActionButton,
       bottomNavigationBar: bottomNavigationBar,

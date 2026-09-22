@@ -1,20 +1,47 @@
+import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../core/errors/exceptions.dart';
-import '../../models/auth_tokens_model.dart';
+import '../../../../../core/errors/exception_mapper.dart';
+import '../../models/auth_session_model.dart';
+import '../../models/forget_password_request_model.dart';
+import '../../models/login_request_model.dart';
+import '../../models/refresh_token_request_model.dart';
+import '../../models/resend_otp_request_model.dart';
+import '../../models/reset_password_request_model.dart';
+import '../../models/user_model.dart';
+import '../../models/verify_otp_request_model.dart';
 
+/// What `POST /auth/login` answers when the account has 2FA enabled: `200`
+/// with `{ requiresOtp: true }` and no tokens. [AuthRemoteDataSourceImpl.login]
+/// returns null in this case rather than throwing -- it is not an error.
 abstract class AuthRemoteDataSource {
-  Future<AuthTokensModel> login({
-    required String email,
+  Future<AuthSessionModel?> login({
+    required String username,
     required String password,
   });
 
-  Future<void> requestPasswordReset(String email);
-
-  Future<String> verifyResetCode({
-    required String email,
+  Future<AuthSessionModel> verifyOtp({
+    required String username,
     required String code,
   });
+
+  Future<void> resendOtp(String username);
+
+  /// [refreshToken] is threaded back into the returned model by the caller
+  /// (see [AuthRepositoryImpl.refreshAccessToken]) since the response
+  /// itself does not carry one.
+  Future<({String accessToken, UserModel user})> refreshAccessToken(
+    String refreshToken,
+  );
+
+  /// [refreshToken] is nullable and, when null, sent with no body at all --
+  /// `RefreshTokenDto.refreshToken` is optional on the wire, and there is
+  /// nothing useful to send when the local session already has no token
+  /// (e.g. a second logout call, or one after a failed refresh already
+  /// cleared storage).
+  Future<void> logout(String? refreshToken);
+
+  Future<void> forgetPassword(String email);
 
   Future<void> resetPassword({
     required String resetToken,
@@ -22,90 +49,109 @@ abstract class AuthRemoteDataSource {
   });
 }
 
-/// Stands in for the auth API, which does not exist yet.
-///
-/// The slice above this is real — repository, usecases, cubits and screens are
-/// all production code — so when the endpoints land, only this class is
-/// replaced with a Dio implementation and nothing else changes. It is
-/// registered as the `AuthRemoteDataSource` for now; swapping the binding is
-/// the whole migration.
-///
-/// It answers predictably rather than randomly, so the error paths in the UI
-/// can actually be walked through:
-///
-///  * any password but [_validPassword] fails sign-in
-///  * [_unknownEmail] is not recognised for a reset
-///  * any complete code is accepted — see [verifyResetCode]
-///
-/// Each call waits [_latency], because a form that never shows its loading
-/// state is a form whose loading state has never been looked at.
 @LazySingleton(as: AuthRemoteDataSource)
-class AuthRemoteDataSourceMock implements AuthRemoteDataSource {
-  const AuthRemoteDataSourceMock();
+class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
+  const AuthRemoteDataSourceImpl(this._dio);
 
-  static const Duration _latency = Duration(milliseconds: 600);
-  static const String _validPassword = 'Nasam@123';
-  static const String _unknownEmail = 'unknown@nasam.sa';
-  static const String _resetToken = 'mock-reset-token';
+  final Dio _dio;
 
   @override
-  Future<AuthTokensModel> login({
-    required String email,
+  Future<AuthSessionModel?> login({
+    required String username,
     required String password,
   }) async {
-    await Future<void>.delayed(_latency);
-
-    if (password != _validPassword) {
-      throw const AuthException(
-        message: 'Those credentials were not recognised.',
-        code: '401',
+    try {
+      final response = await _dio.post<Map<String, dynamic>>(
+        '/auth/login',
+        data: LoginRequestModel(
+          username: username,
+          password: password,
+        ).toJson(),
       );
-    }
 
-    final issued = DateTime.now().millisecondsSinceEpoch;
-    return AuthTokensModel(
-      accessToken: 'mock_access_token_$issued',
-      refreshToken: 'mock_refresh_token_$issued',
-    );
-  }
+      final data = response.data?['data'] as Map<String, dynamic>? ?? {};
+      if (data['requiresOtp'] == true) return null;
 
-  @override
-  Future<void> requestPasswordReset(String email) async {
-    await Future<void>.delayed(_latency);
-
-    if (email.trim().toLowerCase() == _unknownEmail) {
-      throw const AuthException(
-        message: 'No account uses that address.',
-        code: '404',
-      );
+      return AuthSessionModel.fromJson(data);
+    } on DioException catch (e) {
+      throw ExceptionMapper.fromDioException(e);
     }
   }
 
-  /// Accepts any code.
-  ///
-  /// There is no backend to check one against, and a hard-coded "correct" code
-  /// only tests whether the tester remembered it. Anything the user can
-  /// actually type gets them to the next screen, which is what makes this
-  /// walkable end to end.
-  ///
-  /// The empty-code rejection stays: it is the one failure the UI can reach on
-  /// its own, so the error path still has something to demonstrate. When the
-  /// real endpoint lands this whole class is replaced, and the rejection comes
-  /// back with it.
   @override
-  Future<String> verifyResetCode({
-    required String email,
+  Future<AuthSessionModel> verifyOtp({
+    required String username,
     required String code,
   }) async {
-    await Future<void>.delayed(_latency);
-
-    if (code.trim().isEmpty) {
-      throw const AuthException(
-        message: 'Enter the code from your email.',
-        code: '400',
+    try {
+      final response = await _dio.post<Map<String, dynamic>>(
+        '/auth/verify-otp',
+        data: VerifyOtpRequestModel(username: username, code: code).toJson(),
       );
+
+      final data = response.data?['data'] as Map<String, dynamic>? ?? {};
+      return AuthSessionModel.fromJson(data);
+    } on DioException catch (e) {
+      throw ExceptionMapper.fromDioException(e);
     }
-    return _resetToken;
+  }
+
+  @override
+  Future<void> resendOtp(String username) async {
+    try {
+      await _dio.post<Map<String, dynamic>>(
+        '/auth/resend-otp',
+        data: ResendOtpRequestModel(username: username).toJson(),
+      );
+    } on DioException catch (e) {
+      throw ExceptionMapper.fromDioException(e);
+    }
+  }
+
+  @override
+  Future<({String accessToken, UserModel user})> refreshAccessToken(
+    String refreshToken,
+  ) async {
+    try {
+      final response = await _dio.post<Map<String, dynamic>>(
+        '/auth/refresh-access-token',
+        data: RefreshTokenRequestModel(refreshToken: refreshToken).toJson(),
+      );
+
+      final data = response.data?['data'] as Map<String, dynamic>? ?? {};
+      return (
+        accessToken: data['accessToken'] as String,
+        user: UserModel.fromJson(data['user'] as Map<String, dynamic>),
+      );
+    } on DioException catch (e) {
+      throw ExceptionMapper.fromDioException(e);
+    }
+  }
+
+  @override
+  Future<void> logout(String? refreshToken) async {
+    try {
+      await _dio.post<Map<String, dynamic>>(
+        '/auth/logout',
+        data: refreshToken == null
+            ? const <String, dynamic>{}
+            : RefreshTokenRequestModel(refreshToken: refreshToken).toJson(),
+      );
+    } on DioException catch (e) {
+      throw ExceptionMapper.fromDioException(e);
+    }
+  }
+
+  @override
+  Future<void> forgetPassword(String email) async {
+    try {
+      await _dio.post<Map<String, dynamic>>(
+        '/auth/forget-password',
+        data: ForgetPasswordRequestModel(email: email).toJson(),
+      );
+    } on DioException catch (e) {
+      throw ExceptionMapper.fromDioException(e);
+    }
   }
 
   @override
@@ -113,13 +159,16 @@ class AuthRemoteDataSourceMock implements AuthRemoteDataSource {
     required String resetToken,
     required String newPassword,
   }) async {
-    await Future<void>.delayed(_latency);
-
-    if (resetToken != _resetToken) {
-      throw const AuthException(
-        message: 'That reset link is no longer valid.',
-        code: '400',
+    try {
+      await _dio.patch<Map<String, dynamic>>(
+        '/auth/reset-password',
+        data: ResetPasswordRequestModel(
+          resetToken: resetToken,
+          newPassword: newPassword,
+        ).toJson(),
       );
+    } on DioException catch (e) {
+      throw ExceptionMapper.fromDioException(e);
     }
   }
 }

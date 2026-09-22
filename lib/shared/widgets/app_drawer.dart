@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/constants/app_sizes.dart';
 import '../../core/router/app_routes.dart';
-import '../../core/services/auth_service.dart';
+import '../../features/auth/domain/usecases/logout_usecase.dart';
 import 'app_scaffold.dart';
 
 class AppDrawer extends StatelessWidget {
-  const AppDrawer({super.key, required this.authService});
+  const AppDrawer({super.key, required this.logout});
 
   /// Injected rather than resolved from getIt inside build(), so the drawer is
-  /// testable with a fake auth service.
-  final AuthService authService;
+  /// testable with a fake usecase.
+  final LogoutUseCase logout;
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +85,11 @@ class AppDrawer extends StatelessWidget {
             ),
             onTap: () async {
               Navigator.pop(context); // Close drawer
-              await authService.logout();
+              // Fire-and-forget the Either: logout() clears the local
+              // session unconditionally (a best-effort server call is not a
+              // precondition for it), so there is nothing meaningful to
+              // branch on here -- always land back on login.
+              await logout();
               if (context.mounted) {
                 context.go(AppRoutes.login);
               }

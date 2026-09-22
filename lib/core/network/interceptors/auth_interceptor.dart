@@ -27,7 +27,7 @@ class AuthInterceptor extends Interceptor {
   @visibleForTesting
   Dio Function(BaseOptions options)? refreshClientFactory;
 
-  static const String _refreshPath = '/auth/refresh';
+  static const String _refreshPath = '/auth/refresh-access-token';
 
   @override
   Future<void> onRequest(
@@ -107,7 +107,12 @@ class AuthInterceptor extends Interceptor {
         data: {'refreshToken': refreshToken},
       );
 
-      final data = response.data;
+      // The response is nested one level under `data`, same as every other
+      // endpoint on this API ({ data: { accessToken, user } }) -- and there
+      // is no `message` key on this one specifically. The refresh token is
+      // not rotated, so the response carries no new one; the caller keeps
+      // reusing the one already in secure storage.
+      final data = response.data?['data'] as Map<String, dynamic>?;
       final newAccessToken = data?['accessToken'] as String?;
       if (response.statusCode != 200 ||
           newAccessToken == null ||
@@ -116,10 +121,6 @@ class AuthInterceptor extends Interceptor {
       }
 
       await _secureStorageService.saveAccessToken(newAccessToken);
-      final newRefreshToken = data?['refreshToken'] as String?;
-      if (newRefreshToken != null && newRefreshToken.isNotEmpty) {
-        await _secureStorageService.saveRefreshToken(newRefreshToken);
-      }
       return newAccessToken;
     } on DioException catch (e) {
       // Only the refresh endpoint explicitly rejecting the token means the
@@ -140,6 +141,11 @@ class AuthInterceptor extends Interceptor {
       baseUrl: origin.baseUrl,
       connectTimeout: origin.connectTimeout,
       receiveTimeout: origin.receiveTimeout,
+      // Required on every call, refresh included -- a native request with
+      // no Origin and no x-tenant header is answered 404, not 401, so a
+      // missing header here would look like "refresh endpoint doesn't
+      // exist" rather than an auth failure.
+      headers: const {'x-tenant': 'saudi-tracking'},
     );
     final factory = refreshClientFactory;
     return factory == null ? Dio(options) : factory(options);

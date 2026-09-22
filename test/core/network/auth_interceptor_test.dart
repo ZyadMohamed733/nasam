@@ -71,8 +71,7 @@ void main() {
           requestOptions: origin(),
           statusCode: 200,
           data: const {
-            'accessToken': 'new-access',
-            'refreshToken': 'refresh-2',
+            'data': {'accessToken': 'new-access'},
           },
         ),
       );
@@ -112,15 +111,14 @@ void main() {
           requestOptions: origin(),
           statusCode: 200,
           data: const {
-            'accessToken': 'new-access',
-            'refreshToken': 'refresh-2',
+            'data': {'accessToken': 'new-access'},
           },
         ),
       );
       await Future.wait(inFlight);
 
       expect(client.calls, hasLength(1));
-      expect(client.calls.single, contains('/auth/refresh'));
+      expect(client.calls.single, '/auth/refresh-access-token');
       verify(() => storage.saveAccessToken('new-access')).called(1);
       // Every caller got its request retried and resolved.
       expect(handlers.every((h) => h.resolved.length == 1), isTrue);
