@@ -22,13 +22,18 @@ import '../../features/auth/data/datasources/remote/auth_remote_datasource.dart'
 import '../../features/auth/data/repositories/auth_repository_impl.dart'
     as _i153;
 import '../../features/auth/domain/repositories/auth_repository.dart' as _i787;
-import '../../features/auth/domain/usecases/login_usecase.dart' as _i188;
-import '../../features/auth/domain/usecases/request_password_reset_usecase.dart'
+import '../../features/auth/domain/usecases/forget_password_usecase.dart'
     as _i438;
+import '../../features/auth/domain/usecases/login_usecase.dart' as _i188;
+import '../../features/auth/domain/usecases/logout_usecase.dart' as _i902;
+import '../../features/auth/domain/usecases/refresh_access_token_usecase.dart'
+    as _i904;
+import '../../features/auth/domain/usecases/resend_otp_usecase.dart'
+    as _i903;
 import '../../features/auth/domain/usecases/reset_password_usecase.dart'
     as _i474;
-import '../../features/auth/domain/usecases/verify_reset_code_usecase.dart'
-    as _i694;
+import '../../features/auth/domain/usecases/verify_otp_usecase.dart'
+    as _i901;
 import '../../features/auth/presentation/cubit/forgot_password_cubit.dart'
     as _i104;
 import '../../features/auth/presentation/cubit/login_cubit.dart' as _i69;
@@ -67,17 +72,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i558.FlutterSecureStorage>(
       () => storageModule.secureStorage,
     );
-    gh.lazySingleton<_i1022.AuthRemoteDataSource>(
-      () => const _i1022.AuthRemoteDataSourceMock(),
-    );
     gh.lazySingleton<_i535.SecureStorageService>(
       () => _i535.SecureStorageService(gh<_i558.FlutterSecureStorage>()),
-    );
-    gh.lazySingleton<_i787.AuthRepository>(
-      () => _i153.AuthRepositoryImpl(
-        gh<_i1022.AuthRemoteDataSource>(),
-        gh<_i535.SecureStorageService>(),
-      ),
     );
     gh.lazySingleton<_i306.StorageService>(
       () => _i306.StorageService(gh<_i460.SharedPreferences>()),
@@ -86,29 +82,14 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i555.WebSocketService(gh<_i861.AppConfig>()),
       dispose: (i) => i.dispose(),
     );
-    gh.lazySingleton<_i188.LoginUseCase>(
-      () => _i188.LoginUseCase(gh<_i787.AuthRepository>()),
-    );
-    gh.lazySingleton<_i438.RequestPasswordResetUseCase>(
-      () => _i438.RequestPasswordResetUseCase(gh<_i787.AuthRepository>()),
-    );
-    gh.lazySingleton<_i474.ResetPasswordUseCase>(
-      () => _i474.ResetPasswordUseCase(gh<_i787.AuthRepository>()),
-    );
-    gh.lazySingleton<_i694.VerifyResetCodeUseCase>(
-      () => _i694.VerifyResetCodeUseCase(gh<_i787.AuthRepository>()),
-    );
     gh.lazySingleton<_i745.AuthService>(
       () => _i745.AuthServiceImpl(gh<_i535.SecureStorageService>()),
     );
     gh.factory<_i236.NewPasswordCubit>(
       () => _i236.NewPasswordCubit(gh<_i474.ResetPasswordUseCase>()),
     );
-    gh.factory<_i104.ForgotPasswordCubit>(
-      () => _i104.ForgotPasswordCubit(gh<_i438.RequestPasswordResetUseCase>()),
-    );
-    gh.factory<_i69.LoginCubit>(
-      () => _i69.LoginCubit(gh<_i188.LoginUseCase>()),
+    gh.lazySingleton<_i474.ResetPasswordUseCase>(
+      () => _i474.ResetPasswordUseCase(gh<_i787.AuthRepository>()),
     );
     gh.lazySingleton<_i745.AuthInterceptor>(
       () => _i745.AuthInterceptor(gh<_i535.SecureStorageService>()),
@@ -122,18 +103,51 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i715.RouteGuard>(
       () => _i715.RouteGuard(gh<_i745.AuthService>()),
     );
-    gh.factory<_i1033.OtpCubit>(
-      () => _i1033.OtpCubit(
-        gh<_i694.VerifyResetCodeUseCase>(),
-        gh<_i438.RequestPasswordResetUseCase>(),
-      ),
-    );
     gh.lazySingleton<_i361.Dio>(
       () => networkModule.dio(
         gh<_i861.AppConfig>(),
         gh<_i745.AuthInterceptor>(),
         gh<_i344.LoggingInterceptor>(),
         gh<_i511.ErrorInterceptor>(),
+      ),
+    );
+    gh.lazySingleton<_i1022.AuthRemoteDataSource>(
+      () => _i1022.AuthRemoteDataSourceImpl(gh<_i361.Dio>()),
+    );
+    gh.lazySingleton<_i787.AuthRepository>(
+      () => _i153.AuthRepositoryImpl(
+        gh<_i1022.AuthRemoteDataSource>(),
+        gh<_i535.SecureStorageService>(),
+      ),
+    );
+    gh.lazySingleton<_i188.LoginUseCase>(
+      () => _i188.LoginUseCase(gh<_i787.AuthRepository>()),
+    );
+    gh.lazySingleton<_i438.ForgetPasswordUseCase>(
+      () => _i438.ForgetPasswordUseCase(gh<_i787.AuthRepository>()),
+    );
+    gh.lazySingleton<_i901.VerifyOtpUseCase>(
+      () => _i901.VerifyOtpUseCase(gh<_i787.AuthRepository>()),
+    );
+    gh.lazySingleton<_i903.ResendOtpUseCase>(
+      () => _i903.ResendOtpUseCase(gh<_i787.AuthRepository>()),
+    );
+    gh.lazySingleton<_i904.RefreshAccessTokenUseCase>(
+      () => _i904.RefreshAccessTokenUseCase(gh<_i787.AuthRepository>()),
+    );
+    gh.lazySingleton<_i902.LogoutUseCase>(
+      () => _i902.LogoutUseCase(gh<_i787.AuthRepository>()),
+    );
+    gh.factory<_i104.ForgotPasswordCubit>(
+      () => _i104.ForgotPasswordCubit(gh<_i438.ForgetPasswordUseCase>()),
+    );
+    gh.factory<_i69.LoginCubit>(
+      () => _i69.LoginCubit(gh<_i188.LoginUseCase>()),
+    );
+    gh.factory<_i1033.OtpCubit>(
+      () => _i1033.OtpCubit(
+        gh<_i901.VerifyOtpUseCase>(),
+        gh<_i903.ResendOtpUseCase>(),
       ),
     );
     gh.lazySingleton<_i81.AppRouter>(
