@@ -6,18 +6,23 @@ import 'package:nasam/core/errors/exception_mapper.dart';
 import 'package:nasam/core/errors/exceptions.dart';
 
 void main() {
-  final requestOptions = RequestOptions(path: '/templates/1');
+  final requestOptions = RequestOptions(path: '/auth/login');
 
   DioException dioError(DioExceptionType type, {Object? error}) =>
       DioException(requestOptions: requestOptions, type: type, error: error);
 
-  DioException httpError(int statusCode, {Object? data}) => DioException(
+  DioException httpError(
+    int statusCode, {
+    Object? data,
+    Map<String, List<String>>? headers,
+  }) => DioException(
     requestOptions: requestOptions,
     type: DioExceptionType.badResponse,
     response: Response<Object?>(
       requestOptions: requestOptions,
       statusCode: statusCode,
       data: data,
+      headers: headers == null ? null : Headers.fromMap(headers),
     ),
   );
 
@@ -101,10 +106,20 @@ void main() {
   });
 
   group('status code coverage', () {
-    test('401 maps to AuthException', () {
+    test('401 uses the server message verbatim when present', () {
+      final result = ExceptionMapper.fromDioException(
+        httpError(401, data: {'message': 'Invalid username or password.'}),
+      );
+      expect(result, isA<AuthException>());
+      expect(result.code, '401');
+      expect(result.message, 'Invalid username or password.');
+    });
+
+    test('401 with no body message falls back to a generic message', () {
       final result = ExceptionMapper.fromDioException(httpError(401));
       expect(result, isA<AuthException>());
       expect(result.code, '401');
+      expect(result.message, isNotEmpty);
     });
 
     test('403 maps to PermissionException', () {
@@ -119,19 +134,6 @@ void main() {
       expect(result.code, '404');
     });
 
-    test('422 maps to ValidationException', () {
-      final result = ExceptionMapper.fromDioException(httpError(422));
-      expect(result, isA<ValidationException>());
-      expect(result.code, '422');
-    });
-
-    test('400 falls through to UnknownException', () {
-      expect(
-        ExceptionMapper.fromDioException(httpError(400)),
-        isA<UnknownException>(),
-      );
-    });
-
     for (final statusCode in [500, 502, 503, 599]) {
       test('$statusCode maps to ServerException', () {
         final result = ExceptionMapper.fromDioException(httpError(statusCode));
@@ -141,61 +143,75 @@ void main() {
     }
   });
 
-  group('parseFieldErrors', () {
-    test('reads the documented 422 shape', () {
+  group('400 validation errors', () {
+    test('a single string message maps to ValidationException', () {
+      final result = ExceptionMapper.fromDioException(
+        httpError(400, data: {'message': 'email must be a valid email address'}),
+      );
+      expect(result, isA<ValidationException>());
+      expect(result.code, '400');
+      expect(result.message, 'email must be a valid email address');
+      expect((result as ValidationException).fieldErrors, {
+        'email': ['email must be a valid email address'],
+      });
+    });
+
+    test('an array of class-validator sentences groups by leading field name', () {
       final result = ExceptionMapper.fromDioException(
         httpError(
-          422,
+          400,
           data: {
-            'errors': {
-              'plate_number': ['Already registered.', 'Must be uppercase.'],
-              'driver_id': ['Unknown driver.'],
-            },
+            'message': [
+              'username should not be empty',
+              'password should not be empty',
+            ],
           },
         ),
       );
 
-      expect((result as ValidationException).fieldErrors, {
-        'plate_number': ['Already registered.', 'Must be uppercase.'],
-        'driver_id': ['Unknown driver.'],
+      expect((result as ValidationException).message, 'username should not be empty');
+      expect(result.fieldErrors, {
+        'username': ['username should not be empty'],
+        'password': ['password should not be empty'],
       });
     });
 
-    test('accepts a bare string per field', () {
-      expect(
-        ExceptionMapper.parseFieldErrors({
-          'errors': {'plate_number': 'Already registered.'},
-        }),
-        {
-          'plate_number': ['Already registered.'],
-        },
-      );
-    });
-
-    // A malformed error body must not mask the error it describes.
-    test('returns empty for shapes it does not recognise', () {
-      expect(ExceptionMapper.parseFieldErrors(null), isEmpty);
-      expect(ExceptionMapper.parseFieldErrors('nope'), isEmpty);
-      expect(ExceptionMapper.parseFieldErrors({'errors': 'nope'}), isEmpty);
-      expect(
-        ExceptionMapper.parseFieldErrors(<String, Object>{
-          'other': <String, Object>{},
-        }),
-        isEmpty,
-      );
-      expect(
-        ExceptionMapper.parseFieldErrors({
-          'errors': {
-            'plate_number': [1, 2],
-          },
-        }),
-        isEmpty,
-      );
-    });
-
-    test('a 422 with no body yields an empty map, not a throw', () {
-      final result = ExceptionMapper.fromDioException(httpError(422));
+    test('a 400 with no recognisable body yields a generic validation failure, not a throw', () {
+      final result = ExceptionMapper.fromDioException(httpError(400));
+      expect(result, isA<ValidationException>());
       expect((result as ValidationException).fieldErrors, isEmpty);
+    });
+  });
+
+  group('429 rate limiting', () {
+    test('reads retryAfterSeconds from the Retry-After header', () {
+      final result = ExceptionMapper.fromDioException(
+        httpError(
+          429,
+          data: {'message': 'Too many attempts.'},
+          headers: {
+            'retry-after': ['120'],
+          },
+        ),
+      );
+
+      expect(result, isA<RateLimitException>());
+      expect(result.code, '429');
+      expect((result as RateLimitException).retryAfterSeconds, 120);
+      expect(result.message, 'Too many attempts.');
+    });
+
+    test('falls back to parsing minutes out of the message when the header is missing', () {
+      final result = ExceptionMapper.fromDioException(
+        httpError(429, data: {'message': 'Try again in 3 minutes.'}),
+      );
+
+      expect((result as RateLimitException).retryAfterSeconds, 180);
+    });
+
+    test('is null when neither the header nor the message says how long', () {
+      final result = ExceptionMapper.fromDioException(httpError(429));
+      expect((result as RateLimitException).retryAfterSeconds, isNull);
     });
   });
 }

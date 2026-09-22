@@ -49,5 +49,11 @@ abstract final class FailureMapper {
       code: exception.code,
       stackTrace: exception.stackTrace,
     ),
+    RateLimitException() => RateLimitFailure(
+      message: exception.message,
+      retryAfterSeconds: exception.retryAfterSeconds,
+      code: exception.code,
+      stackTrace: exception.stackTrace,
+    ),
   };
 }

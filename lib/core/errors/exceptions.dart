@@ -63,3 +63,19 @@ class UnknownException extends AppException {
     super.stackTrace,
   });
 }
+
+class RateLimitException extends AppException {
+  const RateLimitException({
+    required super.message,
+    this.retryAfterSeconds,
+    super.code,
+    super.stackTrace,
+  });
+
+  /// Seconds until the caller may retry. Parsed from the response's
+  /// `Retry-After` header, falling back to minutes mentioned in [message]
+  /// when the header is absent. Null when neither source yielded a value —
+  /// callers should still show [message] and disable the retry affordance
+  /// for a short default period rather than allow an immediate retry.
+  final int? retryAfterSeconds;
+}

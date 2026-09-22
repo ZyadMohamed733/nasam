@@ -100,3 +100,28 @@ class TimeoutFailure extends Failure {
 class UnknownFailure extends Failure {
   const UnknownFailure({required super.message, super.code, super.stackTrace});
 }
+
+class RateLimitFailure extends Failure {
+  const RateLimitFailure({
+    required super.message,
+    this.retryAfterSeconds,
+    super.code,
+    super.stackTrace,
+  });
+
+  /// Seconds until the caller may retry -- see [RateLimitException].
+  final int? retryAfterSeconds;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is RateLimitFailure &&
+          runtimeType == other.runtimeType &&
+          message == other.message &&
+          code == other.code &&
+          retryAfterSeconds == other.retryAfterSeconds;
+
+  @override
+  int get hashCode =>
+      message.hashCode ^ code.hashCode ^ retryAfterSeconds.hashCode;
+}
