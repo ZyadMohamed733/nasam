@@ -17,7 +17,6 @@ abstract final class AppAssets {
   static const String mapNotification = 'assets/icons/notification.svg';
   static const String mapZoomIn = 'assets/icons/zoom_in.svg';
   static const String mapZoomOut = 'assets/icons/zoom_out.svg';
-  static const String drawerBackground = '$_images/drawer_background.png';
 
   // Images.
   static const String successMark = '$_images/password_reset_success.png';
@@ -44,7 +43,6 @@ abstract final class AppAssets {
     mapNotification,
     mapZoomIn,
     mapZoomOut,
-    drawerBackground,
     successMark,
     splashBackground,
     splashParticles,

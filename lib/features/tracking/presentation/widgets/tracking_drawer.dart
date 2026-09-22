@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../core/constants/app_assets.dart';
 import '../../../../core/di/injection_container.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../auth/domain/usecases/logout_usecase.dart';
 import '../../../../shared/widgets/app_logo.dart';
 import '../tracking_style.dart';
+
+/// Height of [_DrawerBottomAccent], carried over from the 268 (of an 874
+/// total) that `drawer_bottom_background.svg`'s viewBox gave the shape in
+/// the original Figma export.
+const double _accentHeight = 268;
 
 class TrackingDrawer extends StatelessWidget {
   const TrackingDrawer({super.key, this.logout});
@@ -20,9 +24,13 @@ class TrackingDrawer extends StatelessWidget {
     return Stack(
       fit: StackFit.expand,
       children: [
-        Image.asset(
-          AppAssets.drawerBackground,
-          fit: BoxFit.fill,
+        const ColoredBox(color: TrackingStyle.drawer),
+        const Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          height: _accentHeight,
+          child: _DrawerBottomAccent(),
         ),
         SafeArea(
           child: Padding(
@@ -214,4 +222,52 @@ class _LogoutRow extends StatelessWidget {
       ),
     ),
   );
+}
+
+/// The rounded-corner accent band pinned to the bottom of the drawer.
+///
+/// Reproduces only the *shape* from `drawer_bottom_background.svg` -- a
+/// rectangle with just its bottom-right corner rounded. That file's actual
+/// fill is an unusable `<pattern>` wrapping a base64 raster (flutter_svg
+/// does not support pattern fills at all, the same issue already
+/// documented on `Vector.svg`/[AppLogo]), so the raster is dropped
+/// entirely and the shape is filled with [TrackingStyle.drawerBottomAccent]
+/// instead -- a single, code-controlled colour.
+class _DrawerBottomAccent extends StatelessWidget {
+  const _DrawerBottomAccent();
+
+  @override
+  Widget build(BuildContext context) => ClipPath(
+    clipper: const _DrawerBottomAccentClipper(),
+    child: ColoredBox(
+      color: TrackingStyle.drawerBottomAccent.withValues(alpha: .8),
+    ),
+  );
+}
+
+/// A rectangle with only its bottom-right corner rounded, matching the
+/// `M0 0H402V236C402 253.673 387.673 268 370 268H0V0Z` path from
+/// `drawer_bottom_background.svg` (402x268 viewBox -- a ~32px radius).
+/// The radius is kept proportional to the clipped size rather than a fixed
+/// pixel value so the shape holds together at whatever height it's given.
+class _DrawerBottomAccentClipper extends CustomClipper<Path> {
+  const _DrawerBottomAccentClipper();
+
+  @override
+  Path getClip(Size size) {
+    final radius = size.height * (32 / 268);
+    return Path()
+      ..moveTo(0, 0)
+      ..lineTo(size.width, 0)
+      ..lineTo(size.width, size.height - radius)
+      ..arcToPoint(
+        Offset(size.width - radius, size.height),
+        radius: Radius.circular(radius),
+      )
+      ..lineTo(0, size.height)
+      ..close();
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
 }
