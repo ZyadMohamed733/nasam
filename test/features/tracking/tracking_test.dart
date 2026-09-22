@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart'
     as clusters;
@@ -124,7 +125,9 @@ void main() {
     // setMapId no longer returns a Future in this fork; prime the zoom the
     // manager reads internally via onCameraMove instead of awaiting it.
     manager.setMapId(1, withUpdate: false);
-    manager.onCameraMove(const CameraPosition(target: LatLng(24.86, 46.4), zoom: 11));
+    manager.onCameraMove(
+      const CameraPosition(target: LatLng(24.86, 46.4), zoom: 11),
+    );
     final groups = await manager.getMarkers();
     expect(groups.length, lessThan(fleet.length));
     expect(groups.where((c) => !c.isMultiple).length, greaterThanOrEqualTo(3));
@@ -151,7 +154,43 @@ void main() {
       );
       await tester.tap(menu);
       await tester.pumpAndSettle();
+      await tester.ensureVisible(find.text('Aya Al-Rashidi'));
+      await tester.pumpAndSettle();
       expect(find.text('Aya Al-Rashidi').hitTestable(), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    },
+  );
+  testWidgets(
+    'drawer animates through intermediate values opening and closing',
+    (tester) async {
+      GoogleMapsFlutterPlatform.instance = _MapPlatform();
+      await pumpInApp(
+        tester,
+        TrackingPage(repository: DummyTrackingRepository()),
+      );
+      await tester.pumpAndSettle();
+      final drawer = tester.widget<AdvancedDrawer>(find.byType(AdvancedDrawer));
+      final animation = drawer.animationController!;
+      drawer.controller!.showDrawer();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
+      expect(animation.value, greaterThan(0));
+      expect(animation.value, lessThan(1));
+      expect(
+        tester
+            .widget<AdvancedDrawer>(find.byType(AdvancedDrawer))
+            .animationController,
+        same(animation),
+      );
+      await tester.pumpAndSettle();
+      expect(animation.value, 1);
+      await tester.binding.handlePopRoute();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
+      expect(animation.value, greaterThan(0));
+      expect(animation.value, lessThan(1));
+      await tester.pumpAndSettle();
+      expect(animation.value, 0);
       expect(tester.takeException(), isNull);
     },
   );

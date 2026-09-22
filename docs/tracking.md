@@ -50,3 +50,8 @@ flutter test integration_test/tracking_test.dart -d emulator-5554 --flavor dev -
 
 The integration test launches the actual native map independently of authentication
 and the backend, checks clustering, and opens the Arabic drawer.
+
+The shared `AppDrawer` uses `AppDrawerTheme` for colors and a separate transparent
+`drawerBottomBackground.png` pinned to the bottom. AdvancedDrawer provides the
+full-screen background and animated content; small screens and large text can
+scroll the entire menu and profile. Account labels can be injected by the host.

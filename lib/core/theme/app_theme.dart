@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import '../constants/app_colors.dart';
+import 'app_drawer_theme.dart';
 import 'app_theme_data.dart';
 import 'app_typography.dart';
 
@@ -93,7 +95,7 @@ class AppTheme {
       colorScheme: colorScheme,
       // Carries the tokens M3 has no role for — button and icon states — so
       // widgets never have to import AppColors to get a themed colour.
-      extensions: <ThemeExtension<dynamic>>[semantic],
+      extensions: <ThemeExtension<dynamic>>[semantic, const AppDrawerTheme()],
       scaffoldBackgroundColor: semantic.pageBackground,
       textTheme: textTheme,
       appBarTheme: appBarTheme.copyWith(

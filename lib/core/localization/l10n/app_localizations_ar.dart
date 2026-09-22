@@ -374,4 +374,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get trackingLogout => 'تسجيل الخروج';
+
+  @override
+  String get drawerDemoProfileName => 'Aya Al-Rashidi';
 }

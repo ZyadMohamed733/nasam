@@ -360,4 +360,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get trackingLogout => 'Logout';
+
+  @override
+  String get drawerDemoProfileName => 'Aya Al-Rashidi';
 }

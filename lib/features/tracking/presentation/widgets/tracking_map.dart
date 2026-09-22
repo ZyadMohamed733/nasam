@@ -129,7 +129,9 @@ class _TrackingMapState extends State<TrackingMap> {
     );
     if (_ready) {
       _manager.setMapId(_controller!.mapId, withUpdate: false);
-      _manager.onCameraMove(CameraPosition(target: _trackingCenter, zoom: _zoom));
+      _manager.onCameraMove(
+        CameraPosition(target: _trackingCenter, zoom: _zoom),
+      );
       if (mounted && generation == _generation) _refresh();
     }
   }
@@ -217,7 +219,9 @@ class _TrackingMapState extends State<TrackingMap> {
             _controller = controller;
             widget.onMapReady?.call(controller);
             _manager.setMapId(controller.mapId, withUpdate: false);
-            _manager.onCameraMove(CameraPosition(target: _trackingCenter, zoom: _zoom));
+            _manager.onCameraMove(
+              CameraPosition(target: _trackingCenter, zoom: _zoom),
+            );
             if (!mounted) return;
             _ready = true;
             await _fit();
@@ -229,7 +233,9 @@ class _TrackingMapState extends State<TrackingMap> {
             _generation++; // Discard renders for an older camera position.
           },
           onCameraIdle: () {
-            _manager.onCameraMove(CameraPosition(target: _trackingCenter, zoom: _zoom));
+            _manager.onCameraMove(
+              CameraPosition(target: _trackingCenter, zoom: _zoom),
+            );
             _refresh();
           },
         ),

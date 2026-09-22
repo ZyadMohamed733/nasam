@@ -673,6 +673,12 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'تسجيل الخروج'**
   String get trackingLogout;
+
+  /// No description provided for @drawerDemoProfileName.
+  ///
+  /// In ar, this message translates to:
+  /// **'Aya Al-Rashidi'**
+  String get drawerDemoProfileName;
 }
 
 class _AppLocalizationsDelegate

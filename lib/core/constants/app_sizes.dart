@@ -6,6 +6,17 @@ class AppSizes {
   static const double designWidth = 402.0;
   static const double designHeight = 874.0;
 
+  // Shared drawer geometry relative to the design frame.
+  static const double drawerOpenRatio = .73;
+  static const double drawerOpenScale = .94;
+  static const double drawerInitialScale = .92;
+  static const double drawerSlideRatio = .12;
+  static const double drawerMaxWidth = 360;
+  static const double drawerArtworkAspectRatio = 402 / 268;
+  static const double drawerFooterHeight = 120;
+  static const double drawerAvatarRadius = 21;
+  static const double drawerIconSize = 19;
+
   // Spacing and Padding
   static const double p2 = 2.0;
   static const double p4 = 4.0;

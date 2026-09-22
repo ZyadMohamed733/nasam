@@ -88,13 +88,18 @@ class AppScaffold extends StatelessWidget {
   ) {
     return Scaffold(
       appBar: showAppBar
-          ? NasamAppBar(
-              title: title,
-              wsService: ws,
-              showLeading: showDrawer,
+          ? NasamAppBar(title: title, wsService: ws, showLeading: showDrawer)
+          : null,
+      drawer: showDrawer
+          ? Drawer(
+              child: AppDrawer(
+                onLogout: () async {
+                  await logout();
+                  if (context.mounted) context.go(AppRoutes.login);
+                },
+              ),
             )
           : null,
-      drawer: showDrawer ? AppDrawer(logout: logout) : null,
       body: _wrappedBody(),
       floatingActionButton: floatingActionButton,
       bottomNavigationBar: bottomNavigationBar,

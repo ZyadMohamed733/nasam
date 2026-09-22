@@ -28,6 +28,8 @@ abstract final class AppAssets {
   static const String onboarding2 = '$_images/onboarding_2.png';
   static const String onboarding3 = '$_images/onboarding_3.jpg';
   static const String mapPlaceholder = '$_images/map_placeholder.png';
+  static const String drawerBottomBackground =
+      '$_images/drawerBottomBackground.png';
 
   /// The full-bleed backdrop behind every auth screen. A real vector, unlike
   /// `logoVector` — no `<pattern>` fill, so flutter_svg draws it.
@@ -37,6 +39,7 @@ abstract final class AppAssets {
   /// what the test iterates — and the test also re-reads this source file to
   /// check the list did not fall behind the constants.
   static const List<String> all = <String>[
+    drawerBottomBackground,
     mapArrow,
     trackingMenu,
     mapLayers,

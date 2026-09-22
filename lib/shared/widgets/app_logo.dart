@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 
 import '../../core/constants/app_assets.dart';
+import '../../core/constants/app_sizes.dart';
 
-/// The three sizes the design draws the logo at.
+/// The supported logo sizes from the design.
 enum AppLogoSize {
   /// 24 — inline, beside text.
   small(24.0),
+
+  /// Compact brand mark beside the drawer wordmark.
+  drawer(AppSizes.iconButtonMedium),
 
   /// 48 — the auth screens.
   medium(48.0),
@@ -18,7 +22,7 @@ enum AppLogoSize {
   final double value;
 }
 
-/// The Nasam mark, at one of the design's three sizes.
+/// The Nasam mark, at one of the design's supported sizes.
 ///
 /// Drawn from `logo_mark.png`, not from `Vector.svg`. That file is an SVG only
 /// by extension: Figma exported it as a 1MB base64 PNG inside a `<pattern>`
@@ -29,7 +33,11 @@ enum AppLogoSize {
 /// The mark is multi-colour, so it is drawn as authored rather than tinted to
 /// the theme — unlike the single-colour glyphs in `AppIcons`.
 class AppLogo extends StatelessWidget {
-  const AppLogo({super.key, this.size = AppLogoSize.medium, this.semanticsLabel});
+  const AppLogo({
+    super.key,
+    this.size = AppLogoSize.medium,
+    this.semanticsLabel,
+  });
 
   final AppLogoSize size;
 
