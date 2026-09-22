@@ -38,7 +38,7 @@ abstract final class AuthMapper {
     email: model.email,
     nameEn: model.nameEn,
     nameAr: model.nameAr,
-    account: accountToEntity(model.account),
+    account: model.account == null ? null : accountToEntity(model.account!),
     type: _userTypeFromWire(model.type),
     permissions: model.permissions,
   );

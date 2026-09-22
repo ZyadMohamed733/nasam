@@ -6,7 +6,9 @@ import 'user_type.dart';
 /// `nameEn`/`nameAr` are nullable here exactly as the wire payload is --
 /// deciding what to show when both are null (fall back to [username]) is a
 /// presentation concern, not something this entity or its mapper should bake
-/// in.
+/// in. `account` is nullable too: an ADMIN-type internal-staff user has none
+/// (confirmed against the real dev API -- not just the docs, which showed
+/// only a populated example).
 class UserEntity {
   const UserEntity({
     required this.id,
@@ -24,7 +26,7 @@ class UserEntity {
   final String email;
   final String? nameEn;
   final String? nameAr;
-  final AccountEntity account;
+  final AccountEntity? account;
   final UserType type;
 
   /// Flat expression strings (e.g.
