@@ -43,7 +43,7 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
               context.go(AppRoutes.passwordResetSuccess);
             case AuthFormFailed(:final failure):
               AppSnackBar.showError(context, failure.message);
-            case AuthFormIdle() || AuthFormSubmitting():
+            case AuthFormIdle() || AuthFormSubmitting() || LoginNeedsOtp():
               break;
           }
         },
