@@ -233,9 +233,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get otpTitle => 'Enter the code';
 
   @override
-  String otpSubtitle(String email) {
-    return 'We sent a six-digit code to $email.';
-  }
+  String get otpSubtitle => 'We sent a six-digit code to your registered email address.';
+
+  @override
+  String get forgotPasswordCheckEmailTitle => 'Check your email';
+
+  @override
+  String get forgotPasswordCheckEmailSubtitle =>
+      "If an account exists for that email address, we've sent a password reset link to it.";
 
   @override
   String get otpSubmit => 'Verify';

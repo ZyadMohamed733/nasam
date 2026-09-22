@@ -428,11 +428,23 @@ abstract class AppLocalizations {
   /// **'تحقق من رمزك'**
   String get otpTitle;
 
-  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
+  /// NOT design-verified -- see the ARB file for why.
   ///
   /// In ar, this message translates to:
-  /// **'أدخل رمز المرور الذي استلمته للتو على عنوان بريدك الإلكتروني الذي ينتهي بـ {email}'**
-  String otpSubtitle(String email);
+  /// **'أرسلنا رمزًا مكونًا من ستة أرقام إلى عنوان بريدك الإلكتروني المسجل.'**
+  String get otpSubtitle;
+
+  /// NOT design-verified -- see the ARB file for why.
+  ///
+  /// In ar, this message translates to:
+  /// **'تحقق من بريدك الإلكتروني'**
+  String get forgotPasswordCheckEmailTitle;
+
+  /// NOT design-verified -- see the ARB file for why.
+  ///
+  /// In ar, this message translates to:
+  /// **'إذا كان هناك حساب مرتبط بهذا البريد الإلكتروني، فسنرسل إليه رابطًا لإعادة تعيين كلمة المرور.'**
+  String get forgotPasswordCheckEmailSubtitle;
 
   /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
   ///

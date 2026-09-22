@@ -248,9 +248,14 @@ class AppLocalizationsAr extends AppLocalizations {
   String get otpTitle => 'تحقق من رمزك';
 
   @override
-  String otpSubtitle(String email) {
-    return 'أدخل رمز المرور الذي استلمته للتو على عنوان بريدك الإلكتروني الذي ينتهي بـ $email';
-  }
+  String get otpSubtitle => 'أرسلنا رمزًا مكونًا من ستة أرقام إلى عنوان بريدك الإلكتروني المسجل.';
+
+  @override
+  String get forgotPasswordCheckEmailTitle => 'تحقق من بريدك الإلكتروني';
+
+  @override
+  String get forgotPasswordCheckEmailSubtitle =>
+      'إذا كان هناك حساب مرتبط بهذا البريد الإلكتروني، فسنرسل إليه رابطًا لإعادة تعيين كلمة المرور.';
 
   @override
   String get otpSubmit => 'ارسال';

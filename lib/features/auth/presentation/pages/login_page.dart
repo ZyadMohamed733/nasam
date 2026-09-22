@@ -43,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
   void _submit(BuildContext context) {
     if (!(_formKey.currentState?.validate() ?? false)) return;
     context.read<LoginCubit>().submit(
-      email: _username.text,
+      username: _username.text,
       password: _password.text,
     );
   }
@@ -58,9 +58,11 @@ class _LoginPageState extends State<LoginPage> {
         listener: (context, state) {
           switch (state) {
             case AuthFormSucceeded():
-              // The repository has already stored the tokens, so RouteGuard
+              // The repository has already stored the session, so RouteGuard
               // will let this through.
               context.go(AppRoutes.home);
+            case LoginNeedsOtp(:final username):
+              context.push(AppRoutes.otpVerification, extra: username);
             case AuthFormFailed(:final failure):
               AppSnackBar.showError(context, failure.message);
             case AuthFormIdle() || AuthFormSubmitting():

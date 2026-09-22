@@ -66,22 +66,28 @@ class AppRouter {
           child: const ForgotPasswordPage(),
         ),
       ),
-      // The two steps below carry state from the previous one — the address,
-      // then the reset token — and neither means anything without it. Rather
-      // than let them build with a placeholder, an arrival without that state
-      // restarts the flow: it is what a cold deep link, or a resume after the
-      // app was evicted, actually amounts to.
+      // OTP verification is login's second factor now, reached from `login`
+      // with the username that started the attempt -- not from
+      // forgot-password, which is web-only (see
+      // docs/plans/AUTH_INTEGRATION_PLAN.md). An arrival without that state
+      // (a cold deep link, a resume after the app was evicted) restarts the
+      // flow at login rather than building with a placeholder.
       GoRoute(
         path: AppRoutes.otpVerification,
         redirect: (context, state) =>
-            state.extra is String ? null : AppRoutes.forgotPassword,
+            state.extra is String ? null : AppRoutes.login,
         pageBuilder: (context, state) => appTransitionPage(
           context: context,
           state: state,
           slide: true,
-          child: OtpVerificationPage(email: state.extra! as String),
+          child: OtpVerificationPage(username: state.extra! as String),
         ),
       ),
+      // newPassword/passwordResetSuccess below carry the reset token from
+      // the emailed link. Nothing currently navigates to them -- reset is
+      // web-only for now -- but the implementation is correct and complete
+      // against PATCH /auth/reset-password, ready for a future deep-link
+      // handler to land on (see docs/plans/AUTH_INTEGRATION_PLAN.md).
       GoRoute(
         path: AppRoutes.newPassword,
         redirect: (context, state) =>

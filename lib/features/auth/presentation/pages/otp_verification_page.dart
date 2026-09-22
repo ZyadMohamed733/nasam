@@ -13,11 +13,12 @@ import '../cubit/otp_cubit.dart';
 import '../widgets/auth_scaffold.dart';
 
 class OtpVerificationPage extends StatefulWidget {
-  const OtpVerificationPage({super.key, required this.email, this.cubit});
+  const OtpVerificationPage({super.key, required this.username, this.cubit});
 
-  /// The address the code was sent to. Quoted back to the user and sent with
-  /// the code, so the screen cannot be reached without it.
-  final String email;
+  /// The account this login's second factor belongs to. Threaded from
+  /// [LoginPage] via the route `extra`, not re-derived: the screen cannot be
+  /// reached without it.
+  final String username;
 
   final OtpCubit? cubit;
 
@@ -26,8 +27,8 @@ class OtpVerificationPage extends StatefulWidget {
 }
 
 class _OtpVerificationPageState extends State<OtpVerificationPage> {
-  /// The design draws five boxes, not the six a one-time code usually has.
-  static const int _codeLength = 5;
+  /// The API's code is six digits.
+  static const int _codeLength = 6;
 
   String _code = '';
 
@@ -40,15 +41,15 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
       child: BlocConsumer<OtpCubit, AuthFormStatus>(
         listener: (context, state) {
           switch (state) {
-            case OtpVerified(:final resetToken):
-              // The reset token travels with the route rather than being
-              // re-derived: the next screen must not have to hold the code.
-              context.push(AppRoutes.newPassword, extra: resetToken);
+            case AuthFormSucceeded():
+              // The repository has already stored the session, so RouteGuard
+              // will let this through.
+              context.go(AppRoutes.home);
             case AuthFormFailed(:final failure):
               AppSnackBar.showError(context, failure.message);
             case AuthFormIdle() ||
                 AuthFormSubmitting() ||
-                AuthFormSucceeded():
+                LoginNeedsOtp():
               break;
           }
         },
@@ -58,16 +59,16 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
 
           return AuthScaffold(
             title: l10n.otpTitle,
-            subtitle: l10n.otpSubtitle(widget.email),
+            subtitle: l10n.otpSubtitle,
             card: [
               AppOtpInput(
                 length: _codeLength,
                 onChanged: (value) => setState(() => _code = value),
                 onCompleted: (value) {
                   _code = value;
-                  cubit.submit(email: widget.email, code: value);
+                  cubit.submit(username: widget.username, code: value);
                 },
-                onResend: () => cubit.resend(widget.email),
+                onResend: () => cubit.resend(widget.username),
                 errorText: state is AuthFormFailed
                     ? state.failure.message
                     : null,
@@ -76,7 +77,8 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
                   // explicit path for anyone who pastes or edits a digit.
                   onPressed: _code.length < _codeLength
                       ? null
-                      : () => cubit.submit(email: widget.email, code: _code),
+                      : () =>
+                          cubit.submit(username: widget.username, code: _code),
                   label: l10n.otpSubmit,
                   isLoading: busy,
                 ),

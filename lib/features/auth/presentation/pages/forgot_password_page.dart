@@ -12,6 +12,7 @@ import '../../../../core/utils/validators.dart';
 import '../../../../shared/widgets/app_button.dart';
 import '../../../../shared/widgets/app_snack_bar.dart';
 import '../../../../shared/widgets/app_text_field.dart';
+import '../../../../shared/widgets/success_screen.dart';
 import '../cubit/auth_form_status.dart';
 import '../cubit/forgot_password_cubit.dart';
 import '../widgets/auth_link.dart';
@@ -44,21 +45,25 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       create: (_) => widget.cubit ?? getIt<ForgotPasswordCubit>(),
       child: BlocConsumer<ForgotPasswordCubit, AuthFormStatus>(
         listener: (context, state) {
-          switch (state) {
-            case AuthFormSucceeded():
-              // The address travels with the route: the verify step has to
-              // quote it back to the user and send it with the code.
-              context.push(
-                AppRoutes.otpVerification,
-                extra: _email.text.trim(),
-              );
-            case AuthFormFailed(:final failure):
-              AppSnackBar.showError(context, failure.message);
-            case AuthFormIdle() || AuthFormSubmitting():
-              break;
+          // Success has no follow-up action to take -- see the builder
+          // below, which swaps in the confirmation screen in place rather
+          // than navigating. Password reset is web-only for now: the API
+          // sends a link, not a code, so there is no next in-app step (see
+          // docs/plans/AUTH_INTEGRATION_PLAN.md).
+          if (state case AuthFormFailed(:final failure)) {
+            AppSnackBar.showError(context, failure.message);
           }
         },
         builder: (context, state) {
+          if (state is AuthFormSucceeded) {
+            return SuccessScreen(
+              title: l10n.forgotPasswordCheckEmailTitle,
+              message: l10n.forgotPasswordCheckEmailSubtitle,
+              actionLabel: l10n.authBackToLogin,
+              onAction: () => context.go(AppRoutes.login),
+            );
+          }
+
           final busy = state is AuthFormSubmitting;
 
           return AuthScaffold(
