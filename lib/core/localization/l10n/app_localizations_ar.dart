@@ -248,7 +248,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get otpTitle => 'تحقق من رمزك';
 
   @override
-  String get otpSubtitle => 'أرسلنا رمزًا مكونًا من ستة أرقام إلى عنوان بريدك الإلكتروني المسجل.';
+  String get otpSubtitle =>
+      'أرسلنا رمزًا مكونًا من ستة أرقام إلى عنوان بريدك الإلكتروني المسجل.';
 
   @override
   String get forgotPasswordCheckEmailTitle => 'تحقق من بريدك الإلكتروني';

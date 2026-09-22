@@ -428,19 +428,19 @@ abstract class AppLocalizations {
   /// **'تحقق من رمزك'**
   String get otpTitle;
 
-  /// NOT design-verified -- see the ARB file for why.
+  /// NOT design-verified -- this is the OTP screen's own copy, now that it is reached from login (a username) rather than forgot-password (an email the app had just been given). It no longer quotes an address, since the app is not told which one the code went to. Needs a design/localization pass before shipping.
   ///
   /// In ar, this message translates to:
   /// **'أرسلنا رمزًا مكونًا من ستة أرقام إلى عنوان بريدك الإلكتروني المسجل.'**
   String get otpSubtitle;
 
-  /// NOT design-verified -- see the ARB file for why.
+  /// NOT design-verified -- inline confirmation shown on ForgotPasswordPage after forget-password succeeds (per the web-only reset decision in docs/plans/AUTH_INTEGRATION_PLAN.md). Needs a design/localization pass before shipping.
   ///
   /// In ar, this message translates to:
   /// **'تحقق من بريدك الإلكتروني'**
   String get forgotPasswordCheckEmailTitle;
 
-  /// NOT design-verified -- see the ARB file for why.
+  /// NOT design-verified. Deliberately non-committal about whether the address exists, matching the API's own message (POST /auth/forget-password never signals existence either way). Needs a design/localization pass before shipping.
   ///
   /// In ar, this message translates to:
   /// **'إذا كان هناك حساب مرتبط بهذا البريد الإلكتروني، فسنرسل إليه رابطًا لإعادة تعيين كلمة المرور.'**
