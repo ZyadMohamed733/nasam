@@ -1,3 +1,4 @@
+// Default entry point; generated Flutter build arguments take precedence.
+FLUTTER_TARGET=lib/main_prod.dart
 #include "Debug.xcconfig"
 APP_NAME=NASAM
-FLUTTER_TARGET=lib/main_prod.dart

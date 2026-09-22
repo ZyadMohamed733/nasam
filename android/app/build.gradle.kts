@@ -18,6 +18,15 @@ val keystoreProperties = Properties().apply {
 }
 val hasReleaseKeystore = keystoreProperties.getProperty("storeFile") != null
 
+// Local .env is never bundled as a Flutter asset. CI can supply the variable.
+val mapsEnvFile = rootProject.file("../.env")
+val mapsEnv = Properties().apply {
+    if (mapsEnvFile.exists()) mapsEnvFile.inputStream().use { load(it) }
+}
+val mapsApiKey = System.getenv("GOOGLE_MAPS_API_KEY")
+    ?: mapsEnv.getProperty("GOOGLE_MAPS_API_KEY", "").trim().trim('"', '\'')
+require(mapsApiKey.isNotBlank()) { "Set GOOGLE_MAPS_API_KEY in .env or the build environment" }
+
 android {
     namespace = "com.nasam.app"
     compileSdk = flutter.compileSdkVersion
@@ -35,9 +44,10 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.nasam.app"
+        manifestPlaceholders["GOOGLE_MAPS_API_KEY"] = mapsApiKey
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
+        minSdk = maxOf(flutter.minSdkVersion, 24)
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
