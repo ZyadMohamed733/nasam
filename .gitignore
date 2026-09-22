@@ -66,6 +66,8 @@ l10n_untranslated.json
 # docs/FEATURE_CONVENTIONS.md as the layer rules — so it stays trackable.
 docs/*
 !docs/*.md
+!docs/plans/
+!docs/plans/*.md
 
 # Generated local Google Maps native configuration.
 ios/Flutter/MapsSecrets.xcconfig
