@@ -529,6 +529,132 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'من فضلك ادخل البيانات ل انشاء كلمه مرور جديده'**
   String get newPasswordSubtitle;
+
+  /// No description provided for @trackingTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'لوحة التتبع'**
+  String get trackingTitle;
+
+  /// No description provided for @trackingShow.
+  ///
+  /// In ar, this message translates to:
+  /// **'عرض'**
+  String get trackingShow;
+
+  /// No description provided for @trackingAll.
+  ///
+  /// In ar, this message translates to:
+  /// **'الكل'**
+  String get trackingAll;
+
+  /// No description provided for @trackingMoving.
+  ///
+  /// In ar, this message translates to:
+  /// **'المتحرك'**
+  String get trackingMoving;
+
+  /// No description provided for @trackingIdle.
+  ///
+  /// In ar, this message translates to:
+  /// **'متوقف مؤقتاً'**
+  String get trackingIdle;
+
+  /// No description provided for @trackingStopped.
+  ///
+  /// In ar, this message translates to:
+  /// **'المتوقف'**
+  String get trackingStopped;
+
+  /// No description provided for @trackingOffline.
+  ///
+  /// In ar, this message translates to:
+  /// **'غير متصل'**
+  String get trackingOffline;
+
+  /// No description provided for @trackingSearch.
+  ///
+  /// In ar, this message translates to:
+  /// **'بحث'**
+  String get trackingSearch;
+
+  /// No description provided for @trackingSystems.
+  ///
+  /// In ar, this message translates to:
+  /// **'الأنظمة'**
+  String get trackingSystems;
+
+  /// No description provided for @trackingFleet.
+  ///
+  /// In ar, this message translates to:
+  /// **'الاسطول'**
+  String get trackingFleet;
+
+  /// No description provided for @trackingPoi.
+  ///
+  /// In ar, this message translates to:
+  /// **'نقاط الاهتمام'**
+  String get trackingPoi;
+
+  /// No description provided for @trackingGeofences.
+  ///
+  /// In ar, this message translates to:
+  /// **'مناطق جغرافية'**
+  String get trackingGeofences;
+
+  /// No description provided for @trackingAssignments.
+  ///
+  /// In ar, this message translates to:
+  /// **'إدارة التعيينات'**
+  String get trackingAssignments;
+
+  /// No description provided for @trackingSettings.
+  ///
+  /// In ar, this message translates to:
+  /// **'الإعدادات'**
+  String get trackingSettings;
+
+  /// No description provided for @trackingAdmin.
+  ///
+  /// In ar, this message translates to:
+  /// **'مدير النظام'**
+  String get trackingAdmin;
+
+  /// No description provided for @trackingVehicle.
+  ///
+  /// In ar, this message translates to:
+  /// **'فان التوزيع'**
+  String get trackingVehicle;
+
+  /// No description provided for @trackingNotifications.
+  ///
+  /// In ar, this message translates to:
+  /// **'الإشعارات'**
+  String get trackingNotifications;
+
+  /// No description provided for @trackingLayers.
+  ///
+  /// In ar, this message translates to:
+  /// **'الطبقات'**
+  String get trackingLayers;
+
+  /// No description provided for @trackingZoomIn.
+  ///
+  /// In ar, this message translates to:
+  /// **'تكبير'**
+  String get trackingZoomIn;
+
+  /// No description provided for @trackingZoomOut.
+  ///
+  /// In ar, this message translates to:
+  /// **'تصغير'**
+  String get trackingZoomOut;
+
+  /// No description provided for @trackingMenu.
+  ///
+  /// In ar, this message translates to:
+  /// **'القائمة'**
+  String get trackingMenu;
 }
 
 class _AppLocalizationsDelegate

@@ -11,13 +11,21 @@
 abstract final class AppAssets {
   static const String _images = 'assets/images';
 
+  static const String mapArrow = 'assets/icons/map_arrow.svg';
+  static const String trackingMenu = 'assets/icons/tracking_menu.svg';
+  static const String mapLayers = 'assets/icons/layers.svg';
+  static const String mapNotification = 'assets/icons/notification.svg';
+  static const String mapZoomIn = 'assets/icons/zoom_in.svg';
+  static const String mapZoomOut = 'assets/icons/zoom_out.svg';
+  static const String drawerBackground = '$_images/drawer_background.png';
+
   // Images.
   static const String successMark = '$_images/password_reset_success.png';
   static const String splashBackground = '$_images/splash_background.png';
   static const String splashParticles = '$_images/signal_particles_splash.gif';
   static const String logoMark = '$_images/logo_mark.png';
   static const String logoVector = '$_images/Vector.svg';
-  static const String onboarding1 = '$_images/onboarding_1.jpg';
+  static const String onboarding1 = '$_images/onboarding_1.png';
   static const String onboarding2 = '$_images/onboarding_2.png';
   static const String onboarding3 = '$_images/onboarding_3.jpg';
   static const String mapPlaceholder = '$_images/map_placeholder.png';
@@ -30,6 +38,13 @@ abstract final class AppAssets {
   /// what the test iterates — and the test also re-reads this source file to
   /// check the list did not fall behind the constants.
   static const List<String> all = <String>[
+    mapArrow,
+    trackingMenu,
+    mapLayers,
+    mapNotification,
+    mapZoomIn,
+    mapZoomOut,
+    drawerBackground,
     successMark,
     splashBackground,
     splashParticles,

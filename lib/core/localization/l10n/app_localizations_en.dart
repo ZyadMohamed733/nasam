@@ -288,4 +288,67 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get newPasswordSubtitle =>
       'Enter your details to create a new password.';
+
+  @override
+  String get trackingTitle => 'Tracking dashboard';
+
+  @override
+  String get trackingShow => 'Show';
+
+  @override
+  String get trackingAll => 'All';
+
+  @override
+  String get trackingMoving => 'Moving';
+
+  @override
+  String get trackingIdle => 'Temporarily stopped';
+
+  @override
+  String get trackingStopped => 'Stopped';
+
+  @override
+  String get trackingOffline => 'Offline';
+
+  @override
+  String get trackingSearch => 'Search';
+
+  @override
+  String get trackingSystems => 'Systems';
+
+  @override
+  String get trackingFleet => 'Fleet';
+
+  @override
+  String get trackingPoi => 'Points of interest';
+
+  @override
+  String get trackingGeofences => 'Geofences';
+
+  @override
+  String get trackingAssignments => 'Assignments';
+
+  @override
+  String get trackingSettings => 'Settings';
+
+  @override
+  String get trackingAdmin => 'System administrator';
+
+  @override
+  String get trackingVehicle => 'Delivery van';
+
+  @override
+  String get trackingNotifications => 'Notifications';
+
+  @override
+  String get trackingLayers => 'Layers';
+
+  @override
+  String get trackingZoomIn => 'Zoom in';
+
+  @override
+  String get trackingZoomOut => 'Zoom out';
+
+  @override
+  String get trackingMenu => 'Menu';
 }

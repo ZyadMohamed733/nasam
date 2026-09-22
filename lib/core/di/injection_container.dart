@@ -1,6 +1,9 @@
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
+
 import '../../app/app_config.dart';
+import '../../features/tracking/data/dummy_tracking_repository.dart';
+import '../../features/tracking/domain/tracking_vehicle.dart';
 import 'injection_container.config.dart';
 
 final GetIt getIt = GetIt.instance;
@@ -16,4 +19,5 @@ final GetIt getIt = GetIt.instance;
 Future<void> configureDependencies(AppConfig config) async {
   getIt.registerSingleton<AppConfig>(config);
   await getIt.init();
+  getIt.registerLazySingleton<TrackingRepository>(DummyTrackingRepository.new);
 }

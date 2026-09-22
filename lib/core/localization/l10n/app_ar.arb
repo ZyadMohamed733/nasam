@@ -266,5 +266,26 @@
   "newPasswordSubtitle": "من فضلك ادخل البيانات ل انشاء كلمه مرور جديده",
   "@newPasswordSubtitle": {
     "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file."
-  }
+  },
+  "trackingTitle": "لوحة التتبع",
+  "trackingShow": "عرض",
+  "trackingAll": "الكل",
+  "trackingMoving": "المتحرك",
+  "trackingIdle": "متوقف مؤقتاً",
+  "trackingStopped": "المتوقف",
+  "trackingOffline": "غير متصل",
+  "trackingSearch": "بحث",
+  "trackingSystems": "الأنظمة",
+  "trackingFleet": "الاسطول",
+  "trackingPoi": "نقاط الاهتمام",
+  "trackingGeofences": "مناطق جغرافية",
+  "trackingAssignments": "إدارة التعيينات",
+  "trackingSettings": "الإعدادات",
+  "trackingAdmin": "مدير النظام",
+  "trackingVehicle": "فان التوزيع",
+  "trackingNotifications": "الإشعارات",
+  "trackingLayers": "الطبقات",
+  "trackingZoomIn": "تكبير",
+  "trackingZoomOut": "تصغير",
+  "trackingMenu": "القائمة"
 }

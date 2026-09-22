@@ -302,4 +302,67 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get newPasswordSubtitle =>
       'من فضلك ادخل البيانات ل انشاء كلمه مرور جديده';
+
+  @override
+  String get trackingTitle => 'لوحة التتبع';
+
+  @override
+  String get trackingShow => 'عرض';
+
+  @override
+  String get trackingAll => 'الكل';
+
+  @override
+  String get trackingMoving => 'المتحرك';
+
+  @override
+  String get trackingIdle => 'متوقف مؤقتاً';
+
+  @override
+  String get trackingStopped => 'المتوقف';
+
+  @override
+  String get trackingOffline => 'غير متصل';
+
+  @override
+  String get trackingSearch => 'بحث';
+
+  @override
+  String get trackingSystems => 'الأنظمة';
+
+  @override
+  String get trackingFleet => 'الاسطول';
+
+  @override
+  String get trackingPoi => 'نقاط الاهتمام';
+
+  @override
+  String get trackingGeofences => 'مناطق جغرافية';
+
+  @override
+  String get trackingAssignments => 'إدارة التعيينات';
+
+  @override
+  String get trackingSettings => 'الإعدادات';
+
+  @override
+  String get trackingAdmin => 'مدير النظام';
+
+  @override
+  String get trackingVehicle => 'فان التوزيع';
+
+  @override
+  String get trackingNotifications => 'الإشعارات';
+
+  @override
+  String get trackingLayers => 'الطبقات';
+
+  @override
+  String get trackingZoomIn => 'تكبير';
+
+  @override
+  String get trackingZoomOut => 'تصغير';
+
+  @override
+  String get trackingMenu => 'القائمة';
 }
