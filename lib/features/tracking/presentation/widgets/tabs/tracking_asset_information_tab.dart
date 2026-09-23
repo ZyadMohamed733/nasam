@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../core/localization/l10n/app_localizations.dart';
-import '../../../domain/tracking_vehicle.dart';
 import '../../dummy_data/tracking_all_dummy_data.dart';
 import '../tracking_asset_detail_field.dart';
 import 'tracking_asset_details_list.dart';

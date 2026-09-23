@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
+
 import '../../utils/app_logger.dart';
 
 /// Request/response logging, debug builds only.

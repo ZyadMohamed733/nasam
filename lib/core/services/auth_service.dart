@@ -1,4 +1,5 @@
 import 'package:injectable/injectable.dart';
+
 import 'secure_storage_service.dart';
 
 /// A read-only view of the current session for code that only needs to ask

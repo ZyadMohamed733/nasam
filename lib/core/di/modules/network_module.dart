@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+
 import '../../../app/app_config.dart';
 import '../../network/dio_client.dart';
 import '../../network/interceptors/auth_interceptor.dart';

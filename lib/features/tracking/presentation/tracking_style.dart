@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../core/constants/app_colors.dart';
 import '../../../core/localization/l10n/app_localizations.dart';
 import '../domain/tracking_vehicle.dart';

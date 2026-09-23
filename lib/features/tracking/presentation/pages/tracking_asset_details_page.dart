@@ -4,10 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/app_icons.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 import '../dummy_data/tracking_all_dummy_data.dart';
-import '../widgets/tabs/tracking_asset_sensors_tab.dart';
 import '../widgets/tabs/tracking_asset_information_tab.dart';
 import '../widgets/tabs/tracking_asset_location_tab.dart';
 import '../widgets/tabs/tracking_asset_notifications_tab.dart';
+import '../widgets/tabs/tracking_asset_sensors_tab.dart';
 import '../widgets/tabs/tracking_asset_tracking_tab.dart';
 
 class TrackingAssetDetailsPage extends StatelessWidget {

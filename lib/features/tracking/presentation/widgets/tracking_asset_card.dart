@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../../core/constants/app_icons.dart';
-import '../../../../core/router/app_routes.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
+import '../../../../core/router/app_routes.dart';
+import '../../../../shared/widgets/app_card.dart';
 import '../../domain/tracking_vehicle.dart';
 import '../dummy_data/tracking_all_dummy_data.dart';
 import '../tracking_style.dart';
 import '../utils/tracking_person_initials.dart';
-import '../../../../shared/widgets/app_card.dart';
 
 class TrackingAssetCard extends StatelessWidget {
   const TrackingAssetCard({super.key, required this.asset});

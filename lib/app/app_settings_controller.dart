@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+
 import '../core/services/storage_service.dart';
 
 /// Holds the user's locale and theme choices and persists them.

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'breakpoints.dart';
 
 class ResponsiveLayout extends StatelessWidget {

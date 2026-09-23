@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../core/constants/app_sizes.dart';
 import '../core/di/injection_container.dart';
 import '../core/localization/app_localizations_setup.dart';

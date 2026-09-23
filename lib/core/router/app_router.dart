@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
-import '../../features/tracking/presentation/dummy_data/tracking_all_dummy_data.dart';
-import '../../features/tracking/presentation/pages/tracking_asset_details_page.dart';
-import '../../features/tracking/presentation/pages/tracking_asset_playback_page.dart';
+
 import '../../features/auth/presentation/pages/forgot_password_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/new_password_page.dart';
@@ -12,6 +10,9 @@ import '../../features/auth/presentation/pages/password_reset_success_page.dart'
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/onboarding/presentation/pages/onboarding_page.dart';
 import '../../features/splash/presentation/pages/splash_page.dart';
+import '../../features/tracking/presentation/dummy_data/tracking_all_dummy_data.dart';
+import '../../features/tracking/presentation/pages/tracking_asset_details_page.dart';
+import '../../features/tracking/presentation/pages/tracking_asset_playback_page.dart';
 import 'app_error_page.dart';
 import 'app_routes.dart';
 import 'app_transition_page.dart';
