@@ -1,85 +1,85 @@
 import '../../domain/tracking_vehicle.dart';
 
-class TrackingAllDummyVehicle {
-  const TrackingAllDummyVehicle({
+class TrackingAllDummyAsset {
+  const TrackingAllDummyAsset({
     required this.name,
     required this.code,
     required this.status,
-    required this.driver,
+    required this.assignedPerson,
     required this.routeProgress,
   });
 
   final String name;
   final String code;
   final VehicleStatus status;
-  final String driver;
+  final String assignedPerson;
   final double routeProgress;
 }
 
 abstract final class TrackingAllDummyData {
-  static const vehicles = <TrackingAllDummyVehicle>[
-    TrackingAllDummyVehicle(
-      name: 'فان التوزيع ٢',
-      code: 'VAN-0017',
+  static const assets = <TrackingAllDummyAsset>[
+    TrackingAllDummyAsset(
+      name: 'الأصل ٢',
+      code: 'AST-0017',
       status: VehicleStatus.moving,
-      driver: 'Aya Al-Rashidi',
+      assignedPerson: 'Aya Al-Rashidi',
       routeProgress: .62,
     ),
-    TrackingAllDummyVehicle(
-      name: 'فان التوزيع ٢',
-      code: 'VAN-0017',
+    TrackingAllDummyAsset(
+      name: 'الأصل ٢',
+      code: 'AST-0017',
       status: VehicleStatus.idle,
-      driver: 'Aya Al-Rashidi',
+      assignedPerson: 'Aya Al-Rashidi',
       routeProgress: .38,
     ),
-    TrackingAllDummyVehicle(
-      name: 'فان التوزيع ٢',
-      code: 'VAN-0017',
+    TrackingAllDummyAsset(
+      name: 'الأصل ٢',
+      code: 'AST-0017',
       status: VehicleStatus.stopped,
-      driver: 'Aya Al-Rashidi',
+      assignedPerson: 'Aya Al-Rashidi',
       routeProgress: .18,
     ),
-    TrackingAllDummyVehicle(
-      name: 'فان التوزيع ٣',
-      code: 'VAN-0021',
+    TrackingAllDummyAsset(
+      name: 'الأصل ٣',
+      code: 'AST-0021',
       status: VehicleStatus.moving,
-      driver: 'Omar Hassan',
+      assignedPerson: 'Omar Hassan',
       routeProgress: .78,
     ),
-    TrackingAllDummyVehicle(
-      name: 'فان التوزيع ٤',
-      code: 'VAN-0024',
+    TrackingAllDummyAsset(
+      name: 'الأصل ٤',
+      code: 'AST-0024',
       status: VehicleStatus.idle,
-      driver: 'Mona Ali',
+      assignedPerson: 'Mona Ali',
       routeProgress: .45,
     ),
-    TrackingAllDummyVehicle(
-      name: 'فان التوزيع ٥',
-      code: 'VAN-0030',
+    TrackingAllDummyAsset(
+      name: 'الأصل ٥',
+      code: 'AST-0030',
       status: VehicleStatus.offline,
-      driver: 'Khaled Nabil',
+      assignedPerson: 'Khaled Nabil',
       routeProgress: .25,
     ),
-    TrackingAllDummyVehicle(
-      name: 'فان التوزيع ٦',
-      code: 'VAN-0032',
+    TrackingAllDummyAsset(
+      name: 'الأصل ٦',
+      code: 'AST-0032',
       status: VehicleStatus.stopped,
-      driver: 'Nour Samir',
+      assignedPerson: 'Nour Samir',
       routeProgress: .12,
     ),
-    TrackingAllDummyVehicle(
-      name: 'فان التوزيع ٧',
-      code: 'VAN-0040',
+    TrackingAllDummyAsset(
+      name: 'الأصل ٧',
+      code: 'AST-0040',
       status: VehicleStatus.offline,
-      driver: 'Youssef Adel',
+      assignedPerson: 'Youssef Adel',
       routeProgress: .05,
     ),
   ];
 }
 
-class TrackingVehicleDetailsSample {
-  const TrackingVehicleDetailsSample({
-    required this.plateNumber,
+class TrackingAssetDetailsSample {
+  const TrackingAssetDetailsSample({
+    required this.assetId,
     required this.speedKph,
     required this.durationHours,
     required this.connectionMinutesAgo,
@@ -98,7 +98,7 @@ class TrackingVehicleDetailsSample {
     required this.engineOn,
   });
 
-  final String plateNumber;
+  final String assetId;
   final int speedKph;
   final int durationHours;
   final int connectionMinutesAgo;
@@ -119,8 +119,8 @@ class TrackingVehicleDetailsSample {
 
 enum TrackingDummyNotificationType { speeding, stopped, geofence }
 
-class TrackingVehicleNotificationSample {
-  const TrackingVehicleNotificationSample({
+class TrackingAssetNotificationSample {
+  const TrackingAssetNotificationSample({
     required this.type,
     required this.date,
     required this.speedKph,
@@ -131,9 +131,9 @@ class TrackingVehicleNotificationSample {
   final int speedKph;
 }
 
-abstract final class TrackingVehicleDetailsDummyData {
-  static final details = TrackingVehicleDetailsSample(
-    plateNumber: '154562',
+abstract final class TrackingAssetDetailsDummyData {
+  static final details = TrackingAssetDetailsSample(
+    assetId: '154562',
     speedKph: 13,
     durationHours: 78,
     connectionMinutesAgo: 2,
@@ -152,18 +152,18 @@ abstract final class TrackingVehicleDetailsDummyData {
     engineOn: true,
   );
 
-  static final notifications = <TrackingVehicleNotificationSample>[
-    TrackingVehicleNotificationSample(
+  static final notifications = <TrackingAssetNotificationSample>[
+    TrackingAssetNotificationSample(
       type: TrackingDummyNotificationType.speeding,
       date: DateTime(2025, 10, 17, 9, 0),
       speedKph: 13,
     ),
-    TrackingVehicleNotificationSample(
+    TrackingAssetNotificationSample(
       type: TrackingDummyNotificationType.stopped,
       date: DateTime(2025, 10, 17, 8, 12),
       speedKph: 13,
     ),
-    TrackingVehicleNotificationSample(
+    TrackingAssetNotificationSample(
       type: TrackingDummyNotificationType.geofence,
       date: DateTime(2025, 10, 17, 7, 36),
       speedKph: 13,

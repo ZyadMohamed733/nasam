@@ -160,14 +160,14 @@ class _TrackingViewState extends State<_TrackingView>
                         onMapReady: (controller) => _mapController = controller,
                         onVehicleTap: (vehicle) {
                           final id = int.tryParse(vehicle.id);
-                          if (id == null || TrackingAllDummyData.vehicles.isEmpty) {
+                          if (id == null || TrackingAllDummyData.assets.isEmpty) {
                             return;
                           }
-                          final detailsVehicle = TrackingAllDummyData
-                              .vehicles[(id - 1) % TrackingAllDummyData.vehicles.length];
+                          final detailsAsset = TrackingAllDummyData
+                              .assets[(id - 1) % TrackingAllDummyData.assets.length];
                           context.push(
-                            AppRoutes.trackingVehicleDetails,
-                            extra: detailsVehicle,
+                            AppRoutes.trackingAssetDetails,
+                            extra: detailsAsset,
                           );
                         },
                       ),

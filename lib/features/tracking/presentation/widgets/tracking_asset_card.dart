@@ -6,23 +6,23 @@ import '../../../../core/localization/l10n/app_localizations.dart';
 import '../../domain/tracking_vehicle.dart';
 import '../dummy_data/tracking_all_dummy_data.dart';
 import '../tracking_style.dart';
-import '../utils/tracking_driver_initials.dart';
+import '../utils/tracking_person_initials.dart';
 import '../../../../shared/widgets/app_card.dart';
 
-class TrackingVehicleCard extends StatelessWidget {
-  const TrackingVehicleCard({super.key, required this.vehicle});
-  final TrackingAllDummyVehicle vehicle;
+class TrackingAssetCard extends StatelessWidget {
+  const TrackingAssetCard({super.key, required this.asset});
+  final TrackingAllDummyAsset asset;
 
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
-    final color = TrackingStyle.status(context, vehicle.status);
-    final label = TrackingStyle.label(l, vehicle.status);
+    final color = TrackingStyle.status(context, asset.status);
+    final label = TrackingStyle.label(l, asset.status);
     final scheme = Theme.of(context).colorScheme;
     return AppCard(
       onTap: () => context.push(
-        AppRoutes.trackingVehicleDetails,
-        extra: vehicle,
+        AppRoutes.trackingAssetDetails,
+        extra: asset,
       ),
       padding: EdgeInsets.fromLTRB(12.w, 10.h, 12.w, 8.h),
       borderRadius: 10.r,
@@ -41,13 +41,13 @@ class TrackingVehicleCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      vehicle.name,
+                      asset.name,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     Text(
-                      '${vehicle.code} • ٠٧ م ٠٩ ث',
+                      '${asset.code} • ٠٧ م ٠٩ ث',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -58,11 +58,11 @@ class TrackingVehicleCard extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 8.w),
-              _StatusBadge(label: label, color: color, status: vehicle.status),
+              _StatusBadge(label: label, color: color, status: asset.status),
             ],
           ),
           SizedBox(height: 14.h),
-          _RouteProgress(progress: vehicle.routeProgress, color: color),
+          _RouteProgress(progress: asset.routeProgress, color: color),
           SizedBox(height: 12.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -80,7 +80,7 @@ class TrackingVehicleCard extends StatelessWidget {
                 radius: 15.r,
                 backgroundColor: scheme.primary,
                 child: Text(
-                  TrackingDriverInitials.fromName(vehicle.driver),
+                  TrackingPersonInitials.fromName(asset.assignedPerson),
                   style: TextStyle(color: scheme.onPrimary, fontSize: 10.sp),
                 ),
               ),
@@ -91,13 +91,13 @@ class TrackingVehicleCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      vehicle.driver,
+                      asset.assignedPerson,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                     Text(
-                      l.trackingVehicle,
+                      l.trackingAsset,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(

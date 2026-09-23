@@ -112,7 +112,7 @@ class _TrackingMapState extends State<TrackingMap> {
         final icon = cluster.isMultiple
             ? await factory.cluster(cluster.count, primary)
             : await factory.vehicle(
-                label: '${l.trackingVehicle} ${v.id}',
+                label: '${l.trackingAsset} ${v.id}',
                 color: colors[v.status]!,
                 heading: v.heading,
                 direction: direction,

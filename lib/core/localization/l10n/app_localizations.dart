@@ -632,11 +632,11 @@ abstract class AppLocalizations {
   /// **'مدير النظام'**
   String get trackingAdmin;
 
-  /// No description provided for @trackingVehicle.
+  /// No description provided for @trackingAsset.
   ///
   /// In ar, this message translates to:
-  /// **'فان التوزيع'**
-  String get trackingVehicle;
+  /// **'الأصل'**
+  String get trackingAsset;
 
   /// No description provided for @trackingNotifications.
   ///
@@ -680,287 +680,287 @@ abstract class AppLocalizations {
   /// **'Aya Al-Rashidi'**
   String get drawerDemoProfileName;
 
-  /// No description provided for @vehicleDetailsInformation.
+  /// No description provided for @assetDetailsInformation.
   ///
   /// In ar, this message translates to:
   /// **'المعلومات'**
-  String get vehicleDetailsInformation;
+  String get assetDetailsInformation;
 
-  /// No description provided for @vehicleDetailsTracking.
+  /// No description provided for @assetDetailsTracking.
   ///
   /// In ar, this message translates to:
   /// **'التتبع'**
-  String get vehicleDetailsTracking;
+  String get assetDetailsTracking;
 
-  /// No description provided for @vehicleDetailsLocation.
+  /// No description provided for @assetDetailsLocation.
   ///
   /// In ar, this message translates to:
   /// **'الموقع'**
-  String get vehicleDetailsLocation;
+  String get assetDetailsLocation;
 
-  /// No description provided for @vehicleDetailsAssets.
+  /// No description provided for @assetDetailsAssets.
   ///
   /// In ar, this message translates to:
   /// **'الحساسات'**
-  String get vehicleDetailsAssets;
+  String get assetDetailsAssets;
 
-  /// No description provided for @vehicleDetailsNotifications.
+  /// No description provided for @assetDetailsNotifications.
   ///
   /// In ar, this message translates to:
   /// **'التنبيهات'**
-  String get vehicleDetailsNotifications;
+  String get assetDetailsNotifications;
 
-  /// No description provided for @vehicleDetailsName.
+  /// No description provided for @assetDetailsName.
   ///
   /// In ar, this message translates to:
-  /// **'اسم المركبة'**
-  String get vehicleDetailsName;
+  /// **'اسم الأصل'**
+  String get assetDetailsName;
 
-  /// No description provided for @vehicleDetailsType.
+  /// No description provided for @assetDetailsType.
   ///
   /// In ar, this message translates to:
   /// **'النوع'**
-  String get vehicleDetailsType;
+  String get assetDetailsType;
 
-  /// No description provided for @vehicleDetailsCompany.
+  /// No description provided for @assetDetailsCompany.
   ///
   /// In ar, this message translates to:
   /// **'الشركة'**
-  String get vehicleDetailsCompany;
+  String get assetDetailsCompany;
 
-  /// No description provided for @vehicleDetailsPlateNumber.
+  /// No description provided for @assetDetailsId.
   ///
   /// In ar, this message translates to:
-  /// **'رقم اللوحة'**
-  String get vehicleDetailsPlateNumber;
+  /// **'رقم الأصل'**
+  String get assetDetailsId;
 
-  /// No description provided for @vehicleDetailsDriver.
+  /// No description provided for @assetDetailsAssignedPerson.
   ///
   /// In ar, this message translates to:
-  /// **'اسم السائق'**
-  String get vehicleDetailsDriver;
+  /// **'المستخدم المسؤول'**
+  String get assetDetailsAssignedPerson;
 
-  /// No description provided for @vehicleDetailsSupervisor.
+  /// No description provided for @assetDetailsManager.
   ///
   /// In ar, this message translates to:
-  /// **'المشرف'**
-  String get vehicleDetailsSupervisor;
+  /// **'المسؤول'**
+  String get assetDetailsManager;
 
-  /// No description provided for @vehicleDetailsSpeed.
+  /// No description provided for @assetDetailsSpeed.
   ///
   /// In ar, this message translates to:
   /// **'السرعة'**
-  String get vehicleDetailsSpeed;
+  String get assetDetailsSpeed;
 
-  /// No description provided for @vehicleDetailsDuration.
+  /// No description provided for @assetDetailsDuration.
   ///
   /// In ar, this message translates to:
   /// **'المدة'**
-  String get vehicleDetailsDuration;
+  String get assetDetailsDuration;
 
-  /// No description provided for @vehicleDetailsStatus.
+  /// No description provided for @assetDetailsStatus.
   ///
   /// In ar, this message translates to:
-  /// **'حالة المركبة'**
-  String get vehicleDetailsStatus;
+  /// **'حالة الأصل'**
+  String get assetDetailsStatus;
 
-  /// No description provided for @vehicleDetailsConnection.
+  /// No description provided for @assetDetailsConnection.
   ///
   /// In ar, this message translates to:
   /// **'آخر اتصال'**
-  String get vehicleDetailsConnection;
+  String get assetDetailsConnection;
 
-  /// No description provided for @vehicleDetailsGpsTime.
+  /// No description provided for @assetDetailsGpsTime.
   ///
   /// In ar, this message translates to:
   /// **'وقت GPS'**
-  String get vehicleDetailsGpsTime;
+  String get assetDetailsGpsTime;
 
-  /// No description provided for @vehicleDetailsDistance.
+  /// No description provided for @assetDetailsDistance.
   ///
   /// In ar, this message translates to:
   /// **'المسافة'**
-  String get vehicleDetailsDistance;
+  String get assetDetailsDistance;
 
-  /// No description provided for @vehicleDetailsFuel.
+  /// No description provided for @assetDetailsFuel.
   ///
   /// In ar, this message translates to:
   /// **'الوقود'**
-  String get vehicleDetailsFuel;
+  String get assetDetailsFuel;
 
-  /// No description provided for @vehicleDetailsIdleTime.
+  /// No description provided for @assetDetailsIdleTime.
   ///
   /// In ar, this message translates to:
   /// **'مدة التوقف'**
-  String get vehicleDetailsIdleTime;
+  String get assetDetailsIdleTime;
 
-  /// No description provided for @vehicleDetailsTankLevel.
+  /// No description provided for @assetDetailsTankLevel.
   ///
   /// In ar, this message translates to:
   /// **'مستوى الوقود'**
-  String get vehicleDetailsTankLevel;
+  String get assetDetailsTankLevel;
 
-  /// No description provided for @vehicleDetailsTemperature.
+  /// No description provided for @assetDetailsTemperature.
   ///
   /// In ar, this message translates to:
   /// **'درجة الحرارة'**
-  String get vehicleDetailsTemperature;
+  String get assetDetailsTemperature;
 
-  /// No description provided for @vehicleDetailsWeight.
+  /// No description provided for @assetDetailsWeight.
   ///
   /// In ar, this message translates to:
   /// **'الوزن'**
-  String get vehicleDetailsWeight;
+  String get assetDetailsWeight;
 
-  /// No description provided for @vehicleDetailsSensorHistory.
+  /// No description provided for @assetDetailsSensorHistory.
   ///
   /// In ar, this message translates to:
   /// **'سجل الحساس'**
-  String get vehicleDetailsSensorHistory;
+  String get assetDetailsSensorHistory;
 
-  /// No description provided for @vehicleDetailsDownload.
+  /// No description provided for @assetDetailsDownload.
   ///
   /// In ar, this message translates to:
   /// **'تنزيل'**
-  String get vehicleDetailsDownload;
+  String get assetDetailsDownload;
 
-  /// No description provided for @vehicleDetailsFuelUsage.
+  /// No description provided for @assetDetailsFuelUsage.
   ///
   /// In ar, this message translates to:
   /// **'استهلاك الوقود'**
-  String get vehicleDetailsFuelUsage;
+  String get assetDetailsFuelUsage;
 
-  /// No description provided for @vehicleDetailsDoor.
+  /// No description provided for @assetDetailsDoor.
   ///
   /// In ar, this message translates to:
   /// **'الباب'**
-  String get vehicleDetailsDoor;
+  String get assetDetailsDoor;
 
-  /// No description provided for @vehicleDetailsEngine.
+  /// No description provided for @assetDetailsEngine.
   ///
   /// In ar, this message translates to:
   /// **'المحرك'**
-  String get vehicleDetailsEngine;
+  String get assetDetailsEngine;
 
-  /// No description provided for @vehicleDetailsAddress.
+  /// No description provided for @assetDetailsAddress.
   ///
   /// In ar, this message translates to:
   /// **'العنوان'**
-  String get vehicleDetailsAddress;
+  String get assetDetailsAddress;
 
-  /// No description provided for @vehicleDetailsAlertName.
+  /// No description provided for @assetDetailsAlertName.
   ///
   /// In ar, this message translates to:
   /// **'اسم التنبيه'**
-  String get vehicleDetailsAlertName;
+  String get assetDetailsAlertName;
 
-  /// No description provided for @vehicleDetailsAlertType.
+  /// No description provided for @assetDetailsAlertType.
   ///
   /// In ar, this message translates to:
   /// **'نوع التنبيه'**
-  String get vehicleDetailsAlertType;
+  String get assetDetailsAlertType;
 
-  /// No description provided for @vehicleDetailsAlertSpeed.
+  /// No description provided for @assetDetailsAlertSpeed.
   ///
   /// In ar, this message translates to:
   /// **'السرعة'**
-  String get vehicleDetailsAlertSpeed;
+  String get assetDetailsAlertSpeed;
 
-  /// No description provided for @vehicleDetailsAlertDate.
+  /// No description provided for @assetDetailsAlertDate.
   ///
   /// In ar, this message translates to:
   /// **'التاريخ'**
-  String get vehicleDetailsAlertDate;
+  String get assetDetailsAlertDate;
 
-  /// No description provided for @vehicleDetailsAlertLocation.
+  /// No description provided for @assetDetailsAlertLocation.
   ///
   /// In ar, this message translates to:
   /// **'الموقع'**
-  String get vehicleDetailsAlertLocation;
+  String get assetDetailsAlertLocation;
 
-  /// No description provided for @vehicleDetailsDemoName.
+  /// No description provided for @assetDetailsDemoName.
   ///
   /// In ar, this message translates to:
-  /// **'فان التوزيع ٢'**
-  String get vehicleDetailsDemoName;
+  /// **'الأصل ٢'**
+  String get assetDetailsDemoName;
 
-  /// No description provided for @vehicleDetailsAddressValue.
+  /// No description provided for @assetDetailsAddressValue.
   ///
   /// In ar, this message translates to:
   /// **'طريق الملك فهد، الرياض، المملكة العربية السعودية'**
-  String get vehicleDetailsAddressValue;
+  String get assetDetailsAddressValue;
 
-  /// No description provided for @vehicleDetailsTruckType.
+  /// No description provided for @assetDetailsEquipmentType.
   ///
   /// In ar, this message translates to:
-  /// **'شاحنة'**
-  String get vehicleDetailsTruckType;
+  /// **'معدة'**
+  String get assetDetailsEquipmentType;
 
-  /// No description provided for @vehicleDetailsCompanyName.
+  /// No description provided for @assetDetailsCompanyName.
   ///
   /// In ar, this message translates to:
   /// **'شركة نسام للتوزيع'**
-  String get vehicleDetailsCompanyName;
+  String get assetDetailsCompanyName;
 
-  /// No description provided for @vehicleDetailsSupervisorName.
+  /// No description provided for @assetDetailsManagerName.
   ///
   /// In ar, this message translates to:
   /// **'أحمد محمد'**
-  String get vehicleDetailsSupervisorName;
+  String get assetDetailsManagerName;
 
-  /// No description provided for @vehicleDetailsRunning.
+  /// No description provided for @assetDetailsRunning.
   ///
   /// In ar, this message translates to:
   /// **'يعمل'**
-  String get vehicleDetailsRunning;
+  String get assetDetailsRunning;
 
-  /// No description provided for @vehicleDetailsOpen.
+  /// No description provided for @assetDetailsOpen.
   ///
   /// In ar, this message translates to:
   /// **'مفتوح'**
-  String get vehicleDetailsOpen;
+  String get assetDetailsOpen;
 
-  /// No description provided for @vehicleDetailsClosed.
+  /// No description provided for @assetDetailsClosed.
   ///
   /// In ar, this message translates to:
   /// **'مغلق'**
-  String get vehicleDetailsClosed;
+  String get assetDetailsClosed;
 
-  /// No description provided for @vehicleDetailsOn.
+  /// No description provided for @assetDetailsOn.
   ///
   /// In ar, this message translates to:
   /// **'يعمل'**
-  String get vehicleDetailsOn;
+  String get assetDetailsOn;
 
-  /// No description provided for @vehicleDetailsOff.
+  /// No description provided for @assetDetailsOff.
   ///
   /// In ar, this message translates to:
   /// **'متوقف'**
-  String get vehicleDetailsOff;
+  String get assetDetailsOff;
 
-  /// No description provided for @vehicleDetailsSpeedingAlert.
+  /// No description provided for @assetDetailsSpeedingAlert.
   ///
   /// In ar, this message translates to:
   /// **'تجاوز الحد الأقصى للسرعة'**
-  String get vehicleDetailsSpeedingAlert;
+  String get assetDetailsSpeedingAlert;
 
-  /// No description provided for @vehicleDetailsStoppedAlert.
+  /// No description provided for @assetDetailsStoppedAlert.
   ///
   /// In ar, this message translates to:
-  /// **'توقف المركبة'**
-  String get vehicleDetailsStoppedAlert;
+  /// **'توقف الأصل'**
+  String get assetDetailsStoppedAlert;
 
-  /// No description provided for @vehicleDetailsGeofenceAlert.
+  /// No description provided for @assetDetailsGeofenceAlert.
   ///
   /// In ar, this message translates to:
   /// **'دخول النطاق الجغرافي'**
-  String get vehicleDetailsGeofenceAlert;
+  String get assetDetailsGeofenceAlert;
 
-  /// No description provided for @vehicleDetailsEmptyAlerts.
+  /// No description provided for @assetDetailsEmptyAlerts.
   ///
   /// In ar, this message translates to:
-  /// **'لا توجد تنبيهات لهذه المركبة.'**
-  String get vehicleDetailsEmptyAlerts;
+  /// **'لا توجد تنبيهات لهذا الأصل.'**
+  String get assetDetailsEmptyAlerts;
 }
 
 class _AppLocalizationsDelegate

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 
-class TrackingVehicleSearchField extends StatelessWidget {
-  const TrackingVehicleSearchField({super.key, this.onChanged});
+class TrackingAssetSearchField extends StatelessWidget {
+  const TrackingAssetSearchField({super.key, this.onChanged});
   final ValueChanged<String>? onChanged;
 
   @override

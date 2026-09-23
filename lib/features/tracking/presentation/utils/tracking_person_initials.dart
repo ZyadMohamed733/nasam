@@ -1,7 +1,7 @@
 import 'package:characters/characters.dart';
 
-/// Builds an avatar label from a driver's first and second name parts.
-abstract final class TrackingDriverInitials {
+/// Builds an avatar label from a person's first and second name parts.
+abstract final class TrackingPersonInitials {
   static const fallback = '?';
 
   static String fromName(String? name) {

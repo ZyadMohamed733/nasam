@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class TrackingVehicleDetailsList extends StatelessWidget {
-  const TrackingVehicleDetailsList({super.key, required this.children});
+class TrackingAssetDetailsList extends StatelessWidget {
+  const TrackingAssetDetailsList({super.key, required this.children});
 
   final List<Widget> children;
 

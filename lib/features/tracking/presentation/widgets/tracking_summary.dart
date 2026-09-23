@@ -5,7 +5,7 @@ import '../../../../core/constants/app_assets.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 import '../../domain/tracking_vehicle.dart';
 import '../cubit/tracking_cubit.dart';
-import '../pages/tracking_vehicles_page.dart';
+import '../pages/tracking_assets_page.dart';
 import '../tracking_style.dart';
 
 class TrackingSummary extends StatefulWidget {
@@ -41,7 +41,7 @@ class _TrackingSummaryState extends State<TrackingSummary> {
     final selectedLabel = _selectedStatus == null
         ? l.trackingAll
         : TrackingStyle.label(l, _selectedStatus!);
-    final selectedPage = TrackingVehiclesPage(
+    final selectedPage = TrackingAssetsPage(
       title: selectedLabel,
       status: _selectedStatus,
     );

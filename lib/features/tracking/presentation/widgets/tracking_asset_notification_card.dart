@@ -5,25 +5,25 @@ import 'package:intl/intl.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 import '../../../../shared/widgets/app_card.dart';
 import '../dummy_data/tracking_all_dummy_data.dart';
-import 'tracking_vehicle_detail_field.dart';
+import 'tracking_asset_detail_field.dart';
 
-class TrackingVehicleNotificationCard extends StatelessWidget {
-  const TrackingVehicleNotificationCard({
+class TrackingAssetNotificationCard extends StatelessWidget {
+  const TrackingAssetNotificationCard({
     super.key,
     required this.notification,
   });
 
-  final TrackingVehicleNotificationSample notification;
+  final TrackingAssetNotificationSample notification;
 
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     final locale = Localizations.localeOf(context).toString();
     final type = switch (notification.type) {
-      TrackingDummyNotificationType.speeding => l.vehicleDetailsSpeedingAlert,
-      TrackingDummyNotificationType.stopped => l.vehicleDetailsStoppedAlert,
+      TrackingDummyNotificationType.speeding => l.assetDetailsSpeedingAlert,
+      TrackingDummyNotificationType.stopped => l.assetDetailsStoppedAlert,
       TrackingDummyNotificationType.geofence =>
-        l.vehicleDetailsGeofenceAlert,
+        l.assetDetailsGeofenceAlert,
     };
 
     return AppCard(
@@ -36,14 +36,14 @@ class TrackingVehicleNotificationCard extends StatelessWidget {
             children: [
               Expanded(
                 child: _NotificationValue(
-                  label: l.vehicleDetailsAlertName,
-                  value: l.vehicleDetailsDemoName,
+                  label: l.assetDetailsAlertName,
+                  value: l.assetDetailsDemoName,
                 ),
               ),
               SizedBox(width: 10.w),
               Expanded(
                 child: _NotificationValue(
-                  label: l.vehicleDetailsAlertType,
+                  label: l.assetDetailsAlertType,
                   value: type,
                 ),
               ),
@@ -54,14 +54,14 @@ class TrackingVehicleNotificationCard extends StatelessWidget {
             children: [
               Expanded(
                 child: _NotificationValue(
-                  label: l.vehicleDetailsAlertSpeed,
+                  label: l.assetDetailsAlertSpeed,
                   value: '${notification.speedKph} km/h',
                 ),
               ),
               SizedBox(width: 10.w),
               Expanded(
                 child: _NotificationValue(
-                  label: l.vehicleDetailsAlertDate,
+                  label: l.assetDetailsAlertDate,
                   value: DateFormat.yMMMd(locale).add_jm().format(
                     notification.date,
                   ),
@@ -70,9 +70,9 @@ class TrackingVehicleNotificationCard extends StatelessWidget {
             ],
           ),
           SizedBox(height: 10.h),
-          TrackingVehicleDetailField(
-            label: l.vehicleDetailsAlertLocation,
-            value: l.vehicleDetailsAddressValue,
+          TrackingAssetDetailField(
+            label: l.assetDetailsAlertLocation,
+            value: l.assetDetailsAddressValue,
           ),
         ],
       ),

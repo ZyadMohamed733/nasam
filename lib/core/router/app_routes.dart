@@ -10,6 +10,6 @@ class AppRoutes {
   static const String passwordResetSuccess = '/password-reset-success';
 
   static const String home = '/';
-  static const String trackingVehicleDetails = '/tracking/vehicle-details';
+  static const String trackingAssetDetails = '/tracking/asset-details';
   static const String error = '/error';
 }

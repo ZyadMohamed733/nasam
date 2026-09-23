@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class TrackingVehicleDetailField extends StatelessWidget {
-  const TrackingVehicleDetailField({
+class TrackingAssetDetailField extends StatelessWidget {
+  const TrackingAssetDetailField({
     super.key,
     required this.label,
     required this.value,

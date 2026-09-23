@@ -341,7 +341,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get trackingAdmin => 'System administrator';
 
   @override
-  String get trackingVehicle => 'Delivery van';
+  String get trackingAsset => 'Asset';
 
   @override
   String get trackingNotifications => 'Notifications';
@@ -365,144 +365,143 @@ class AppLocalizationsEn extends AppLocalizations {
   String get drawerDemoProfileName => 'Aya Al-Rashidi';
 
   @override
-  String get vehicleDetailsInformation => 'Information';
+  String get assetDetailsInformation => 'Information';
 
   @override
-  String get vehicleDetailsTracking => 'Tracking';
+  String get assetDetailsTracking => 'Tracking';
 
   @override
-  String get vehicleDetailsLocation => 'Location';
+  String get assetDetailsLocation => 'Location';
 
   @override
-  String get vehicleDetailsAssets => 'Sensors';
+  String get assetDetailsAssets => 'Sensors';
 
   @override
-  String get vehicleDetailsNotifications => 'Notifications';
+  String get assetDetailsNotifications => 'Notifications';
 
   @override
-  String get vehicleDetailsName => 'Vehicle name';
+  String get assetDetailsName => 'Asset name';
 
   @override
-  String get vehicleDetailsType => 'Type';
+  String get assetDetailsType => 'Type';
 
   @override
-  String get vehicleDetailsCompany => 'Company';
+  String get assetDetailsCompany => 'Company';
 
   @override
-  String get vehicleDetailsPlateNumber => 'Plate number';
+  String get assetDetailsId => 'Asset ID';
 
   @override
-  String get vehicleDetailsDriver => 'Driver name';
+  String get assetDetailsAssignedPerson => 'Assigned person';
 
   @override
-  String get vehicleDetailsSupervisor => 'Supervisor';
+  String get assetDetailsManager => 'Manager';
 
   @override
-  String get vehicleDetailsSpeed => 'Speed';
+  String get assetDetailsSpeed => 'Speed';
 
   @override
-  String get vehicleDetailsDuration => 'Duration';
+  String get assetDetailsDuration => 'Duration';
 
   @override
-  String get vehicleDetailsStatus => 'Vehicle status';
+  String get assetDetailsStatus => 'Asset status';
 
   @override
-  String get vehicleDetailsConnection => 'Last connection';
+  String get assetDetailsConnection => 'Last connection';
 
   @override
-  String get vehicleDetailsGpsTime => 'GPS time';
+  String get assetDetailsGpsTime => 'GPS time';
 
   @override
-  String get vehicleDetailsDistance => 'Distance';
+  String get assetDetailsDistance => 'Distance';
 
   @override
-  String get vehicleDetailsFuel => 'Fuel';
+  String get assetDetailsFuel => 'Fuel';
 
   @override
-  String get vehicleDetailsIdleTime => 'Idle time';
+  String get assetDetailsIdleTime => 'Idle time';
 
   @override
-  String get vehicleDetailsTankLevel => 'Tank level';
+  String get assetDetailsTankLevel => 'Tank level';
 
   @override
-  String get vehicleDetailsTemperature => 'Temperature';
+  String get assetDetailsTemperature => 'Temperature';
 
   @override
-  String get vehicleDetailsWeight => 'Weight';
+  String get assetDetailsWeight => 'Weight';
 
   @override
-  String get vehicleDetailsSensorHistory => 'Sensor history';
+  String get assetDetailsSensorHistory => 'Sensor history';
 
   @override
-  String get vehicleDetailsDownload => 'Download';
+  String get assetDetailsDownload => 'Download';
 
   @override
-  String get vehicleDetailsFuelUsage => 'Fuel usage';
+  String get assetDetailsFuelUsage => 'Fuel usage';
 
   @override
-  String get vehicleDetailsDoor => 'Door';
+  String get assetDetailsDoor => 'Door';
 
   @override
-  String get vehicleDetailsEngine => 'Engine';
+  String get assetDetailsEngine => 'Engine';
 
   @override
-  String get vehicleDetailsAddress => 'Address';
+  String get assetDetailsAddress => 'Address';
 
   @override
-  String get vehicleDetailsAlertName => 'Alert name';
+  String get assetDetailsAlertName => 'Alert name';
 
   @override
-  String get vehicleDetailsAlertType => 'Alert type';
+  String get assetDetailsAlertType => 'Alert type';
 
   @override
-  String get vehicleDetailsAlertSpeed => 'Speed';
+  String get assetDetailsAlertSpeed => 'Speed';
 
   @override
-  String get vehicleDetailsAlertDate => 'Date';
+  String get assetDetailsAlertDate => 'Date';
 
   @override
-  String get vehicleDetailsAlertLocation => 'Location';
+  String get assetDetailsAlertLocation => 'Location';
 
   @override
-  String get vehicleDetailsDemoName => 'Distribution van 2';
+  String get assetDetailsDemoName => 'Asset 2';
 
   @override
-  String get vehicleDetailsAddressValue =>
-      'King Fahd Road, Riyadh, Saudi Arabia';
+  String get assetDetailsAddressValue => 'King Fahd Road, Riyadh, Saudi Arabia';
 
   @override
-  String get vehicleDetailsTruckType => 'Truck';
+  String get assetDetailsEquipmentType => 'Equipment';
 
   @override
-  String get vehicleDetailsCompanyName => 'Nasam Distribution';
+  String get assetDetailsCompanyName => 'Nasam Distribution';
 
   @override
-  String get vehicleDetailsSupervisorName => 'Ahmed Mohammed';
+  String get assetDetailsManagerName => 'Ahmed Mohammed';
 
   @override
-  String get vehicleDetailsRunning => 'Running';
+  String get assetDetailsRunning => 'Running';
 
   @override
-  String get vehicleDetailsOpen => 'Open';
+  String get assetDetailsOpen => 'Open';
 
   @override
-  String get vehicleDetailsClosed => 'Closed';
+  String get assetDetailsClosed => 'Closed';
 
   @override
-  String get vehicleDetailsOn => 'On';
+  String get assetDetailsOn => 'On';
 
   @override
-  String get vehicleDetailsOff => 'Off';
+  String get assetDetailsOff => 'Off';
 
   @override
-  String get vehicleDetailsSpeedingAlert => 'Speed limit exceeded';
+  String get assetDetailsSpeedingAlert => 'Speed limit exceeded';
 
   @override
-  String get vehicleDetailsStoppedAlert => 'Vehicle stopped';
+  String get assetDetailsStoppedAlert => 'Asset stopped';
 
   @override
-  String get vehicleDetailsGeofenceAlert => 'Geofence entered';
+  String get assetDetailsGeofenceAlert => 'Geofence entered';
 
   @override
-  String get vehicleDetailsEmptyAlerts => 'No notifications for this vehicle.';
+  String get assetDetailsEmptyAlerts => 'No notifications for this asset.';
 }

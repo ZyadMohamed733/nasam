@@ -3,11 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../domain/tracking_vehicle.dart';
 import '../dummy_data/tracking_all_dummy_data.dart';
-import '../widgets/tracking_vehicle_card.dart';
-import '../widgets/tracking_vehicle_search_field.dart';
+import '../widgets/tracking_asset_card.dart';
+import '../widgets/tracking_asset_search_field.dart';
 
-class TrackingVehiclesPage extends StatefulWidget {
-  const TrackingVehiclesPage({
+class TrackingAssetsPage extends StatefulWidget {
+  const TrackingAssetsPage({
     super.key,
     required this.title,
     required this.status,
@@ -17,20 +17,20 @@ class TrackingVehiclesPage extends StatefulWidget {
   final VehicleStatus? status;
 
   @override
-  State<TrackingVehiclesPage> createState() => _TrackingVehiclesPageState();
+  State<TrackingAssetsPage> createState() => _TrackingAssetsPageState();
 }
 
-class _TrackingVehiclesPageState extends State<TrackingVehiclesPage> {
+class _TrackingAssetsPageState extends State<TrackingAssetsPage> {
   String _query = '';
 
   @override
   Widget build(BuildContext context) {
     final query = _query.trim().toLowerCase();
-    final vehicles = TrackingAllDummyData.vehicles.where((vehicle) {
-      final matchesStatus = widget.status == null || vehicle.status == widget.status;
-      final matchesQuery = vehicle.name.toLowerCase().contains(query) ||
-          vehicle.code.toLowerCase().contains(query) ||
-          vehicle.driver.toLowerCase().contains(query);
+    final assets = TrackingAllDummyData.assets.where((asset) {
+      final matchesStatus = widget.status == null || asset.status == widget.status;
+      final matchesQuery = asset.name.toLowerCase().contains(query) ||
+          asset.code.toLowerCase().contains(query) ||
+          asset.assignedPerson.toLowerCase().contains(query);
       return matchesStatus && matchesQuery;
     });
 
@@ -40,12 +40,12 @@ class _TrackingVehiclesPageState extends State<TrackingVehiclesPage> {
         padding: EdgeInsets.only(top: 12.h),
         child: Column(
           children: [
-            TrackingVehicleSearchField(
+            TrackingAssetSearchField(
               onChanged: (value) => setState(() => _query = value),
             ),
             SizedBox(height: 8.h),
-            for (final vehicle in vehicles) ...[
-              TrackingVehicleCard(vehicle: vehicle),
+            for (final asset in assets) ...[
+              TrackingAssetCard(asset: asset),
               SizedBox(height: 6.h),
             ],
           ],

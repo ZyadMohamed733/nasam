@@ -4,10 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 import '../dummy_data/tracking_all_dummy_data.dart';
 
-class TrackingVehicleSensorDetailsCard extends StatelessWidget {
-  const TrackingVehicleSensorDetailsCard({super.key, required this.details});
+class TrackingAssetSensorDetailsCard extends StatelessWidget {
+  const TrackingAssetSensorDetailsCard({super.key, required this.details});
 
-  final TrackingVehicleDetailsSample details;
+  final TrackingAssetDetailsSample details;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ class TrackingVehicleSensorDetailsCard extends StatelessWidget {
           Row(
             children: [
               IconButton(
-                tooltip: l.vehicleDetailsSensorHistory,
+                tooltip: l.assetDetailsSensorHistory,
                 visualDensity: VisualDensity.compact,
                 onPressed: () {},
                 icon: Icon(Icons.history, size: 20.r),
@@ -59,7 +59,7 @@ class TrackingVehicleSensorDetailsCard extends StatelessWidget {
               Expanded(
                 child: SizedBox(
                   height: 40.h,
-                  child: FilledButton(onPressed: () {}, child: Text(l.vehicleDetailsDownload)),
+                  child: FilledButton(onPressed: () {}, child: Text(l.assetDetailsDownload)),
                 ),
               ),
             ],

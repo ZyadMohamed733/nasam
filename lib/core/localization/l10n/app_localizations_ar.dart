@@ -355,7 +355,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get trackingAdmin => 'مدير النظام';
 
   @override
-  String get trackingVehicle => 'فان التوزيع';
+  String get trackingAsset => 'الأصل';
 
   @override
   String get trackingNotifications => 'الإشعارات';
@@ -379,144 +379,144 @@ class AppLocalizationsAr extends AppLocalizations {
   String get drawerDemoProfileName => 'Aya Al-Rashidi';
 
   @override
-  String get vehicleDetailsInformation => 'المعلومات';
+  String get assetDetailsInformation => 'المعلومات';
 
   @override
-  String get vehicleDetailsTracking => 'التتبع';
+  String get assetDetailsTracking => 'التتبع';
 
   @override
-  String get vehicleDetailsLocation => 'الموقع';
+  String get assetDetailsLocation => 'الموقع';
 
   @override
-  String get vehicleDetailsAssets => 'الحساسات';
+  String get assetDetailsAssets => 'الحساسات';
 
   @override
-  String get vehicleDetailsNotifications => 'التنبيهات';
+  String get assetDetailsNotifications => 'التنبيهات';
 
   @override
-  String get vehicleDetailsName => 'اسم المركبة';
+  String get assetDetailsName => 'اسم الأصل';
 
   @override
-  String get vehicleDetailsType => 'النوع';
+  String get assetDetailsType => 'النوع';
 
   @override
-  String get vehicleDetailsCompany => 'الشركة';
+  String get assetDetailsCompany => 'الشركة';
 
   @override
-  String get vehicleDetailsPlateNumber => 'رقم اللوحة';
+  String get assetDetailsId => 'رقم الأصل';
 
   @override
-  String get vehicleDetailsDriver => 'اسم السائق';
+  String get assetDetailsAssignedPerson => 'المستخدم المسؤول';
 
   @override
-  String get vehicleDetailsSupervisor => 'المشرف';
+  String get assetDetailsManager => 'المسؤول';
 
   @override
-  String get vehicleDetailsSpeed => 'السرعة';
+  String get assetDetailsSpeed => 'السرعة';
 
   @override
-  String get vehicleDetailsDuration => 'المدة';
+  String get assetDetailsDuration => 'المدة';
 
   @override
-  String get vehicleDetailsStatus => 'حالة المركبة';
+  String get assetDetailsStatus => 'حالة الأصل';
 
   @override
-  String get vehicleDetailsConnection => 'آخر اتصال';
+  String get assetDetailsConnection => 'آخر اتصال';
 
   @override
-  String get vehicleDetailsGpsTime => 'وقت GPS';
+  String get assetDetailsGpsTime => 'وقت GPS';
 
   @override
-  String get vehicleDetailsDistance => 'المسافة';
+  String get assetDetailsDistance => 'المسافة';
 
   @override
-  String get vehicleDetailsFuel => 'الوقود';
+  String get assetDetailsFuel => 'الوقود';
 
   @override
-  String get vehicleDetailsIdleTime => 'مدة التوقف';
+  String get assetDetailsIdleTime => 'مدة التوقف';
 
   @override
-  String get vehicleDetailsTankLevel => 'مستوى الوقود';
+  String get assetDetailsTankLevel => 'مستوى الوقود';
 
   @override
-  String get vehicleDetailsTemperature => 'درجة الحرارة';
+  String get assetDetailsTemperature => 'درجة الحرارة';
 
   @override
-  String get vehicleDetailsWeight => 'الوزن';
+  String get assetDetailsWeight => 'الوزن';
 
   @override
-  String get vehicleDetailsSensorHistory => 'سجل الحساس';
+  String get assetDetailsSensorHistory => 'سجل الحساس';
 
   @override
-  String get vehicleDetailsDownload => 'تنزيل';
+  String get assetDetailsDownload => 'تنزيل';
 
   @override
-  String get vehicleDetailsFuelUsage => 'استهلاك الوقود';
+  String get assetDetailsFuelUsage => 'استهلاك الوقود';
 
   @override
-  String get vehicleDetailsDoor => 'الباب';
+  String get assetDetailsDoor => 'الباب';
 
   @override
-  String get vehicleDetailsEngine => 'المحرك';
+  String get assetDetailsEngine => 'المحرك';
 
   @override
-  String get vehicleDetailsAddress => 'العنوان';
+  String get assetDetailsAddress => 'العنوان';
 
   @override
-  String get vehicleDetailsAlertName => 'اسم التنبيه';
+  String get assetDetailsAlertName => 'اسم التنبيه';
 
   @override
-  String get vehicleDetailsAlertType => 'نوع التنبيه';
+  String get assetDetailsAlertType => 'نوع التنبيه';
 
   @override
-  String get vehicleDetailsAlertSpeed => 'السرعة';
+  String get assetDetailsAlertSpeed => 'السرعة';
 
   @override
-  String get vehicleDetailsAlertDate => 'التاريخ';
+  String get assetDetailsAlertDate => 'التاريخ';
 
   @override
-  String get vehicleDetailsAlertLocation => 'الموقع';
+  String get assetDetailsAlertLocation => 'الموقع';
 
   @override
-  String get vehicleDetailsDemoName => 'فان التوزيع ٢';
+  String get assetDetailsDemoName => 'الأصل ٢';
 
   @override
-  String get vehicleDetailsAddressValue =>
+  String get assetDetailsAddressValue =>
       'طريق الملك فهد، الرياض، المملكة العربية السعودية';
 
   @override
-  String get vehicleDetailsTruckType => 'شاحنة';
+  String get assetDetailsEquipmentType => 'معدة';
 
   @override
-  String get vehicleDetailsCompanyName => 'شركة نسام للتوزيع';
+  String get assetDetailsCompanyName => 'شركة نسام للتوزيع';
 
   @override
-  String get vehicleDetailsSupervisorName => 'أحمد محمد';
+  String get assetDetailsManagerName => 'أحمد محمد';
 
   @override
-  String get vehicleDetailsRunning => 'يعمل';
+  String get assetDetailsRunning => 'يعمل';
 
   @override
-  String get vehicleDetailsOpen => 'مفتوح';
+  String get assetDetailsOpen => 'مفتوح';
 
   @override
-  String get vehicleDetailsClosed => 'مغلق';
+  String get assetDetailsClosed => 'مغلق';
 
   @override
-  String get vehicleDetailsOn => 'يعمل';
+  String get assetDetailsOn => 'يعمل';
 
   @override
-  String get vehicleDetailsOff => 'متوقف';
+  String get assetDetailsOff => 'متوقف';
 
   @override
-  String get vehicleDetailsSpeedingAlert => 'تجاوز الحد الأقصى للسرعة';
+  String get assetDetailsSpeedingAlert => 'تجاوز الحد الأقصى للسرعة';
 
   @override
-  String get vehicleDetailsStoppedAlert => 'توقف المركبة';
+  String get assetDetailsStoppedAlert => 'توقف الأصل';
 
   @override
-  String get vehicleDetailsGeofenceAlert => 'دخول النطاق الجغرافي';
+  String get assetDetailsGeofenceAlert => 'دخول النطاق الجغرافي';
 
   @override
-  String get vehicleDetailsEmptyAlerts => 'لا توجد تنبيهات لهذه المركبة.';
+  String get assetDetailsEmptyAlerts => 'لا توجد تنبيهات لهذا الأصل.';
 }
