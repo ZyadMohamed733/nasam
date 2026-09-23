@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/app_assets.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 import '../../domain/tracking_vehicle.dart';
@@ -12,12 +11,18 @@ class TrackingSummary extends StatefulWidget {
   const TrackingSummary({
     super.key,
     required this.state,
-    required this.expanded,
-    required this.onExpandedChanged,
+    required this.scrollController,
+    required this.sheetController,
+    required this.minSheetExtent,
+    required this.maxSheetExtent,
+    required this.onShowTap,
   });
   final TrackingState state;
-  final bool expanded;
-  final ValueChanged<bool> onExpandedChanged;
+  final ScrollController scrollController;
+  final DraggableScrollableController sheetController;
+  final double minSheetExtent;
+  final double maxSheetExtent;
+  final VoidCallback onShowTap;
 
   @override
   State<TrackingSummary> createState() => _TrackingSummaryState();
@@ -25,13 +30,11 @@ class TrackingSummary extends StatefulWidget {
 
 class _TrackingSummaryState extends State<TrackingSummary> {
   VehicleStatus? _selectedStatus;
-  double _handleDragDistance = 0;
 
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     final scheme = Theme.of(context).colorScheme;
-    final bottomSafeArea = MediaQuery.paddingOf(context).bottom;
     final selectedLabel = _selectedStatus == null
         ? l.trackingAll
         : TrackingStyle.label(l, _selectedStatus!);
@@ -42,13 +45,7 @@ class _TrackingSummaryState extends State<TrackingSummary> {
     return Material(
       color: scheme.surface,
       borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-        height: widget.expanded
-            ? MediaQuery.sizeOf(context).height * .75
-            : 174.h + bottomSafeArea,
-        child: SafeArea(
+      child: SafeArea(
           top: false,
           child: Padding(
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 28),
@@ -58,18 +55,24 @@ class _TrackingSummaryState extends State<TrackingSummary> {
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onVerticalDragUpdate: (details) {
-                  _handleDragDistance += details.delta.dy;
+                  if (!widget.sheetController.isAttached) return;
+                  final screenHeight = MediaQuery.sizeOf(context).height;
+                  final nextExtent = (widget.sheetController.size -
+                          details.delta.dy / screenHeight)
+                      .clamp(widget.minSheetExtent, widget.maxSheetExtent)
+                      .toDouble();
+                  widget.sheetController.jumpTo(nextExtent);
                 },
-                onVerticalDragEnd: (details) {
-                  final dragDistance = _handleDragDistance;
-                  final velocity = details.primaryVelocity ?? 0;
-                  _handleDragDistance = 0;
-                  if (dragDistance < -24 || velocity < -250) {
-                    widget.onExpandedChanged(true);
-                  } else if (dragDistance > 24 ||
-                      velocity > 250) {
-                    widget.onExpandedChanged(false);
-                  }
+                onVerticalDragEnd: (_) {
+                  if (!widget.sheetController.isAttached) return;
+                  widget.sheetController.animateTo(
+                    widget.sheetController.size <
+                            (widget.minSheetExtent + widget.maxSheetExtent) / 2
+                        ? widget.minSheetExtent
+                        : widget.maxSheetExtent,
+                    duration: const Duration(milliseconds: 180),
+                    curve: Curves.easeOutCubic,
+                  );
                 },
                 child: SizedBox(
                   width: double.infinity,
@@ -101,7 +104,7 @@ class _TrackingSummaryState extends State<TrackingSummary> {
                   ),
                   //
                   InkWell(
-                    onTap: () => widget.onExpandedChanged(!widget.expanded),
+                    onTap: widget.onShowTap,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Text(
@@ -146,12 +149,14 @@ class _TrackingSummaryState extends State<TrackingSummary> {
                   ),
                 ),
                 Expanded(
-                  child: SingleChildScrollView(child: selectedPage),
+                  child: SingleChildScrollView(
+                    controller: widget.scrollController,
+                    child: selectedPage,
+                  ),
                 ),
               ],
             ),
           ),
-        ),
       ),
     );
   }

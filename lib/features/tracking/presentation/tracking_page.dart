@@ -45,6 +45,9 @@ class _TrackingViewState extends State<_TrackingView>
   GoogleMapController? _mapController;
   var _mapType = MapType.normal;
   var _summaryExpanded = false;
+  static const _summaryMinSize = .23;
+  static const _summaryMaxSize = .75;
+  late final _summaryController = DraggableScrollableController();
 
   // Cycled by the layers control; hybrid adds satellite imagery under the
   // road overlay, terrain adds elevation shading.
@@ -52,6 +55,7 @@ class _TrackingViewState extends State<_TrackingView>
 
   @override
   void dispose() {
+    _summaryController.dispose();
     _drawerFade.dispose();
     _drawerAnimation.dispose();
     _drawer.dispose();
@@ -61,6 +65,24 @@ class _TrackingViewState extends State<_TrackingView>
   void _cycleMapType() => setState(() {
     _mapType = _mapTypes[(_mapTypes.indexOf(_mapType) + 1) % _mapTypes.length];
   });
+
+  bool _onSummaryExtentChanged(DraggableScrollableNotification notification) {
+    final expanded = notification.extent >= _summaryMaxSize - .005;
+    final collapsed = notification.extent <= _summaryMinSize + .005;
+    if ((expanded && !_summaryExpanded) || (collapsed && _summaryExpanded)) {
+      setState(() => _summaryExpanded = expanded);
+    }
+    return false;
+  }
+
+  void _toggleSummary() {
+    if (!_summaryController.isAttached) return;
+    _summaryController.animateTo(
+      _summaryController.size < .5 ? _summaryMaxSize : _summaryMinSize,
+      duration: const Duration(milliseconds: 180),
+      curve: Curves.easeOutCubic,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,9 +146,9 @@ class _TrackingViewState extends State<_TrackingView>
                     ),
                   );
                 }
-                final bottomInset = _summaryExpanded
-                    ? MediaQuery.sizeOf(context).height * .75
-                    : 174.0 + MediaQuery.paddingOf(context).bottom;
+                final bottomInset =
+                    MediaQuery.sizeOf(context).height *
+                    (_summaryExpanded ? _summaryMaxSize : _summaryMinSize);
                 return Stack(
                   children: [
                     Positioned.fill(
@@ -150,13 +172,22 @@ class _TrackingViewState extends State<_TrackingView>
                         ),
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: TrackingSummary(
-                        state: state,
-                        expanded: _summaryExpanded,
-                        onExpandedChanged: (expanded) => setState(
-                          () => _summaryExpanded = expanded,
+                    NotificationListener<DraggableScrollableNotification>(
+                      onNotification: _onSummaryExtentChanged,
+                      child: DraggableScrollableSheet(
+                        controller: _summaryController,
+                        initialChildSize: _summaryMinSize,
+                        minChildSize: _summaryMinSize,
+                        maxChildSize: _summaryMaxSize,
+                        snap: true,
+                        snapSizes: const [_summaryMinSize, _summaryMaxSize],
+                        builder: (context, scrollController) => TrackingSummary(
+                          state: state,
+                          scrollController: scrollController,
+                          sheetController: _summaryController,
+                          minSheetExtent: _summaryMinSize,
+                          maxSheetExtent: _summaryMaxSize,
+                          onShowTap: _toggleSummary,
                         ),
                       ),
                     ),
