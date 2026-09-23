@@ -81,7 +81,7 @@ class TrackingAssetDetailsPage extends StatelessWidget {
                 ],
               ),
             ),
-            AssetDetailsLoaded(:final details, :final notifications) =>
+            AssetDetailsLoaded(:final details, :final alerts) =>
               TabBarView(
                 children: [
                   TrackingAssetInformationTab(asset: asset, details: details),
@@ -89,9 +89,10 @@ class TrackingAssetDetailsPage extends StatelessWidget {
                   TrackingAssetLocationTab(details: details),
                   TrackingAssetSensorsTab(details: details),
                   TrackingAssetNotificationsTab(
-                    notifications: notifications,
+                    alerts: alerts,
                     assetName: details.name,
                     location: details.address,
+                    onRetry: context.read<AssetDetailsCubit>().retryAlerts,
                   ),
                 ],
               ),

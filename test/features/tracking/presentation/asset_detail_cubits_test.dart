@@ -84,7 +84,10 @@ void main() {
       act: (c) => c.load('AST-1'),
       expect: () => [
         const AssetDetailsLoading(),
-        AssetDetailsLoaded(details: _details, notifications: [_alert]),
+        AssetDetailsLoaded(
+          details: _details,
+          alerts: AssetAlertsLoaded([_alert]),
+        ),
       ],
     );
 
@@ -106,9 +109,10 @@ void main() {
       ],
     );
 
-    // Alerts are one tab of five; losing them must not lose the screen.
+    // Alerts are one tab of five; losing them must not lose the screen, and
+    // must not pass for "no alerts" either.
     blocTest<AssetDetailsCubit, AssetDetailsState>(
-      'an alerts failure still loads, with no alerts',
+      'an alerts failure still loads, with the failure carried for the tab',
       setUp: () {
         when(() => getDetails('AST-1')).thenAnswer((_) async => Right(_details));
         when(
@@ -119,7 +123,10 @@ void main() {
       act: (c) => c.load('AST-1'),
       expect: () => [
         const AssetDetailsLoading(),
-        AssetDetailsLoaded(details: _details, notifications: const []),
+        AssetDetailsLoaded(
+          details: _details,
+          alerts: const AssetAlertsFailed(_failure),
+        ),
       ],
     );
 
@@ -136,8 +143,76 @@ void main() {
       act: (c) => c.load('AST-1'),
       expect: () => [
         const AssetDetailsLoading(),
-        AssetDetailsLoaded(details: _details, notifications: const []),
+        AssetDetailsLoaded(
+          details: _details,
+          alerts: const AssetAlertsLoaded([]),
+        ),
       ],
+    );
+
+    blocTest<AssetDetailsCubit, AssetDetailsState>(
+      'retrying the alerts re-requests them alone, details untouched',
+      setUp: () {
+        when(() => getDetails('AST-1')).thenAnswer((_) async => Right(_details));
+        var calls = 0;
+        when(() => getNotifications('AST-1')).thenAnswer(
+          (_) async => calls++ == 0 ? const Left(_failure) : Right([_alert]),
+        );
+      },
+      build: build,
+      act: (c) async {
+        await c.load('AST-1');
+        await c.retryAlerts();
+      },
+      skip: 2, // loading, then loaded with the failed alerts
+      expect: () => [
+        AssetDetailsLoaded(
+          details: _details,
+          alerts: const AssetAlertsLoading(),
+        ),
+        AssetDetailsLoaded(
+          details: _details,
+          alerts: AssetAlertsLoaded([_alert]),
+        ),
+      ],
+      verify: (_) {
+        verify(() => getDetails('AST-1')).called(1);
+        verify(() => getNotifications('AST-1')).called(2);
+      },
+    );
+
+    blocTest<AssetDetailsCubit, AssetDetailsState>(
+      'an alerts retry that fails again stays a failure, not an empty list',
+      setUp: () {
+        when(() => getDetails('AST-1')).thenAnswer((_) async => Right(_details));
+        when(
+          () => getNotifications('AST-1'),
+        ).thenAnswer((_) async => const Left(_failure));
+      },
+      build: build,
+      act: (c) async {
+        await c.load('AST-1');
+        await c.retryAlerts();
+      },
+      skip: 2,
+      expect: () => [
+        AssetDetailsLoaded(
+          details: _details,
+          alerts: const AssetAlertsLoading(),
+        ),
+        AssetDetailsLoaded(
+          details: _details,
+          alerts: const AssetAlertsFailed(_failure),
+        ),
+      ],
+    );
+
+    blocTest<AssetDetailsCubit, AssetDetailsState>(
+      'an alerts retry before the details have loaded does nothing',
+      build: build,
+      act: (c) => c.retryAlerts(),
+      expect: () => const <AssetDetailsState>[],
+      verify: (_) => verifyNever(() => getNotifications(any())),
     );
   });
 
