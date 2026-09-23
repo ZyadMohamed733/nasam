@@ -377,4 +377,146 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get drawerDemoProfileName => 'Aya Al-Rashidi';
+
+  @override
+  String get vehicleDetailsInformation => 'المعلومات';
+
+  @override
+  String get vehicleDetailsTracking => 'التتبع';
+
+  @override
+  String get vehicleDetailsLocation => 'الموقع';
+
+  @override
+  String get vehicleDetailsAssets => 'الحساسات';
+
+  @override
+  String get vehicleDetailsNotifications => 'التنبيهات';
+
+  @override
+  String get vehicleDetailsName => 'اسم المركبة';
+
+  @override
+  String get vehicleDetailsType => 'النوع';
+
+  @override
+  String get vehicleDetailsCompany => 'الشركة';
+
+  @override
+  String get vehicleDetailsPlateNumber => 'رقم اللوحة';
+
+  @override
+  String get vehicleDetailsDriver => 'اسم السائق';
+
+  @override
+  String get vehicleDetailsSupervisor => 'المشرف';
+
+  @override
+  String get vehicleDetailsSpeed => 'السرعة';
+
+  @override
+  String get vehicleDetailsDuration => 'المدة';
+
+  @override
+  String get vehicleDetailsStatus => 'حالة المركبة';
+
+  @override
+  String get vehicleDetailsConnection => 'آخر اتصال';
+
+  @override
+  String get vehicleDetailsGpsTime => 'وقت GPS';
+
+  @override
+  String get vehicleDetailsDistance => 'المسافة';
+
+  @override
+  String get vehicleDetailsFuel => 'الوقود';
+
+  @override
+  String get vehicleDetailsIdleTime => 'مدة التوقف';
+
+  @override
+  String get vehicleDetailsTankLevel => 'مستوى الوقود';
+
+  @override
+  String get vehicleDetailsTemperature => 'درجة الحرارة';
+
+  @override
+  String get vehicleDetailsWeight => 'الوزن';
+
+  @override
+  String get vehicleDetailsSensorHistory => 'سجل الحساس';
+
+  @override
+  String get vehicleDetailsDownload => 'تنزيل';
+
+  @override
+  String get vehicleDetailsFuelUsage => 'استهلاك الوقود';
+
+  @override
+  String get vehicleDetailsDoor => 'الباب';
+
+  @override
+  String get vehicleDetailsEngine => 'المحرك';
+
+  @override
+  String get vehicleDetailsAddress => 'العنوان';
+
+  @override
+  String get vehicleDetailsAlertName => 'اسم التنبيه';
+
+  @override
+  String get vehicleDetailsAlertType => 'نوع التنبيه';
+
+  @override
+  String get vehicleDetailsAlertSpeed => 'السرعة';
+
+  @override
+  String get vehicleDetailsAlertDate => 'التاريخ';
+
+  @override
+  String get vehicleDetailsAlertLocation => 'الموقع';
+
+  @override
+  String get vehicleDetailsDemoName => 'فان التوزيع ٢';
+
+  @override
+  String get vehicleDetailsAddressValue =>
+      'طريق الملك فهد، الرياض، المملكة العربية السعودية';
+
+  @override
+  String get vehicleDetailsTruckType => 'شاحنة';
+
+  @override
+  String get vehicleDetailsCompanyName => 'شركة نسام للتوزيع';
+
+  @override
+  String get vehicleDetailsSupervisorName => 'أحمد محمد';
+
+  @override
+  String get vehicleDetailsRunning => 'يعمل';
+
+  @override
+  String get vehicleDetailsOpen => 'مفتوح';
+
+  @override
+  String get vehicleDetailsClosed => 'مغلق';
+
+  @override
+  String get vehicleDetailsOn => 'يعمل';
+
+  @override
+  String get vehicleDetailsOff => 'متوقف';
+
+  @override
+  String get vehicleDetailsSpeedingAlert => 'تجاوز الحد الأقصى للسرعة';
+
+  @override
+  String get vehicleDetailsStoppedAlert => 'توقف المركبة';
+
+  @override
+  String get vehicleDetailsGeofenceAlert => 'دخول النطاق الجغرافي';
+
+  @override
+  String get vehicleDetailsEmptyAlerts => 'لا توجد تنبيهات لهذه المركبة.';
 }

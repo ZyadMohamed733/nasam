@@ -55,11 +55,13 @@ class TrackingMap extends StatefulWidget {
     super.key,
     required this.vehicles,
     required this.bottomInset,
+    this.onVehicleTap,
     this.mapType = MapType.normal,
     this.onMapReady,
   });
   final List<TrackingVehicle> vehicles;
   final double bottomInset;
+  final ValueChanged<TrackingVehicle>? onVehicleTap;
   final MapType mapType;
   final ValueChanged<GoogleMapController>? onMapReady;
   @override
@@ -123,7 +125,9 @@ class _TrackingMapState extends State<TrackingMap> {
               : const Offset(.5, 25 / 78),
           icon: icon,
           consumeTapEvents: true,
-          onTap: cluster.isMultiple ? () => _focusCluster(cluster) : null,
+          onTap: cluster.isMultiple
+              ? () => _focusCluster(cluster)
+              : () => widget.onVehicleTap?.call(v),
         );
       },
     );

@@ -679,6 +679,288 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'Aya Al-Rashidi'**
   String get drawerDemoProfileName;
+
+  /// No description provided for @vehicleDetailsInformation.
+  ///
+  /// In ar, this message translates to:
+  /// **'المعلومات'**
+  String get vehicleDetailsInformation;
+
+  /// No description provided for @vehicleDetailsTracking.
+  ///
+  /// In ar, this message translates to:
+  /// **'التتبع'**
+  String get vehicleDetailsTracking;
+
+  /// No description provided for @vehicleDetailsLocation.
+  ///
+  /// In ar, this message translates to:
+  /// **'الموقع'**
+  String get vehicleDetailsLocation;
+
+  /// No description provided for @vehicleDetailsAssets.
+  ///
+  /// In ar, this message translates to:
+  /// **'الحساسات'**
+  String get vehicleDetailsAssets;
+
+  /// No description provided for @vehicleDetailsNotifications.
+  ///
+  /// In ar, this message translates to:
+  /// **'التنبيهات'**
+  String get vehicleDetailsNotifications;
+
+  /// No description provided for @vehicleDetailsName.
+  ///
+  /// In ar, this message translates to:
+  /// **'اسم المركبة'**
+  String get vehicleDetailsName;
+
+  /// No description provided for @vehicleDetailsType.
+  ///
+  /// In ar, this message translates to:
+  /// **'النوع'**
+  String get vehicleDetailsType;
+
+  /// No description provided for @vehicleDetailsCompany.
+  ///
+  /// In ar, this message translates to:
+  /// **'الشركة'**
+  String get vehicleDetailsCompany;
+
+  /// No description provided for @vehicleDetailsPlateNumber.
+  ///
+  /// In ar, this message translates to:
+  /// **'رقم اللوحة'**
+  String get vehicleDetailsPlateNumber;
+
+  /// No description provided for @vehicleDetailsDriver.
+  ///
+  /// In ar, this message translates to:
+  /// **'اسم السائق'**
+  String get vehicleDetailsDriver;
+
+  /// No description provided for @vehicleDetailsSupervisor.
+  ///
+  /// In ar, this message translates to:
+  /// **'المشرف'**
+  String get vehicleDetailsSupervisor;
+
+  /// No description provided for @vehicleDetailsSpeed.
+  ///
+  /// In ar, this message translates to:
+  /// **'السرعة'**
+  String get vehicleDetailsSpeed;
+
+  /// No description provided for @vehicleDetailsDuration.
+  ///
+  /// In ar, this message translates to:
+  /// **'المدة'**
+  String get vehicleDetailsDuration;
+
+  /// No description provided for @vehicleDetailsStatus.
+  ///
+  /// In ar, this message translates to:
+  /// **'حالة المركبة'**
+  String get vehicleDetailsStatus;
+
+  /// No description provided for @vehicleDetailsConnection.
+  ///
+  /// In ar, this message translates to:
+  /// **'آخر اتصال'**
+  String get vehicleDetailsConnection;
+
+  /// No description provided for @vehicleDetailsGpsTime.
+  ///
+  /// In ar, this message translates to:
+  /// **'وقت GPS'**
+  String get vehicleDetailsGpsTime;
+
+  /// No description provided for @vehicleDetailsDistance.
+  ///
+  /// In ar, this message translates to:
+  /// **'المسافة'**
+  String get vehicleDetailsDistance;
+
+  /// No description provided for @vehicleDetailsFuel.
+  ///
+  /// In ar, this message translates to:
+  /// **'الوقود'**
+  String get vehicleDetailsFuel;
+
+  /// No description provided for @vehicleDetailsIdleTime.
+  ///
+  /// In ar, this message translates to:
+  /// **'مدة التوقف'**
+  String get vehicleDetailsIdleTime;
+
+  /// No description provided for @vehicleDetailsTankLevel.
+  ///
+  /// In ar, this message translates to:
+  /// **'مستوى الوقود'**
+  String get vehicleDetailsTankLevel;
+
+  /// No description provided for @vehicleDetailsTemperature.
+  ///
+  /// In ar, this message translates to:
+  /// **'درجة الحرارة'**
+  String get vehicleDetailsTemperature;
+
+  /// No description provided for @vehicleDetailsWeight.
+  ///
+  /// In ar, this message translates to:
+  /// **'الوزن'**
+  String get vehicleDetailsWeight;
+
+  /// No description provided for @vehicleDetailsSensorHistory.
+  ///
+  /// In ar, this message translates to:
+  /// **'سجل الحساس'**
+  String get vehicleDetailsSensorHistory;
+
+  /// No description provided for @vehicleDetailsDownload.
+  ///
+  /// In ar, this message translates to:
+  /// **'تنزيل'**
+  String get vehicleDetailsDownload;
+
+  /// No description provided for @vehicleDetailsFuelUsage.
+  ///
+  /// In ar, this message translates to:
+  /// **'استهلاك الوقود'**
+  String get vehicleDetailsFuelUsage;
+
+  /// No description provided for @vehicleDetailsDoor.
+  ///
+  /// In ar, this message translates to:
+  /// **'الباب'**
+  String get vehicleDetailsDoor;
+
+  /// No description provided for @vehicleDetailsEngine.
+  ///
+  /// In ar, this message translates to:
+  /// **'المحرك'**
+  String get vehicleDetailsEngine;
+
+  /// No description provided for @vehicleDetailsAddress.
+  ///
+  /// In ar, this message translates to:
+  /// **'العنوان'**
+  String get vehicleDetailsAddress;
+
+  /// No description provided for @vehicleDetailsAlertName.
+  ///
+  /// In ar, this message translates to:
+  /// **'اسم التنبيه'**
+  String get vehicleDetailsAlertName;
+
+  /// No description provided for @vehicleDetailsAlertType.
+  ///
+  /// In ar, this message translates to:
+  /// **'نوع التنبيه'**
+  String get vehicleDetailsAlertType;
+
+  /// No description provided for @vehicleDetailsAlertSpeed.
+  ///
+  /// In ar, this message translates to:
+  /// **'السرعة'**
+  String get vehicleDetailsAlertSpeed;
+
+  /// No description provided for @vehicleDetailsAlertDate.
+  ///
+  /// In ar, this message translates to:
+  /// **'التاريخ'**
+  String get vehicleDetailsAlertDate;
+
+  /// No description provided for @vehicleDetailsAlertLocation.
+  ///
+  /// In ar, this message translates to:
+  /// **'الموقع'**
+  String get vehicleDetailsAlertLocation;
+
+  /// No description provided for @vehicleDetailsDemoName.
+  ///
+  /// In ar, this message translates to:
+  /// **'فان التوزيع ٢'**
+  String get vehicleDetailsDemoName;
+
+  /// No description provided for @vehicleDetailsAddressValue.
+  ///
+  /// In ar, this message translates to:
+  /// **'طريق الملك فهد، الرياض، المملكة العربية السعودية'**
+  String get vehicleDetailsAddressValue;
+
+  /// No description provided for @vehicleDetailsTruckType.
+  ///
+  /// In ar, this message translates to:
+  /// **'شاحنة'**
+  String get vehicleDetailsTruckType;
+
+  /// No description provided for @vehicleDetailsCompanyName.
+  ///
+  /// In ar, this message translates to:
+  /// **'شركة نسام للتوزيع'**
+  String get vehicleDetailsCompanyName;
+
+  /// No description provided for @vehicleDetailsSupervisorName.
+  ///
+  /// In ar, this message translates to:
+  /// **'أحمد محمد'**
+  String get vehicleDetailsSupervisorName;
+
+  /// No description provided for @vehicleDetailsRunning.
+  ///
+  /// In ar, this message translates to:
+  /// **'يعمل'**
+  String get vehicleDetailsRunning;
+
+  /// No description provided for @vehicleDetailsOpen.
+  ///
+  /// In ar, this message translates to:
+  /// **'مفتوح'**
+  String get vehicleDetailsOpen;
+
+  /// No description provided for @vehicleDetailsClosed.
+  ///
+  /// In ar, this message translates to:
+  /// **'مغلق'**
+  String get vehicleDetailsClosed;
+
+  /// No description provided for @vehicleDetailsOn.
+  ///
+  /// In ar, this message translates to:
+  /// **'يعمل'**
+  String get vehicleDetailsOn;
+
+  /// No description provided for @vehicleDetailsOff.
+  ///
+  /// In ar, this message translates to:
+  /// **'متوقف'**
+  String get vehicleDetailsOff;
+
+  /// No description provided for @vehicleDetailsSpeedingAlert.
+  ///
+  /// In ar, this message translates to:
+  /// **'تجاوز الحد الأقصى للسرعة'**
+  String get vehicleDetailsSpeedingAlert;
+
+  /// No description provided for @vehicleDetailsStoppedAlert.
+  ///
+  /// In ar, this message translates to:
+  /// **'توقف المركبة'**
+  String get vehicleDetailsStoppedAlert;
+
+  /// No description provided for @vehicleDetailsGeofenceAlert.
+  ///
+  /// In ar, this message translates to:
+  /// **'دخول النطاق الجغرافي'**
+  String get vehicleDetailsGeofenceAlert;
+
+  /// No description provided for @vehicleDetailsEmptyAlerts.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد تنبيهات لهذه المركبة.'**
+  String get vehicleDetailsEmptyAlerts;
 }
 
 class _AppLocalizationsDelegate

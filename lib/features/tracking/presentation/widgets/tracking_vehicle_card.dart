@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import '../../../../core/router/app_routes.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 import '../../domain/tracking_vehicle.dart';
 import '../dummy_data/tracking_all_dummy_data.dart';
@@ -18,6 +20,10 @@ class TrackingVehicleCard extends StatelessWidget {
     final label = TrackingStyle.label(l, vehicle.status);
     final scheme = Theme.of(context).colorScheme;
     return AppCard(
+      onTap: () => context.push(
+        AppRoutes.trackingVehicleDetails,
+        extra: vehicle,
+      ),
       padding: EdgeInsets.fromLTRB(12.w, 10.h, 12.w, 8.h),
       borderRadius: 10.r,
       elevation: 0,

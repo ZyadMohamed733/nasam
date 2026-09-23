@@ -11,6 +11,7 @@ import '../../../core/router/app_routes.dart';
 import '../../../features/auth/domain/usecases/logout_usecase.dart';
 import '../../../shared/widgets/app_drawer.dart';
 import '../domain/tracking_vehicle.dart';
+import 'dummy_data/tracking_all_dummy_data.dart';
 import 'cubit/tracking_cubit.dart';
 import 'widgets/tracking_controls.dart';
 import 'widgets/tracking_map.dart';
@@ -157,6 +158,18 @@ class _TrackingViewState extends State<_TrackingView>
                         bottomInset: bottomInset,
                         mapType: _mapType,
                         onMapReady: (controller) => _mapController = controller,
+                        onVehicleTap: (vehicle) {
+                          final id = int.tryParse(vehicle.id);
+                          if (id == null || TrackingAllDummyData.vehicles.isEmpty) {
+                            return;
+                          }
+                          final detailsVehicle = TrackingAllDummyData
+                              .vehicles[(id - 1) % TrackingAllDummyData.vehicles.length];
+                          context.push(
+                            AppRoutes.trackingVehicleDetails,
+                            extra: detailsVehicle,
+                          );
+                        },
                       ),
                     ),
                     Positioned.fill(
@@ -183,6 +196,7 @@ class _TrackingViewState extends State<_TrackingView>
                         snapSizes: const [_summaryMinSize, _summaryMaxSize],
                         builder: (context, scrollController) => TrackingSummary(
                           state: state,
+                          expanded: _summaryExpanded,
                           scrollController: scrollController,
                           sheetController: _summaryController,
                           minSheetExtent: _summaryMinSize,

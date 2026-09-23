@@ -363,4 +363,146 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get drawerDemoProfileName => 'Aya Al-Rashidi';
+
+  @override
+  String get vehicleDetailsInformation => 'Information';
+
+  @override
+  String get vehicleDetailsTracking => 'Tracking';
+
+  @override
+  String get vehicleDetailsLocation => 'Location';
+
+  @override
+  String get vehicleDetailsAssets => 'Sensors';
+
+  @override
+  String get vehicleDetailsNotifications => 'Notifications';
+
+  @override
+  String get vehicleDetailsName => 'Vehicle name';
+
+  @override
+  String get vehicleDetailsType => 'Type';
+
+  @override
+  String get vehicleDetailsCompany => 'Company';
+
+  @override
+  String get vehicleDetailsPlateNumber => 'Plate number';
+
+  @override
+  String get vehicleDetailsDriver => 'Driver name';
+
+  @override
+  String get vehicleDetailsSupervisor => 'Supervisor';
+
+  @override
+  String get vehicleDetailsSpeed => 'Speed';
+
+  @override
+  String get vehicleDetailsDuration => 'Duration';
+
+  @override
+  String get vehicleDetailsStatus => 'Vehicle status';
+
+  @override
+  String get vehicleDetailsConnection => 'Last connection';
+
+  @override
+  String get vehicleDetailsGpsTime => 'GPS time';
+
+  @override
+  String get vehicleDetailsDistance => 'Distance';
+
+  @override
+  String get vehicleDetailsFuel => 'Fuel';
+
+  @override
+  String get vehicleDetailsIdleTime => 'Idle time';
+
+  @override
+  String get vehicleDetailsTankLevel => 'Tank level';
+
+  @override
+  String get vehicleDetailsTemperature => 'Temperature';
+
+  @override
+  String get vehicleDetailsWeight => 'Weight';
+
+  @override
+  String get vehicleDetailsSensorHistory => 'Sensor history';
+
+  @override
+  String get vehicleDetailsDownload => 'Download';
+
+  @override
+  String get vehicleDetailsFuelUsage => 'Fuel usage';
+
+  @override
+  String get vehicleDetailsDoor => 'Door';
+
+  @override
+  String get vehicleDetailsEngine => 'Engine';
+
+  @override
+  String get vehicleDetailsAddress => 'Address';
+
+  @override
+  String get vehicleDetailsAlertName => 'Alert name';
+
+  @override
+  String get vehicleDetailsAlertType => 'Alert type';
+
+  @override
+  String get vehicleDetailsAlertSpeed => 'Speed';
+
+  @override
+  String get vehicleDetailsAlertDate => 'Date';
+
+  @override
+  String get vehicleDetailsAlertLocation => 'Location';
+
+  @override
+  String get vehicleDetailsDemoName => 'Distribution van 2';
+
+  @override
+  String get vehicleDetailsAddressValue =>
+      'King Fahd Road, Riyadh, Saudi Arabia';
+
+  @override
+  String get vehicleDetailsTruckType => 'Truck';
+
+  @override
+  String get vehicleDetailsCompanyName => 'Nasam Distribution';
+
+  @override
+  String get vehicleDetailsSupervisorName => 'Ahmed Mohammed';
+
+  @override
+  String get vehicleDetailsRunning => 'Running';
+
+  @override
+  String get vehicleDetailsOpen => 'Open';
+
+  @override
+  String get vehicleDetailsClosed => 'Closed';
+
+  @override
+  String get vehicleDetailsOn => 'On';
+
+  @override
+  String get vehicleDetailsOff => 'Off';
+
+  @override
+  String get vehicleDetailsSpeedingAlert => 'Speed limit exceeded';
+
+  @override
+  String get vehicleDetailsStoppedAlert => 'Vehicle stopped';
+
+  @override
+  String get vehicleDetailsGeofenceAlert => 'Geofence entered';
+
+  @override
+  String get vehicleDetailsEmptyAlerts => 'No notifications for this vehicle.';
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
+import '../../features/tracking/presentation/dummy_data/tracking_all_dummy_data.dart';
+import '../../features/tracking/presentation/pages/tracking_vehicle_details_page.dart';
 import '../../features/auth/presentation/pages/forgot_password_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/new_password_page.dart';
@@ -114,6 +116,19 @@ class AppRouter {
           state: state,
           slide: false,
           child: const HomePage(),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.trackingVehicleDetails,
+        redirect: (context, state) =>
+            state.extra is TrackingAllDummyVehicle ? null : AppRoutes.home,
+        pageBuilder: (context, state) => appTransitionPage(
+          context: context,
+          state: state,
+          slide: true,
+          child: TrackingVehicleDetailsPage(
+            vehicle: state.extra! as TrackingAllDummyVehicle,
+          ),
         ),
       ),
     ],

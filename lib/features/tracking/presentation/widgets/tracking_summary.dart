@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/app_assets.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 import '../../domain/tracking_vehicle.dart';
@@ -11,6 +12,7 @@ class TrackingSummary extends StatefulWidget {
   const TrackingSummary({
     super.key,
     required this.state,
+    required this.expanded,
     required this.scrollController,
     required this.sheetController,
     required this.minSheetExtent,
@@ -18,6 +20,7 @@ class TrackingSummary extends StatefulWidget {
     required this.onShowTap,
   });
   final TrackingState state;
+  final bool expanded;
   final ScrollController scrollController;
   final DraggableScrollableController sheetController;
   final double minSheetExtent;
@@ -103,16 +106,21 @@ class _TrackingSummaryState extends State<TrackingSummary> {
                     ),
                   ),
                   //
-                  InkWell(
-                    onTap: widget.onShowTap,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: Text(
-                        l.trackingShow,
-                        style: TextStyle(color: scheme.primary),
+
+                    InkWell(
+                      onTap: widget.onShowTap,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: widget.expanded?   Icon(
+                         // onPressed: widget.onShowTap,
+
+                        Icons.close, size: 20.r,
+                        ):Text(
+                          l.trackingShow,
+                          style: TextStyle(color: scheme.primary),
+                        ),
                       ),
                     ),
-                  ),
                 ],
               ),
                 AnimatedSize(

@@ -76,3 +76,97 @@ abstract final class TrackingAllDummyData {
     ),
   ];
 }
+
+class TrackingVehicleDetailsSample {
+  const TrackingVehicleDetailsSample({
+    required this.plateNumber,
+    required this.speedKph,
+    required this.durationHours,
+    required this.connectionMinutesAgo,
+    required this.lastGpsAt,
+    required this.distanceKm,
+    required this.fuelPercent,
+    required this.idleHours,
+    required this.tankLevelPercent,
+    required this.temperatureCelsius,
+    required this.weightKg,
+    required this.sensorCode,
+    required this.sensorBatteryMillivolts,
+    required this.sensorDistanceKm,
+    required this.fuelUsagePercent,
+    required this.doorOpen,
+    required this.engineOn,
+  });
+
+  final String plateNumber;
+  final int speedKph;
+  final int durationHours;
+  final int connectionMinutesAgo;
+  final DateTime lastGpsAt;
+  final double distanceKm;
+  final int fuelPercent;
+  final int idleHours;
+  final int tankLevelPercent;
+  final int temperatureCelsius;
+  final int weightKg;
+  final String sensorCode;
+  final int sensorBatteryMillivolts;
+  final int sensorDistanceKm;
+  final int fuelUsagePercent;
+  final bool doorOpen;
+  final bool engineOn;
+}
+
+enum TrackingDummyNotificationType { speeding, stopped, geofence }
+
+class TrackingVehicleNotificationSample {
+  const TrackingVehicleNotificationSample({
+    required this.type,
+    required this.date,
+    required this.speedKph,
+  });
+
+  final TrackingDummyNotificationType type;
+  final DateTime date;
+  final int speedKph;
+}
+
+abstract final class TrackingVehicleDetailsDummyData {
+  static final details = TrackingVehicleDetailsSample(
+    plateNumber: '154562',
+    speedKph: 13,
+    durationHours: 78,
+    connectionMinutesAgo: 2,
+    lastGpsAt: DateTime(2025, 10, 17, 9, 0),
+    distanceKm: 125.48,
+    fuelPercent: 96,
+    idleHours: 26,
+    tankLevelPercent: 74,
+    temperatureCelsius: 26,
+    weightKg: 2450,
+    sensorCode: 'IO9',
+    sensorBatteryMillivolts: 2625,
+    sensorDistanceKm: 11752,
+    fuelUsagePercent: 38,
+    doorOpen: false,
+    engineOn: true,
+  );
+
+  static final notifications = <TrackingVehicleNotificationSample>[
+    TrackingVehicleNotificationSample(
+      type: TrackingDummyNotificationType.speeding,
+      date: DateTime(2025, 10, 17, 9, 0),
+      speedKph: 13,
+    ),
+    TrackingVehicleNotificationSample(
+      type: TrackingDummyNotificationType.stopped,
+      date: DateTime(2025, 10, 17, 8, 12),
+      speedKph: 13,
+    ),
+    TrackingVehicleNotificationSample(
+      type: TrackingDummyNotificationType.geofence,
+      date: DateTime(2025, 10, 17, 7, 36),
+      speedKph: 13,
+    ),
+  ];
+}
