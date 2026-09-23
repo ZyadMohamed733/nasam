@@ -143,5 +143,20 @@
   "assetDetailsSpeedingAlert": "Speed limit exceeded",
   "assetDetailsStoppedAlert": "Asset stopped",
   "assetDetailsGeofenceAlert": "Geofence entered",
-  "assetDetailsEmptyAlerts": "No notifications for this asset."
+  "assetDetailsEmptyAlerts": "No notifications for this asset.",
+  "assetPlaybackTitle": "Playback",
+  "assetPlaybackFrom": "From date",
+  "assetPlaybackTo": "To date",
+  "assetPlaybackStart": "Start playback",
+  "assetPlaybackPause": "Pause playback",
+  "assetPlaybackPlay": "Play segment",
+  "assetPlaybackEmpty": "No playback records for this date range.",
+  "assetPlaybackDistance": "Distance",
+  "assetPlaybackMaxSpeed": "Maximum speed",
+  "assetPlaybackDuration": "Duration",
+  "assetPlaybackKilometers": "km",
+  "assetPlaybackKilometersPerHour": "km/h",
+  "assetPlaybackMinutes": "min",
+  "assetPlaybackAirport": "Airport",
+  "assetPlaybackParkingArea": "Parking area"
 }

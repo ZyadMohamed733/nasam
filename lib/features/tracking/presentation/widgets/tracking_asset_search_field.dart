@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../core/constants/app_icons.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 
 class TrackingAssetSearchField extends StatelessWidget {
@@ -17,7 +18,7 @@ class TrackingAssetSearchField extends StatelessWidget {
         textAlign: TextAlign.right,
         decoration: InputDecoration(
           hintText: l.trackingSearch,
-          prefixIcon: Icon(Icons.search, size: 20.r),
+          prefixIcon: Icon(Icons.search, size: AppIconSize.medium.value.r),
           filled: true,
           fillColor: scheme.surface,
           contentPadding: EdgeInsets.symmetric(horizontal: 12.w),

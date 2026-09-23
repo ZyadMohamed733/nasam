@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../core/constants/app_icons.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 import '../dummy_data/tracking_all_dummy_data.dart';
 
@@ -34,7 +35,7 @@ class TrackingAssetSensorDetailsCard extends StatelessWidget {
             children: [
               Text(details.sensorCode, style: Theme.of(context).textTheme.titleSmall?.copyWith(color: scheme.primary)),
               SizedBox(width: 6.w),
-              Icon(Icons.info_outline, size: 16.r, color: scheme.primary),
+              Icon(Icons.info_outline, size: AppIconSize.small.value.r, color: scheme.primary),
             ],
           ),
           SizedBox(height: 8.h),
@@ -48,7 +49,7 @@ class TrackingAssetSensorDetailsCard extends StatelessWidget {
                 tooltip: l.assetDetailsSensorHistory,
                 visualDensity: VisualDensity.compact,
                 onPressed: () {},
-                icon: Icon(Icons.history, size: 20.r),
+                icon: Icon(Icons.history, size: AppIconSize.medium.value.r),
                 style: IconButton.styleFrom(
                   backgroundColor: scheme.surface,
                   foregroundColor: scheme.onSurfaceVariant,
@@ -82,7 +83,7 @@ class _SensorReading extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, size: 16.r, color: scheme.primary),
+        Icon(icon, size: AppIconSize.small.value.r, color: scheme.primary),
         SizedBox(width: 8.w),
         Text(value, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: scheme.primary)),
       ],

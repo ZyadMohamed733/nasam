@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/app_assets.dart';
+import '../../../../core/constants/app_icons.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 import '../../domain/tracking_vehicle.dart';
 import '../cubit/tracking_cubit.dart';
@@ -114,7 +115,7 @@ class _TrackingSummaryState extends State<TrackingSummary> {
                         child: widget.expanded?   Icon(
                          // onPressed: widget.onShowTap,
 
-                        Icons.close, size: 20.r,
+                        Icons.close, size: AppIconSize.medium.value.r,
                         ):Text(
                           l.trackingShow,
                           style: TextStyle(color: scheme.primary),
@@ -139,7 +140,8 @@ class _TrackingSummaryState extends State<TrackingSummary> {
                               widget.state.vehicles.length,
                               scheme.primary,
                               null,
-                              () => _showStatus(null),
+                              _selectedStatus == null,
+                                  () => _showStatus(null),
                             ),
                             for (final status in VehicleStatus.values)
                               _chip(
@@ -148,7 +150,8 @@ class _TrackingSummaryState extends State<TrackingSummary> {
                                 widget.state.count(status),
                                 TrackingStyle.status(context, status),
                                 status,
-                                () => _showStatus(status),
+                                _selectedStatus == status,
+                                    () => _showStatus(status),
                               ),
                           ],
                         ),
@@ -171,61 +174,83 @@ class _TrackingSummaryState extends State<TrackingSummary> {
 
   void _showStatus(VehicleStatus? status) =>
       setState(() => _selectedStatus = status);
-
+// test
   Widget _chip(
-    BuildContext context,
-    String label,
-    int count,
-    Color color,
-    VehicleStatus? status,
-    VoidCallback onTap,
-  ) {
+      BuildContext context,
+      String label,
+      int count,
+      Color color,
+      VehicleStatus? status,
+      bool isSelected,
+      VoidCallback onTap,
+      ) {
     return Padding(
       padding: const EdgeInsetsDirectional.only(end: 5),
-      child: Material(
-        color: color.withValues(alpha: .07),
-        borderRadius: BorderRadius.circular(8),
-        child: InkWell(
+      child: Container(
+        decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          onTap: onTap,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-            if (status == null)
-              SvgPicture.asset(
-                AppAssets.mapArrow,
-                width: 16,
-                height: 16,
-                colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
-              )
-            else
-              Icon(
-                switch (status) {
-                  VehicleStatus.moving => Icons.check,
-                  VehicleStatus.idle => Icons.schedule,
-                  VehicleStatus.stopped => Icons.local_parking,
-                  VehicleStatus.offline => Icons.power_off_outlined,
-                },
-                size: 16,
-                color: color,
-              ),
-            const SizedBox(width: 6),
-            Text(label, style: TextStyle(fontSize: 11, color: color)),
-            const SizedBox(width: 6),
-            Container(
-              padding: const EdgeInsets.all(3),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: color.withValues(alpha: .3)),
-              ),
-              child: Text(
-                '$count',
-                style: TextStyle(fontSize: 9, color: color),
-              ),
+          boxShadow: isSelected
+              ? [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: .01),
+              blurRadius: 10,
+              spreadRadius: 0,
+              offset: const Offset(0, 1),
             ),
-              ],
+          ]
+              : null,
+        ),
+        child: Material(
+          color: color.withValues(alpha: .07),
+          borderRadius: BorderRadius.circular(8),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(8),
+            onTap: onTap,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                border: isSelected
+                    ? Border.all(color: color.withValues(alpha: .25))
+                    : null,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (status == null)
+                    SvgPicture.asset(
+                      AppAssets.mapArrow,
+                      width: AppIconSize.small.value.r,
+                      height: AppIconSize.small.value.r,
+                      colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+                    )
+                  else
+                    Icon(
+                      switch (status) {
+                        VehicleStatus.moving => Icons.check,
+                        VehicleStatus.idle => Icons.schedule,
+                        VehicleStatus.stopped => Icons.local_parking,
+                        VehicleStatus.offline => Icons.power_off_outlined,
+                      },
+                      size: AppIconSize.small.value.r,
+                      color: color,
+                    ),
+                  const SizedBox(width: 6),
+                  Text(label, style: TextStyle(fontSize: 11, color: color)),
+                  const SizedBox(width: 6),
+                  Container(
+                    padding: const EdgeInsets.all(3),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: color.withValues(alpha: .3)),
+                    ),
+                    child: Text(
+                      '$count',
+                      style: TextStyle(fontSize: 9, color: color),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

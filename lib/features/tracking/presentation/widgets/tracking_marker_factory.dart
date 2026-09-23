@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../../../core/constants/app_assets.dart';
+import '../../../../core/constants/app_icons.dart';
 
 /// Cache belongs to a map/theme/locale, and is discarded when those change.
 class TrackingMarkerFactory {
@@ -16,7 +17,7 @@ class TrackingMarkerFactory {
     'cluster:$count:${color.toARGB32()}',
     () => _draw(const Size(44, 44), (canvas) async {
       canvas.drawCircle(const Offset(22, 22), 20, Paint()..color = color);
-      _text(canvas, '$count', const Offset(0, 11), 44, Colors.white, 16);
+      _text(canvas, '$count', const Offset(0, 11), 44, Colors.white, AppIconSize.small.value);
     }),
   );
 
@@ -42,9 +43,9 @@ class TrackingMarkerFactory {
       canvas.save();
       canvas.translate(56, 25);
       canvas.rotate(heading * math.pi / 180);
-      canvas.translate(-12, -12);
+      canvas.translate(-AppIconSize.medium.value / 2, -AppIconSize.medium.value / 2);
       canvas.saveLayer(
-        const Rect.fromLTWH(0, 0, 24, 24),
+        Rect.fromLTWH(0, 0, AppIconSize.medium.value, AppIconSize.medium.value),
         Paint()..colorFilter = ColorFilter.mode(color, BlendMode.srcIn),
       );
       canvas.drawPicture(arrow.picture);

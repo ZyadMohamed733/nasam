@@ -11,5 +11,6 @@ class AppRoutes {
 
   static const String home = '/';
   static const String trackingAssetDetails = '/tracking/asset-details';
+  static const String trackingAssetPlayback = '/tracking/asset-playback';
   static const String error = '/error';
 }

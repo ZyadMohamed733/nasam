@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
 import '../../features/tracking/presentation/dummy_data/tracking_all_dummy_data.dart';
 import '../../features/tracking/presentation/pages/tracking_asset_details_page.dart';
+import '../../features/tracking/presentation/pages/tracking_asset_playback_page.dart';
 import '../../features/auth/presentation/pages/forgot_password_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/new_password_page.dart';
@@ -127,6 +128,19 @@ class AppRouter {
           state: state,
           slide: true,
           child: TrackingAssetDetailsPage(
+            asset: state.extra! as TrackingAllDummyAsset,
+          ),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.trackingAssetPlayback,
+        redirect: (context, state) =>
+            state.extra is TrackingAllDummyAsset ? null : AppRoutes.home,
+        pageBuilder: (context, state) => appTransitionPage(
+          context: context,
+          state: state,
+          slide: true,
+          child: TrackingAssetPlaybackPage(
             asset: state.extra! as TrackingAllDummyAsset,
           ),
         ),

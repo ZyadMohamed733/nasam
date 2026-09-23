@@ -41,9 +41,15 @@ abstract final class AppIcons {
   static const IconData forward = Icons.arrow_forward_rounded;
 }
 
-/// The two sizes the design draws icons at: 16 inline beside text, 24
-/// standalone. Exposed as an enum so call sites cannot invent a third.
+/// Shared icon sizes. Call sites use these values so icon scale can be tuned
+/// consistently instead of introducing local numeric sizes.
 enum AppIconSize {
+  /// 8 — tiny dots and compact indicators.
+  tiny(8.0),
+
+  /// 12 — dense inline metadata.
+  extraSmall(12.0),
+
   /// 16 — inline, beside a label.
   small(16.0),
 

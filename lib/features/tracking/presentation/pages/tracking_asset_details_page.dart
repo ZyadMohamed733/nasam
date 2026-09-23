@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../core/constants/app_icons.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 import '../dummy_data/tracking_all_dummy_data.dart';
 import '../widgets/tabs/tracking_asset_sensors_tab.dart';
@@ -25,6 +26,7 @@ class TrackingAssetDetailsPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           toolbarHeight: 62.h,
+          iconTheme: IconThemeData(size: AppIconSize.medium.value.r),
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,

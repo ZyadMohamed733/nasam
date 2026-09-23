@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../../../../core/constants/app_icons.dart';
 import '../../../../core/constants/app_assets.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 
@@ -43,8 +45,8 @@ class TrackingIconButton extends StatelessWidget {
                 child: Center(
                   child: SvgPicture.asset(
                     asset,
-                    width: 24,
-                    height: 24,
+                    width: AppIconSize.medium.value.r,
+                    height: AppIconSize.medium.value.r,
                     excludeFromSemantics: true,
                     colorFilter: ColorFilter.mode(
                       menu ? scheme.onSurface : scheme.primary,

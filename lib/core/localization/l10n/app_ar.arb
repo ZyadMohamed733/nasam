@@ -339,5 +339,20 @@
   "assetDetailsSpeedingAlert": "تجاوز الحد الأقصى للسرعة",
   "assetDetailsStoppedAlert": "توقف الأصل",
   "assetDetailsGeofenceAlert": "دخول النطاق الجغرافي",
-  "assetDetailsEmptyAlerts": "لا توجد تنبيهات لهذا الأصل."
+  "assetDetailsEmptyAlerts": "لا توجد تنبيهات لهذا الأصل.",
+  "assetPlaybackTitle": "إعادة التشغيل",
+  "assetPlaybackFrom": "من تاريخ",
+  "assetPlaybackTo": "إلى تاريخ",
+  "assetPlaybackStart": "بدء التشغيل",
+  "assetPlaybackPause": "إيقاف التشغيل مؤقتاً",
+  "assetPlaybackPlay": "تشغيل المقطع",
+  "assetPlaybackEmpty": "لا توجد سجلات تشغيل ضمن هذه الفترة.",
+  "assetPlaybackDistance": "المسافة",
+  "assetPlaybackMaxSpeed": "السرعة القصوى",
+  "assetPlaybackDuration": "المدة",
+  "assetPlaybackKilometers": "كم",
+  "assetPlaybackKilometersPerHour": "كم/س",
+  "assetPlaybackMinutes": "دقيقة",
+  "assetPlaybackAirport": "المطار",
+  "assetPlaybackParkingArea": "موقف"
 }

@@ -961,6 +961,96 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'لا توجد تنبيهات لهذا الأصل.'**
   String get assetDetailsEmptyAlerts;
+
+  /// No description provided for @assetPlaybackTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'إعادة التشغيل'**
+  String get assetPlaybackTitle;
+
+  /// No description provided for @assetPlaybackFrom.
+  ///
+  /// In ar, this message translates to:
+  /// **'من تاريخ'**
+  String get assetPlaybackFrom;
+
+  /// No description provided for @assetPlaybackTo.
+  ///
+  /// In ar, this message translates to:
+  /// **'إلى تاريخ'**
+  String get assetPlaybackTo;
+
+  /// No description provided for @assetPlaybackStart.
+  ///
+  /// In ar, this message translates to:
+  /// **'بدء التشغيل'**
+  String get assetPlaybackStart;
+
+  /// No description provided for @assetPlaybackPause.
+  ///
+  /// In ar, this message translates to:
+  /// **'إيقاف التشغيل مؤقتاً'**
+  String get assetPlaybackPause;
+
+  /// No description provided for @assetPlaybackPlay.
+  ///
+  /// In ar, this message translates to:
+  /// **'تشغيل المقطع'**
+  String get assetPlaybackPlay;
+
+  /// No description provided for @assetPlaybackEmpty.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد سجلات تشغيل ضمن هذه الفترة.'**
+  String get assetPlaybackEmpty;
+
+  /// No description provided for @assetPlaybackDistance.
+  ///
+  /// In ar, this message translates to:
+  /// **'المسافة'**
+  String get assetPlaybackDistance;
+
+  /// No description provided for @assetPlaybackMaxSpeed.
+  ///
+  /// In ar, this message translates to:
+  /// **'السرعة القصوى'**
+  String get assetPlaybackMaxSpeed;
+
+  /// No description provided for @assetPlaybackDuration.
+  ///
+  /// In ar, this message translates to:
+  /// **'المدة'**
+  String get assetPlaybackDuration;
+
+  /// No description provided for @assetPlaybackKilometers.
+  ///
+  /// In ar, this message translates to:
+  /// **'كم'**
+  String get assetPlaybackKilometers;
+
+  /// No description provided for @assetPlaybackKilometersPerHour.
+  ///
+  /// In ar, this message translates to:
+  /// **'كم/س'**
+  String get assetPlaybackKilometersPerHour;
+
+  /// No description provided for @assetPlaybackMinutes.
+  ///
+  /// In ar, this message translates to:
+  /// **'دقيقة'**
+  String get assetPlaybackMinutes;
+
+  /// No description provided for @assetPlaybackAirport.
+  ///
+  /// In ar, this message translates to:
+  /// **'المطار'**
+  String get assetPlaybackAirport;
+
+  /// No description provided for @assetPlaybackParkingArea.
+  ///
+  /// In ar, this message translates to:
+  /// **'موقف'**
+  String get assetPlaybackParkingArea;
 }
 
 class _AppLocalizationsDelegate

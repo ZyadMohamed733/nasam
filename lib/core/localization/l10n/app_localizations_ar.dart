@@ -519,4 +519,49 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get assetDetailsEmptyAlerts => 'لا توجد تنبيهات لهذا الأصل.';
+
+  @override
+  String get assetPlaybackTitle => 'إعادة التشغيل';
+
+  @override
+  String get assetPlaybackFrom => 'من تاريخ';
+
+  @override
+  String get assetPlaybackTo => 'إلى تاريخ';
+
+  @override
+  String get assetPlaybackStart => 'بدء التشغيل';
+
+  @override
+  String get assetPlaybackPause => 'إيقاف التشغيل مؤقتاً';
+
+  @override
+  String get assetPlaybackPlay => 'تشغيل المقطع';
+
+  @override
+  String get assetPlaybackEmpty => 'لا توجد سجلات تشغيل ضمن هذه الفترة.';
+
+  @override
+  String get assetPlaybackDistance => 'المسافة';
+
+  @override
+  String get assetPlaybackMaxSpeed => 'السرعة القصوى';
+
+  @override
+  String get assetPlaybackDuration => 'المدة';
+
+  @override
+  String get assetPlaybackKilometers => 'كم';
+
+  @override
+  String get assetPlaybackKilometersPerHour => 'كم/س';
+
+  @override
+  String get assetPlaybackMinutes => 'دقيقة';
+
+  @override
+  String get assetPlaybackAirport => 'المطار';
+
+  @override
+  String get assetPlaybackParkingArea => 'موقف';
 }

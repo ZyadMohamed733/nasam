@@ -504,4 +504,49 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get assetDetailsEmptyAlerts => 'No notifications for this asset.';
+
+  @override
+  String get assetPlaybackTitle => 'Playback';
+
+  @override
+  String get assetPlaybackFrom => 'From date';
+
+  @override
+  String get assetPlaybackTo => 'To date';
+
+  @override
+  String get assetPlaybackStart => 'Start playback';
+
+  @override
+  String get assetPlaybackPause => 'Pause playback';
+
+  @override
+  String get assetPlaybackPlay => 'Play segment';
+
+  @override
+  String get assetPlaybackEmpty => 'No playback records for this date range.';
+
+  @override
+  String get assetPlaybackDistance => 'Distance';
+
+  @override
+  String get assetPlaybackMaxSpeed => 'Maximum speed';
+
+  @override
+  String get assetPlaybackDuration => 'Duration';
+
+  @override
+  String get assetPlaybackKilometers => 'km';
+
+  @override
+  String get assetPlaybackKilometersPerHour => 'km/h';
+
+  @override
+  String get assetPlaybackMinutes => 'min';
+
+  @override
+  String get assetPlaybackAirport => 'Airport';
+
+  @override
+  String get assetPlaybackParkingArea => 'Parking area';
 }
