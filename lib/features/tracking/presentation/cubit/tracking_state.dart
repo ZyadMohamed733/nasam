@@ -60,7 +60,8 @@ final class TrackingLoaded extends TrackingState {
   final List<TrackingVehicle> vehicles;
   final List<TrackedAsset> assets;
 
-  /// The status chip the list is narrowed to; null is "all".
+  /// The status chip the list is narrowed to; null is "all". Narrows
+  /// [visibleAssets] only — the map shows [vehicles] unfiltered, by design.
   final VehicleStatus? filter;
 
   /// The committed (debounced) search text.

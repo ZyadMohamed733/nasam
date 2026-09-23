@@ -268,6 +268,59 @@ void main() {
       verify: (c) => expect(c.state.visible!.visibleAssets, [_van]),
     );
 
+    // Typing while the first load is in flight: the debounce fires during
+    // Loading and has no fleet to apply to. The load must still land on the
+    // typed text rather than an empty query.
+    test('text typed during a load filters the list the load produces',
+        () async {
+      final vehicles = Completer<Either<Failure, List<TrackingVehicle>>>();
+      final assets = Completer<Either<Failure, List<TrackedAsset>>>();
+      when(() => getVehicles()).thenAnswer((_) => vehicles.future);
+      when(() => getAssets()).thenAnswer((_) => assets.future);
+      final cubit = build();
+      final states = <TrackingState>[];
+      final sub = cubit.stream.listen(states.add);
+
+      final load = cubit.load();
+      await Future<void>.delayed(Duration.zero);
+      expect(cubit.state, const TrackingLoading());
+
+      cubit.onQueryChanged('van');
+      // Let the debounce elapse while still loading.
+      await Future<void>.delayed(
+        TrackingCubit.searchDebounce + const Duration(milliseconds: 50),
+      );
+      expect(cubit.state, const TrackingLoading());
+
+      vehicles.complete(const Right(_vehicles));
+      assets.complete(const Right(_assets));
+      await load;
+      // Stream listeners hear about an emit a microtask after it happens.
+      await Future<void>.delayed(Duration.zero);
+
+      expect(states, [const TrackingLoading(), _loaded.withQuery('van')]);
+      expect(cubit.state.visible!.visibleAssets, [_van]);
+      await sub.cancel();
+      await cubit.close();
+    });
+
+    blocTest<TrackingCubit, TrackingState>(
+      'text typed during a refresh wins over the query being replaced',
+      setUp: serve,
+      build: build,
+      seed: () => _loaded.withQuery('tru'),
+      act: (c) {
+        final load = c.load();
+        c.onQueryChanged('van');
+        return load;
+      },
+      wait: TrackingCubit.searchDebounce + const Duration(milliseconds: 50),
+      expect: () => [
+        TrackingLoading(previous: _loaded.withQuery('tru')),
+        _loaded.withQuery('van'),
+      ],
+    );
+
     // The close() override cancels the pending timer; without it this emits
     // after close and bloc throws.
     test('a pending search is cancelled when the cubit closes', () async {

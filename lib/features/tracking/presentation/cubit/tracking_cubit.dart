@@ -15,6 +15,13 @@ export 'tracking_state.dart';
 
 /// Owns the tracking screen's data, and the list's status filter and search.
 ///
+/// The status filter narrows the asset list only. The map always shows the
+/// whole fleet, and the chip counts are counts of that whole fleet, so what the
+/// chips say and what the map shows never disagree. Selecting a chip is a way
+/// to read the list, not to hide vehicles from the map. This is a deliberate
+/// product decision, not an omission — if it changes, filter the markers from
+/// `TrackingLoaded.filter` in the page rather than dropping vehicles here.
+///
 /// Depends on use cases only. Created through `getIt` by the route, so the
 /// widget tree receives it rather than building it — which is what lets a test
 /// hand the screen a cubit in any state it likes.
@@ -31,6 +38,12 @@ class TrackingCubit extends Cubit<TrackingState> {
   static const searchDebounce = Duration(milliseconds: 300);
 
   Timer? _searchTimer;
+
+  /// The latest text typed, committed or not. A load that finishes while a
+  /// search is still debouncing — or that ran while the user typed — lands on
+  /// this rather than on the query of the fleet it replaced, so text typed
+  /// during a load is not silently dropped.
+  String? _pendingQuery;
 
   /// Loads, or refreshes, the fleet.
   ///
@@ -73,7 +86,7 @@ class TrackingCubit extends Cubit<TrackingState> {
         vehicles: loadedVehicles,
         assets: loadedAssets,
         filter: previous?.filter,
-        query: previous?.query ?? '',
+        query: _pendingQuery ?? previous?.query ?? '',
       ),
     );
   }
@@ -87,7 +100,11 @@ class TrackingCubit extends Cubit<TrackingState> {
   }
 
   /// Takes every keystroke, commits the text once typing pauses.
+  ///
+  /// The commit only applies to a loaded fleet. Text typed while loading is
+  /// kept in [_pendingQuery] and applied when the load completes.
   void onQueryChanged(String query) {
+    _pendingQuery = query;
     _searchTimer?.cancel();
     _searchTimer = Timer(searchDebounce, () {
       final current = state;
