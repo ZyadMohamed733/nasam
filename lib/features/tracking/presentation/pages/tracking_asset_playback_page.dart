@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_icons.dart';
-import '../../../../core/di/injection_container.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 import '../../domain/entities/tracked_asset.dart';
-import '../../domain/entities/tracking_playback_segment.dart';
-import '../../domain/repositories/tracking_repository.dart';
+import '../cubit/asset_playback_cubit.dart';
 import '../widgets/playback/playback_date_range_selector.dart';
 import '../widgets/playback/playback_start_button.dart';
 import '../widgets/playback/tracking_asset_playback_segment_card.dart';
@@ -28,23 +27,19 @@ class _TrackingAssetPlaybackPageState extends State<TrackingAssetPlaybackPage> {
   late DateTime _toDate = DateUtils.dateOnly(DateTime.now());
   bool _playingAll = false;
   int? _playingSegmentIndex;
-  List<TrackingPlaybackSegment> _segments = const [];
-
   @override
   void initState() {
     super.initState();
     _loadSegments();
   }
 
-  Future<void> _loadSegments() async {
-    final result = await getIt<TrackingRepository>().getPlaybackSegments(
-      assetId: widget.asset.id,
-      from: _fromDate,
-      to: _toDate.add(const Duration(days: 1)),
-    );
-    if (!mounted) return;
-    setState(() => _segments = result.getOrElse(() => const []));
-  }
+  /// The pickers are day-granular and inclusive, so the range sent is
+  /// [from, to + 1 day).
+  void _loadSegments() => context.read<AssetPlaybackCubit>().load(
+    assetId: widget.asset.id,
+    from: _fromDate,
+    to: _toDate.add(const Duration(days: 1)),
+  );
 
   Future<void> _chooseDate({required bool isStart}) async {
     final current = isStart ? _fromDate : _toDate;
@@ -64,7 +59,7 @@ class _TrackingAssetPlaybackPageState extends State<TrackingAssetPlaybackPage> {
         if (_toDate.isBefore(_fromDate)) _fromDate = _toDate;
       }
     });
-    await _loadSegments();
+    _loadSegments();
   }
 
   void _togglePlayback() => setState(() {
@@ -81,7 +76,6 @@ class _TrackingAssetPlaybackPageState extends State<TrackingAssetPlaybackPage> {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     final locale = Localizations.localeOf(context).toString();
-    final segments = _segments;
 
     final playbackTheme = Theme.of(context).copyWith(
       colorScheme: Theme.of(context).colorScheme.copyWith(
@@ -142,20 +136,46 @@ class _TrackingAssetPlaybackPageState extends State<TrackingAssetPlaybackPage> {
             ),
             SizedBox(height: 8.h),
             Expanded(
-              child: segments.isEmpty
-                  ? Center(child: Text(l.assetPlaybackEmpty))
-                  : ListView.separated(
-                      padding: EdgeInsetsDirectional.fromSTEB(14.w, 4.h, 14.w, 16.h),
-                      itemCount: segments.length,
-                      separatorBuilder: (context, index) => SizedBox(height: 7.h),
-                      itemBuilder: (context, index) =>
-                          TrackingAssetPlaybackSegmentCard(
-                            segment: segments[index],
-                            locale: locale,
-                            playing: _playingAll || _playingSegmentIndex == index,
-                            onPlayPressed: () => _toggleSegment(index),
-                          ),
+              child: BlocBuilder<AssetPlaybackCubit, AssetPlaybackState>(
+                builder: (context, state) => switch (state) {
+                  AssetPlaybackLoading() => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  AssetPlaybackFailure() => Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(l.errorGeneric),
+                        TextButton(
+                          onPressed: _loadSegments,
+                          child: Text(l.retry),
+                        ),
+                      ],
                     ),
+                  ),
+                  AssetPlaybackLoaded(:final segments) when segments.isEmpty =>
+                    Center(child: Text(l.assetPlaybackEmpty)),
+                  AssetPlaybackLoaded(:final segments) => ListView.separated(
+                    padding: EdgeInsetsDirectional.fromSTEB(
+                      14.w,
+                      4.h,
+                      14.w,
+                      16.h,
+                    ),
+                    itemCount: segments.length,
+                    separatorBuilder: (context, index) =>
+                        SizedBox(height: 7.h),
+                    itemBuilder: (context, index) =>
+                        TrackingAssetPlaybackSegmentCard(
+                          segment: segments[index],
+                          locale: locale,
+                          playing:
+                              _playingAll || _playingSegmentIndex == index,
+                          onPlayPressed: () => _toggleSegment(index),
+                        ),
+                  ),
+                },
+              ),
             ),
           ],
         ),

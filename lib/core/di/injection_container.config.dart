@@ -48,8 +48,22 @@ import '../../features/tracking/data/repositories/tracking_repository_impl.dart'
     as _i279;
 import '../../features/tracking/domain/repositories/tracking_repository.dart'
     as _i76;
+import '../../features/tracking/domain/usecases/get_asset_details_usecase.dart'
+    as _i439;
+import '../../features/tracking/domain/usecases/get_asset_notifications_usecase.dart'
+    as _i201;
+import '../../features/tracking/domain/usecases/get_playback_segments_usecase.dart'
+    as _i405;
 import '../../features/tracking/domain/usecases/get_tracked_assets_usecase.dart'
     as _i143;
+import '../../features/tracking/domain/usecases/get_tracking_vehicles_usecase.dart'
+    as _i886;
+import '../../features/tracking/presentation/cubit/asset_details_cubit.dart'
+    as _i784;
+import '../../features/tracking/presentation/cubit/asset_playback_cubit.dart'
+    as _i719;
+import '../../features/tracking/presentation/cubit/tracking_cubit.dart'
+    as _i546;
 import '../network/interceptors/auth_interceptor.dart' as _i745;
 import '../network/interceptors/error_interceptor.dart' as _i511;
 import '../network/interceptors/logging_interceptor.dart' as _i344;
@@ -122,11 +136,38 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i81.AppRouter>(
       () => _i81.AppRouter(gh<_i715.RouteGuard>()),
     );
+    gh.lazySingleton<_i439.GetAssetDetailsUseCase>(
+      () => _i439.GetAssetDetailsUseCase(gh<_i76.TrackingRepository>()),
+    );
+    gh.lazySingleton<_i201.GetAssetNotificationsUseCase>(
+      () => _i201.GetAssetNotificationsUseCase(gh<_i76.TrackingRepository>()),
+    );
+    gh.lazySingleton<_i405.GetPlaybackSegmentsUseCase>(
+      () => _i405.GetPlaybackSegmentsUseCase(gh<_i76.TrackingRepository>()),
+    );
     gh.lazySingleton<_i143.GetTrackedAssetsUseCase>(
       () => _i143.GetTrackedAssetsUseCase(gh<_i76.TrackingRepository>()),
     );
+    gh.lazySingleton<_i886.GetTrackingVehiclesUseCase>(
+      () => _i886.GetTrackingVehiclesUseCase(gh<_i76.TrackingRepository>()),
+    );
     gh.lazySingleton<_i1022.AuthRemoteDataSource>(
       () => _i1022.AuthRemoteDataSourceImpl(gh<_i361.Dio>()),
+    );
+    gh.factory<_i546.TrackingCubit>(
+      () => _i546.TrackingCubit(
+        gh<_i886.GetTrackingVehiclesUseCase>(),
+        gh<_i143.GetTrackedAssetsUseCase>(),
+      ),
+    );
+    gh.factory<_i784.AssetDetailsCubit>(
+      () => _i784.AssetDetailsCubit(
+        gh<_i439.GetAssetDetailsUseCase>(),
+        gh<_i201.GetAssetNotificationsUseCase>(),
+      ),
+    );
+    gh.factory<_i719.AssetPlaybackCubit>(
+      () => _i719.AssetPlaybackCubit(gh<_i405.GetPlaybackSegmentsUseCase>()),
     );
     gh.lazySingleton<_i787.AuthRepository>(
       () => _i153.AuthRepositoryImpl(

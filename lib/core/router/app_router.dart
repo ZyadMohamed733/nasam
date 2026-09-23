@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
 
@@ -11,8 +12,12 @@ import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/onboarding/presentation/pages/onboarding_page.dart';
 import '../../features/splash/presentation/pages/splash_page.dart';
 import '../../features/tracking/domain/entities/tracked_asset.dart';
+import '../../features/tracking/presentation/cubit/asset_details_cubit.dart';
+import '../../features/tracking/presentation/cubit/asset_playback_cubit.dart';
+import '../../features/tracking/presentation/cubit/tracking_cubit.dart';
 import '../../features/tracking/presentation/pages/tracking_asset_details_page.dart';
 import '../../features/tracking/presentation/pages/tracking_asset_playback_page.dart';
+import '../di/injection_container.dart';
 import 'app_error_page.dart';
 import 'app_routes.dart';
 import 'app_transition_page.dart';
@@ -117,7 +122,12 @@ class AppRouter {
           context: context,
           state: state,
           slide: false,
-          child: const HomePage(),
+          // Cubits are created here, through the container, and handed down —
+          // the screens never build their own.
+          child: BlocProvider(
+            create: (_) => getIt<TrackingCubit>()..load(),
+            child: const HomePage(),
+          ),
         ),
       ),
       GoRoute(
@@ -128,8 +138,12 @@ class AppRouter {
           context: context,
           state: state,
           slide: true,
-          child: TrackingAssetDetailsPage(
-            asset: state.extra! as TrackedAsset,
+          child: BlocProvider(
+            create: (_) => getIt<AssetDetailsCubit>()
+              ..load((state.extra! as TrackedAsset).id),
+            child: TrackingAssetDetailsPage(
+              asset: state.extra! as TrackedAsset,
+            ),
           ),
         ),
       ),
@@ -141,8 +155,11 @@ class AppRouter {
           context: context,
           state: state,
           slide: true,
-          child: TrackingAssetPlaybackPage(
-            asset: state.extra! as TrackedAsset,
+          child: BlocProvider(
+            create: (_) => getIt<AssetPlaybackCubit>(),
+            child: TrackingAssetPlaybackPage(
+              asset: state.extra! as TrackedAsset,
+            ),
           ),
         ),
       ),

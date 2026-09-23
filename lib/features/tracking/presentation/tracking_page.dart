@@ -10,20 +10,21 @@ import '../../../core/localization/l10n/app_localizations.dart';
 import '../../../core/router/app_routes.dart';
 import '../../../features/auth/domain/usecases/logout_usecase.dart';
 import '../../../shared/widgets/app_drawer.dart';
-import '../domain/repositories/tracking_repository.dart';
 import 'cubit/tracking_cubit.dart';
 import 'widgets/tracking_controls.dart';
 import 'widgets/tracking_map.dart';
 import 'widgets/tracking_summary.dart';
 
+/// The map, the drawer and the fleet sheet.
+///
+/// Expects a [TrackingCubit] above it. The route creates that cubit through
+/// `getIt`; the page never builds its own, so it can be pumped in a test over
+/// a cubit in any state.
 class TrackingPage extends StatelessWidget {
-  const TrackingPage({super.key, required this.repository});
-  final TrackingRepository repository;
+  const TrackingPage({super.key});
+
   @override
-  Widget build(BuildContext context) => BlocProvider(
-    create: (_) => TrackingCubit(repository)..load(),
-    child: const _TrackingView(),
-  );
+  Widget build(BuildContext context) => const _TrackingView();
 }
 
 class _TrackingView extends StatefulWidget {
@@ -127,24 +128,43 @@ class _TrackingViewState extends State<_TrackingView>
             ),
           ),
           child: Scaffold(
-            body: BlocBuilder<TrackingCubit, TrackingState>(
-              builder: (context, state) {
-                if (state.loading) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                if (state.failed) {
-                  return Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(l.errorGeneric),
-                        TextButton(
-                          onPressed: context.read<TrackingCubit>().load,
-                          child: Text(l.retry),
-                        ),
-                      ],
+            body: BlocConsumer<TrackingCubit, TrackingState>(
+              // A failed refresh keeps the last fleet on screen and says so
+              // here, rather than replacing the map with an error page.
+              listenWhen: (_, state) =>
+                  state is TrackingFailure && state.previous != null,
+              listener: (context, _) {
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                    SnackBar(
+                      content: Text(l.errorGeneric),
+                      action: SnackBarAction(
+                        label: l.retry,
+                        onPressed: context.read<TrackingCubit>().load,
+                      ),
                     ),
                   );
+              },
+              builder: (context, state) {
+                final data = state.visible;
+                if (data == null) {
+                  return switch (state) {
+                    TrackingEmpty() => Center(child: Text(l.emptyState)),
+                    TrackingFailure() => Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(l.errorGeneric),
+                          TextButton(
+                            onPressed: context.read<TrackingCubit>().load,
+                            child: Text(l.retry),
+                          ),
+                        ],
+                      ),
+                    ),
+                    _ => const Center(child: CircularProgressIndicator()),
+                  };
                 }
                 final bottomInset =
                     MediaQuery.sizeOf(context).height *
@@ -153,12 +173,14 @@ class _TrackingViewState extends State<_TrackingView>
                   children: [
                     Positioned.fill(
                       child: TrackingMap(
-                        vehicles: state.vehicles,
+                        vehicles: data.vehicles,
                         bottomInset: bottomInset,
                         mapType: _mapType,
                         onMapReady: (controller) => _mapController = controller,
                         onVehicleTap: (vehicle) {
-                          final asset = state.assetForVehicle(vehicle);
+                          final asset = context
+                              .read<TrackingCubit>()
+                              .assetForVehicle(vehicle);
                           if (asset == null) return;
                           context.push(
                             AppRoutes.trackingAssetDetails,
@@ -190,7 +212,7 @@ class _TrackingViewState extends State<_TrackingView>
                         snap: true,
                         snapSizes: const [_summaryMinSize, _summaryMaxSize],
                         builder: (context, scrollController) => TrackingSummary(
-                          state: state,
+                          state: data,
                           expanded: _summaryExpanded,
                           scrollController: scrollController,
                           sheetController: _summaryController,

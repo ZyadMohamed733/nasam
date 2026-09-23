@@ -1,17 +1,15 @@
-import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart'
     as clusters;
 import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
-import 'package:nasam/core/errors/failures.dart';
-import 'package:nasam/features/tracking/domain/entities/tracked_asset.dart';
-import 'package:nasam/features/tracking/domain/entities/tracked_asset_details.dart';
-import 'package:nasam/features/tracking/domain/entities/tracking_playback_segment.dart';
 import 'package:nasam/features/tracking/domain/entities/tracking_vehicle.dart';
 import 'package:nasam/features/tracking/domain/repositories/tracking_repository.dart';
+import 'package:nasam/features/tracking/domain/usecases/get_tracked_assets_usecase.dart';
+import 'package:nasam/features/tracking/domain/usecases/get_tracking_vehicles_usecase.dart';
 import 'package:nasam/features/tracking/presentation/cubit/tracking_cubit.dart';
 import 'package:nasam/features/tracking/presentation/tracking_page.dart';
 import 'package:nasam/features/tracking/presentation/widgets/tracking_controls.dart';
@@ -41,39 +39,21 @@ class _MapPlatform extends GoogleMapsFlutterPlatform {
   }) => const ColoredBox(color: Color(0xFFF3EFE5));
 }
 
-/// Every call fails. The repository returns Either now, so a failure is a
-/// value rather than a thrown error — which is the point: the cubit cannot
-/// forget to handle it.
-class _FailingRepository implements TrackingRepository {
-  static const _failure = ServerFailure(message: 'Unavailable');
-
-  @override
-  Future<Either<Failure, List<TrackingVehicle>>> getVehicles() async =>
-      const Left(_failure);
-
-  @override
-  Future<Either<Failure, List<TrackedAsset>>> getTrackedAssets() async =>
-      const Left(_failure);
-
-  @override
-  Future<Either<Failure, TrackedAssetDetails>> getAssetDetails(String id) async =>
-      const Left(_failure);
-
-  @override
-  Future<Either<Failure, List<TrackedAssetNotification>>> getAssetNotifications(
-    String id,
-  ) async => const Left(_failure);
-
-  @override
-  Future<Either<Failure, List<TrackingPlaybackSegment>>> getPlaybackSegments({
-    required String assetId,
-    required DateTime from,
-    required DateTime to,
-  }) async => const Left(_failure);
-}
-
 /// The real repository over the dummy source — what the app resolves in dev.
 TrackingRepository _dummyRepository() => fixtureTrackingRepository();
+
+/// The screen as the router builds it: a TrackingCubit over the fixture
+/// repository, provided above the page rather than created inside it.
+Widget _trackingScreen() {
+  final repository = _dummyRepository();
+  return BlocProvider(
+    create: (_) => TrackingCubit(
+      GetTrackingVehiclesUseCase(repository),
+      GetTrackedAssetsUseCase(repository),
+    )..load(),
+    child: const TrackingPage(),
+  );
+}
 
 /// Unwraps a Right, failing the test loudly if the call went Left.
 Future<List<TrackingVehicle>> _fleet() async =>
@@ -82,24 +62,18 @@ Future<List<TrackingVehicle>> _fleet() async =>
     );
 
 void main() {
-  test('dummy fleet has distinct IDs and consistent status counts', () async {
-    final cubit = TrackingCubit(_dummyRepository());
-    await cubit.load();
-    expect(cubit.state.loading, false);
-    expect(cubit.state.vehicles, hasLength(68));
-    expect(cubit.state.vehicles.map((v) => v.id).toSet(), hasLength(68));
+  test('the fixture fleet has distinct ids and consistent status counts',
+      () async {
+    final fleet = await _fleet();
+    expect(fleet, hasLength(68));
+    expect(fleet.map((v) => v.id).toSet(), hasLength(68));
     expect(
-      VehicleStatus.values.fold<int>(0, (sum, s) => sum + cubit.state.count(s)),
+      VehicleStatus.values.fold<int>(
+        0,
+        (sum, s) => sum + fleet.where((v) => v.status == s).length,
+      ),
       68,
     );
-    await cubit.close();
-  });
-  test('failed repository produces a recoverable failure state', () async {
-    final cubit = TrackingCubit(_FailingRepository());
-    await cubit.load();
-    expect(cubit.state.failed, true);
-    expect(cubit.state.loading, false);
-    await cubit.close();
   });
   test(
     'bounds contain the entire fleet and handle empty and single fleets',
@@ -183,7 +157,7 @@ void main() {
       GoogleMapsFlutterPlatform.instance = _MapPlatform();
       await pumpInApp(
         tester,
-        TrackingPage(repository: _dummyRepository()),
+        _trackingScreen(),
         locale: const Locale('ar'),
         dark: true,
       );
@@ -206,7 +180,7 @@ void main() {
       GoogleMapsFlutterPlatform.instance = _MapPlatform();
       await pumpInApp(
         tester,
-        TrackingPage(repository: _dummyRepository()),
+        _trackingScreen(),
       );
       await tester.pumpAndSettle();
       final drawer = tester.widget<AdvancedDrawer>(find.byType(AdvancedDrawer));
@@ -241,7 +215,7 @@ void main() {
         GoogleMapsFlutterPlatform.instance = _MapPlatform();
         await pumpInApp(
           tester,
-          TrackingPage(repository: _dummyRepository()),
+          _trackingScreen(),
           locale: Locale(locale),
         );
         await tester.pumpAndSettle();

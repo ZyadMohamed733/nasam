@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -8,6 +9,9 @@ import 'package:nasam/core/localization/app_localizations_setup.dart';
 import 'package:nasam/core/theme/app_theme.dart';
 import 'package:nasam/features/tracking/data/datasources/tracking_fixture_datasource.dart';
 import 'package:nasam/features/tracking/data/repositories/tracking_repository_impl.dart';
+import 'package:nasam/features/tracking/domain/usecases/get_tracked_assets_usecase.dart';
+import 'package:nasam/features/tracking/domain/usecases/get_tracking_vehicles_usecase.dart';
+import 'package:nasam/features/tracking/presentation/cubit/tracking_cubit.dart';
 import 'package:nasam/features/tracking/presentation/tracking_page.dart';
 import 'package:nasam/features/tracking/presentation/widgets/tracking_controls.dart';
 
@@ -26,10 +30,17 @@ void main() {
           locale: const Locale('ar'),
           supportedLocales: AppLocalizationsSetup.supportedLocales,
           localizationsDelegates: AppLocalizationsSetup.localizationsDelegates,
-          home: TrackingPage(
-            repository: TrackingRepositoryImpl(
-      TrackingFixtureDataSource(latency: Duration.zero),
-    ),
+          home: BlocProvider(
+            create: (_) {
+              final repository = TrackingRepositoryImpl(
+                TrackingFixtureDataSource(),
+              );
+              return TrackingCubit(
+                GetTrackingVehiclesUseCase(repository),
+                GetTrackedAssetsUseCase(repository),
+              )..load();
+            },
+            child: const TrackingPage(),
           ),
         ),
       ),

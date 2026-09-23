@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -10,7 +11,11 @@ import '../cubit/tracking_cubit.dart';
 import '../pages/tracking_assets_page.dart';
 import '../tracking_style.dart';
 
-class TrackingSummary extends StatefulWidget {
+/// The fleet sheet: status chips over the asset list.
+///
+/// Holds no state of its own. The selected status and the search text live in
+/// [TrackingCubit], so they survive a refresh and the sheet being rebuilt.
+class TrackingSummary extends StatelessWidget {
   const TrackingSummary({
     super.key,
     required this.state,
@@ -21,7 +26,7 @@ class TrackingSummary extends StatefulWidget {
     required this.maxSheetExtent,
     required this.onShowTap,
   });
-  final TrackingState state;
+  final TrackingLoaded state;
   final bool expanded;
   final ScrollController scrollController;
   final DraggableScrollableController sheetController;
@@ -30,23 +35,18 @@ class TrackingSummary extends StatefulWidget {
   final VoidCallback onShowTap;
 
   @override
-  State<TrackingSummary> createState() => _TrackingSummaryState();
-}
-
-class _TrackingSummaryState extends State<TrackingSummary> {
-  VehicleStatus? _selectedStatus;
-
-  @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     final scheme = Theme.of(context).colorScheme;
-    final selectedLabel = _selectedStatus == null
+    final cubit = context.read<TrackingCubit>();
+    final selectedStatus = state.filter;
+    final selectedLabel = selectedStatus == null
         ? l.trackingAll
-        : TrackingStyle.label(l, _selectedStatus!);
+        : TrackingStyle.label(l, selectedStatus);
     final selectedPage = TrackingAssetsPage(
       title: selectedLabel,
-      status: _selectedStatus,
-      assets: widget.state.assets,
+      assets: state.visibleAssets,
+      onQueryChanged: cubit.onQueryChanged,
     );
     return Material(
       color: scheme.surface,
@@ -61,21 +61,21 @@ class _TrackingSummaryState extends State<TrackingSummary> {
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onVerticalDragUpdate: (details) {
-                  if (!widget.sheetController.isAttached) return;
+                  if (!sheetController.isAttached) return;
                   final screenHeight = MediaQuery.sizeOf(context).height;
-                  final nextExtent = (widget.sheetController.size -
+                  final nextExtent = (sheetController.size -
                           details.delta.dy / screenHeight)
-                      .clamp(widget.minSheetExtent, widget.maxSheetExtent)
+                      .clamp(minSheetExtent, maxSheetExtent)
                       .toDouble();
-                  widget.sheetController.jumpTo(nextExtent);
+                  sheetController.jumpTo(nextExtent);
                 },
                 onVerticalDragEnd: (_) {
-                  if (!widget.sheetController.isAttached) return;
-                  widget.sheetController.animateTo(
-                    widget.sheetController.size <
-                            (widget.minSheetExtent + widget.maxSheetExtent) / 2
-                        ? widget.minSheetExtent
-                        : widget.maxSheetExtent,
+                  if (!sheetController.isAttached) return;
+                  sheetController.animateTo(
+                    sheetController.size <
+                            (minSheetExtent + maxSheetExtent) / 2
+                        ? minSheetExtent
+                        : maxSheetExtent,
                     duration: const Duration(milliseconds: 180),
                     curve: Curves.easeOutCubic,
                   );
@@ -111,11 +111,11 @@ class _TrackingSummaryState extends State<TrackingSummary> {
                   //
 
                     InkWell(
-                      onTap: widget.onShowTap,
+                      onTap: onShowTap,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: widget.expanded?   Icon(
-                         // onPressed: widget.onShowTap,
+                        child: expanded?   Icon(
+                         // onPressed: onShowTap,
 
                         Icons.close, size: AppIconSize.medium.value.r,
                         ):Text(
@@ -139,21 +139,21 @@ class _TrackingSummaryState extends State<TrackingSummary> {
                             _chip(
                               context,
                               l.trackingAll,
-                              widget.state.vehicles.length,
+                              state.vehicles.length,
                               scheme.primary,
                               null,
-                              _selectedStatus == null,
-                                  () => _showStatus(null),
+                              selectedStatus == null,
+                                  () => cubit.setFilter(null),
                             ),
                             for (final status in VehicleStatus.values)
                               _chip(
                                 context,
                                 TrackingStyle.label(l, status),
-                                widget.state.count(status),
+                                state.count(status),
                                 TrackingStyle.status(context, status),
                                 status,
-                                _selectedStatus == status,
-                                    () => _showStatus(status),
+                                selectedStatus == status,
+                                    () => cubit.setFilter(status),
                               ),
                           ],
                         ),
@@ -163,7 +163,7 @@ class _TrackingSummaryState extends State<TrackingSummary> {
                 ),
                 Expanded(
                   child: SingleChildScrollView(
-                    controller: widget.scrollController,
+                    controller: scrollController,
                     child: selectedPage,
                   ),
                 ),
@@ -174,8 +174,6 @@ class _TrackingSummaryState extends State<TrackingSummary> {
     );
   }
 
-  void _showStatus(VehicleStatus? status) =>
-      setState(() => _selectedStatus = status);
 // test
   Widget _chip(
       BuildContext context,

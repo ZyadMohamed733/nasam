@@ -13,7 +13,14 @@ import 'package:nasam/features/auth/presentation/cubit/new_password_cubit.dart';
 import 'package:nasam/features/auth/presentation/cubit/otp_cubit.dart';
 import 'package:nasam/features/onboarding/presentation/cubit/onboarding_cubit.dart';
 import 'package:nasam/features/tracking/domain/repositories/tracking_repository.dart';
+import 'package:nasam/features/tracking/domain/usecases/get_asset_details_usecase.dart';
+import 'package:nasam/features/tracking/domain/usecases/get_asset_notifications_usecase.dart';
+import 'package:nasam/features/tracking/domain/usecases/get_playback_segments_usecase.dart';
 import 'package:nasam/features/tracking/domain/usecases/get_tracked_assets_usecase.dart';
+import 'package:nasam/features/tracking/domain/usecases/get_tracking_vehicles_usecase.dart';
+import 'package:nasam/features/tracking/presentation/cubit/asset_details_cubit.dart';
+import 'package:nasam/features/tracking/presentation/cubit/asset_playback_cubit.dart';
+import 'package:nasam/features/tracking/presentation/cubit/tracking_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// The container has to be resolvable in every flavor, not just the one the
@@ -64,9 +71,26 @@ void main() {
         expect(getIt<NewPasswordCubit>(), isA<NewPasswordCubit>());
         expect(getIt<OnboardingCubit>(), isA<OnboardingCubit>());
 
-        // HomePage, the details page and the playback page all resolve this.
         expect(getIt<TrackingRepository>(), isA<TrackingRepository>());
         expect(getIt<GetTrackedAssetsUseCase>(), isA<GetTrackedAssetsUseCase>());
+        expect(
+          getIt<GetTrackingVehiclesUseCase>(),
+          isA<GetTrackingVehiclesUseCase>(),
+        );
+        expect(getIt<GetAssetDetailsUseCase>(), isA<GetAssetDetailsUseCase>());
+        expect(
+          getIt<GetAssetNotificationsUseCase>(),
+          isA<GetAssetNotificationsUseCase>(),
+        );
+        expect(
+          getIt<GetPlaybackSegmentsUseCase>(),
+          isA<GetPlaybackSegmentsUseCase>(),
+        );
+
+        // What the router resolves for the three tracking screens.
+        expect(getIt<TrackingCubit>(), isA<TrackingCubit>());
+        expect(getIt<AssetDetailsCubit>(), isA<AssetDetailsCubit>());
+        expect(getIt<AssetPlaybackCubit>(), isA<AssetPlaybackCubit>());
       });
 
       // No tracking API exists yet, so every flavor is bound to the fixture.
