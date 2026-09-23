@@ -130,11 +130,6 @@
   "assetDetailsAlertSpeed": "Speed",
   "assetDetailsAlertDate": "Date",
   "assetDetailsAlertLocation": "Location",
-  "assetDetailsDemoName": "Asset 2",
-  "assetDetailsAddressValue": "King Fahd Road, Riyadh, Saudi Arabia",
-  "assetDetailsEquipmentType": "Equipment",
-  "assetDetailsCompanyName": "Nasam Distribution",
-  "assetDetailsManagerName": "Ahmed Mohammed",
   "assetDetailsRunning": "Running",
   "assetDetailsOpen": "Open",
   "assetDetailsClosed": "Closed",
@@ -156,7 +151,5 @@
   "assetPlaybackDuration": "Duration",
   "assetPlaybackKilometers": "km",
   "assetPlaybackKilometersPerHour": "km/h",
-  "assetPlaybackMinutes": "min",
-  "assetPlaybackAirport": "Airport",
-  "assetPlaybackParkingArea": "Parking area"
+  "assetPlaybackMinutes": "min"
 }

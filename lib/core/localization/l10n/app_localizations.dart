@@ -878,36 +878,6 @@ abstract class AppLocalizations {
   /// **'الموقع'**
   String get assetDetailsAlertLocation;
 
-  /// No description provided for @assetDetailsDemoName.
-  ///
-  /// In ar, this message translates to:
-  /// **'الأصل ٢'**
-  String get assetDetailsDemoName;
-
-  /// No description provided for @assetDetailsAddressValue.
-  ///
-  /// In ar, this message translates to:
-  /// **'طريق الملك فهد، الرياض، المملكة العربية السعودية'**
-  String get assetDetailsAddressValue;
-
-  /// No description provided for @assetDetailsEquipmentType.
-  ///
-  /// In ar, this message translates to:
-  /// **'معدة'**
-  String get assetDetailsEquipmentType;
-
-  /// No description provided for @assetDetailsCompanyName.
-  ///
-  /// In ar, this message translates to:
-  /// **'شركة نسام للتوزيع'**
-  String get assetDetailsCompanyName;
-
-  /// No description provided for @assetDetailsManagerName.
-  ///
-  /// In ar, this message translates to:
-  /// **'أحمد محمد'**
-  String get assetDetailsManagerName;
-
   /// No description provided for @assetDetailsRunning.
   ///
   /// In ar, this message translates to:
@@ -1039,18 +1009,6 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'دقيقة'**
   String get assetPlaybackMinutes;
-
-  /// No description provided for @assetPlaybackAirport.
-  ///
-  /// In ar, this message translates to:
-  /// **'المطار'**
-  String get assetPlaybackAirport;
-
-  /// No description provided for @assetPlaybackParkingArea.
-  ///
-  /// In ar, this message translates to:
-  /// **'موقف'**
-  String get assetPlaybackParkingArea;
 }
 
 class _AppLocalizationsDelegate

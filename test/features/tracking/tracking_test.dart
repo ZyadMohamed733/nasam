@@ -5,8 +5,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart'
     as clusters;
 import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
-import 'package:nasam/features/tracking/data/dummy_tracking_repository.dart';
-import 'package:nasam/features/tracking/domain/tracking_vehicle.dart';
+import 'package:dartz/dartz.dart';
+import 'package:nasam/core/errors/failures.dart';
+import 'package:nasam/features/tracking/data/datasources/tracking_dummy_datasource.dart';
+import 'package:nasam/features/tracking/data/repositories/tracking_repository_impl.dart';
+import 'package:nasam/features/tracking/domain/entities/tracked_asset.dart';
+import 'package:nasam/features/tracking/domain/entities/tracked_asset_details.dart';
+import 'package:nasam/features/tracking/domain/entities/tracking_playback_segment.dart';
+import 'package:nasam/features/tracking/domain/repositories/tracking_repository.dart';
+import 'package:nasam/features/tracking/domain/entities/tracking_vehicle.dart';
 import 'package:nasam/features/tracking/presentation/cubit/tracking_cubit.dart';
 import 'package:nasam/features/tracking/presentation/tracking_page.dart';
 import 'package:nasam/features/tracking/presentation/widgets/tracking_controls.dart';
@@ -35,15 +42,50 @@ class _MapPlatform extends GoogleMapsFlutterPlatform {
   }) => const ColoredBox(color: Color(0xFFF3EFE5));
 }
 
+/// Every call fails. The repository returns Either now, so a failure is a
+/// value rather than a thrown error — which is the point: the cubit cannot
+/// forget to handle it.
 class _FailingRepository implements TrackingRepository {
+  static const _failure = ServerFailure(message: 'Unavailable');
+
   @override
-  Future<List<TrackingVehicle>> getVehicles() =>
-      Future.error(StateError('Unavailable'));
+  Future<Either<Failure, List<TrackingVehicle>>> getVehicles() async =>
+      const Left(_failure);
+
+  @override
+  Future<Either<Failure, List<TrackedAsset>>> getTrackedAssets() async =>
+      const Left(_failure);
+
+  @override
+  Future<Either<Failure, TrackedAssetDetails>> getAssetDetails(String id) async =>
+      const Left(_failure);
+
+  @override
+  Future<Either<Failure, List<TrackedAssetNotification>>> getAssetNotifications(
+    String id,
+  ) async => const Left(_failure);
+
+  @override
+  Future<Either<Failure, List<TrackingPlaybackSegment>>> getPlaybackSegments({
+    required String assetId,
+    required DateTime from,
+    required DateTime to,
+  }) async => const Left(_failure);
 }
+
+/// The real repository over the dummy source — what the app resolves in dev.
+TrackingRepository _dummyRepository() =>
+    const TrackingRepositoryImpl(TrackingDummyDataSource());
+
+/// Unwraps a Right, failing the test loudly if the call went Left.
+Future<List<TrackingVehicle>> _fleet() async =>
+    (await _dummyRepository().getVehicles()).getOrElse(
+      () => throw StateError('fleet unavailable'),
+    );
 
 void main() {
   test('dummy fleet has distinct IDs and consistent status counts', () async {
-    final cubit = TrackingCubit(DummyTrackingRepository());
+    final cubit = TrackingCubit(_dummyRepository());
     await cubit.load();
     expect(cubit.state.loading, false);
     expect(cubit.state.vehicles, hasLength(68));
@@ -64,7 +106,7 @@ void main() {
   test(
     'bounds contain the entire fleet and handle empty and single fleets',
     () async {
-      final fleet = await DummyTrackingRepository().getVehicles();
+      final fleet = await _fleet();
       expect(vehicleBounds([]), isNull);
       final single = vehicleBounds([fleet.first])!;
       expect(
@@ -81,7 +123,7 @@ void main() {
   test(
     'cluster focus bounds tightly frame members, including coincident vehicles',
     () async {
-      final fleet = await DummyTrackingRepository().getVehicles();
+      final fleet = await _fleet();
       final members = fleet.take(15).toList();
       final bounds = vehicleBounds(members, minimumSpan: .0004)!;
       for (final member in members) {
@@ -115,7 +157,7 @@ void main() {
   test('clusters preserve all vehicles and split at street zoom', () async {
     final platform = _MapPlatform();
     GoogleMapsFlutterPlatform.instance = platform;
-    final fleet = await DummyTrackingRepository().getVehicles();
+    final fleet = await _fleet();
     final manager = clusters.ClusterManager<VehicleMapItem>(
       fleet.map(VehicleMapItem.new).toList(),
       (_) {},
@@ -143,7 +185,7 @@ void main() {
       GoogleMapsFlutterPlatform.instance = _MapPlatform();
       await pumpInApp(
         tester,
-        TrackingPage(repository: DummyTrackingRepository()),
+        TrackingPage(repository: _dummyRepository()),
         locale: const Locale('ar'),
         dark: true,
       );
@@ -166,7 +208,7 @@ void main() {
       GoogleMapsFlutterPlatform.instance = _MapPlatform();
       await pumpInApp(
         tester,
-        TrackingPage(repository: DummyTrackingRepository()),
+        TrackingPage(repository: _dummyRepository()),
       );
       await tester.pumpAndSettle();
       final drawer = tester.widget<AdvancedDrawer>(find.byType(AdvancedDrawer));
@@ -201,7 +243,7 @@ void main() {
         GoogleMapsFlutterPlatform.instance = _MapPlatform();
         await pumpInApp(
           tester,
-          TrackingPage(repository: DummyTrackingRepository()),
+          TrackingPage(repository: _dummyRepository()),
           locale: Locale(locale),
         );
         await tester.pumpAndSettle();

@@ -4,9 +4,11 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_icons.dart';
+import '../../../../core/di/injection_container.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
-import '../dummy_data/tracking_all_dummy_data.dart';
-import '../dummy_data/tracking_asset_playback_dummy_data.dart';
+import '../../domain/entities/tracked_asset.dart';
+import '../../domain/entities/tracking_playback_segment.dart';
+import '../../domain/repositories/tracking_repository.dart';
 import '../widgets/playback/playback_date_range_selector.dart';
 import '../widgets/playback/playback_start_button.dart';
 import '../widgets/playback/tracking_asset_playback_segment_card.dart';
@@ -14,7 +16,7 @@ import '../widgets/playback/tracking_asset_playback_segment_card.dart';
 class TrackingAssetPlaybackPage extends StatefulWidget {
   const TrackingAssetPlaybackPage({super.key, required this.asset});
 
-  final TrackingAllDummyAsset asset;
+  final TrackedAsset asset;
 
   @override
   State<TrackingAssetPlaybackPage> createState() =>
@@ -26,6 +28,23 @@ class _TrackingAssetPlaybackPageState extends State<TrackingAssetPlaybackPage> {
   late DateTime _toDate = DateUtils.dateOnly(DateTime.now());
   bool _playingAll = false;
   int? _playingSegmentIndex;
+  List<TrackingPlaybackSegment> _segments = const [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSegments();
+  }
+
+  Future<void> _loadSegments() async {
+    final result = await getIt<TrackingRepository>().getPlaybackSegments(
+      assetId: widget.asset.id,
+      from: _fromDate,
+      to: _toDate.add(const Duration(days: 1)),
+    );
+    if (!mounted) return;
+    setState(() => _segments = result.getOrElse(() => const []));
+  }
 
   Future<void> _chooseDate({required bool isStart}) async {
     final current = isStart ? _fromDate : _toDate;
@@ -45,6 +64,7 @@ class _TrackingAssetPlaybackPageState extends State<TrackingAssetPlaybackPage> {
         if (_toDate.isBefore(_fromDate)) _fromDate = _toDate;
       }
     });
+    await _loadSegments();
   }
 
   void _togglePlayback() => setState(() {
@@ -61,12 +81,7 @@ class _TrackingAssetPlaybackPageState extends State<TrackingAssetPlaybackPage> {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     final locale = Localizations.localeOf(context).toString();
-    final segments = TrackingAssetPlaybackDummyData.segments
-        .where((segment) {
-          final date = DateUtils.dateOnly(segment.startedAt);
-          return !date.isBefore(_fromDate) && !date.isAfter(_toDate);
-        })
-        .toList(growable: false);
+    final segments = _segments;
 
     final playbackTheme = Theme.of(context).copyWith(
       colorScheme: Theme.of(context).colorScheme.copyWith(

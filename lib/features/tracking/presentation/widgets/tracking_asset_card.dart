@@ -6,14 +6,14 @@ import '../../../../core/constants/app_icons.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../shared/widgets/app_card.dart';
-import '../../domain/tracking_vehicle.dart';
-import '../dummy_data/tracking_all_dummy_data.dart';
+import '../../domain/entities/tracking_vehicle.dart';
 import '../tracking_style.dart';
 import '../utils/tracking_person_initials.dart';
 
+import '../../domain/entities/tracked_asset.dart';
 class TrackingAssetCard extends StatelessWidget {
   const TrackingAssetCard({super.key, required this.asset});
-  final TrackingAllDummyAsset asset;
+  final TrackedAsset asset;
 
   @override
   Widget build(BuildContext context) {

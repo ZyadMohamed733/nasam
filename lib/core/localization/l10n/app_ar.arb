@@ -326,11 +326,6 @@
   "assetDetailsAlertSpeed": "السرعة",
   "assetDetailsAlertDate": "التاريخ",
   "assetDetailsAlertLocation": "الموقع",
-  "assetDetailsDemoName": "الأصل ٢",
-  "assetDetailsAddressValue": "طريق الملك فهد، الرياض، المملكة العربية السعودية",
-  "assetDetailsEquipmentType": "معدة",
-  "assetDetailsCompanyName": "شركة نسام للتوزيع",
-  "assetDetailsManagerName": "أحمد محمد",
   "assetDetailsRunning": "يعمل",
   "assetDetailsOpen": "مفتوح",
   "assetDetailsClosed": "مغلق",
@@ -352,7 +347,5 @@
   "assetPlaybackDuration": "المدة",
   "assetPlaybackKilometers": "كم",
   "assetPlaybackKilometersPerHour": "كم/س",
-  "assetPlaybackMinutes": "دقيقة",
-  "assetPlaybackAirport": "المطار",
-  "assetPlaybackParkingArea": "موقف"
+  "assetPlaybackMinutes": "دقيقة"
 }

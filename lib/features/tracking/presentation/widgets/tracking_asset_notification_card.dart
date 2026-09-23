@@ -4,25 +4,33 @@ import 'package:intl/intl.dart';
 
 import '../../../../core/localization/l10n/app_localizations.dart';
 import '../../../../shared/widgets/app_card.dart';
-import '../dummy_data/tracking_all_dummy_data.dart';
 import 'tracking_asset_detail_field.dart';
+
+import '../../domain/entities/tracked_asset_details.dart';
 
 class TrackingAssetNotificationCard extends StatelessWidget {
   const TrackingAssetNotificationCard({
     super.key,
     required this.notification,
+    required this.assetName,
+    required this.location,
   });
 
-  final TrackingAssetNotificationSample notification;
+  final TrackedAssetNotification notification;
+
+  /// Which asset raised the alert, and where. Both were localisation keys, so
+  /// every alert in the list named the same asset at the same address.
+  final String assetName;
+  final String location;
 
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     final locale = Localizations.localeOf(context).toString();
     final type = switch (notification.type) {
-      TrackingDummyNotificationType.speeding => l.assetDetailsSpeedingAlert,
-      TrackingDummyNotificationType.stopped => l.assetDetailsStoppedAlert,
-      TrackingDummyNotificationType.geofence =>
+      TrackingNotificationType.speeding => l.assetDetailsSpeedingAlert,
+      TrackingNotificationType.stopped => l.assetDetailsStoppedAlert,
+      TrackingNotificationType.geofence =>
         l.assetDetailsGeofenceAlert,
     };
 
@@ -37,7 +45,7 @@ class TrackingAssetNotificationCard extends StatelessWidget {
               Expanded(
                 child: _NotificationValue(
                   label: l.assetDetailsAlertName,
-                  value: l.assetDetailsDemoName,
+                  value: assetName,
                 ),
               ),
               SizedBox(width: 10.w),
@@ -72,7 +80,7 @@ class TrackingAssetNotificationCard extends StatelessWidget {
           SizedBox(height: 10.h),
           TrackingAssetDetailField(
             label: l.assetDetailsAlertLocation,
-            value: l.assetDetailsAddressValue,
+            value: location,
           ),
         ],
       ),

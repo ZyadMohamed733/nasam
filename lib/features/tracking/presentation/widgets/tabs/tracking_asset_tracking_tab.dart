@@ -2,21 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../core/localization/l10n/app_localizations.dart';
-import '../../../domain/tracking_vehicle.dart';
-import '../../dummy_data/tracking_all_dummy_data.dart';
+import '../../../domain/entities/tracked_asset.dart';
+import '../../../domain/entities/tracked_asset_details.dart';
+import '../../../domain/entities/tracking_vehicle.dart';
 import '../../tracking_style.dart';
 import '../tracking_asset_detail_field.dart';
 import 'tracking_asset_details_list.dart';
 
 class TrackingAssetTrackingTab extends StatelessWidget {
-  const TrackingAssetTrackingTab({super.key, required this.asset});
+  const TrackingAssetTrackingTab({
+    super.key,
+    required this.asset,
+    required this.details,
+  });
 
-  final TrackingAllDummyAsset asset;
+  final TrackedAsset asset;
+  final TrackedAssetDetails details;
 
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
-    final details = TrackingAssetDetailsDummyData.details;
     final locale = Localizations.localeOf(context).toString();
     final status = asset.status == VehicleStatus.moving
         ? l.assetDetailsRunning

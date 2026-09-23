@@ -3,12 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/constants/app_icons.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
-import '../dummy_data/tracking_all_dummy_data.dart';
 
+import '../../domain/entities/tracked_asset_details.dart';
 class TrackingAssetSensorDetailsCard extends StatelessWidget {
   const TrackingAssetSensorDetailsCard({super.key, required this.details});
 
-  final TrackingAssetDetailsSample details;
+  final TrackedAssetDetails details;
 
   @override
   Widget build(BuildContext context) {

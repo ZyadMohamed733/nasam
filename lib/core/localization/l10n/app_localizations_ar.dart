@@ -478,22 +478,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get assetDetailsAlertLocation => 'الموقع';
 
   @override
-  String get assetDetailsDemoName => 'الأصل ٢';
-
-  @override
-  String get assetDetailsAddressValue =>
-      'طريق الملك فهد، الرياض، المملكة العربية السعودية';
-
-  @override
-  String get assetDetailsEquipmentType => 'معدة';
-
-  @override
-  String get assetDetailsCompanyName => 'شركة نسام للتوزيع';
-
-  @override
-  String get assetDetailsManagerName => 'أحمد محمد';
-
-  @override
   String get assetDetailsRunning => 'يعمل';
 
   @override
@@ -558,10 +542,4 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get assetPlaybackMinutes => 'دقيقة';
-
-  @override
-  String get assetPlaybackAirport => 'المطار';
-
-  @override
-  String get assetPlaybackParkingArea => 'موقف';
 }

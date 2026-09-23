@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/localization/l10n/app_localizations.dart';
-import '../../dummy_data/tracking_all_dummy_data.dart';
+import '../../../domain/entities/tracked_asset_details.dart';
 import '../tracking_asset_detail_field.dart';
 import '../tracking_asset_sensor_details_card.dart';
 import 'tracking_asset_details_list.dart';
 
 class TrackingAssetSensorsTab extends StatefulWidget {
-  const TrackingAssetSensorsTab({super.key});
+  const TrackingAssetSensorsTab({super.key, required this.details});
+
+  final TrackedAssetDetails details;
 
   @override
   State<TrackingAssetSensorsTab> createState() => _TrackingAssetSensorsTabState();
@@ -20,7 +22,7 @@ class _TrackingAssetSensorsTabState extends State<TrackingAssetSensorsTab> {
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
-    final details = TrackingAssetDetailsDummyData.details;
+    final details = widget.details;
     return TrackingAssetDetailsList(
       children: [
         TrackingAssetDetailField(label: l.assetDetailsTankLevel, value: '${details.tankLevelPercent}%'),

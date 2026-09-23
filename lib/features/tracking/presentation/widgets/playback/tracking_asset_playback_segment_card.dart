@@ -1,3 +1,4 @@
+import '../../../domain/entities/tracking_playback_segment.dart';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -8,7 +9,6 @@ import 'package:intl/intl.dart';
 import '../../../../../core/constants/app_assets.dart';
 import '../../../../../core/constants/app_icons.dart';
 import '../../../../../core/localization/l10n/app_localizations.dart';
-import '../../dummy_data/tracking_asset_playback_dummy_data.dart';
 
 const _playbackTimelineColor = Color(0xFF8A8AA3);
 //test
@@ -21,7 +21,7 @@ class TrackingAssetPlaybackSegmentCard extends StatefulWidget {
     required this.onPlayPressed,
   });
 
-  final TrackingAssetPlaybackSegment segment;
+  final TrackingPlaybackSegment segment;
   final String locale;
   final bool playing;
   final VoidCallback onPlayPressed;
@@ -143,7 +143,7 @@ class _TrackingAssetPlaybackSegmentCardState
                       SizedBox(width: 3.w),
                       Flexible(
                         child: Text(
-                          l.assetPlaybackAirport,
+                          widget.segment.startPlace,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.labelSmall?.copyWith(fontSize: 9.sp),
@@ -162,7 +162,7 @@ class _TrackingAssetPlaybackSegmentCardState
                       SizedBox(width: 3.w),
                       Flexible(
                         child: Text(
-                          l.assetDetailsAddressValue,
+                          widget.segment.endPlace,
                           textAlign: TextAlign.end,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -204,8 +204,8 @@ class _TrackingAssetPlaybackSegmentCardState
                   SizedBox(width: 8.w),
                   _SegmentMetric(
                     icon: Icons.local_parking_outlined,
-                    label: l.assetPlaybackParkingArea,
-                    semanticsLabel: l.assetPlaybackParkingArea,
+                    label: widget.segment.endPlace,
+                    semanticsLabel: widget.segment.endPlace,
                   ),
                 ],
               ),

@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../core/constants/app_assets.dart';
 import '../../../../core/constants/app_icons.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
-import '../../domain/tracking_vehicle.dart';
+import '../../domain/entities/tracking_vehicle.dart';
 import '../cubit/tracking_cubit.dart';
 import '../pages/tracking_assets_page.dart';
 import '../tracking_style.dart';
@@ -46,6 +46,7 @@ class _TrackingSummaryState extends State<TrackingSummary> {
     final selectedPage = TrackingAssetsPage(
       title: selectedLabel,
       status: _selectedStatus,
+      assets: widget.state.assets,
     );
     return Material(
       color: scheme.surface,

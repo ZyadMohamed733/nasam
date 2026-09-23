@@ -464,21 +464,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get assetDetailsAlertLocation => 'Location';
 
   @override
-  String get assetDetailsDemoName => 'Asset 2';
-
-  @override
-  String get assetDetailsAddressValue => 'King Fahd Road, Riyadh, Saudi Arabia';
-
-  @override
-  String get assetDetailsEquipmentType => 'Equipment';
-
-  @override
-  String get assetDetailsCompanyName => 'Nasam Distribution';
-
-  @override
-  String get assetDetailsManagerName => 'Ahmed Mohammed';
-
-  @override
   String get assetDetailsRunning => 'Running';
 
   @override
@@ -543,10 +528,4 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get assetPlaybackMinutes => 'min';
-
-  @override
-  String get assetPlaybackAirport => 'Airport';
-
-  @override
-  String get assetPlaybackParkingArea => 'Parking area';
 }

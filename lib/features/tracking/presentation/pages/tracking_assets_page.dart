@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../domain/tracking_vehicle.dart';
-import '../dummy_data/tracking_all_dummy_data.dart';
+import '../../domain/entities/tracked_asset.dart';
+import '../../domain/entities/tracking_vehicle.dart';
 import '../widgets/tracking_asset_card.dart';
 import '../widgets/tracking_asset_search_field.dart';
 
@@ -11,10 +11,12 @@ class TrackingAssetsPage extends StatefulWidget {
     super.key,
     required this.title,
     required this.status,
+    required this.assets,
   });
 
   final String title;
   final VehicleStatus? status;
+  final List<TrackedAsset> assets;
 
   @override
   State<TrackingAssetsPage> createState() => _TrackingAssetsPageState();
@@ -26,7 +28,7 @@ class _TrackingAssetsPageState extends State<TrackingAssetsPage> {
   @override
   Widget build(BuildContext context) {
     final query = _query.trim().toLowerCase();
-    final assets = TrackingAllDummyData.assets.where((asset) {
+    final assets = widget.assets.where((asset) {
       final matchesStatus = widget.status == null || asset.status == widget.status;
       final matchesQuery = asset.name.toLowerCase().contains(query) ||
           asset.code.toLowerCase().contains(query) ||

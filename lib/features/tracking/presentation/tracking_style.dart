@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/localization/l10n/app_localizations.dart';
-import '../domain/tracking_vehicle.dart';
+import '../domain/entities/tracking_vehicle.dart';
 
 /// Tracking-specific semantic tokens transcribed from the map reference.
 abstract final class TrackingStyle {

@@ -10,9 +10,8 @@ import '../../../core/localization/l10n/app_localizations.dart';
 import '../../../core/router/app_routes.dart';
 import '../../../features/auth/domain/usecases/logout_usecase.dart';
 import '../../../shared/widgets/app_drawer.dart';
-import '../domain/tracking_vehicle.dart';
+import '../domain/repositories/tracking_repository.dart';
 import 'cubit/tracking_cubit.dart';
-import 'dummy_data/tracking_all_dummy_data.dart';
 import 'widgets/tracking_controls.dart';
 import 'widgets/tracking_map.dart';
 import 'widgets/tracking_summary.dart';
@@ -159,15 +158,11 @@ class _TrackingViewState extends State<_TrackingView>
                         mapType: _mapType,
                         onMapReady: (controller) => _mapController = controller,
                         onVehicleTap: (vehicle) {
-                          final id = int.tryParse(vehicle.id);
-                          if (id == null || TrackingAllDummyData.assets.isEmpty) {
-                            return;
-                          }
-                          final detailsAsset = TrackingAllDummyData
-                              .assets[(id - 1) % TrackingAllDummyData.assets.length];
+                          final asset = state.assetForVehicle(vehicle);
+                          if (asset == null) return;
                           context.push(
                             AppRoutes.trackingAssetDetails,
-                            extra: detailsAsset,
+                            extra: asset,
                           );
                         },
                       ),

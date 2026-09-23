@@ -4,7 +4,7 @@ import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart'
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../../core/localization/l10n/app_localizations.dart';
-import '../../domain/tracking_vehicle.dart';
+import '../../domain/entities/tracking_vehicle.dart';
 import '../tracking_style.dart';
 import 'tracking_marker_factory.dart';
 

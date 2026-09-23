@@ -10,7 +10,7 @@ import '../../features/auth/presentation/pages/password_reset_success_page.dart'
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/onboarding/presentation/pages/onboarding_page.dart';
 import '../../features/splash/presentation/pages/splash_page.dart';
-import '../../features/tracking/presentation/dummy_data/tracking_all_dummy_data.dart';
+import '../../features/tracking/domain/entities/tracked_asset.dart';
 import '../../features/tracking/presentation/pages/tracking_asset_details_page.dart';
 import '../../features/tracking/presentation/pages/tracking_asset_playback_page.dart';
 import 'app_error_page.dart';
@@ -123,26 +123,26 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.trackingAssetDetails,
         redirect: (context, state) =>
-            state.extra is TrackingAllDummyAsset ? null : AppRoutes.home,
+            state.extra is TrackedAsset ? null : AppRoutes.home,
         pageBuilder: (context, state) => appTransitionPage(
           context: context,
           state: state,
           slide: true,
           child: TrackingAssetDetailsPage(
-            asset: state.extra! as TrackingAllDummyAsset,
+            asset: state.extra! as TrackedAsset,
           ),
         ),
       ),
       GoRoute(
         path: AppRoutes.trackingAssetPlayback,
         redirect: (context, state) =>
-            state.extra is TrackingAllDummyAsset ? null : AppRoutes.home,
+            state.extra is TrackedAsset ? null : AppRoutes.home,
         pageBuilder: (context, state) => appTransitionPage(
           context: context,
           state: state,
           slide: true,
           child: TrackingAssetPlaybackPage(
-            asset: state.extra! as TrackingAllDummyAsset,
+            asset: state.extra! as TrackedAsset,
           ),
         ),
       ),
