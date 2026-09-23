@@ -29,6 +29,7 @@ dependencies:
   dartz: ^0.10.1
   pinput: ^6.0.2
   flutter_svg: ^2.3.0
+  characters: ^1.4.1
   # Networking
   dio: ^5.4.3
   connectivity_plus: ^6.0.3

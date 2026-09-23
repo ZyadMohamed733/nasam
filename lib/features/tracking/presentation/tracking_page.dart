@@ -44,6 +44,7 @@ class _TrackingViewState extends State<_TrackingView>
   );
   GoogleMapController? _mapController;
   var _mapType = MapType.normal;
+  var _summaryExpanded = false;
 
   // Cycled by the layers control; hybrid adds satellite imagery under the
   // road overlay, terrain adds elevation shading.
@@ -123,8 +124,9 @@ class _TrackingViewState extends State<_TrackingView>
                     ),
                   );
                 }
-                final bottomInset =
-                    174.0 + MediaQuery.paddingOf(context).bottom;
+                final bottomInset = _summaryExpanded
+                    ? MediaQuery.sizeOf(context).height * .75
+                    : 174.0 + MediaQuery.paddingOf(context).bottom;
                 return Stack(
                   children: [
                     Positioned.fill(
@@ -150,7 +152,13 @@ class _TrackingViewState extends State<_TrackingView>
                     ),
                     Align(
                       alignment: Alignment.bottomCenter,
-                      child: TrackingSummary(state: state),
+                      child: TrackingSummary(
+                        state: state,
+                        expanded: _summaryExpanded,
+                        onExpandedChanged: (expanded) => setState(
+                          () => _summaryExpanded = expanded,
+                        ),
+                      ),
                     ),
                   ],
                 );

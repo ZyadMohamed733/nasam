@@ -1,77 +1,163 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/app_assets.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 import '../../domain/tracking_vehicle.dart';
 import '../cubit/tracking_cubit.dart';
+import '../pages/tracking_vehicles_page.dart';
 import '../tracking_style.dart';
 
-class TrackingSummary extends StatelessWidget {
-  const TrackingSummary({super.key, required this.state});
+class TrackingSummary extends StatefulWidget {
+  const TrackingSummary({
+    super.key,
+    required this.state,
+    required this.expanded,
+    required this.onExpandedChanged,
+  });
   final TrackingState state;
+  final bool expanded;
+  final ValueChanged<bool> onExpandedChanged;
+
+  @override
+  State<TrackingSummary> createState() => _TrackingSummaryState();
+}
+
+class _TrackingSummaryState extends State<TrackingSummary> {
+  VehicleStatus? _selectedStatus;
+  double _handleDragDistance = 0;
+
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     final scheme = Theme.of(context).colorScheme;
+    final bottomSafeArea = MediaQuery.paddingOf(context).bottom;
+    final selectedLabel = _selectedStatus == null
+        ? l.trackingAll
+        : TrackingStyle.label(l, _selectedStatus!);
+    final selectedPage = TrackingVehiclesPage(
+      title: selectedLabel,
+      status: _selectedStatus,
+    );
     return Material(
       color: scheme.surface,
       borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
-      child: SafeArea(
-        top: false,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 12, 16, 28),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 56,
-                height: 3,
-                decoration: BoxDecoration(
-                  color: scheme.outline,
-                  borderRadius: BorderRadius.circular(3),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+        height: widget.expanded
+            ? MediaQuery.sizeOf(context).height * .75
+            : 174.h + bottomSafeArea,
+        child: SafeArea(
+          top: false,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 28),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onVerticalDragUpdate: (details) {
+                  _handleDragDistance += details.delta.dy;
+                },
+                onVerticalDragEnd: (details) {
+                  final dragDistance = _handleDragDistance;
+                  final velocity = details.primaryVelocity ?? 0;
+                  _handleDragDistance = 0;
+                  if (dragDistance < -24 || velocity < -250) {
+                    widget.onExpandedChanged(true);
+                  } else if (dragDistance > 24 ||
+                      velocity > 250) {
+                    widget.onExpandedChanged(false);
+                  }
+                },
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    children: [
+                      Container(
+                        width: 56,
+                        height: 3,
+                        decoration: BoxDecoration(
+                          color: scheme.outline,
+                          borderRadius: BorderRadius.circular(3),
+                        ),
+                      ),
+                      const SizedBox(height: 32),
+                    ],
+                  ),
                 ),
               ),
-              const SizedBox(height: 32),
               Row(
                 children: [
                   Expanded(
-                    child: Text(
-                      l.trackingTitle,
-                      style: Theme.of(context).textTheme.titleMedium,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: Text(
+                        l.trackingTitle,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
                     ),
                   ),
-                  Text(l.trackingShow, style: TextStyle(color: scheme.primary)),
+                  //
+                  InkWell(
+                    onTap: () => widget.onExpandedChanged(!widget.expanded),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Text(
+                        l.trackingShow,
+                        style: TextStyle(color: scheme.primary),
+                      ),
+                    ),
+                  ),
                 ],
               ),
-              const SizedBox(height: 16),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _chip(
-                      context,
-                      l.trackingAll,
-                      state.vehicles.length,
-                      scheme.primary,
-                      null,
-                    ),
-                    for (final status in VehicleStatus.values)
-                      _chip(
-                        context,
-                        TrackingStyle.label(l, status),
-                        state.count(status),
-                        TrackingStyle.status(context, status),
-                        status,
+                AnimatedSize(
+                duration: const Duration(milliseconds: 250),
+                curve: Curves.easeInOut,
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 16),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            _chip(
+                              context,
+                              l.trackingAll,
+                              widget.state.vehicles.length,
+                              scheme.primary,
+                              null,
+                              () => _showStatus(null),
+                            ),
+                            for (final status in VehicleStatus.values)
+                              _chip(
+                                context,
+                                TrackingStyle.label(l, status),
+                                widget.state.count(status),
+                                TrackingStyle.status(context, status),
+                                status,
+                                () => _showStatus(status),
+                              ),
+                          ],
+                        ),
                       ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+                Expanded(
+                  child: SingleChildScrollView(child: selectedPage),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+
+  void _showStatus(VehicleStatus? status) =>
+      setState(() => _selectedStatus = status);
 
   Widget _chip(
     BuildContext context,
@@ -79,18 +165,21 @@ class TrackingSummary extends StatelessWidget {
     int count,
     Color color,
     VehicleStatus? status,
+    VoidCallback onTap,
   ) {
     return Padding(
       padding: const EdgeInsetsDirectional.only(end: 5),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-        decoration: BoxDecoration(
-          color: color.withValues(alpha: .07),
+      child: Material(
+        color: color.withValues(alpha: .07),
+        borderRadius: BorderRadius.circular(8),
+        child: InkWell(
           borderRadius: BorderRadius.circular(8),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
             if (status == null)
               SvgPicture.asset(
                 AppAssets.mapArrow,
@@ -123,7 +212,9 @@ class TrackingSummary extends StatelessWidget {
                 style: TextStyle(fontSize: 9, color: color),
               ),
             ),
-          ],
+              ],
+            ),
+          ),
         ),
       ),
     );

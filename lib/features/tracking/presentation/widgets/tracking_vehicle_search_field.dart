@@ -1,0 +1,36 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../core/localization/l10n/app_localizations.dart';
+
+class TrackingVehicleSearchField extends StatelessWidget {
+  const TrackingVehicleSearchField({super.key, this.onChanged});
+  final ValueChanged<String>? onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+    final scheme = Theme.of(context).colorScheme;
+    return SizedBox(
+      height: 44.h,
+      child: TextField(
+        onChanged: onChanged,
+        textAlign: TextAlign.right,
+        decoration: InputDecoration(
+          hintText: l.trackingSearch,
+          prefixIcon: Icon(Icons.search, size: 20.r),
+          filled: true,
+          fillColor: scheme.surface,
+          contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10.r),
+            borderSide: BorderSide(color: scheme.outlineVariant),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10.r),
+            borderSide: BorderSide(color: scheme.outlineVariant),
+          ),
+        ),
+      ),
+    );
+  }
+}
