@@ -40,8 +40,10 @@ import '../../features/auth/presentation/cubit/new_password_cubit.dart'
 import '../../features/auth/presentation/cubit/otp_cubit.dart' as _i1033;
 import '../../features/onboarding/presentation/cubit/onboarding_cubit.dart'
     as _i807;
-import '../../features/tracking/data/datasources/tracking_dummy_datasource.dart'
-    as _i548;
+import '../../features/tracking/data/datasources/tracking_datasource.dart'
+    as _i765;
+import '../../features/tracking/data/datasources/tracking_fixture_datasource.dart'
+    as _i439;
 import '../../features/tracking/data/repositories/tracking_repository_impl.dart'
     as _i279;
 import '../../features/tracking/domain/repositories/tracking_repository.dart'
@@ -59,8 +61,6 @@ import '../services/storage_service.dart' as _i306;
 import '../services/websocket_service.dart' as _i555;
 import 'modules/network_module.dart' as _i851;
 import 'modules/storage_module.dart' as _i148;
-
-const String _dev = 'dev';
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
@@ -83,12 +83,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i535.SecureStorageService>(
       () => _i535.SecureStorageService(gh<_i558.FlutterSecureStorage>()),
     );
-    gh.lazySingleton<_i548.TrackingDataSource>(
-      () => const _i548.TrackingDummyDataSource(),
-      registerFor: {_dev},
-    );
-    gh.lazySingleton<_i76.TrackingRepository>(
-      () => _i279.TrackingRepositoryImpl(gh<_i548.TrackingDataSource>()),
+    gh.lazySingleton<_i765.TrackingDataSource>(
+      () => _i439.TrackingFixtureDataSource(),
     );
     gh.lazySingleton<_i306.StorageService>(
       () => _i306.StorageService(gh<_i460.SharedPreferences>()),
@@ -103,14 +99,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i745.AuthInterceptor>(
       () => _i745.AuthInterceptor(gh<_i535.SecureStorageService>()),
     );
-    gh.lazySingleton<_i143.GetTrackedAssetsUseCase>(
-      () => _i143.GetTrackedAssetsUseCase(gh<_i76.TrackingRepository>()),
-    );
     gh.factory<_i807.OnboardingCubit>(
       () => _i807.OnboardingCubit(gh<_i306.StorageService>()),
     );
     gh.lazySingleton<_i461.AppSettingsController>(
       () => _i461.AppSettingsController(gh<_i306.StorageService>()),
+    );
+    gh.lazySingleton<_i76.TrackingRepository>(
+      () => _i279.TrackingRepositoryImpl(gh<_i765.TrackingDataSource>()),
     );
     gh.factory<_i715.RouteGuard>(
       () => _i715.RouteGuard(gh<_i745.AuthService>()),
@@ -125,6 +121,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i81.AppRouter>(
       () => _i81.AppRouter(gh<_i715.RouteGuard>()),
+    );
+    gh.lazySingleton<_i143.GetTrackedAssetsUseCase>(
+      () => _i143.GetTrackedAssetsUseCase(gh<_i76.TrackingRepository>()),
     );
     gh.lazySingleton<_i1022.AuthRemoteDataSource>(
       () => _i1022.AuthRemoteDataSourceImpl(gh<_i361.Dio>()),

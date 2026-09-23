@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
@@ -5,20 +6,18 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart'
     as clusters;
 import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
-import 'package:dartz/dartz.dart';
 import 'package:nasam/core/errors/failures.dart';
-import 'package:nasam/features/tracking/data/datasources/tracking_dummy_datasource.dart';
-import 'package:nasam/features/tracking/data/repositories/tracking_repository_impl.dart';
 import 'package:nasam/features/tracking/domain/entities/tracked_asset.dart';
 import 'package:nasam/features/tracking/domain/entities/tracked_asset_details.dart';
 import 'package:nasam/features/tracking/domain/entities/tracking_playback_segment.dart';
-import 'package:nasam/features/tracking/domain/repositories/tracking_repository.dart';
 import 'package:nasam/features/tracking/domain/entities/tracking_vehicle.dart';
+import 'package:nasam/features/tracking/domain/repositories/tracking_repository.dart';
 import 'package:nasam/features/tracking/presentation/cubit/tracking_cubit.dart';
 import 'package:nasam/features/tracking/presentation/tracking_page.dart';
 import 'package:nasam/features/tracking/presentation/widgets/tracking_controls.dart';
 import 'package:nasam/features/tracking/presentation/widgets/tracking_map.dart';
 
+import '../../helpers/fixture_bundle.dart';
 import '../../helpers/widget_harness.dart';
 
 class _MapPlatform extends GoogleMapsFlutterPlatform {
@@ -74,8 +73,7 @@ class _FailingRepository implements TrackingRepository {
 }
 
 /// The real repository over the dummy source — what the app resolves in dev.
-TrackingRepository _dummyRepository() =>
-    const TrackingRepositoryImpl(TrackingDummyDataSource());
+TrackingRepository _dummyRepository() => fixtureTrackingRepository();
 
 /// Unwraps a Right, failing the test loudly if the call went Left.
 Future<List<TrackingVehicle>> _fleet() async =>

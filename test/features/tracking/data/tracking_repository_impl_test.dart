@@ -1,105 +1,189 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nasam/core/errors/exceptions.dart';
 import 'package:nasam/core/errors/failures.dart';
-import 'package:nasam/features/tracking/data/datasources/tracking_dummy_datasource.dart';
+import 'package:nasam/features/tracking/data/datasources/tracking_datasource.dart';
+import 'package:nasam/features/tracking/data/datasources/tracking_fixture_datasource.dart';
+import 'package:nasam/features/tracking/data/models/asset_details_model.dart';
+import 'package:nasam/features/tracking/data/models/notification_model.dart';
+import 'package:nasam/features/tracking/data/models/playback_segment_model.dart';
+import 'package:nasam/features/tracking/data/models/tracked_asset_model.dart';
+import 'package:nasam/features/tracking/data/models/vehicle_model.dart';
 import 'package:nasam/features/tracking/data/repositories/tracking_repository_impl.dart';
-import 'package:nasam/features/tracking/domain/entities/tracked_asset.dart';
-import 'package:nasam/features/tracking/domain/entities/tracked_asset_details.dart';
-import 'package:nasam/features/tracking/domain/entities/tracking_playback_segment.dart';
 import 'package:nasam/features/tracking/domain/entities/tracking_vehicle.dart';
 
-/// Throws the exception it is given, so the repository's translation of
-/// exception into Failure can be checked without a network.
+/// Throws what it is given, so exception-to-failure mapping is testable
+/// without a network.
 class _ThrowingDataSource implements TrackingDataSource {
   _ThrowingDataSource(this.error);
   final Object error;
 
   @override
-  Future<List<TrackingVehicle>> getVehicles() async => throw error;
+  Future<List<VehicleModel>> getVehicles() async => throw error;
   @override
-  Future<List<TrackedAsset>> getTrackedAssets() async => throw error;
+  Future<List<TrackedAssetModel>> getTrackedAssets() async => throw error;
   @override
-  Future<TrackedAssetDetails> getAssetDetails(String assetId) async =>
+  Future<AssetDetailsModel> getAssetDetails(String assetId) async =>
       throw error;
   @override
-  Future<List<TrackedAssetNotification>> getAssetNotifications(
+  Future<List<NotificationModel>> getAssetNotifications(
     String assetId,
   ) async => throw error;
   @override
-  Future<List<TrackingPlaybackSegment>> getPlaybackSegments({
+  Future<List<PlaybackSegmentModel>> getPlaybackSegments({
     required String assetId,
     required DateTime from,
     required DateTime to,
   }) async => throw error;
 }
 
+/// Serves one hand-written vehicle, to check the mapper's handling of the wire
+/// status on its own.
+class _SingleVehicleSource extends _ThrowingDataSource {
+  _SingleVehicleSource(this.status) : super(StateError('unused'));
+  final String status;
+
+  @override
+  Future<List<VehicleModel>> getVehicles() async => [
+    VehicleModel(
+      id: '1',
+      assetId: 'AST-0017',
+      latitude: 24.9,
+      longitude: 46.3,
+      status: status,
+      heading: 90,
+    ),
+  ];
+}
+
 void main() {
-  group('TrackingRepositoryImpl', () {
-    const repository = TrackingRepositoryImpl(TrackingDummyDataSource());
+  TestWidgetsFlutterBinding.ensureInitialized();
 
-    test('every asset carries the id the routes will load it by', () async {
-      final result = await repository.getTrackedAssets();
-      final assets = result.getOrElse(() => const []);
+  TrackingRepositoryImpl repositoryOver({bool fail = false}) =>
+      TrackingRepositoryImpl(
+        TrackingFixtureDataSource(
+          latency: Duration.zero,
+          simulateFailure: fail,
+        ),
+      );
 
-      expect(assets, isNotEmpty);
-      expect(assets.map((a) => a.id).toSet(), hasLength(assets.length));
-      expect(assets.every((a) => a.id.isNotEmpty), isTrue);
+  group('against the JSON fixtures', () {
+    test('the fleet parses from the envelope and every vehicle names an '
+        'asset that exists', () async {
+      final repository = repositoryOver();
+      final vehicles = (await repository.getVehicles()).getOrElse(
+        () => throw StateError('no vehicles'),
+      );
+      final assets = (await repository.getTrackedAssets()).getOrElse(
+        () => throw StateError('no assets'),
+      );
+
+      expect(vehicles, hasLength(68));
+      expect(vehicles.map((v) => v.id).toSet(), hasLength(68));
+      final assetIds = assets.map((a) => a.id).toSet();
+      expect(
+        vehicles.every((v) => assetIds.contains(v.assetId)),
+        isTrue,
+        reason: 'a marker whose asset is missing cannot open anything',
+      );
     });
 
-    test('details are stamped with the asset that was asked for', () async {
-      final result = await repository.getAssetDetails('AST-0024');
-      final details = result.getOrElse(
-        () => throw StateError('no details'),
-      );
+    test('details come back for the asset that was asked for', () async {
+      final details = (await repositoryOver().getAssetDetails('AST-0024'))
+          .getOrElse(() => throw StateError('no details'));
 
       expect(details.assetId, 'AST-0024');
-      // Identity fields are data now, not localisation keys.
       expect(details.name, isNotEmpty);
-      expect(details.companyName, isNotEmpty);
       expect(details.address, isNotEmpty);
+      expect(details.lastGpsAt, DateTime(2025, 10, 17, 9));
     });
 
-    test('playback segments are anchored to the range, not to now', () async {
-      final from = DateTime(2025, 3, 1);
-      final a = await repository.getPlaybackSegments(
-        assetId: 'AST-0017',
-        from: from,
-        to: from.add(const Duration(days: 1)),
-      );
-      final b = await repository.getPlaybackSegments(
-        assetId: 'AST-0017',
-        from: from,
-        to: from.add(const Duration(days: 1)),
-      );
+    test('an unknown asset id is a failure, as the endpoint would 404',
+        () async {
+      final result = await repositoryOver().getAssetDetails('AST-9999');
 
-      final first = a.getOrElse(() => const []);
-      final second = b.getOrElse(() => const []);
-      expect(first, isNotEmpty);
       expect(
-        first.map((s) => s.startedAt),
-        second.map((s) => s.startedAt),
-        reason: 'the same range must yield the same legs, or goldens drift',
+        result.fold((f) => f, (_) => null),
+        isA<ServerFailure>().having((f) => f.code, 'code', '404'),
       );
+    });
+
+    test('notification wire types map onto the domain enum', () async {
+      final notifications =
+          (await repositoryOver().getAssetNotifications('AST-0017'))
+              .getOrElse(() => const []);
+
+      expect(notifications, hasLength(3));
+    });
+
+    test('playback replays on the requested day, identically each time',
+        () async {
+      final day = DateTime(2026, 3, 1);
+      Future<List<DateTime>> starts() async =>
+          (await repositoryOver().getPlaybackSegments(
+                assetId: 'AST-0017',
+                from: day,
+                to: day.add(const Duration(days: 1)),
+              ))
+              .getOrElse(() => const [])
+              .map((s) => s.startedAt)
+              .toList();
+
+      final first = await starts();
+      expect(first, hasLength(6));
+      expect(first.every((t) => _sameDay(t, day)), isTrue);
+      expect(await starts(), first, reason: 'goldens need a stable fixture');
+    });
+
+    test('the debug failure flag fails every call as a Failure', () async {
+      final result = await repositoryOver(fail: true).getTrackedAssets();
+
+      expect(result.fold((f) => f, (_) => null), isA<ServerFailure>());
+    });
+  });
+
+  group('mapping and error translation', () {
+    test('wire statuses map onto the domain enum', () async {
+      for (final (wire, status) in [
+        ('MOVING', VehicleStatus.moving),
+        ('IDLE', VehicleStatus.idle),
+        ('STOPPED', VehicleStatus.stopped),
+        ('OFFLINE', VehicleStatus.offline),
+      ]) {
+        final vehicles = (await TrackingRepositoryImpl(
+          _SingleVehicleSource(wire),
+        ).getVehicles()).getOrElse(() => const []);
+        expect(vehicles.single.status, status, reason: wire);
+      }
+    });
+
+    // A status the app cannot draw is a contract change. It must surface as a
+    // failure, not reach the map as a guess.
+    test('an unknown wire status fails instead of being guessed', () async {
+      final result = await TrackingRepositoryImpl(
+        _SingleVehicleSource('TELEPORTING'),
+      ).getVehicles();
+
+      expect(result.fold((f) => f, (_) => null), isA<UnknownFailure>());
     });
 
     test('an AppException becomes its matching Failure', () async {
-      const source = ServerException(message: 'boom');
-      final failing = TrackingRepositoryImpl(_ThrowingDataSource(source));
+      final result = await TrackingRepositoryImpl(
+        _ThrowingDataSource(const ServerException(message: 'boom')),
+      ).getTrackedAssets();
 
-      final result = await failing.getTrackedAssets();
-
-      expect(result.isLeft(), isTrue);
       expect(result.fold((f) => f, (_) => null), isA<ServerFailure>());
     });
 
-    test('anything else becomes an UnknownFailure rather than escaping', () async {
-      final failing = TrackingRepositoryImpl(
-        _ThrowingDataSource(FormatException('bad shape')),
-      );
-
-      final result = await failing.getTrackedAssets();
+    test('anything else becomes an UnknownFailure rather than escaping',
+        () async {
+      final result = await TrackingRepositoryImpl(
+        _ThrowingDataSource(const FormatException('bad shape')),
+      ).getTrackedAssets();
 
       expect(result.fold((f) => f, (_) => null), isA<UnknownFailure>());
     });
   });
 }
+
+bool _sameDay(DateTime a, DateTime b) =>
+    a.year == b.year && a.month == b.month && a.day == b.day;

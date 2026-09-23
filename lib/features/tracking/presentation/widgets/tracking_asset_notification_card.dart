@@ -4,9 +4,8 @@ import 'package:intl/intl.dart';
 
 import '../../../../core/localization/l10n/app_localizations.dart';
 import '../../../../shared/widgets/app_card.dart';
-import 'tracking_asset_detail_field.dart';
-
 import '../../domain/entities/tracked_asset_details.dart';
+import 'tracking_asset_detail_field.dart';
 
 class TrackingAssetNotificationCard extends StatelessWidget {
   const TrackingAssetNotificationCard({

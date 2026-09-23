@@ -1,4 +1,3 @@
-import '../../../domain/entities/tracking_playback_segment.dart';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -9,6 +8,7 @@ import 'package:intl/intl.dart';
 import '../../../../../core/constants/app_assets.dart';
 import '../../../../../core/constants/app_icons.dart';
 import '../../../../../core/localization/l10n/app_localizations.dart';
+import '../../../domain/entities/tracking_playback_segment.dart';
 
 const _playbackTimelineColor = Color(0xFF8A8AA3);
 //test

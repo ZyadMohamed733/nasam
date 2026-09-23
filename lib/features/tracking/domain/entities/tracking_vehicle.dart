@@ -10,6 +10,7 @@ enum VehicleStatus { moving, idle, stopped, offline }
 class TrackingVehicle {
   const TrackingVehicle({
     required this.id,
+    required this.assetId,
     required this.latitude,
     required this.longitude,
     required this.status,
@@ -17,6 +18,12 @@ class TrackingVehicle {
   });
 
   final String id;
+
+  /// The asset this vehicle belongs to. Carried on the vehicle because a
+  /// tapped marker has to open that asset's screen, and deriving it from the
+  /// marker's position in a list only works while both lists are in memory in
+  /// the same order — which a deep link, a filter or a paged fleet all break.
+  final String assetId;
   final double latitude;
   final double longitude;
   final VehicleStatus status;

@@ -91,6 +91,9 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    # TODO(api): tracking fixtures, served by TrackingFixtureDataSource until the
+    # tracking API is delivered. Remove with it.
+    - assets/fixtures/tracking/
 
   # Almarai is SIL OFL 1.1; assets/fonts/OFL.txt is the licence, and it ships
   # with the font as that licence requires. The family carries only 400 and

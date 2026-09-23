@@ -1,0 +1,154 @@
+{
+  "AST-0017": {
+    "data": [
+      {
+        "type": "SPEEDING",
+        "date": "2025-10-17T09:00:00",
+        "speedKph": 13
+      },
+      {
+        "type": "STOPPED",
+        "date": "2025-10-17T08:12:00",
+        "speedKph": 13
+      },
+      {
+        "type": "GEOFENCE",
+        "date": "2025-10-17T07:36:00",
+        "speedKph": 13
+      }
+    ]
+  },
+  "AST-0018": {
+    "data": [
+      {
+        "type": "SPEEDING",
+        "date": "2025-10-17T09:00:00",
+        "speedKph": 13
+      },
+      {
+        "type": "STOPPED",
+        "date": "2025-10-17T08:12:00",
+        "speedKph": 13
+      },
+      {
+        "type": "GEOFENCE",
+        "date": "2025-10-17T07:36:00",
+        "speedKph": 13
+      }
+    ]
+  },
+  "AST-0019": {
+    "data": [
+      {
+        "type": "SPEEDING",
+        "date": "2025-10-17T09:00:00",
+        "speedKph": 13
+      },
+      {
+        "type": "STOPPED",
+        "date": "2025-10-17T08:12:00",
+        "speedKph": 13
+      },
+      {
+        "type": "GEOFENCE",
+        "date": "2025-10-17T07:36:00",
+        "speedKph": 13
+      }
+    ]
+  },
+  "AST-0021": {
+    "data": [
+      {
+        "type": "SPEEDING",
+        "date": "2025-10-17T09:00:00",
+        "speedKph": 13
+      },
+      {
+        "type": "STOPPED",
+        "date": "2025-10-17T08:12:00",
+        "speedKph": 13
+      },
+      {
+        "type": "GEOFENCE",
+        "date": "2025-10-17T07:36:00",
+        "speedKph": 13
+      }
+    ]
+  },
+  "AST-0024": {
+    "data": [
+      {
+        "type": "SPEEDING",
+        "date": "2025-10-17T09:00:00",
+        "speedKph": 13
+      },
+      {
+        "type": "STOPPED",
+        "date": "2025-10-17T08:12:00",
+        "speedKph": 13
+      },
+      {
+        "type": "GEOFENCE",
+        "date": "2025-10-17T07:36:00",
+        "speedKph": 13
+      }
+    ]
+  },
+  "AST-0030": {
+    "data": [
+      {
+        "type": "SPEEDING",
+        "date": "2025-10-17T09:00:00",
+        "speedKph": 13
+      },
+      {
+        "type": "STOPPED",
+        "date": "2025-10-17T08:12:00",
+        "speedKph": 13
+      },
+      {
+        "type": "GEOFENCE",
+        "date": "2025-10-17T07:36:00",
+        "speedKph": 13
+      }
+    ]
+  },
+  "AST-0032": {
+    "data": [
+      {
+        "type": "SPEEDING",
+        "date": "2025-10-17T09:00:00",
+        "speedKph": 13
+      },
+      {
+        "type": "STOPPED",
+        "date": "2025-10-17T08:12:00",
+        "speedKph": 13
+      },
+      {
+        "type": "GEOFENCE",
+        "date": "2025-10-17T07:36:00",
+        "speedKph": 13
+      }
+    ]
+  },
+  "AST-0040": {
+    "data": [
+      {
+        "type": "SPEEDING",
+        "date": "2025-10-17T09:00:00",
+        "speedKph": 13
+      },
+      {
+        "type": "STOPPED",
+        "date": "2025-10-17T08:12:00",
+        "speedKph": 13
+      },
+      {
+        "type": "GEOFENCE",
+        "date": "2025-10-17T07:36:00",
+        "speedKph": 13
+      }
+    ]
+  }
+}

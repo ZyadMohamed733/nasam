@@ -6,7 +6,7 @@ import 'package:integration_test/integration_test.dart';
 import 'package:nasam/core/constants/app_sizes.dart';
 import 'package:nasam/core/localization/app_localizations_setup.dart';
 import 'package:nasam/core/theme/app_theme.dart';
-import 'package:nasam/features/tracking/data/datasources/tracking_dummy_datasource.dart';
+import 'package:nasam/features/tracking/data/datasources/tracking_fixture_datasource.dart';
 import 'package:nasam/features/tracking/data/repositories/tracking_repository_impl.dart';
 import 'package:nasam/features/tracking/presentation/tracking_page.dart';
 import 'package:nasam/features/tracking/presentation/widgets/tracking_controls.dart';
@@ -27,7 +27,9 @@ void main() {
           supportedLocales: AppLocalizationsSetup.supportedLocales,
           localizationsDelegates: AppLocalizationsSetup.localizationsDelegates,
           home: TrackingPage(
-            repository: const TrackingRepositoryImpl(TrackingDummyDataSource()),
+            repository: TrackingRepositoryImpl(
+      TrackingFixtureDataSource(latency: Duration.zero),
+    ),
           ),
         ),
       ),

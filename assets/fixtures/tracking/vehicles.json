@@ -1,0 +1,548 @@
+{
+  "data": [
+    {
+      "id": "1",
+      "assetId": "AST-0017",
+      "latitude": 24.925,
+      "longitude": 46.355,
+      "status": "MOVING",
+      "heading": 0
+    },
+    {
+      "id": "2",
+      "assetId": "AST-0018",
+      "latitude": 24.92515,
+      "longitude": 46.355,
+      "status": "IDLE",
+      "heading": 45
+    },
+    {
+      "id": "3",
+      "assetId": "AST-0019",
+      "latitude": 24.9253,
+      "longitude": 46.355,
+      "status": "STOPPED",
+      "heading": 90
+    },
+    {
+      "id": "4",
+      "assetId": "AST-0021",
+      "latitude": 24.92545,
+      "longitude": 46.355,
+      "status": "OFFLINE",
+      "heading": 135
+    },
+    {
+      "id": "5",
+      "assetId": "AST-0024",
+      "latitude": 24.9256,
+      "longitude": 46.355,
+      "status": "MOVING",
+      "heading": 180
+    },
+    {
+      "id": "6",
+      "assetId": "AST-0030",
+      "latitude": 24.925,
+      "longitude": 46.35515,
+      "status": "IDLE",
+      "heading": 225
+    },
+    {
+      "id": "7",
+      "assetId": "AST-0032",
+      "latitude": 24.92515,
+      "longitude": 46.35515,
+      "status": "STOPPED",
+      "heading": 270
+    },
+    {
+      "id": "8",
+      "assetId": "AST-0040",
+      "latitude": 24.9253,
+      "longitude": 46.35515,
+      "status": "OFFLINE",
+      "heading": 315
+    },
+    {
+      "id": "9",
+      "assetId": "AST-0017",
+      "latitude": 24.92545,
+      "longitude": 46.35515,
+      "status": "MOVING",
+      "heading": 0
+    },
+    {
+      "id": "10",
+      "assetId": "AST-0018",
+      "latitude": 24.9256,
+      "longitude": 46.35515,
+      "status": "IDLE",
+      "heading": 45
+    },
+    {
+      "id": "11",
+      "assetId": "AST-0019",
+      "latitude": 24.925,
+      "longitude": 46.3553,
+      "status": "STOPPED",
+      "heading": 90
+    },
+    {
+      "id": "12",
+      "assetId": "AST-0021",
+      "latitude": 24.92515,
+      "longitude": 46.3553,
+      "status": "OFFLINE",
+      "heading": 135
+    },
+    {
+      "id": "13",
+      "assetId": "AST-0024",
+      "latitude": 24.9253,
+      "longitude": 46.3553,
+      "status": "MOVING",
+      "heading": 180
+    },
+    {
+      "id": "14",
+      "assetId": "AST-0030",
+      "latitude": 24.92545,
+      "longitude": 46.3553,
+      "status": "IDLE",
+      "heading": 225
+    },
+    {
+      "id": "15",
+      "assetId": "AST-0032",
+      "latitude": 24.9256,
+      "longitude": 46.3553,
+      "status": "STOPPED",
+      "heading": 270
+    },
+    {
+      "id": "16",
+      "assetId": "AST-0040",
+      "latitude": 24.89,
+      "longitude": 46.41,
+      "status": "MOVING",
+      "heading": 0
+    },
+    {
+      "id": "17",
+      "assetId": "AST-0017",
+      "latitude": 24.89015,
+      "longitude": 46.41,
+      "status": "IDLE",
+      "heading": 45
+    },
+    {
+      "id": "18",
+      "assetId": "AST-0018",
+      "latitude": 24.8903,
+      "longitude": 46.41,
+      "status": "STOPPED",
+      "heading": 90
+    },
+    {
+      "id": "19",
+      "assetId": "AST-0019",
+      "latitude": 24.89045,
+      "longitude": 46.41,
+      "status": "OFFLINE",
+      "heading": 135
+    },
+    {
+      "id": "20",
+      "assetId": "AST-0021",
+      "latitude": 24.8906,
+      "longitude": 46.41,
+      "status": "MOVING",
+      "heading": 180
+    },
+    {
+      "id": "21",
+      "assetId": "AST-0024",
+      "latitude": 24.89,
+      "longitude": 46.41015,
+      "status": "IDLE",
+      "heading": 225
+    },
+    {
+      "id": "22",
+      "assetId": "AST-0030",
+      "latitude": 24.89015,
+      "longitude": 46.41015,
+      "status": "STOPPED",
+      "heading": 270
+    },
+    {
+      "id": "23",
+      "assetId": "AST-0032",
+      "latitude": 24.8903,
+      "longitude": 46.41015,
+      "status": "OFFLINE",
+      "heading": 315
+    },
+    {
+      "id": "24",
+      "assetId": "AST-0040",
+      "latitude": 24.89045,
+      "longitude": 46.41015,
+      "status": "MOVING",
+      "heading": 0
+    },
+    {
+      "id": "25",
+      "assetId": "AST-0017",
+      "latitude": 24.8906,
+      "longitude": 46.41015,
+      "status": "IDLE",
+      "heading": 45
+    },
+    {
+      "id": "26",
+      "assetId": "AST-0018",
+      "latitude": 24.845,
+      "longitude": 46.367,
+      "status": "MOVING",
+      "heading": 0
+    },
+    {
+      "id": "27",
+      "assetId": "AST-0019",
+      "latitude": 24.84515,
+      "longitude": 46.367,
+      "status": "IDLE",
+      "heading": 45
+    },
+    {
+      "id": "28",
+      "assetId": "AST-0021",
+      "latitude": 24.8453,
+      "longitude": 46.367,
+      "status": "STOPPED",
+      "heading": 90
+    },
+    {
+      "id": "29",
+      "assetId": "AST-0024",
+      "latitude": 24.84545,
+      "longitude": 46.367,
+      "status": "OFFLINE",
+      "heading": 135
+    },
+    {
+      "id": "30",
+      "assetId": "AST-0030",
+      "latitude": 24.8456,
+      "longitude": 46.367,
+      "status": "MOVING",
+      "heading": 180
+    },
+    {
+      "id": "31",
+      "assetId": "AST-0032",
+      "latitude": 24.82,
+      "longitude": 46.397,
+      "status": "MOVING",
+      "heading": 0
+    },
+    {
+      "id": "32",
+      "assetId": "AST-0040",
+      "latitude": 24.82015,
+      "longitude": 46.397,
+      "status": "IDLE",
+      "heading": 45
+    },
+    {
+      "id": "33",
+      "assetId": "AST-0017",
+      "latitude": 24.8203,
+      "longitude": 46.397,
+      "status": "STOPPED",
+      "heading": 90
+    },
+    {
+      "id": "34",
+      "assetId": "AST-0018",
+      "latitude": 24.82045,
+      "longitude": 46.397,
+      "status": "OFFLINE",
+      "heading": 135
+    },
+    {
+      "id": "35",
+      "assetId": "AST-0019",
+      "latitude": 24.8206,
+      "longitude": 46.397,
+      "status": "MOVING",
+      "heading": 180
+    },
+    {
+      "id": "36",
+      "assetId": "AST-0021",
+      "latitude": 24.82,
+      "longitude": 46.39715,
+      "status": "IDLE",
+      "heading": 225
+    },
+    {
+      "id": "37",
+      "assetId": "AST-0024",
+      "latitude": 24.82015,
+      "longitude": 46.39715,
+      "status": "STOPPED",
+      "heading": 270
+    },
+    {
+      "id": "38",
+      "assetId": "AST-0030",
+      "latitude": 24.8203,
+      "longitude": 46.39715,
+      "status": "OFFLINE",
+      "heading": 315
+    },
+    {
+      "id": "39",
+      "assetId": "AST-0032",
+      "latitude": 24.82045,
+      "longitude": 46.39715,
+      "status": "MOVING",
+      "heading": 0
+    },
+    {
+      "id": "40",
+      "assetId": "AST-0040",
+      "latitude": 24.8206,
+      "longitude": 46.39715,
+      "status": "IDLE",
+      "heading": 45
+    },
+    {
+      "id": "41",
+      "assetId": "AST-0017",
+      "latitude": 24.82,
+      "longitude": 46.3973,
+      "status": "STOPPED",
+      "heading": 90
+    },
+    {
+      "id": "42",
+      "assetId": "AST-0018",
+      "latitude": 24.82015,
+      "longitude": 46.3973,
+      "status": "OFFLINE",
+      "heading": 135
+    },
+    {
+      "id": "43",
+      "assetId": "AST-0019",
+      "latitude": 24.8203,
+      "longitude": 46.3973,
+      "status": "MOVING",
+      "heading": 180
+    },
+    {
+      "id": "44",
+      "assetId": "AST-0021",
+      "latitude": 24.82045,
+      "longitude": 46.3973,
+      "status": "IDLE",
+      "heading": 225
+    },
+    {
+      "id": "45",
+      "assetId": "AST-0024",
+      "latitude": 24.8206,
+      "longitude": 46.3973,
+      "status": "STOPPED",
+      "heading": 270
+    },
+    {
+      "id": "46",
+      "assetId": "AST-0030",
+      "latitude": 24.791,
+      "longitude": 46.431,
+      "status": "MOVING",
+      "heading": 0
+    },
+    {
+      "id": "47",
+      "assetId": "AST-0032",
+      "latitude": 24.79115,
+      "longitude": 46.431,
+      "status": "IDLE",
+      "heading": 45
+    },
+    {
+      "id": "48",
+      "assetId": "AST-0040",
+      "latitude": 24.7913,
+      "longitude": 46.431,
+      "status": "STOPPED",
+      "heading": 90
+    },
+    {
+      "id": "49",
+      "assetId": "AST-0017",
+      "latitude": 24.79145,
+      "longitude": 46.431,
+      "status": "OFFLINE",
+      "heading": 135
+    },
+    {
+      "id": "50",
+      "assetId": "AST-0018",
+      "latitude": 24.7916,
+      "longitude": 46.431,
+      "status": "MOVING",
+      "heading": 180
+    },
+    {
+      "id": "51",
+      "assetId": "AST-0019",
+      "latitude": 24.791,
+      "longitude": 46.43115,
+      "status": "IDLE",
+      "heading": 225
+    },
+    {
+      "id": "52",
+      "assetId": "AST-0021",
+      "latitude": 24.79115,
+      "longitude": 46.43115,
+      "status": "STOPPED",
+      "heading": 270
+    },
+    {
+      "id": "53",
+      "assetId": "AST-0024",
+      "latitude": 24.7913,
+      "longitude": 46.43115,
+      "status": "OFFLINE",
+      "heading": 315
+    },
+    {
+      "id": "54",
+      "assetId": "AST-0030",
+      "latitude": 24.79145,
+      "longitude": 46.43115,
+      "status": "MOVING",
+      "heading": 0
+    },
+    {
+      "id": "55",
+      "assetId": "AST-0032",
+      "latitude": 24.7916,
+      "longitude": 46.43115,
+      "status": "IDLE",
+      "heading": 45
+    },
+    {
+      "id": "56",
+      "assetId": "AST-0040",
+      "latitude": 24.791,
+      "longitude": 46.4313,
+      "status": "STOPPED",
+      "heading": 90
+    },
+    {
+      "id": "57",
+      "assetId": "AST-0017",
+      "latitude": 24.79115,
+      "longitude": 46.4313,
+      "status": "OFFLINE",
+      "heading": 135
+    },
+    {
+      "id": "58",
+      "assetId": "AST-0018",
+      "latitude": 24.7913,
+      "longitude": 46.4313,
+      "status": "MOVING",
+      "heading": 180
+    },
+    {
+      "id": "59",
+      "assetId": "AST-0019",
+      "latitude": 24.79145,
+      "longitude": 46.4313,
+      "status": "IDLE",
+      "heading": 225
+    },
+    {
+      "id": "60",
+      "assetId": "AST-0021",
+      "latitude": 24.7916,
+      "longitude": 46.4313,
+      "status": "STOPPED",
+      "heading": 270
+    },
+    {
+      "id": "61",
+      "assetId": "AST-0024",
+      "latitude": 24.791,
+      "longitude": 46.43145,
+      "status": "OFFLINE",
+      "heading": 315
+    },
+    {
+      "id": "62",
+      "assetId": "AST-0030",
+      "latitude": 24.79115,
+      "longitude": 46.43145,
+      "status": "MOVING",
+      "heading": 0
+    },
+    {
+      "id": "63",
+      "assetId": "AST-0032",
+      "latitude": 24.7913,
+      "longitude": 46.43145,
+      "status": "IDLE",
+      "heading": 45
+    },
+    {
+      "id": "64",
+      "assetId": "AST-0040",
+      "latitude": 24.79145,
+      "longitude": 46.43145,
+      "status": "STOPPED",
+      "heading": 90
+    },
+    {
+      "id": "65",
+      "assetId": "AST-0017",
+      "latitude": 24.7916,
+      "longitude": 46.43145,
+      "status": "OFFLINE",
+      "heading": 135
+    },
+    {
+      "id": "66",
+      "assetId": "AST-0017",
+      "latitude": 24.866,
+      "longitude": 46.401,
+      "status": "STOPPED",
+      "heading": 0
+    },
+    {
+      "id": "67",
+      "assetId": "AST-0018",
+      "latitude": 24.842,
+      "longitude": 46.443,
+      "status": "MOVING",
+      "heading": 0
+    },
+    {
+      "id": "68",
+      "assetId": "AST-0019",
+      "latitude": 24.805,
+      "longitude": 46.355,
+      "status": "OFFLINE",
+      "heading": 0
+    }
+  ]
+}

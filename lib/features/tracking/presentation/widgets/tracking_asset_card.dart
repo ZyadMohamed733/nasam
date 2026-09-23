@@ -6,11 +6,11 @@ import '../../../../core/constants/app_icons.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../shared/widgets/app_card.dart';
+import '../../domain/entities/tracked_asset.dart';
 import '../../domain/entities/tracking_vehicle.dart';
 import '../tracking_style.dart';
 import '../utils/tracking_person_initials.dart';
 
-import '../../domain/entities/tracked_asset.dart';
 class TrackingAssetCard extends StatelessWidget {
   const TrackingAssetCard({super.key, required this.asset});
   final TrackedAsset asset;

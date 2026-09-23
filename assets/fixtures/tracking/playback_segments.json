@@ -1,0 +1,58 @@
+{
+  "data": [
+    {
+      "startedAt": "2025-10-17T17:30:00",
+      "endedAt": "2025-10-17T18:00:00",
+      "distanceKm": 3.2,
+      "durationMinutes": 30,
+      "maxSpeedKph": 42,
+      "startPlace": "المطار",
+      "endPlace": "موقف"
+    },
+    {
+      "startedAt": "2025-10-17T15:23:00",
+      "endedAt": "2025-10-17T16:00:00",
+      "distanceKm": 4.0,
+      "durationMinutes": 37,
+      "maxSpeedKph": 47,
+      "startPlace": "موقف",
+      "endPlace": "المطار"
+    },
+    {
+      "startedAt": "2025-10-17T13:16:00",
+      "endedAt": "2025-10-17T14:00:00",
+      "distanceKm": 4.8,
+      "durationMinutes": 44,
+      "maxSpeedKph": 52,
+      "startPlace": "المطار",
+      "endPlace": "موقف"
+    },
+    {
+      "startedAt": "2025-10-17T11:09:00",
+      "endedAt": "2025-10-17T12:00:00",
+      "distanceKm": 5.6,
+      "durationMinutes": 51,
+      "maxSpeedKph": 57,
+      "startPlace": "موقف",
+      "endPlace": "المطار"
+    },
+    {
+      "startedAt": "2025-10-17T09:02:00",
+      "endedAt": "2025-10-17T10:00:00",
+      "distanceKm": 6.4,
+      "durationMinutes": 58,
+      "maxSpeedKph": 62,
+      "startPlace": "المطار",
+      "endPlace": "موقف"
+    },
+    {
+      "startedAt": "2025-10-17T06:55:00",
+      "endedAt": "2025-10-17T08:00:00",
+      "distanceKm": 7.2,
+      "durationMinutes": 65,
+      "maxSpeedKph": 67,
+      "startPlace": "موقف",
+      "endPlace": "المطار"
+    }
+  ]
+}

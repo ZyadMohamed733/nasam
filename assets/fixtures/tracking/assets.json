@@ -1,0 +1,68 @@
+{
+  "data": [
+    {
+      "id": "AST-0017",
+      "code": "AST-0017",
+      "name": "الأصل ٢",
+      "status": "MOVING",
+      "assignedPerson": "Aya Al-Rashidi",
+      "routeProgress": 0.62
+    },
+    {
+      "id": "AST-0018",
+      "code": "AST-0018",
+      "name": "الأصل ٢",
+      "status": "IDLE",
+      "assignedPerson": "Aya Al-Rashidi",
+      "routeProgress": 0.38
+    },
+    {
+      "id": "AST-0019",
+      "code": "AST-0019",
+      "name": "الأصل ٢",
+      "status": "STOPPED",
+      "assignedPerson": "Aya Al-Rashidi",
+      "routeProgress": 0.18
+    },
+    {
+      "id": "AST-0021",
+      "code": "AST-0021",
+      "name": "الأصل ٣",
+      "status": "MOVING",
+      "assignedPerson": "Omar Hassan",
+      "routeProgress": 0.78
+    },
+    {
+      "id": "AST-0024",
+      "code": "AST-0024",
+      "name": "الأصل ٤",
+      "status": "IDLE",
+      "assignedPerson": "Mona Ali",
+      "routeProgress": 0.45
+    },
+    {
+      "id": "AST-0030",
+      "code": "AST-0030",
+      "name": "الأصل ٥",
+      "status": "OFFLINE",
+      "assignedPerson": "Khaled Nabil",
+      "routeProgress": 0.25
+    },
+    {
+      "id": "AST-0032",
+      "code": "AST-0032",
+      "name": "الأصل ٦",
+      "status": "STOPPED",
+      "assignedPerson": "Nour Samir",
+      "routeProgress": 0.12
+    },
+    {
+      "id": "AST-0040",
+      "code": "AST-0040",
+      "name": "الأصل ٧",
+      "status": "OFFLINE",
+      "assignedPerson": "Youssef Adel",
+      "routeProgress": 0.05
+    }
+  ]
+}

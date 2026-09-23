@@ -25,14 +25,14 @@ class TrackingState {
   int count(VehicleStatus status) =>
       vehicles.where((v) => v.status == status).length;
 
-  /// The asset a map marker stands for. Vehicle ids are numeric and assets are
-  /// a shorter list, so the marker maps onto the fleet by position — a real
-  /// backend would return the asset id on the vehicle and this goes away.
+  /// The asset a tapped marker stands for, looked up by the id the vehicle
+  /// carries. Returns null when the fleet has not loaded or the asset is not
+  /// in the current list, which the caller treats as "do nothing".
   TrackedAsset? assetForVehicle(TrackingVehicle vehicle) {
-    if (assets.isEmpty) return null;
-    final index = int.tryParse(vehicle.id);
-    if (index == null) return null;
-    return assets[(index - 1) % assets.length];
+    for (final asset in assets) {
+      if (asset.id == vehicle.assetId) return asset;
+    }
+    return null;
   }
 }
 
