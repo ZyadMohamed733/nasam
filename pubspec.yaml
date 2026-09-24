@@ -55,10 +55,20 @@ dependencies:
   hijri: ^3.0.1
   flutter_advanced_drawer: ^1.5.0
   google_maps_flutter: ^2.18.1
+  # A fork of bpillon/google_maps_cluster_manager 3.1.0 (the pub release).
+  # google_maps_flutter_platform_interface now exports its own `Cluster` and
+  # `ClusterManager` (native clustering), so upstream 3.1.0 no longer
+  # compiles against it: the names collide. The fork's only changes that
+  # matter here are `hide Cluster` / `hide ClusterManager` on that import
+  # (plus an unused `ClusterItem.shouldCluster` hook). Upstream report:
+  # https://github.com/bpillon/google_maps_cluster_manager/issues/58 (open;
+  # the error is in a screenshot, so match it before relying on it).
+  # Pinned to a SHA, not `master`, so a new push to the fork cannot
+  # change the build. Drop the fork when upstream publishes a fix.
   google_maps_cluster_manager:
     git:
       url: https://github.com/DanielSchmerber/google_maps_cluster_manager.git
-      ref: master
+      ref: 7553a42cb0d95cecad40349fa01fde5cac55719d
 
 dev_dependencies:
   flutter_test:
