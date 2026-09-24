@@ -29,6 +29,7 @@ class TrackingSummary extends StatelessWidget {
     required this.expanded,
     required this.scrollController,
     required this.searchController,
+    required this.searchFocusNode,
     required this.onToggle,
     required this.onHeaderSize,
     required this.onClearFilters,
@@ -37,6 +38,7 @@ class TrackingSummary extends StatelessWidget {
   final bool expanded;
   final ScrollController scrollController;
   final TextEditingController searchController;
+  final FocusNode searchFocusNode;
   final VoidCallback onToggle;
 
   /// The header's laid-out height — what the collapsed sheet must show.
@@ -97,6 +99,7 @@ class TrackingSummary extends StatelessWidget {
                     : TrackingStyle.label(l, selectedStatus),
                 assets: state.visibleAssets,
                 searchController: searchController,
+                searchFocusNode: searchFocusNode,
                 onQueryChanged: cubit.onQueryChanged,
                 filtered: selectedStatus != null || state.query.isNotEmpty,
                 onClearFilters: onClearFilters,

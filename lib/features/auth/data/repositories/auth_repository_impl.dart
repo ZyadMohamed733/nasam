@@ -10,10 +10,12 @@ import '../../../../core/errors/failures.dart';
 import '../../../../core/services/secure_storage_service.dart';
 import '../../domain/entities/auth_session_entity.dart';
 import '../../domain/entities/login_result.dart';
+import '../../domain/entities/user_entity.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../datasources/remote/auth_remote_datasource.dart';
 import '../mappers/auth_mapper.dart';
 import '../models/auth_session_model.dart';
+import '../models/user_model.dart';
 
 @LazySingleton(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
@@ -67,6 +69,27 @@ class AuthRepositoryImpl implements AuthRepository {
     }
     return unit;
   });
+
+  @override
+  Future<Either<Failure, UserEntity?>> currentUser() async {
+    final String? json;
+    try {
+      json = await _secureStorage.getUser();
+    } catch (e, stack) {
+      return Left(CacheFailure(message: e.toString(), stackTrace: stack));
+    }
+    if (json == null || json.isEmpty) return const Right(null);
+    try {
+      final model = UserModel.fromJson(
+        jsonDecode(json) as Map<String, dynamic>,
+      );
+      return Right(AuthMapper.userToEntity(model));
+    } catch (e, stack) {
+      // Stored by an older build in a shape this one cannot read. Not a
+      // reason to sign anyone out; the profile is just unavailable.
+      return Left(CacheFailure(message: e.toString(), stackTrace: stack));
+    }
+  }
 
   @override
   Future<Either<Failure, Unit>> forgetPassword(String email) =>

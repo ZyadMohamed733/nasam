@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -215,6 +217,31 @@ void main() {
       expect(result, const Right<Failure, Unit>(unit));
       verify(() => remote.logout('refresh-1')).called(1);
       verify(() => storage.clearAuth()).called(1);
+    });
+  });
+
+  group('currentUser', () {
+    test('reads the profile stored at sign-in', () async {
+      when(
+        () => storage.getUser(),
+      ).thenAnswer((_) async => jsonEncode(user().toJson()));
+
+      final result = await repository.currentUser();
+
+      final found = result.getOrElse(() => throw StateError('failed'));
+      expect(found?.username, 'john.doe');
+      expect(found?.nameEn, 'John Doe');
+    });
+
+    test('is null when nobody is signed in', () async {
+      when(() => storage.getUser()).thenAnswer((_) async => null);
+      expect(await repository.currentUser(), const Right<Failure, Null>(null));
+    });
+
+    test('an unreadable stored profile is a CacheFailure', () async {
+      when(() => storage.getUser()).thenAnswer((_) async => '{not json');
+      final result = await repository.currentUser();
+      expect(result.fold((f) => f, (_) => null), isA<CacheFailure>());
     });
   });
 }

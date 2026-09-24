@@ -32,9 +32,13 @@ void main() {
       expect(tester.takeException(), isNull);
       final logout = find.text(locale == 'ar' ? 'تسجيل الخروج' : 'Logout');
       await tester.ensureVisible(logout);
+      // The drawer is a sliver viewport: a scroll takes effect at the next
+      // layout, so positions are stale until a pump.
+      await tester.pump();
       await tester.tap(logout);
       expect(loggedOut, isTrue);
       await tester.ensureVisible(find.text('Test operator'));
+      await tester.pump();
       expect(find.text('Test operator').hitTestable(), findsOneWidget);
       expect(tester.takeException(), isNull);
     });

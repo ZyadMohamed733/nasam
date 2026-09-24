@@ -42,14 +42,22 @@ class AppDrawer extends StatelessWidget {
     this.profileRole,
     this.showBackground = true,
     this.loggingOut = false,
+    this.onSearch,
   });
 
   final VoidCallback onLogout;
 
   /// A sign-out is under way: the entry shows progress and ignores taps.
   final bool loggingOut;
+
+  /// The signed-in user. Left out when unknown rather than filled with a
+  /// placeholder that reads as someone's name.
   final String? profileName;
   final String? profileRole;
+
+  /// Opens the host's search. Without one the search button is not shown:
+  /// a search box that goes nowhere is a dead control.
+  final VoidCallback? onSearch;
   final bool showBackground;
 
   @override
@@ -68,149 +76,189 @@ class AppDrawer extends StatelessWidget {
               end: AppSizes.p16,
               top: AppSizes.p4,
             ),
-            child: LayoutBuilder(
-              builder: (context, constraints) => SingleChildScrollView(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
-                  child: IntrinsicHeight(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Row(
-                          children: [
-                            const AppLogo(size: AppLogoSize.drawer),
-                            const SizedBox(width: AppSizes.p8),
-                            Flexible(
-                              child: Text(
-                                AppConstants.appName.toUpperCase(),
-                                style: text.headlineMedium?.copyWith(
-                                  color: palette.muted,
-                                ),
+            // Fills the height when there is room, so the sign-out block
+            // sits at the bottom, and scrolls when there is not — without
+            // IntrinsicHeight's extra layout pass over the whole column.
+            child: CustomScrollView(
+              slivers: [
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Row(
+                        children: [
+                          const AppLogo(size: AppLogoSize.drawer),
+                          const SizedBox(width: AppSizes.p8),
+                          Flexible(
+                            child: Text(
+                              AppConstants.appName.toUpperCase(),
+                              style: text.headlineMedium?.copyWith(
+                                color: palette.muted,
                               ),
                             ),
-                          ],
-                        ),
-                        const SizedBox(height: AppSizes.p24),
-                        DecoratedBox(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: palette.muted),
-                            borderRadius: BorderRadius.circular(AppSizes.r8),
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(AppSizes.p12),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.search,
-                                  size: AppSizes.iconSm,
-                                  color: palette.muted,
-                                ),
-                                const SizedBox(width: AppSizes.p8),
-                                Flexible(
-                                  child: Text(
-                                    l.trackingSearch,
-                                    style: text.labelMedium?.copyWith(
-                                      color: palette.muted,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        ],
+                      ),
+                      const SizedBox(height: AppSizes.p24),
+                      if (onSearch case final onSearch?) ...[
+                        _SearchButton(onTap: onSearch),
                         const SizedBox(height: AppSizes.p12),
-                        _Section(label: l.trackingSystems),
-                        _Entry(
-                          label: l.trackingFleet,
-                          icon: Icons.settings_input_component_outlined,
-                          expanded: true,
+                      ],
+                      _Section(label: l.trackingSystems),
+                      _Entry(
+                        label: l.trackingFleet,
+                        icon: Icons.settings_input_component_outlined,
+                        expanded: true,
+                      ),
+                      _Entry(
+                        label: l.trackingTitle,
+                        icon: Icons.location_on_outlined,
+                        selected: true,
+                      ),
+                      _Entry(
+                        label: l.trackingPoi,
+                        icon: Icons.pin_drop_outlined,
+                      ),
+                      _Entry(
+                        label: l.trackingGeofences,
+                        icon: Icons.straighten_outlined,
+                      ),
+                      _Entry(
+                        label: l.trackingAssignments,
+                        icon: Icons.link,
+                        expanded: false,
+                      ),
+                      const SizedBox(height: AppSizes.p8),
+                      _Section(label: l.trackingSettings),
+                      _Entry(
+                        label: l.trackingSettings,
+                        icon: Icons.settings_outlined,
+                        expanded: true,
+                      ),
+                      const Spacer(),
+                      const SizedBox(height: AppSizes.p16),
+                      _Entry(
+                        label: l.trackingLogout,
+                        icon: Icons.logout_rounded,
+                        busy: loggingOut,
+                        onTap: loggingOut ? null : onLogout,
+                      ),
+                      ConstrainedBox(
+                        constraints: const BoxConstraints(
+                          minHeight: AppSizes.drawerFooterHeight,
                         ),
-                        _Entry(
-                          label: l.trackingTitle,
-                          icon: Icons.location_on_outlined,
-                          selected: true,
-                        ),
-                        _Entry(
-                          label: l.trackingPoi,
-                          icon: Icons.pin_drop_outlined,
-                        ),
-                        _Entry(
-                          label: l.trackingGeofences,
-                          icon: Icons.straighten_outlined,
-                        ),
-                        _Entry(
-                          label: l.trackingAssignments,
-                          icon: Icons.link,
-                          expanded: false,
-                        ),
-                        const SizedBox(height: AppSizes.p8),
-                        _Section(label: l.trackingSettings),
-                        _Entry(
-                          label: l.trackingSettings,
-                          icon: Icons.settings_outlined,
-                          expanded: true,
-                        ),
-                        const Spacer(),
-                        const SizedBox(height: AppSizes.p16),
-                        _Entry(
-                          label: l.trackingLogout,
-                          icon: Icons.logout_rounded,
-                          busy: loggingOut,
-                          onTap: loggingOut ? null : onLogout,
-                        ),
-                        ConstrainedBox(
-                          constraints: const BoxConstraints(
-                            minHeight: AppSizes.drawerFooterHeight,
-                          ),
-                          child: Align(
-                            alignment: AlignmentDirectional.bottomStart,
-                            child: Row(
-                              children: [
-                                CircleAvatar(
-                                  radius: AppSizes.drawerAvatarRadius,
-                                  backgroundColor: palette.avatarBackground,
-                                  child: Icon(
-                                    Icons.person,
-                                    color: palette.avatarForeground,
-                                  ),
+                        child: Align(
+                          alignment: AlignmentDirectional.bottomStart,
+                          child: Row(
+                            children: [
+                              CircleAvatar(
+                                radius: AppSizes.drawerAvatarRadius,
+                                backgroundColor: palette.avatarBackground,
+                                child: Icon(
+                                  Icons.person,
+                                  color: palette.avatarForeground,
                                 ),
-                                const SizedBox(width: AppSizes.p12),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
+                              ),
+                              const SizedBox(width: AppSizes.p12),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    if (profileName case final name?)
                                       Text(
-                                        profileName ?? l.drawerDemoProfileName,
+                                        name,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
                                         style: text.bodySmall?.copyWith(
                                           color: palette.profileText,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
+                                    if (profileRole case final role?) ...[
                                       const SizedBox(height: AppSizes.p4),
                                       Text(
-                                        profileRole ?? l.trackingAdmin,
+                                        role,
                                         style: text.labelSmall?.copyWith(
                                           color: palette.background,
                                         ),
                                       ),
                                     ],
-                                  ),
+                                  ],
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Opens the host's search: styled as the design's search box, but a
+/// button, since the drawer has no list of its own to search.
+class _SearchButton extends StatelessWidget {
+  const _SearchButton({required this.onTap});
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+    final palette = AppDrawerTheme.of(context);
+    final radius = BorderRadius.circular(AppSizes.r8);
+    return Semantics(
+      button: true,
+      label: l.trackingSearch,
+      onTap: onTap,
+      excludeSemantics: true,
+      child: Material(
+        type: MaterialType.transparency,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: radius,
+          child: Ink(
+            decoration: BoxDecoration(
+              border: Border.all(color: palette.muted),
+              borderRadius: radius,
+            ),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(
+                minHeight: kMinInteractiveDimension,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppSizes.p12),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.search,
+                      size: AppSizes.iconSm,
+                      color: palette.muted,
+                    ),
+                    const SizedBox(width: AppSizes.p8),
+                    Flexible(
+                      child: Text(
+                        l.trackingSearch,
+                        style: Theme.of(
+                          context,
+                        ).textTheme.labelMedium?.copyWith(color: palette.muted),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
         ),
-      ],
+      ),
     );
   }
 }

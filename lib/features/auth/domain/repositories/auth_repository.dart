@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 import '../../../../core/errors/failures.dart';
 import '../entities/auth_session_entity.dart';
 import '../entities/login_result.dart';
+import '../entities/user_entity.dart';
 
 abstract class AuthRepository {
   /// Signs in. On [LoginSucceeded], the session (tokens + user) has already
@@ -32,6 +33,10 @@ abstract class AuthRepository {
   /// precondition for it. The token refresh is not here: it belongs to
   /// `TokenRefresher` in core, the app's only refresh path.
   Future<Either<Failure, Unit>> logout();
+
+  /// The signed-in user's profile as last stored at sign-in, or null when
+  /// nobody is signed in. Local only: no network call.
+  Future<Either<Failure, UserEntity?>> currentUser();
 
   /// Starts a password reset by emailing [email] a reset link. Always
   /// succeeds with the same message whether or not the address has an

@@ -20,6 +20,7 @@ class TrackingAssetList extends StatelessWidget {
     required this.title,
     required this.assets,
     required this.searchController,
+    required this.searchFocusNode,
     required this.onQueryChanged,
     required this.filtered,
     required this.onClearFilters,
@@ -32,6 +33,7 @@ class TrackingAssetList extends StatelessWidget {
   final List<TrackedAsset> assets;
 
   final TextEditingController searchController;
+  final FocusNode searchFocusNode;
 
   /// Every keystroke; the cubit debounces.
   final ValueChanged<String> onQueryChanged;
@@ -51,6 +53,7 @@ class TrackingAssetList extends StatelessWidget {
             padding: EdgeInsets.only(top: 12.h, bottom: 8.h),
             child: TrackingAssetSearchField(
               controller: searchController,
+              focusNode: searchFocusNode,
               onChanged: onQueryChanged,
             ),
           ),

@@ -284,7 +284,6 @@
   "trackingGeofences": "مناطق جغرافية",
   "trackingAssignments": "إدارة التعيينات",
   "trackingSettings": "الإعدادات",
-  "trackingAdmin": "مدير النظام",
   "trackingAsset": "الأصل",
   "trackingNotifications": "الإشعارات",
   "trackingLayers": "الطبقات",
@@ -292,7 +291,6 @@
   "trackingZoomOut": "تصغير",
   "trackingMenu": "القائمة",
   "trackingLogout": "تسجيل الخروج",
-  "drawerDemoProfileName": "Aya Al-Rashidi",
   "assetDetailsInformation": "المعلومات",
   "assetDetailsTracking": "التتبع",
   "assetDetailsLocation": "الموقع",
@@ -485,5 +483,21 @@
         "type": "String"
       }
     }
+  },
+  "userTypeAdmin": "مدير النظام",
+  "@userTypeAdmin": {
+    "description": "Design copy: the drawer reference labels an administrator this way."
+  },
+  "userTypeEmployee": "موظف",
+  "@userTypeEmployee": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
+  "userTypeClientAdmin": "مدير العميل",
+  "@userTypeClientAdmin": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
+  "userTypeClientEmployee": "موظف العميل",
+  "@userTypeClientEmployee": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
   }
 }

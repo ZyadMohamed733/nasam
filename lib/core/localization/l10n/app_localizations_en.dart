@@ -338,9 +338,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get trackingSettings => 'Settings';
 
   @override
-  String get trackingAdmin => 'System administrator';
-
-  @override
   String get trackingAsset => 'Asset';
 
   @override
@@ -360,9 +357,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get trackingLogout => 'Logout';
-
-  @override
-  String get drawerDemoProfileName => 'Aya Al-Rashidi';
 
   @override
   String get assetDetailsInformation => 'Information';
@@ -610,4 +604,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String durationHoursMinutes(String hours, String minutes) {
     return '${hours}h ${minutes}m';
   }
+
+  @override
+  String get userTypeAdmin => 'System administrator';
+
+  @override
+  String get userTypeEmployee => 'Employee';
+
+  @override
+  String get userTypeClientAdmin => 'Client administrator';
+
+  @override
+  String get userTypeClientEmployee => 'Client employee';
 }

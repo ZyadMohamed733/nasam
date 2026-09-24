@@ -46,6 +46,7 @@ class _TrackingViewState extends State<_TrackingView>
   var _mapType = MapType.normal;
   late final _summaryController = DraggableScrollableController();
   final _searchController = TextEditingController();
+  final _searchFocus = FocusNode();
 
   /// The fleet sheet's header as laid out — handle, title and chips at the
   /// current text scale. The collapsed sheet is exactly this tall.
@@ -76,6 +77,7 @@ class _TrackingViewState extends State<_TrackingView>
   void dispose() {
     _summaryController.dispose();
     _searchController.dispose();
+    _searchFocus.dispose();
     _drawerFade.dispose();
     _drawerAnimation.dispose();
     _drawer.dispose();
@@ -130,6 +132,20 @@ class _TrackingViewState extends State<_TrackingView>
     );
   }
 
+  /// The drawer's search: close the drawer, open the sheet, and put the
+  /// cursor in the search field.
+  Future<void> _openSearch() async {
+    _drawer.hideDrawer();
+    if (_summaryController.isAttached) {
+      await _summaryController.animateTo(
+        _sheetSizes.max,
+        duration: const Duration(milliseconds: 180),
+        curve: Curves.easeOutCubic,
+      );
+    }
+    if (mounted) _searchFocus.requestFocus();
+  }
+
   void _clearFilters() {
     _searchController.clear();
     context.read<TrackingCubit>().clearFilters();
@@ -169,7 +185,7 @@ class _TrackingViewState extends State<_TrackingView>
           ),
           drawer: FadeTransition(
             opacity: _drawerFade,
-            child: const SessionDrawer(showBackground: false),
+            child: SessionDrawer(showBackground: false, onSearch: _openSearch),
           ),
           child: Scaffold(
             body: BlocConsumer<TrackingCubit, TrackingState>(
@@ -271,6 +287,7 @@ class _TrackingViewState extends State<_TrackingView>
               expanded: _summaryExpanded,
               scrollController: scrollController,
               searchController: _searchController,
+              searchFocusNode: _searchFocus,
               onToggle: _toggleSummary,
               onHeaderSize: _onHeaderSize,
               onClearFilters: _clearFilters,

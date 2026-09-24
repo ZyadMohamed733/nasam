@@ -626,12 +626,6 @@ abstract class AppLocalizations {
   /// **'الإعدادات'**
   String get trackingSettings;
 
-  /// No description provided for @trackingAdmin.
-  ///
-  /// In ar, this message translates to:
-  /// **'مدير النظام'**
-  String get trackingAdmin;
-
   /// No description provided for @trackingAsset.
   ///
   /// In ar, this message translates to:
@@ -673,12 +667,6 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'تسجيل الخروج'**
   String get trackingLogout;
-
-  /// No description provided for @drawerDemoProfileName.
-  ///
-  /// In ar, this message translates to:
-  /// **'Aya Al-Rashidi'**
-  String get drawerDemoProfileName;
 
   /// No description provided for @assetDetailsInformation.
   ///
@@ -1135,6 +1123,30 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'{hours} س {minutes} م'**
   String durationHoursMinutes(String hours, String minutes);
+
+  /// Design copy: the drawer reference labels an administrator this way.
+  ///
+  /// In ar, this message translates to:
+  /// **'مدير النظام'**
+  String get userTypeAdmin;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'موظف'**
+  String get userTypeEmployee;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'مدير العميل'**
+  String get userTypeClientAdmin;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'موظف العميل'**
+  String get userTypeClientEmployee;
 }
 
 class _AppLocalizationsDelegate

@@ -352,9 +352,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get trackingSettings => 'الإعدادات';
 
   @override
-  String get trackingAdmin => 'مدير النظام';
-
-  @override
   String get trackingAsset => 'الأصل';
 
   @override
@@ -374,9 +371,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get trackingLogout => 'تسجيل الخروج';
-
-  @override
-  String get drawerDemoProfileName => 'Aya Al-Rashidi';
 
   @override
   String get assetDetailsInformation => 'المعلومات';
@@ -623,4 +617,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String durationHoursMinutes(String hours, String minutes) {
     return '$hours س $minutes م';
   }
+
+  @override
+  String get userTypeAdmin => 'مدير النظام';
+
+  @override
+  String get userTypeEmployee => 'موظف';
+
+  @override
+  String get userTypeClientAdmin => 'مدير العميل';
+
+  @override
+  String get userTypeClientEmployee => 'موظف العميل';
 }

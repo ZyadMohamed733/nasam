@@ -5,7 +5,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:nasam/core/di/injection_container.dart';
+import 'package:nasam/features/auth/domain/entities/user_entity.dart';
+import 'package:nasam/features/auth/domain/entities/user_type.dart';
+import 'package:nasam/features/auth/domain/usecases/get_current_user_usecase.dart';
 import 'package:nasam/features/auth/domain/usecases/logout_usecase.dart';
+import 'package:nasam/features/auth/presentation/cubit/current_user_cubit.dart';
 import 'package:nasam/features/auth/presentation/cubit/logout_cubit.dart';
 import 'package:nasam/features/tracking/domain/usecases/get_tracked_assets_usecase.dart';
 import 'package:nasam/features/tracking/domain/usecases/get_tracking_vehicles_usecase.dart';
@@ -18,14 +22,36 @@ import 'widget_harness.dart';
 
 class _MockLogout extends Mock implements LogoutUseCase {}
 
+class _MockGetCurrentUser extends Mock implements GetCurrentUserUseCase {}
+
+/// The user the fakes report as signed in.
+const signedInUser = UserEntity(
+  id: 'user-1',
+  username: 'aya',
+  email: 'aya@nasam.sa',
+  nameEn: 'Aya Al-Rashidi',
+  nameAr: null,
+  account: null,
+  type: UserType.admin,
+  permissions: [],
+);
+
 /// Registers what the tracking screen's drawer resolves from the container,
 /// with fakes, and removes them after the test.
 void registerTrackingScreenFakes() {
   if (getIt.isRegistered<LogoutCubit>()) return;
   final logout = _MockLogout();
   when(logout.call).thenAnswer((_) async => const Right(unit));
-  getIt.registerFactory<LogoutCubit>(() => LogoutCubit(logout));
-  addTearDown(() => getIt.unregister<LogoutCubit>());
+  final currentUser = _MockGetCurrentUser();
+  when(currentUser.call).thenAnswer((_) async => const Right(signedInUser));
+  getIt
+    ..registerFactory<LogoutCubit>(() => LogoutCubit(logout))
+    ..registerFactory<CurrentUserCubit>(() => CurrentUserCubit(currentUser));
+  addTearDown(() {
+    getIt
+      ..unregister<LogoutCubit>()
+      ..unregister<CurrentUserCubit>();
+  });
 }
 
 /// The tracking screen as the router builds it, over the JSON fixtures.

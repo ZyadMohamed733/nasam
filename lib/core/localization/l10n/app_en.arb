@@ -88,7 +88,6 @@
   "trackingGeofences": "Geofences",
   "trackingAssignments": "Assignments",
   "trackingSettings": "Settings",
-  "trackingAdmin": "System administrator",
   "trackingAsset": "Asset",
   "trackingNotifications": "Notifications",
   "trackingLayers": "Layers",
@@ -96,7 +95,6 @@
   "trackingZoomOut": "Zoom out",
   "trackingMenu": "Menu",
   "trackingLogout": "Logout",
-  "drawerDemoProfileName": "Aya Al-Rashidi",
   "assetDetailsInformation": "Information",
   "assetDetailsTracking": "Tracking",
   "assetDetailsLocation": "Location",
@@ -244,5 +242,9 @@
         "type": "String"
       }
     }
-  }
+  },
+  "userTypeAdmin": "System administrator",
+  "userTypeEmployee": "Employee",
+  "userTypeClientAdmin": "Client administrator",
+  "userTypeClientEmployee": "Client employee"
 }

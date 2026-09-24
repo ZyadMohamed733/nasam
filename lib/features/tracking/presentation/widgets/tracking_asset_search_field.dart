@@ -7,10 +7,18 @@ import '../../../../core/localization/l10n/app_localizations.dart';
 /// The fleet sheet's search box. Sized with ScreenUtil throughout, and not
 /// given a fixed height: at a large text scale the text needs the room.
 class TrackingAssetSearchField extends StatelessWidget {
-  const TrackingAssetSearchField({super.key, this.controller, this.onChanged});
+  const TrackingAssetSearchField({
+    super.key,
+    this.controller,
+    this.focusNode,
+    this.onChanged,
+  });
 
   /// Owned by the host, so clearing the filters can clear the text too.
   final TextEditingController? controller;
+
+  /// Owned by the host, so the drawer's search button can focus the field.
+  final FocusNode? focusNode;
   final ValueChanged<String>? onChanged;
 
   @override
@@ -23,6 +31,7 @@ class TrackingAssetSearchField extends StatelessWidget {
     );
     return TextField(
       controller: controller,
+      focusNode: focusNode,
       onChanged: onChanged,
       // Start, not right: typed text begins where the reader's eye does, in
       // both directions.

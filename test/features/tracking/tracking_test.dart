@@ -1,4 +1,3 @@
-import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,10 +5,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart'
     as clusters;
 import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
-import 'package:mocktail/mocktail.dart';
-import 'package:nasam/core/di/injection_container.dart';
-import 'package:nasam/features/auth/domain/usecases/logout_usecase.dart';
-import 'package:nasam/features/auth/presentation/cubit/logout_cubit.dart';
 import 'package:nasam/features/tracking/domain/entities/tracking_vehicle.dart';
 import 'package:nasam/features/tracking/domain/repositories/tracking_repository.dart';
 import 'package:nasam/features/tracking/domain/usecases/get_tracked_assets_usecase.dart';
@@ -21,6 +16,7 @@ import 'package:nasam/features/tracking/presentation/widgets/tracking_map.dart';
 
 import '../../helpers/fake_map_platform.dart';
 import '../../helpers/fixture_bundle.dart';
+import '../../helpers/tracking_screen.dart';
 import '../../helpers/widget_harness.dart';
 
 /// The real repository over the dummy source — what the app resolves in dev.
@@ -45,16 +41,10 @@ Future<List<TrackingVehicle>> _fleet() async =>
       () => throw StateError('fleet unavailable'),
     );
 
-class _MockLogout extends Mock implements LogoutUseCase {}
-
 void main() {
-  // The drawer's sign-out is resolved from the container.
-  setUp(() {
-    final logout = _MockLogout();
-    when(logout.call).thenAnswer((_) async => const Right(unit));
-    getIt.registerFactory<LogoutCubit>(() => LogoutCubit(logout));
-  });
-  tearDown(() => getIt.unregister<LogoutCubit>());
+  // The drawer's sign-out and signed-in user are resolved from the
+  // container; the stored user is Aya Al-Rashidi.
+  setUp(registerTrackingScreenFakes);
 
   test('the fixture fleet has distinct ids and consistent status counts',
       () async {

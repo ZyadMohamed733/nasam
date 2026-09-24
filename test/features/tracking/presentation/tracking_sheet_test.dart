@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:nasam/core/localization/l10n/app_localizations.dart';
@@ -113,5 +114,22 @@ void main() {
       isEmpty,
       reason: 'the typed text goes too',
     );
+  });
+
+  testWidgets("the drawer's search opens the sheet with the field focused", (
+    tester,
+  ) async {
+    await pumpTrackingScreen(tester);
+    final drawer = tester.widget<AdvancedDrawer>(find.byType(AdvancedDrawer));
+    drawer.controller!.showDrawer();
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Search').hitTestable());
+    await tester.pumpAndSettle();
+
+    expect(drawer.controller!.value.visible, isFalse, reason: 'closed');
+    expect(inSheet('Show'), findsNothing, reason: 'the sheet is open');
+    final field = tester.widget<TextField>(find.byType(TextField));
+    expect(field.focusNode!.hasFocus, isTrue);
   });
 }
