@@ -58,7 +58,7 @@ Widget assetDetailsScreen([String id = fixtureAssetId]) {
 }
 
 /// The playback screen as the route builds it, over the fixtures.
-Widget assetPlaybackScreen([String id = fixtureAssetId]) {
+Widget assetPlaybackScreen([String id = fixtureAssetId, PlaybackRange? range]) {
   final repository = fixtureTrackingRepository();
   return MultiBlocProvider(
     providers: [
@@ -73,7 +73,7 @@ Widget assetPlaybackScreen([String id = fixtureAssetId]) {
     ],
     child: TrackingAssetPlaybackPage(
       assetId: id,
-      initialRange: PlaybackRange.today(),
+      initialRange: range ?? PlaybackRange.today(),
     ),
   );
 }

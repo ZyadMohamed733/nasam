@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_icons.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 import '../../../../core/router/app_routes.dart';
+import '../../../../core/utils/bidi.dart';
 import '../../../../shared/widgets/app_card.dart';
 import '../../domain/entities/tracked_asset.dart';
 import '../../domain/entities/tracking_vehicle.dart';
@@ -60,11 +61,11 @@ class TrackingAssetCard extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     Text(
-                      [
+                      joinIsolated([
                         asset.code,
                         if (asset.statusDuration case final d?)
                           TrackingUnits.of(context).duration(d),
-                      ].join(' • '),
+                      ], ' • '),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(

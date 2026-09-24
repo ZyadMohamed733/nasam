@@ -43,9 +43,9 @@ jobs:
       - name: Analyze
         run: flutter analyze
 
-      # Goldens are excluded: they are rendered by the host font stack and are
-      # generated on macOS, so a Linux runner produces different pixels.
-      # Run them locally with `flutter test --tags golden`.
+      # Goldens are excluded here: they are rendered by the host font stack
+      # and generated on macOS, so a Linux runner produces different pixels.
+      # The `goldens` job below compares them on macOS.
       - name: Test
         run: flutter test --coverage --exclude-tags golden
 
@@ -54,6 +54,30 @@ jobs:
         with:
           name: coverage
           path: coverage/lcov.info
+
+  goldens:
+    name: Golden tests (macOS)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Compare goldens
+        run: flutter test --tags golden
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: golden-failures
+          path: test/goldens/failures/
 
   build-android:
     name: Build release APK

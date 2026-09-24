@@ -1,0 +1,4 @@
+tags:
+  # Pixel comparisons against checked-in PNGs. Generated and compared on
+  # macOS only: other platforms rasterise text differently. See README.
+  golden:

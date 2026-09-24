@@ -1,6 +1,8 @@
 @Tags(['golden'])
 library;
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -18,19 +20,15 @@ import 'package:nasam/shared/widgets/app_otp_input.dart';
 import 'package:nasam/shared/widgets/app_page_dots.dart';
 import 'package:nasam/shared/widgets/app_text_field.dart';
 
-import '../helpers/font_loader.dart';
-
 /// Golden files are rendered by the host platform's font stack, so these are
-/// tagged `golden` and excluded on CI, which runs Linux while the goldens are
-/// generated on macOS. Run locally with:
+/// tagged `golden`, generated on macOS, and compared only on macOS (see the
+/// README). The real fonts come from test/flutter_test_config.dart. Run locally with:
 ///   flutter test --tags golden
 ///   flutter test --tags golden --update-goldens
 ///
 /// Every shared widget is captured across the four combinations that can break
 /// it independently: light and dark against English and Arabic.
 void main() {
-  setUpAll(loadAppFonts);
-
   Widget harness({
     required Locale locale,
     required bool dark,
@@ -72,7 +70,9 @@ void main() {
   }) {
     for (final (themeName, dark) in [('light', false), ('dark', true)]) {
       for (final localeCode in ['en', 'ar']) {
-        testWidgets('$name $themeName $localeCode', (tester) async {
+        testWidgets('$name $themeName $localeCode', skip: !Platform.isMacOS, (
+          tester,
+        ) async {
           final widget = harness(
             locale: Locale(localeCode),
             dark: dark,
@@ -123,7 +123,8 @@ void main() {
 
   matrix(
     'app_button_primary',
-    () => const AppButton(onPressed: _noop, label: 'متابعة', icon: AppIcons.user),
+    () =>
+        const AppButton(onPressed: _noop, label: 'متابعة', icon: AppIcons.user),
     finder: () => find.byType(AppButton),
   );
 

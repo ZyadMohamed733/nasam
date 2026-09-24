@@ -31,6 +31,27 @@ Both folders are committed. `.idea/` is gitignored, so a run configuration creat
 through the Android Studio UI is stored where nobody else can see it — put new ones
 in `.run/` instead.
 
+## Golden tests
+
+Screens and shared widgets have golden (pixel) tests under `test/goldens/`,
+tagged `golden`. Text is rasterised differently on each OS, so the PNGs are
+**generated and compared on macOS only** — the tests skip themselves on any
+other platform, and a golden updated on Linux or Windows would fail for every
+macOS developer.
+
+```sh
+flutter test --tags golden                   # compare
+flutter test --tags golden --update-goldens  # regenerate (macOS only)
+```
+
+Regenerate after an intended visual change and review the PNG diffs before
+committing them. The real fonts (Almarai and MaterialIcons) are registered
+for every test by `test/flutter_test_config.dart`, so goldens show the actual
+typeface and icons rather than the test font's boxes.
+
+CI runs the goldens in a separate job on a macOS runner; the main Linux job
+excludes the tag (`--exclude-tags golden`).
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.

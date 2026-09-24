@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nasam/core/localization/app_localizations_setup.dart';
 import 'package:nasam/core/theme/tracking_colors.dart';
+import 'package:nasam/core/utils/bidi.dart';
 import 'package:nasam/features/tracking/domain/entities/tracked_asset.dart';
 import 'package:nasam/features/tracking/domain/entities/tracking_vehicle.dart';
 import 'package:nasam/features/tracking/presentation/tracking_style.dart';
@@ -72,12 +73,15 @@ void main() {
         tester,
         TrackingAssetCard(asset: _asset(inStatus: const Duration(seconds: 429))),
       );
-      expect(find.text('AST-1 • 07m 09s'), findsOneWidget);
+      expect(
+        find.text(joinIsolated(['AST-1', '07m 09s'], ' • ')),
+        findsOneWidget,
+      );
     });
 
     testWidgets('shows no time when the source gives none', (tester) async {
       await pumpInApp(tester, TrackingAssetCard(asset: _asset()));
-      expect(find.text('AST-1'), findsOneWidget);
+      expect(find.text(joinIsolated(['AST-1'], ' • ')), findsOneWidget);
       expect(find.textContaining('٠٧'), findsNothing);
     });
   });

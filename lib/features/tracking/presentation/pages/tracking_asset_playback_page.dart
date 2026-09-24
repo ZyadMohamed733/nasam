@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_icons.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 import '../../../../core/theme/tracking_colors.dart';
+import '../../../../core/utils/bidi.dart';
 import '../../domain/entities/tracked_asset.dart';
 import '../cubit/asset_playback_cubit.dart';
 import '../playback_range.dart';
@@ -134,7 +135,7 @@ class _PlaybackViewState extends State<_PlaybackView> {
                 style: Theme.of(context).textTheme.titleSmall,
               ),
               Text(
-                '${widget.asset.name} · ${widget.asset.code}',
+                joinIsolated([widget.asset.name, widget.asset.code], ' · '),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
