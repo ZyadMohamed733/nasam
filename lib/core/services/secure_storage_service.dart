@@ -70,8 +70,25 @@ class SecureStorageService {
   /// Whether an access token is held. Meaningful once [open] has run.
   bool get hasAccessToken => _accessToken?.isNotEmpty ?? false;
 
+  int _sessionVersion = 0;
+
+  /// Bumped by every [clearAuth]. Work that started under one session — a
+  /// token refresh already in flight when the user signs out — compares this
+  /// before writing, so it cannot bring the ended session back.
+  int get sessionVersion => _sessionVersion;
+
+  /// Called when a token turns up on a read after [open] could not read the
+  /// keychain — the app started believing it was signed out, and was not.
+  /// Set by `AuthSessionNotifier`; this class cannot depend on it, since the
+  /// notifier is built from this one.
+  VoidCallback? onAccessTokenDiscovered;
+
   Future<void> saveAccessToken(String token) async {
+    final version = _sessionVersion;
     await _storage.write(key: AppStrings.keyAccessToken, value: token);
+    // Cleared while the write was in flight: the clear's delete was issued
+    // after this write, so the keychain is empty, and the cache must be too.
+    if (version != _sessionVersion) return;
     _accessToken = token;
     _accessTokenLoaded = true;
   }
@@ -89,6 +106,7 @@ class SecureStorageService {
       if (!_accessTokenLoaded) {
         _accessToken = value;
         _accessTokenLoaded = true;
+        if (hasAccessToken) onAccessTokenDiscovered?.call();
       }
       return _accessToken;
     } finally {
@@ -137,6 +155,7 @@ class SecureStorageService {
   /// The cached token is dropped first, so even if a keychain delete fails
   /// the app stops sending the token straight away.
   Future<void> clearAuth() async {
+    _sessionVersion++;
     _accessToken = null;
     _accessTokenLoaded = true;
     await Future.wait([for (final key in authKeys) _storage.delete(key: key)]);

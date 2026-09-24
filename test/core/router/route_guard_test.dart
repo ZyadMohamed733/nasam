@@ -30,6 +30,7 @@ void main() {
     authService = MockAuthService();
     final storage = MockSecureStorageService();
     when(() => storage.hasAccessToken).thenReturn(true);
+    when(() => storage.sessionVersion).thenReturn(0);
     session = AuthSessionNotifier(storage);
     guard = RouteGuard(authService, session);
   });

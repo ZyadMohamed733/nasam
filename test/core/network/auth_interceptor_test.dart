@@ -20,6 +20,8 @@ class _FakeErrorHandler extends ErrorInterceptorHandler {
   void next(DioException err) => forwarded.add(err);
 }
 
+class _MockRefresher extends Mock implements TokenRefresher {}
+
 void main() {
   late MockSecureStorageService storage;
   late MockDio bare;
@@ -57,6 +59,7 @@ void main() {
   setUp(() {
     storage = MockSecureStorageService();
     when(() => storage.hasAccessToken).thenReturn(true);
+    when(() => storage.sessionVersion).thenReturn(0);
     when(() => storage.getAccessToken()).thenAnswer((_) async => 'old-access');
     when(() => storage.getRefreshToken()).thenAnswer((_) async => 'refresh-1');
     when(() => storage.saveAccessToken(any())).thenAnswer((_) async {});
@@ -84,6 +87,7 @@ void main() {
       storage,
       AuthSessionNotifier(storage),
       bare,
+      MockErrorReporter(),
     );
     interceptor = AuthInterceptor(storage, refresher, bare);
   });
@@ -144,6 +148,31 @@ void main() {
     await interceptor.onError(original, handler);
 
     expect(handler.forwarded.single, same(original));
+    verifyNever(() => bare.fetch<dynamic>(any()));
+  });
+
+  // The refresh can succeed and still be for a session that has since
+  // ended; replaying the request would act for a signed-out user.
+  // The refresh can succeed and still be for a session that has since
+  // ended; replaying the request would act for a signed-out user. A stub
+  // refresher that returns a token anyway isolates the interceptor's own
+  // check from the refresher's.
+  test('no retry if the session ended while the refresh was out', () async {
+    var version = 0;
+    when(() => storage.sessionVersion).thenAnswer((_) => version);
+    final refresher = _MockRefresher();
+    when(refresher.refresh).thenAnswer((_) async {
+      version++; // the user signed out meanwhile
+      return 'new-access';
+    });
+    final guarded = AuthInterceptor(storage, refresher, bare);
+    final original = unauthorized();
+    final handler = _FakeErrorHandler();
+
+    await guarded.onError(original, handler);
+
+    expect(handler.forwarded.single, same(original));
+    expect(handler.resolved, isEmpty);
     verifyNever(() => bare.fetch<dynamic>(any()));
   });
 

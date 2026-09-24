@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -5,6 +7,7 @@ import 'package:nasam/app/app_config.dart';
 import 'package:nasam/core/auth/auth_session_notifier.dart';
 import 'package:nasam/core/auth/token_refresher.dart';
 import 'package:nasam/core/constants/app_constants.dart';
+import 'package:nasam/core/errors/error_reporter.dart';
 import 'package:nasam/core/network/dio_client.dart';
 import 'package:nasam/core/network/interceptors/logging_interceptor.dart';
 
@@ -20,14 +23,18 @@ void main() {
     tenant: 'tenant-from-config',
   );
 
+  setUpAll(() => registerFallbackValue(StackTrace.empty));
+
   late MockSecureStorageService storage;
   late AuthSessionNotifier session;
   late RecordingAdapter adapter;
   late TokenRefresher refresher;
+  late MockErrorReporter errors;
 
   setUp(() {
     storage = MockSecureStorageService();
     when(() => storage.hasAccessToken).thenReturn(true);
+    when(() => storage.sessionVersion).thenReturn(0);
     when(() => storage.getRefreshToken()).thenAnswer((_) async => 'refresh-1');
     when(() => storage.saveAccessToken(any())).thenAnswer((_) async {});
     when(() => storage.saveUser(any())).thenAnswer((_) async {});
@@ -50,7 +57,8 @@ void main() {
       config: config,
       loggingInterceptor: LoggingInterceptor(),
     )..httpClientAdapter = adapter;
-    refresher = TokenRefresher(storage, session, client);
+    errors = MockErrorReporter();
+    refresher = TokenRefresher(storage, session, client, errors);
   });
 
   group('the refresh request', () {
@@ -152,6 +160,89 @@ void main() {
 
       verifyNever(() => storage.clearAuth());
       expect(session.value, AuthSessionStatus.signedIn);
+    });
+  });
+
+  // A 200 without a token breaks the API contract; it says nothing about the
+  // refresh token, so the user keeps their session and someone gets told.
+  test('a 200 without an access token is reported, not a sign-out', () async {
+    adapter.respond = (_) => (200, {'data': <String, dynamic>{}});
+
+    expect(await refresher.refresh(), isNull);
+
+    final report = verify(
+      () => errors.report(
+        captureAny(),
+        any(),
+        source: ErrorSource.contract,
+        context: any(named: 'context'),
+      ),
+    ).captured.single;
+    expect(report, isA<ApiContractViolation>());
+    verifyNever(() => storage.clearAuth());
+    verifyNever(() => storage.saveAccessToken(any()));
+    expect(session.value, AuthSessionStatus.signedIn);
+  });
+
+  test('a 200 with no data at all is reported the same way', () async {
+    adapter.respond = (_) => (200, {'message': 'ok'});
+
+    expect(await refresher.refresh(), isNull);
+
+    verify(
+      () => errors.report(
+        any(),
+        any(),
+        source: ErrorSource.contract,
+        context: any(named: 'context'),
+      ),
+    ).called(1);
+    expect(session.value, AuthSessionStatus.signedIn);
+  });
+
+  group('a sign-out while the refresh is out', () {
+    late Completer<(int, Object?)> reply;
+    var version = 0;
+
+    setUp(() {
+      version = 0;
+      when(() => storage.sessionVersion).thenAnswer((_) => version);
+      reply = Completer();
+      adapter.respond = (_) => reply.future;
+    });
+
+    test('a late 200 is dropped, not saved', () async {
+      final pending = refresher.refresh();
+      await pumpEventQueue();
+      expect(adapter.requests, hasLength(1));
+
+      version++; // clearAuth ran
+      reply.complete((
+        200,
+        {
+          'data': {
+            'accessToken': 'resurrected',
+            'user': {'id': 'user-1'},
+          },
+        },
+      ));
+
+      expect(await pending, isNull);
+      verifyNever(() => storage.saveAccessToken(any()));
+      verifyNever(() => storage.saveUser(any()));
+    });
+
+    test('a late rejection does not report an expiry', () async {
+      session.signOut();
+      final pending = refresher.refresh();
+      await pumpEventQueue();
+
+      version++;
+      reply.complete((401, null));
+
+      expect(await pending, isNull);
+      verifyNever(() => storage.clearAuth());
+      expect(session.value, AuthSessionStatus.signedOut);
     });
   });
 

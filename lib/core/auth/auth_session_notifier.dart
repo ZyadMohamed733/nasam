@@ -29,7 +29,16 @@ class AuthSessionNotifier extends ValueNotifier<AuthSessionStatus> {
         storage.hasAccessToken
             ? AuthSessionStatus.signedIn
             : AuthSessionStatus.signedOut,
-      );
+      ) {
+    // If the keychain could not be read at startup this began as signed
+    // out; the first read that finds a token corrects it, so a later expiry
+    // is still reported as one.
+    storage.onAccessTokenDiscovered = () {
+      if (value == AuthSessionStatus.signedOut) {
+        value = AuthSessionStatus.signedIn;
+      }
+    };
+  }
 
   bool _endedByUser = false;
 

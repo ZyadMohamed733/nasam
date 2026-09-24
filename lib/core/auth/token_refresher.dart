@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
+import '../errors/error_reporter.dart';
 import '../network/dio_client.dart';
 import '../services/secure_storage_service.dart';
 import 'auth_session_notifier.dart';
@@ -22,10 +23,12 @@ class TokenRefresher {
     this._storage,
     this._session,
     @Named(bareDioName) this._client,
+    this._errors,
   );
 
   final SecureStorageService _storage;
   final AuthSessionNotifier _session;
+  final ErrorReporter _errors;
 
   /// Long-lived and without the auth interceptor, so the refresh call cannot
   /// recurse into it.
@@ -71,6 +74,12 @@ class TokenRefresher {
   }
 
   Future<String?> _perform() async {
+    // The session this refresh belongs to. If it ends while the request is
+    // out — the user signs out — the answer is for a session that no longer
+    // exists, and writing it would sign them back in.
+    final version = _storage.sessionVersion;
+    bool sessionEnded() => _storage.sessionVersion != version;
+
     final refreshToken = await _storage.getRefreshToken();
     if (refreshToken == null || refreshToken.isEmpty) {
       await _endSession();
@@ -86,18 +95,37 @@ class TokenRefresher {
       // Nested under `data` like every endpoint on this API:
       // { data: { accessToken, user } }. The refresh token is not rotated,
       // so there is no new one to store.
-      final data = response.data?['data'] as Map<String, dynamic>?;
-      final accessToken = data?['accessToken'] as String?;
-      if (accessToken == null || accessToken.isEmpty) return null;
+      if (sessionEnded()) return null;
+
+      final data = response.data?['data'];
+      final accessToken = data is Map<String, dynamic>
+          ? data['accessToken']
+          : null;
+      if (accessToken is! String || accessToken.isEmpty) {
+        // A 200 without a token is the server's fault, not the user's: the
+        // refresh token may be perfectly good. Report it and leave the
+        // session alone; the request that 401'd fails as it would have.
+        _errors.report(
+          const ApiContractViolation(
+            refreshPath,
+            '200 response without data.accessToken',
+          ),
+          StackTrace.current,
+          source: ErrorSource.contract,
+        );
+        return null;
+      }
 
       await _storage.saveAccessToken(accessToken);
-      final user = data?['user'];
-      if (user is Map<String, dynamic>) {
+      final user = (data as Map<String, dynamic>)['user'];
+      if (user is Map<String, dynamic> && !sessionEnded()) {
         await _storage.saveUser(jsonEncode(user));
       }
-      return accessToken;
+      return sessionEnded() ? null : accessToken;
     } on DioException catch (e) {
-      if (_rejections.contains(e.response?.statusCode)) await _endSession();
+      if (!sessionEnded() && _rejections.contains(e.response?.statusCode)) {
+        await _endSession();
+      }
       return null;
     }
   }

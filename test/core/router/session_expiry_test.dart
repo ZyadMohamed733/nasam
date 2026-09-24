@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -11,6 +13,7 @@ import 'package:nasam/core/constants/app_strings.dart';
 import 'package:nasam/core/di/injection_container.dart';
 import 'package:nasam/core/network/dio_client.dart';
 import 'package:nasam/core/router/app_routes.dart';
+import 'package:nasam/core/services/auth_service.dart';
 import 'package:nasam/features/auth/data/datasources/remote/auth_remote_datasource.dart';
 import 'package:nasam/features/auth/data/models/account_model.dart';
 import 'package:nasam/features/auth/data/models/auth_session_model.dart';
@@ -205,4 +208,46 @@ void main() {
       );
     },
   );
+
+  // The refresh was already out when the user signed out. Its 200 belongs to
+  // a session that no longer exists and must not sign them back in.
+  testWidgets('a refresh that lands after sign-out is dropped', (tester) async {
+    when(() => remote.logout(any())).thenAnswer((_) async {});
+    // Created inside runAsync below: an async Completer schedules its
+    // listeners in the zone it was made in, and the fake-async test zone
+    // would hold them until the next pump.
+    late Completer<(int, Object?)> reply;
+    api.respond = (options) => options.path == TokenRefresher.refreshPath
+        ? reply.future
+        : (401, {'message': 'Unauthorized'});
+    final router = await openApp(tester, AppRoutes.assetDetails(_assetId));
+
+    await tester.runAsync(() async {
+      reply = Completer();
+      final request = getIt<Dio>().get<dynamic>('/vehicles');
+      while (!api.requests.any((r) => r.path == TokenRefresher.refreshPath)) {
+        await Future<void>.delayed(const Duration(milliseconds: 1));
+      }
+      await getIt<LogoutUseCase>()(); // the drawer, mid-refresh
+
+      reply.complete((
+        200,
+        {
+          'data': {'accessToken': 'resurrected'},
+        },
+      ));
+      await expectLater(request, throwsA(isA<DioException>()));
+    });
+    await tester.pumpAndSettle();
+
+    expect(
+      await const FlutterSecureStorage().read(key: AppStrings.keyAccessToken),
+      isNull,
+    );
+    expect(await getIt<AuthService>().isAuthenticated, isFalse);
+    expect(currentLocation(router), AppRoutes.login);
+    expect(find.byType(LoginPage), findsOneWidget);
+    // The 401'd request went out once and was not replayed.
+    expect(api.requests.where((r) => r.path == '/vehicles'), hasLength(1));
+  });
 }

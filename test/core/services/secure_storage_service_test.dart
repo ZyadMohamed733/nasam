@@ -99,6 +99,38 @@ void main() {
     });
   });
 
+  group('session version', () {
+    test('every clear moves it on', () async {
+      final before = service.sessionVersion;
+      await service.clearAuth();
+      await service.clearAuth();
+      expect(service.sessionVersion, before + 2);
+    });
+
+    // A save issued just before a sign-out must not leave the token in the
+    // cache after the sign-out has cleared the keychain.
+    test(
+      'a save that lands after a clear does not repopulate the cache',
+      () async {
+        final write = Completer<void>();
+        when(
+          () => keychain.write(
+            key: AppStrings.keyAccessToken,
+            value: any(named: 'value'),
+          ),
+        ).thenAnswer((_) => write.future);
+
+        final saving = service.saveAccessToken('late');
+        await service.clearAuth();
+        write.complete();
+        await saving;
+
+        expect(await service.getAccessToken(), isNull);
+        expect(service.hasAccessToken, isFalse);
+      },
+    );
+  });
+
   group('clearAuth', () {
     test('deletes the auth keys, and only those', () async {
       await service.clearAuth();

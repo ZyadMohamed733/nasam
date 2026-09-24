@@ -69,6 +69,7 @@ import '../../features/tracking/presentation/cubit/tracking_cubit.dart'
     as _i546;
 import '../auth/auth_session_notifier.dart' as _i745;
 import '../auth/token_refresher.dart' as _i599;
+import '../errors/error_reporter.dart' as _i720;
 import '../network/interceptors/auth_interceptor.dart' as _i745;
 import '../network/interceptors/error_interceptor.dart' as _i511;
 import '../network/interceptors/logging_interceptor.dart' as _i344;
@@ -99,6 +100,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i558.FlutterSecureStorage>(
       () => storageModule.secureStorage,
     );
+    gh.lazySingleton<_i720.ErrorReporter>(() => _i720.ErrorReporter());
     await gh.singletonAsync<_i535.SecureStorageService>(
       () => storageModule.secureStorageService(
         gh<_i558.FlutterSecureStorage>(),
@@ -134,6 +136,7 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i535.SecureStorageService>(),
         gh<_i745.AuthSessionNotifier>(),
         gh<_i361.Dio>(instanceName: 'bareDio'),
+        gh<_i720.ErrorReporter>(),
       ),
     );
     gh.factory<_i807.OnboardingCubit>(

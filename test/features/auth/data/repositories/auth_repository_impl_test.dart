@@ -55,6 +55,7 @@ void main() {
     remote = _RemoteDataSource();
     storage = MockSecureStorageService();
     when(() => storage.hasAccessToken).thenReturn(false);
+    when(() => storage.sessionVersion).thenReturn(0);
     notifier = AuthSessionNotifier(storage);
     repository = AuthRepositoryImpl(remote, storage, notifier);
 

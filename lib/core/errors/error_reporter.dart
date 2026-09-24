@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:injectable/injectable.dart';
 
 import '../utils/app_logger.dart';
 
@@ -16,6 +17,34 @@ enum ErrorSource {
 
   /// Thrown inside a Bloc's event handler.
   bloc,
+
+  /// Not thrown at all: the server answered in a shape the app was promised
+  /// it never would. Nothing crashed, but someone needs to know.
+  contract,
+}
+
+/// The server broke the API contract: a success that is missing what makes it
+/// a success. Reported, not thrown to the user.
+class ApiContractViolation implements Exception {
+  const ApiContractViolation(this.endpoint, this.detail);
+
+  final String endpoint;
+  final String detail;
+
+  @override
+  String toString() => 'ApiContractViolation($endpoint): $detail';
+}
+
+/// [reportError] as an injectable, for code that reports rather than throws
+/// and wants the report checked in tests.
+@lazySingleton
+class ErrorReporter {
+  void report(
+    Object error,
+    StackTrace stackTrace, {
+    required ErrorSource source,
+    String? context,
+  }) => reportError(error, stackTrace, source: source, context: context);
 }
 
 /// The single sink every uncaught error funnels into.

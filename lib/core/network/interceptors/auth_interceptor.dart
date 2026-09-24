@@ -51,8 +51,11 @@ class AuthInterceptor extends Interceptor {
       return;
     }
 
+    // If the session ends while the refresh is out, the request belonged to
+    // a session that is gone; replaying it would act for a signed-out user.
+    final version = _storage.sessionVersion;
     final newAccessToken = await _refresher.refresh();
-    if (newAccessToken == null) {
+    if (newAccessToken == null || _storage.sessionVersion != version) {
       handler.next(err);
       return;
     }

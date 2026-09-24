@@ -35,6 +35,21 @@ void main() {
       expect(() => build(tenant: ''), throwsA(isA<StateError>()));
     });
 
+    // Every request is scoped to a tenant; without one the API answers 404,
+    // which looks like a missing endpoint rather than a missing setting.
+    test('an empty TENANT fails loudly, like BASE_URL', () {
+      expect(
+        () => build(tenant: ''),
+        throwsA(
+          isA<StateError>().having(
+            (e) => e.message,
+            'message',
+            contains('TENANT'),
+          ),
+        ),
+      );
+    });
+
     test('the tenant comes from the config and reaches the API headers', () {
       final config = build(tenant: 'another-tenant');
       expect(config.tenant, 'another-tenant');

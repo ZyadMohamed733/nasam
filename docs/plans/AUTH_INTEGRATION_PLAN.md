@@ -1,5 +1,9 @@
 # Auth backend integration — implementation plan
 
+> **Superseded:** refresh is handled by `core/auth/TokenRefresher`. The
+> repository refresh method and `RefreshAccessTokenUseCase` described below
+> were removed.
+
 Source: `https://nasam-v2-api-dev.nasam.net/docs` (NestJS/Swagger, read via
 `/docs-json` on 2026-09-22). Covers the six flows asked for: login, forgot
 password, reset password, verify OTP, resend OTP, refresh token.

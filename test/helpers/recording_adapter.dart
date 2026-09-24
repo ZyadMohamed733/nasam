@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -11,9 +12,9 @@ import 'package:dio/dio.dart';
 class RecordingAdapter implements HttpClientAdapter {
   RecordingAdapter(this.respond);
 
-  /// Status and JSON body for a request. Throw a [DioException] to simulate a
-  /// transport failure.
-  (int, Object?) Function(RequestOptions options) respond;
+  /// Status and JSON body for a request, now or later. Throw a
+  /// [DioException] to simulate a transport failure.
+  FutureOr<(int, Object?)> Function(RequestOptions options) respond;
 
   final List<RequestOptions> requests = [];
 
@@ -24,7 +25,7 @@ class RecordingAdapter implements HttpClientAdapter {
     Future<void>? cancelFuture,
   ) async {
     requests.add(options);
-    final (status, body) = respond(options);
+    final (status, body) = await respond(options);
     return ResponseBody.fromString(
       jsonEncode(body),
       status,
