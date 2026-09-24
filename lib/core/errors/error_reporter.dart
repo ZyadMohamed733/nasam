@@ -18,6 +18,10 @@ enum ErrorSource {
   /// Thrown inside a Bloc's event handler.
   bloc,
 
+  /// Caught and recovered from, so the user saw a degraded result rather
+  /// than a failure — but it should not have happened.
+  handled,
+
   /// Not thrown at all: the server answered in a shape the app was promised
   /// it never would. Nothing crashed, but someone needs to know.
   contract,

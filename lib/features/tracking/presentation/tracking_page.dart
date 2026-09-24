@@ -42,7 +42,7 @@ class _TrackingViewState extends State<_TrackingView>
     parent: _drawerAnimation,
     curve: Curves.easeInOutCubic,
   );
-  GoogleMapController? _mapController;
+  final _map = TrackingMapController();
   var _mapType = MapType.normal;
   var _summaryExpanded = false;
   static const _summaryMinSize = .23;
@@ -169,7 +169,7 @@ class _TrackingViewState extends State<_TrackingView>
                         vehicles: data.vehicles,
                         bottomInset: bottomInset,
                         mapType: _mapType,
-                        onMapReady: (controller) => _mapController = controller,
+                        controller: _map,
                         onVehicleTap: (vehicle) {
                           final asset = context
                               .read<TrackingCubit>()
@@ -184,12 +184,8 @@ class _TrackingViewState extends State<_TrackingView>
                       child: TrackingControls(
                         openDrawer: _drawer.showDrawer,
                         onLayersTap: _cycleMapType,
-                        onZoomIn: () => _mapController?.animateCamera(
-                          CameraUpdate.zoomIn(),
-                        ),
-                        onZoomOut: () => _mapController?.animateCamera(
-                          CameraUpdate.zoomOut(),
-                        ),
+                        onZoomIn: _map.zoomIn,
+                        onZoomOut: _map.zoomOut,
                       ),
                     ),
                     NotificationListener<DraggableScrollableNotification>(
