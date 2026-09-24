@@ -294,9 +294,8 @@ class _ActionIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Padding(
     padding: EdgeInsetsDirectional.only(start: 5.w),
-    child: SizedBox(
-      width: 28.w,
-      height: 28.h,
+    child: SizedBox.square(
+      dimension: 28.r,
       child: OutlinedButton(
         onPressed: onPressed ?? () {},
         style: OutlinedButton.styleFrom(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/constants/app_assets.dart';
@@ -158,7 +157,7 @@ class _Header extends StatelessWidget {
                   IconButton(
                     onPressed: onToggle,
                     tooltip: l.trackingCollapse,
-                    icon: Icon(Icons.close, size: AppIconSize.medium.value.r),
+                    icon: Icon(Icons.close, size: AppIconSize.medium.value),
                   )
                 else
                   TextButton(
@@ -244,14 +243,14 @@ class _StatusChip extends StatelessWidget {
                       if (status == null)
                         SvgPicture.asset(
                           AppAssets.mapArrow,
-                          width: AppIconSize.small.value.r,
-                          height: AppIconSize.small.value.r,
+                          width: AppIconSize.small.value,
+                          height: AppIconSize.small.value,
                           colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
                         )
                       else
                         Icon(
                           TrackingStyle.icon(status),
-                          size: AppIconSize.small.value.r,
+                          size: AppIconSize.small.value,
                           color: color,
                         ),
                       const SizedBox(width: 6),

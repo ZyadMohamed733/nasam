@@ -32,10 +32,10 @@ abstract final class TrackingMapLayout {
   /// Room kept clear under the status bar for the menu and search row.
   static const double topBarClearance = 60;
 
-  /// Room kept clear on the left for the column of map tools.
+  /// Room kept clear on the start side for the column of map tools.
   static const double toolColumnClearance = 48;
 
-  /// Breathing room on the side with no controls.
+  /// Breathing room on the end side, which has no controls.
   static const double edgeInset = 8;
 
   /// Extra margin around the whole fleet when it is fitted to the screen.
@@ -395,14 +395,16 @@ class _TrackingMapState extends State<TrackingMap> {
       children: [
         GoogleMap(
           initialCameraPosition: TrackingMapLayout.initialCamera,
-          padding: EdgeInsets.only(
+          // GoogleMap takes physical insets; resolved here so the room kept
+          // for the tool column follows it to the right in Arabic.
+          padding: EdgeInsetsDirectional.only(
             top:
                 MediaQuery.paddingOf(context).top +
                 TrackingMapLayout.topBarClearance,
             bottom: widget.bottomInset,
-            left: TrackingMapLayout.toolColumnClearance,
-            right: TrackingMapLayout.edgeInset,
-          ),
+            start: TrackingMapLayout.toolColumnClearance,
+            end: TrackingMapLayout.edgeInset,
+          ).resolve(Directionality.of(context)),
           markers: _markers,
           mapType: widget.mapType,
           myLocationButtonEnabled: false,
