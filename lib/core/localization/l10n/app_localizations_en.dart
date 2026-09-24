@@ -538,4 +538,18 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get sessionExpired =>
       'Your session has expired. Please sign in again.';
+
+  @override
+  String get trackingNoMatches => 'No assets match your search.';
+
+  @override
+  String get trackingClearFilters => 'Clear filters';
+
+  @override
+  String get trackingCollapse => 'Collapse list';
+
+  @override
+  String trackingStatusChip(String status, int count) {
+    return '$status: $count';
+  }
 }

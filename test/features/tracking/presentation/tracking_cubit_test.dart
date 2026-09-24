@@ -139,6 +139,48 @@ void main() {
     );
   });
 
+  group('clearFilters', () {
+    blocTest<TrackingCubit, TrackingState>(
+      'drops the status and the search together',
+      build: build,
+      seed: () => const TrackingLoaded(
+        vehicles: _vehicles,
+        assets: _assets,
+        filter: VehicleStatus.moving,
+        query: 'tru',
+      ),
+      act: (c) => c.clearFilters(),
+      expect: () => const [_loaded],
+    );
+
+    // Typed but not yet committed: the debounce must not re-apply it after
+    // the clear.
+    blocTest<TrackingCubit, TrackingState>(
+      'cancels a search still waiting on the debounce',
+      build: build,
+      seed: () => const TrackingLoaded(
+        vehicles: _vehicles,
+        assets: _assets,
+        filter: VehicleStatus.moving,
+      ),
+      act: (c) async {
+        c
+          ..onQueryChanged('tru')
+          ..clearFilters();
+        await Future<void>.delayed(TrackingCubit.searchDebounce * 2);
+      },
+      expect: () => const [_loaded],
+    );
+
+    blocTest<TrackingCubit, TrackingState>(
+      'with nothing to clear, emits nothing',
+      build: build,
+      seed: () => _loaded,
+      act: (c) => c.clearFilters(),
+      expect: () => const <TrackingState>[],
+    );
+  });
+
   group('refresh', () {
     const narrowed = TrackingLoaded(
       vehicles: _vehicles,
@@ -271,38 +313,40 @@ void main() {
     // Typing while the first load is in flight: the debounce fires during
     // Loading and has no fleet to apply to. The load must still land on the
     // typed text rather than an empty query.
-    test('text typed during a load filters the list the load produces',
-        () async {
-      final vehicles = Completer<Either<Failure, List<TrackingVehicle>>>();
-      final assets = Completer<Either<Failure, List<TrackedAsset>>>();
-      when(() => getVehicles()).thenAnswer((_) => vehicles.future);
-      when(() => getAssets()).thenAnswer((_) => assets.future);
-      final cubit = build();
-      final states = <TrackingState>[];
-      final sub = cubit.stream.listen(states.add);
+    test(
+      'text typed during a load filters the list the load produces',
+      () async {
+        final vehicles = Completer<Either<Failure, List<TrackingVehicle>>>();
+        final assets = Completer<Either<Failure, List<TrackedAsset>>>();
+        when(() => getVehicles()).thenAnswer((_) => vehicles.future);
+        when(() => getAssets()).thenAnswer((_) => assets.future);
+        final cubit = build();
+        final states = <TrackingState>[];
+        final sub = cubit.stream.listen(states.add);
 
-      final load = cubit.load();
-      await Future<void>.delayed(Duration.zero);
-      expect(cubit.state, const TrackingLoading());
+        final load = cubit.load();
+        await Future<void>.delayed(Duration.zero);
+        expect(cubit.state, const TrackingLoading());
 
-      cubit.onQueryChanged('van');
-      // Let the debounce elapse while still loading.
-      await Future<void>.delayed(
-        TrackingCubit.searchDebounce + const Duration(milliseconds: 50),
-      );
-      expect(cubit.state, const TrackingLoading());
+        cubit.onQueryChanged('van');
+        // Let the debounce elapse while still loading.
+        await Future<void>.delayed(
+          TrackingCubit.searchDebounce + const Duration(milliseconds: 50),
+        );
+        expect(cubit.state, const TrackingLoading());
 
-      vehicles.complete(const Right(_vehicles));
-      assets.complete(const Right(_assets));
-      await load;
-      // Stream listeners hear about an emit a microtask after it happens.
-      await Future<void>.delayed(Duration.zero);
+        vehicles.complete(const Right(_vehicles));
+        assets.complete(const Right(_assets));
+        await load;
+        // Stream listeners hear about an emit a microtask after it happens.
+        await Future<void>.delayed(Duration.zero);
 
-      expect(states, [const TrackingLoading(), _loaded.withQuery('van')]);
-      expect(cubit.state.visible!.visibleAssets, [_van]);
-      await sub.cancel();
-      await cubit.close();
-    });
+        expect(states, [const TrackingLoading(), _loaded.withQuery('van')]);
+        expect(cubit.state.visible!.visibleAssets, [_van]);
+        await sub.cancel();
+        await cubit.close();
+      },
+    );
 
     blocTest<TrackingCubit, TrackingState>(
       'text typed during a refresh wins over the query being replaced',

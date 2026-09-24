@@ -551,4 +551,18 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get sessionExpired => 'انتهت جلستك. يرجى تسجيل الدخول مرة أخرى.';
+
+  @override
+  String get trackingNoMatches => 'لا توجد أصول مطابقة لبحثك.';
+
+  @override
+  String get trackingClearFilters => 'مسح عوامل التصفية';
+
+  @override
+  String get trackingCollapse => 'طي القائمة';
+
+  @override
+  String trackingStatusChip(String status, int count) {
+    return '$status: $count';
+  }
 }

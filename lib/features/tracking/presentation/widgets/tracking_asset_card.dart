@@ -70,7 +70,16 @@ class TrackingAssetCard extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 8.w),
-              _StatusBadge(label: label, color: color, status: asset.status),
+              // Shares the row with the name rather than pushing it off: a
+              // long status at a large text scale ellipsizes, and the icon
+              // still says which status it is.
+              Flexible(
+                child: _StatusBadge(
+                  label: label,
+                  color: color,
+                  status: asset.status,
+                ),
+              ),
             ],
           ),
           SizedBox(height: 14.h),
@@ -163,9 +172,13 @@ class _StatusBadge extends StatelessWidget {
           size: AppIconSize.extraSmall.value.r,
         ),
         SizedBox(width: 5.w),
-        Text(
-          label,
-          style: TextStyle(color: color, fontSize: 10.sp),
+        Flexible(
+          child: Text(
+            label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(color: color, fontSize: 10.sp),
+          ),
         ),
       ],
     ),

@@ -359,5 +359,29 @@
   "sessionExpired": "انتهت جلستك. يرجى تسجيل الدخول مرة أخرى.",
   "@sessionExpired": {
     "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording. Shown once on the login screen when the server ended the session."
+  },
+  "trackingNoMatches": "لا توجد أصول مطابقة لبحثك.",
+  "@trackingNoMatches": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
+  "trackingClearFilters": "مسح عوامل التصفية",
+  "@trackingClearFilters": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
+  "trackingCollapse": "طي القائمة",
+  "@trackingCollapse": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
+  "trackingStatusChip": "{status}: {count}",
+  "@trackingStatusChip": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.",
+    "placeholders": {
+      "status": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
   }
 }

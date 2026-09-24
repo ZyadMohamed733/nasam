@@ -117,6 +117,17 @@ class TrackingCubit extends Cubit<TrackingState> {
   /// The asset a tapped map marker belongs to, by the id the vehicle carries.
   /// Null when nothing is loaded or the asset is not in the fleet, which the
   /// map treats as "do nothing".
+  /// Drops the status filter and the search, typed or committed, at once.
+  void clearFilters() {
+    _searchTimer?.cancel();
+    _pendingQuery = null;
+    final current = state;
+    if (current is TrackingLoaded &&
+        (current.filter != null || current.query.isNotEmpty)) {
+      emit(current.withFilter(null).withQuery(''));
+    }
+  }
+
   TrackedAsset? assetForVehicle(TrackingVehicle vehicle) =>
       state.visible?.assetById(vehicle.assetId);
 

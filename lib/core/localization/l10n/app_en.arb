@@ -154,5 +154,19 @@
   "assetPlaybackMinutes": "min",
   "assetNotFound": "This asset could not be found.",
   "backToHome": "Back to home",
-  "sessionExpired": "Your session has expired. Please sign in again."
+  "sessionExpired": "Your session has expired. Please sign in again.",
+  "trackingNoMatches": "No assets match your search.",
+  "trackingClearFilters": "Clear filters",
+  "trackingCollapse": "Collapse list",
+  "trackingStatusChip": "{status}: {count}",
+  "@trackingStatusChip": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

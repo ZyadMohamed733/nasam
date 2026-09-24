@@ -1027,6 +1027,30 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'انتهت جلستك. يرجى تسجيل الدخول مرة أخرى.'**
   String get sessionExpired;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد أصول مطابقة لبحثك.'**
+  String get trackingNoMatches;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'مسح عوامل التصفية'**
+  String get trackingClearFilters;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'طي القائمة'**
+  String get trackingCollapse;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'{status}: {count}'**
+  String trackingStatusChip(String status, int count);
 }
 
 class _AppLocalizationsDelegate

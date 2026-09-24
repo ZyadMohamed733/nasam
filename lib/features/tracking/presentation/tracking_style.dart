@@ -15,6 +15,15 @@ abstract final class TrackingStyle {
           context,
         ).extension<AppSemanticColors>()!.textPlaceholder,
       };
+
+  /// Shown beside every status colour, so no status is told by colour alone.
+  static IconData icon(VehicleStatus status) => switch (status) {
+    VehicleStatus.moving => Icons.check,
+    VehicleStatus.idle => Icons.schedule,
+    VehicleStatus.stopped => Icons.local_parking,
+    VehicleStatus.offline => Icons.power_off_outlined,
+  };
+
   static String label(AppLocalizations l, VehicleStatus status) =>
       switch (status) {
         VehicleStatus.moving => l.trackingMoving,

@@ -5,7 +5,10 @@ import '../../../../core/constants/app_icons.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 
 class TrackingAssetSearchField extends StatelessWidget {
-  const TrackingAssetSearchField({super.key, this.onChanged});
+  const TrackingAssetSearchField({super.key, this.controller, this.onChanged});
+
+  /// Owned by the host, so clearing the filters can clear the text too.
+  final TextEditingController? controller;
   final ValueChanged<String>? onChanged;
 
   @override
@@ -15,6 +18,7 @@ class TrackingAssetSearchField extends StatelessWidget {
     return SizedBox(
       height: 44.h,
       child: TextField(
+        controller: controller,
         onChanged: onChanged,
         textAlign: TextAlign.right,
         decoration: InputDecoration(
