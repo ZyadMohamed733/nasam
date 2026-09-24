@@ -542,4 +542,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get assetPlaybackMinutes => 'دقيقة';
+
+  @override
+  String get assetNotFound => 'لم يتم العثور على هذا الأصل.';
+
+  @override
+  String get backToHome => 'العودة إلى الرئيسية';
 }

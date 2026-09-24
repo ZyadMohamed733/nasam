@@ -19,10 +19,14 @@ import '../widgets/auth_link.dart';
 import '../widgets/auth_scaffold.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key, this.cubit});
+  const LoginPage({super.key, this.cubit, this.returnTo});
 
   /// Injected in tests; resolved from the container otherwise.
   final LoginCubit? cubit;
+
+  /// Where to go once signed in, if a deep link sent the user here. Already
+  /// validated by the route as a safe in-app path; home when absent.
+  final String? returnTo;
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -60,9 +64,13 @@ class _LoginPageState extends State<LoginPage> {
             case AuthFormSucceeded():
               // The repository has already stored the session, so RouteGuard
               // will let this through.
-              context.go(AppRoutes.home);
+              context.go(widget.returnTo ?? AppRoutes.home);
             case LoginNeedsOtp(:final username):
-              context.push(AppRoutes.otpVerification, extra: username);
+              // The target rides through the second factor too.
+              context.push(
+                AppRoutes.otpVerificationReturningTo(widget.returnTo),
+                extra: username,
+              );
             case AuthFormFailed(:final failure):
               AppSnackBar.showError(context, failure.message);
             case AuthFormIdle() || AuthFormSubmitting():

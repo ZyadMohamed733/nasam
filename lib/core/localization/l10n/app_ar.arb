@@ -347,5 +347,13 @@
   "assetPlaybackDuration": "المدة",
   "assetPlaybackKilometers": "كم",
   "assetPlaybackKilometersPerHour": "كم/س",
-  "assetPlaybackMinutes": "دقيقة"
+  "assetPlaybackMinutes": "دقيقة",
+  "assetNotFound": "لم يتم العثور على هذا الأصل.",
+  "@assetNotFound": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
+  "backToHome": "العودة إلى الرئيسية",
+  "@backToHome": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  }
 }

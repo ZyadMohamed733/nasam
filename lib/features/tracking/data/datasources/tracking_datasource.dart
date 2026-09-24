@@ -12,6 +12,10 @@ import '../models/vehicle_model.dart';
 abstract interface class TrackingDataSource {
   Future<List<VehicleModel>> getVehicles();
   Future<List<TrackedAssetModel>> getTrackedAssets();
+
+  /// One asset. A missing id is a `ServerException` with code '404', which is
+  /// what the Dio exception mapper produces for a real 404.
+  Future<TrackedAssetModel> getTrackedAsset(String assetId);
   Future<AssetDetailsModel> getAssetDetails(String assetId);
   Future<List<NotificationModel>> getAssetNotifications(String assetId);
   Future<List<PlaybackSegmentModel>> getPlaybackSegments({

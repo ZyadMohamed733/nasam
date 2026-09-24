@@ -11,12 +11,27 @@ import '../widgets/tabs/tracking_asset_location_tab.dart';
 import '../widgets/tabs/tracking_asset_notifications_tab.dart';
 import '../widgets/tabs/tracking_asset_sensors_tab.dart';
 import '../widgets/tabs/tracking_asset_tracking_tab.dart';
+import '../widgets/tracked_asset_gate.dart';
 
-/// An asset's five-tab details screen.
+/// An asset's five-tab details screen, opened by id.
 ///
-/// Expects an [AssetDetailsCubit] above it, created and loaded by the route.
+/// Expects a TrackedAssetCubit and an [AssetDetailsCubit] above it, both
+/// created and loaded by the route. The asset itself is resolved from the id,
+/// so the screen works the same from a list tap and from a cold deep link.
 class TrackingAssetDetailsPage extends StatelessWidget {
-  const TrackingAssetDetailsPage({super.key, required this.asset});
+  const TrackingAssetDetailsPage({super.key, required this.assetId});
+
+  final String assetId;
+
+  @override
+  Widget build(BuildContext context) => TrackedAssetGate(
+    assetId: assetId,
+    builder: (context, asset) => _AssetDetailsView(asset: asset),
+  );
+}
+
+class _AssetDetailsView extends StatelessWidget {
+  const _AssetDetailsView({required this.asset});
 
   final TrackedAsset asset;
 
@@ -81,21 +96,20 @@ class TrackingAssetDetailsPage extends StatelessWidget {
                 ],
               ),
             ),
-            AssetDetailsLoaded(:final details, :final alerts) =>
-              TabBarView(
-                children: [
-                  TrackingAssetInformationTab(asset: asset, details: details),
-                  TrackingAssetTrackingTab(asset: asset, details: details),
-                  TrackingAssetLocationTab(details: details),
-                  TrackingAssetSensorsTab(details: details),
-                  TrackingAssetNotificationsTab(
-                    alerts: alerts,
-                    assetName: details.name,
-                    location: details.address,
-                    onRetry: context.read<AssetDetailsCubit>().retryAlerts,
-                  ),
-                ],
-              ),
+            AssetDetailsLoaded(:final details, :final alerts) => TabBarView(
+              children: [
+                TrackingAssetInformationTab(asset: asset, details: details),
+                TrackingAssetTrackingTab(asset: asset, details: details),
+                TrackingAssetLocationTab(details: details),
+                TrackingAssetSensorsTab(details: details),
+                TrackingAssetNotificationsTab(
+                  alerts: alerts,
+                  assetName: details.name,
+                  location: details.address,
+                  onRetry: context.read<AssetDetailsCubit>().retryAlerts,
+                ),
+              ],
+            ),
           },
         ),
       ),

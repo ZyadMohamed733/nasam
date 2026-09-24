@@ -54,6 +54,8 @@ import '../../features/tracking/domain/usecases/get_asset_notifications_usecase.
     as _i201;
 import '../../features/tracking/domain/usecases/get_playback_segments_usecase.dart'
     as _i405;
+import '../../features/tracking/domain/usecases/get_tracked_asset_usecase.dart'
+    as _i127;
 import '../../features/tracking/domain/usecases/get_tracked_assets_usecase.dart'
     as _i143;
 import '../../features/tracking/domain/usecases/get_tracking_vehicles_usecase.dart'
@@ -62,6 +64,8 @@ import '../../features/tracking/presentation/cubit/asset_details_cubit.dart'
     as _i784;
 import '../../features/tracking/presentation/cubit/asset_playback_cubit.dart'
     as _i719;
+import '../../features/tracking/presentation/cubit/tracked_asset_cubit.dart'
+    as _i1062;
 import '../../features/tracking/presentation/cubit/tracking_cubit.dart'
     as _i546;
 import '../network/interceptors/auth_interceptor.dart' as _i745;
@@ -145,6 +149,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i405.GetPlaybackSegmentsUseCase>(
       () => _i405.GetPlaybackSegmentsUseCase(gh<_i76.TrackingRepository>()),
     );
+    gh.lazySingleton<_i127.GetTrackedAssetUseCase>(
+      () => _i127.GetTrackedAssetUseCase(gh<_i76.TrackingRepository>()),
+    );
     gh.lazySingleton<_i143.GetTrackedAssetsUseCase>(
       () => _i143.GetTrackedAssetsUseCase(gh<_i76.TrackingRepository>()),
     );
@@ -159,6 +166,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i886.GetTrackingVehiclesUseCase>(),
         gh<_i143.GetTrackedAssetsUseCase>(),
       ),
+    );
+    gh.factory<_i1062.TrackedAssetCubit>(
+      () => _i1062.TrackedAssetCubit(gh<_i127.GetTrackedAssetUseCase>()),
     );
     gh.factory<_i784.AssetDetailsCubit>(
       () => _i784.AssetDetailsCubit(

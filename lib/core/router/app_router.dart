@@ -11,16 +11,18 @@ import '../../features/auth/presentation/pages/password_reset_success_page.dart'
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/onboarding/presentation/pages/onboarding_page.dart';
 import '../../features/splash/presentation/pages/splash_page.dart';
-import '../../features/tracking/domain/entities/tracked_asset.dart';
 import '../../features/tracking/presentation/cubit/asset_details_cubit.dart';
 import '../../features/tracking/presentation/cubit/asset_playback_cubit.dart';
+import '../../features/tracking/presentation/cubit/tracked_asset_cubit.dart';
 import '../../features/tracking/presentation/cubit/tracking_cubit.dart';
 import '../../features/tracking/presentation/pages/tracking_asset_details_page.dart';
 import '../../features/tracking/presentation/pages/tracking_asset_playback_page.dart';
+import '../../features/tracking/presentation/playback_range.dart';
 import '../di/injection_container.dart';
 import 'app_error_page.dart';
 import 'app_routes.dart';
 import 'app_transition_page.dart';
+import 'return_path.dart';
 import 'route_guard.dart';
 
 @lazySingleton
@@ -63,7 +65,12 @@ class AppRouter {
           context: context,
           state: state,
           slide: false,
-          child: const LoginPage(),
+          // `from` is untrusted input; only a validated in-app path survives.
+          child: LoginPage(
+            returnTo: ReturnPath.sanitize(
+              state.uri.queryParameters[AppRoutes.fromParam],
+            ),
+          ),
         ),
       ),
       GoRoute(
@@ -89,7 +96,12 @@ class AppRouter {
           context: context,
           state: state,
           slide: true,
-          child: OtpVerificationPage(username: state.extra! as String),
+          child: OtpVerificationPage(
+            username: state.extra! as String,
+            returnTo: ReturnPath.sanitize(
+              state.uri.queryParameters[AppRoutes.fromParam],
+            ),
+          ),
         ),
       ),
       // newPassword/passwordResetSuccess below carry the reset token from
@@ -129,40 +141,71 @@ class AppRouter {
             child: const HomePage(),
           ),
         ),
-      ),
-      GoRoute(
-        path: AppRoutes.trackingAssetDetails,
-        redirect: (context, state) =>
-            state.extra is TrackedAsset ? null : AppRoutes.home,
-        pageBuilder: (context, state) => appTransitionPage(
-          context: context,
-          state: state,
-          slide: true,
-          child: BlocProvider(
-            create: (_) => getIt<AssetDetailsCubit>()
-              ..load((state.extra! as TrackedAsset).id),
-            child: TrackingAssetDetailsPage(
-              asset: state.extra! as TrackedAsset,
-            ),
+        // Nested, so a cold deep link to an asset builds home beneath it and
+        // back goes home rather than out of the app. Each screen is given an
+        // id and nothing else, and resolves its own asset: a link carries no
+        // object, and an unknown id shows not-found rather than redirecting.
+        routes: [
+          GoRoute(
+            path: AppRoutes.assetDetailsPattern,
+            pageBuilder: (context, state) {
+              final assetId = _assetId(state);
+              return appTransitionPage(
+                context: context,
+                state: state,
+                slide: true,
+                child: MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                      create: (_) => getIt<TrackedAssetCubit>()..load(assetId),
+                    ),
+                    BlocProvider(
+                      create: (_) => getIt<AssetDetailsCubit>()..load(assetId),
+                    ),
+                  ],
+                  child: TrackingAssetDetailsPage(assetId: assetId),
+                ),
+              );
+            },
+            routes: [
+              GoRoute(
+                path: AppRoutes.assetPlaybackPattern,
+                pageBuilder: (context, state) {
+                  final assetId = _assetId(state);
+                  final query = state.uri.queryParameters;
+                  return appTransitionPage(
+                    context: context,
+                    state: state,
+                    slide: true,
+                    child: MultiBlocProvider(
+                      providers: [
+                        BlocProvider(
+                          create: (_) =>
+                              getIt<TrackedAssetCubit>()..load(assetId),
+                        ),
+                        BlocProvider(
+                          create: (_) => getIt<AssetPlaybackCubit>(),
+                        ),
+                      ],
+                      child: TrackingAssetPlaybackPage(
+                        assetId: assetId,
+                        initialRange: PlaybackRange.fromQuery(
+                          from: query[AppRoutes.fromParam],
+                          to: query[AppRoutes.toParam],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
-        ),
-      ),
-      GoRoute(
-        path: AppRoutes.trackingAssetPlayback,
-        redirect: (context, state) =>
-            state.extra is TrackedAsset ? null : AppRoutes.home,
-        pageBuilder: (context, state) => appTransitionPage(
-          context: context,
-          state: state,
-          slide: true,
-          child: BlocProvider(
-            create: (_) => getIt<AssetPlaybackCubit>(),
-            child: TrackingAssetPlaybackPage(
-              asset: state.extra! as TrackedAsset,
-            ),
-          ),
-        ),
+        ],
       ),
     ],
   );
 }
+
+/// The asset id from a tracking route. go_router has already decoded it.
+String _assetId(GoRouterState state) =>
+    state.pathParameters[AppRoutes.assetIdParam] ?? '';

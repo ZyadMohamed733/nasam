@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -15,29 +14,9 @@ import 'package:nasam/features/tracking/presentation/tracking_page.dart';
 import 'package:nasam/features/tracking/presentation/widgets/tracking_controls.dart';
 import 'package:nasam/features/tracking/presentation/widgets/tracking_map.dart';
 
+import '../../helpers/fake_map_platform.dart';
 import '../../helpers/fixture_bundle.dart';
 import '../../helpers/widget_harness.dart';
-
-class _MapPlatform extends GoogleMapsFlutterPlatform {
-  double zoom = 11;
-  @override
-  Future<double> getZoomLevel({required int mapId}) async => zoom;
-  @override
-  Future<LatLngBounds> getVisibleRegion({required int mapId}) async =>
-      LatLngBounds(
-        southwest: const LatLng(24.7, 46.2),
-        northeast: const LatLng(25, 46.6),
-      );
-
-  @override
-  Widget buildViewWithConfiguration(
-    int creationId,
-    PlatformViewCreatedCallback onPlatformViewCreated, {
-    required MapWidgetConfiguration widgetConfiguration,
-    MapConfiguration mapConfiguration = const MapConfiguration(),
-    MapObjects mapObjects = const MapObjects(),
-  }) => const ColoredBox(color: Color(0xFFF3EFE5));
-}
 
 /// The real repository over the dummy source — what the app resolves in dev.
 TrackingRepository _dummyRepository() => fixtureTrackingRepository();
@@ -127,7 +106,7 @@ void main() {
     },
   );
   test('clusters preserve all vehicles and split at street zoom', () async {
-    final platform = _MapPlatform();
+    final platform = FakeMapPlatform();
     GoogleMapsFlutterPlatform.instance = platform;
     final fleet = await _fleet();
     final manager = clusters.ClusterManager<VehicleMapItem>(
@@ -154,7 +133,7 @@ void main() {
   testWidgets(
     'small dark screen keeps drawer and overlay controls accessible',
     (tester) async {
-      GoogleMapsFlutterPlatform.instance = _MapPlatform();
+      GoogleMapsFlutterPlatform.instance = FakeMapPlatform();
       await pumpInApp(
         tester,
         _trackingScreen(),
@@ -177,7 +156,7 @@ void main() {
   testWidgets(
     'drawer animates through intermediate values opening and closing',
     (tester) async {
-      GoogleMapsFlutterPlatform.instance = _MapPlatform();
+      GoogleMapsFlutterPlatform.instance = FakeMapPlatform();
       await pumpInApp(
         tester,
         _trackingScreen(),
@@ -212,7 +191,7 @@ void main() {
     testWidgets(
       '$locale tracking drawer opens and closes; tools stay inactive',
       (tester) async {
-        GoogleMapsFlutterPlatform.instance = _MapPlatform();
+        GoogleMapsFlutterPlatform.instance = FakeMapPlatform();
         await pumpInApp(
           tester,
           _trackingScreen(),

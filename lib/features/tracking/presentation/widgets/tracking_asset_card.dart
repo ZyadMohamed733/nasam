@@ -22,10 +22,7 @@ class TrackingAssetCard extends StatelessWidget {
     final label = TrackingStyle.label(l, asset.status);
     final scheme = Theme.of(context).colorScheme;
     return AppCard(
-      onTap: () => context.push(
-        AppRoutes.trackingAssetDetails,
-        extra: asset,
-      ),
+      onTap: () => context.push(AppRoutes.assetDetails(asset.id)),
       padding: EdgeInsets.fromLTRB(12.w, 10.h, 12.w, 8.h),
       borderRadius: 10.r,
       elevation: 0,
@@ -87,10 +84,8 @@ class TrackingAssetCard extends StatelessWidget {
               _ActionIcon(icon: Icons.my_location_outlined),
               _ActionIcon(
                 icon: Icons.play_arrow_outlined,
-                onPressed: () => context.push(
-                  AppRoutes.trackingAssetPlayback,
-                  extra: asset,
-                ),
+                onPressed: () =>
+                    context.push(AppRoutes.assetPlayback(asset.id)),
               ),
             ],
           ),
@@ -139,9 +134,14 @@ class TrackingAssetCard extends StatelessWidget {
     );
   }
 }
+
 //ss
 class _StatusBadge extends StatelessWidget {
-  const _StatusBadge({required this.label, required this.color, required this.status});
+  const _StatusBadge({
+    required this.label,
+    required this.color,
+    required this.status,
+  });
   final String label;
   final Color color;
   final VehicleStatus status;
@@ -157,9 +157,16 @@ class _StatusBadge extends StatelessWidget {
     child: Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(_statusIcon(status), color: color, size: AppIconSize.extraSmall.value.r),
+        Icon(
+          _statusIcon(status),
+          color: color,
+          size: AppIconSize.extraSmall.value.r,
+        ),
         SizedBox(width: 5.w),
-        Text(label, style: TextStyle(color: color, fontSize: 10.sp)),
+        Text(
+          label,
+          style: TextStyle(color: color, fontSize: 10.sp),
+        ),
       ],
     ),
   );
@@ -210,8 +217,9 @@ class _RouteProgress extends StatelessWidget {
                 radius: 11.r,
                 backgroundColor: color.withValues(alpha: .12),
                 child: RotatedBox(
-                  quarterTurns:
-                  Directionality.of(context) == TextDirection.rtl ? 3 : 1,
+                  quarterTurns: Directionality.of(context) == TextDirection.rtl
+                      ? 3
+                      : 1,
                   child: Icon(
                     Icons.navigation,
                     size: AppIconSize.small.value.r,
@@ -252,11 +260,7 @@ class _DashedLinePainter extends CustomPainter {
     final y = size.height / 2;
     var startX = 0.0;
     while (startX < size.width) {
-      canvas.drawLine(
-        Offset(startX, y),
-        Offset(startX + dashWidth, y),
-        paint,
-      );
+      canvas.drawLine(Offset(startX, y), Offset(startX + dashWidth, y), paint);
       startX += dashWidth + dashSpace;
     }
   }
@@ -264,9 +268,9 @@ class _DashedLinePainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant _DashedLinePainter oldDelegate) =>
       oldDelegate.color != color ||
-          oldDelegate.strokeWidth != strokeWidth ||
-          oldDelegate.dashWidth != dashWidth ||
-          oldDelegate.dashSpace != dashSpace;
+      oldDelegate.strokeWidth != strokeWidth ||
+      oldDelegate.dashWidth != dashWidth ||
+      oldDelegate.dashSpace != dashSpace;
 }
 
 class _ActionIcon extends StatelessWidget {
@@ -286,7 +290,9 @@ class _ActionIcon extends StatelessWidget {
           padding: EdgeInsets.zero,
           minimumSize: Size.zero,
           side: BorderSide(color: Theme.of(context).colorScheme.outlineVariant),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.r)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(7.r),
+          ),
         ),
         child: Icon(icon, size: AppIconSize.small.value.r),
       ),

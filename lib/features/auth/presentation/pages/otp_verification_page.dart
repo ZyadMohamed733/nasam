@@ -13,12 +13,20 @@ import '../cubit/otp_cubit.dart';
 import '../widgets/auth_scaffold.dart';
 
 class OtpVerificationPage extends StatefulWidget {
-  const OtpVerificationPage({super.key, required this.username, this.cubit});
+  const OtpVerificationPage({
+    super.key,
+    required this.username,
+    this.cubit,
+    this.returnTo,
+  });
 
   /// The account this login's second factor belongs to. Threaded from
   /// [LoginPage] via the route `extra`, not re-derived: the screen cannot be
   /// reached without it.
   final String username;
+
+  /// Where to go once verified — the target a deep link carried to login.
+  final String? returnTo;
 
   final OtpCubit? cubit;
 
@@ -44,7 +52,7 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
             case AuthFormSucceeded():
               // The repository has already stored the session, so RouteGuard
               // will let this through.
-              context.go(AppRoutes.home);
+              context.go(widget.returnTo ?? AppRoutes.home);
             case AuthFormFailed(:final failure):
               AppSnackBar.showError(context, failure.message);
             case AuthFormIdle() ||

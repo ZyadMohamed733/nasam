@@ -33,21 +33,27 @@ class TrackingRepositoryImpl implements TrackingRepository {
   );
 
   @override
+  Future<Either<Failure, TrackedAsset>> getTrackedAsset(String assetId) =>
+      _guard(
+        () async =>
+            TrackingMapper.asset(await _dataSource.getTrackedAsset(assetId)),
+      );
+
+  @override
   Future<Either<Failure, TrackedAssetDetails>> getAssetDetails(
     String assetId,
   ) => _guard(
-    () async => TrackingMapper.details(
-      await _dataSource.getAssetDetails(assetId),
-    ),
+    () async =>
+        TrackingMapper.details(await _dataSource.getAssetDetails(assetId)),
   );
 
   @override
   Future<Either<Failure, List<TrackedAssetNotification>>> getAssetNotifications(
     String assetId,
   ) => _guard(
-    () async => (await _dataSource.getAssetNotifications(assetId))
-        .map(TrackingMapper.notification)
-        .toList(growable: false),
+    () async => (await _dataSource.getAssetNotifications(
+      assetId,
+    )).map(TrackingMapper.notification).toList(growable: false),
   );
 
   @override

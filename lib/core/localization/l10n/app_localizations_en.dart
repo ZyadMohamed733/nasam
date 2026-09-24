@@ -528,4 +528,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get assetPlaybackMinutes => 'min';
+
+  @override
+  String get assetNotFound => 'This asset could not be found.';
+
+  @override
+  String get backToHome => 'Back to home';
 }

@@ -9,7 +9,9 @@ import 'package:nasam/features/tracking/domain/entities/tracked_asset_details.da
 import 'package:nasam/features/tracking/domain/entities/tracking_vehicle.dart';
 import 'package:nasam/features/tracking/domain/usecases/get_asset_details_usecase.dart';
 import 'package:nasam/features/tracking/domain/usecases/get_asset_notifications_usecase.dart';
+import 'package:nasam/features/tracking/domain/usecases/get_tracked_asset_usecase.dart';
 import 'package:nasam/features/tracking/presentation/cubit/asset_details_cubit.dart';
+import 'package:nasam/features/tracking/presentation/cubit/tracked_asset_cubit.dart';
 import 'package:nasam/features/tracking/presentation/pages/tracking_asset_details_page.dart';
 
 import '../../../helpers/widget_harness.dart';
@@ -18,6 +20,8 @@ class _MockGetDetails extends Mock implements GetAssetDetailsUseCase {}
 
 class _MockGetNotifications extends Mock
     implements GetAssetNotificationsUseCase {}
+
+class _MockGetAsset extends Mock implements GetTrackedAssetUseCase {}
 
 const _asset = TrackedAsset(
   id: 'AST-1',
@@ -66,20 +70,30 @@ Future<void> _openAlertsTab(WidgetTester tester) async {
 void main() {
   late _MockGetDetails getDetails;
   late _MockGetNotifications getNotifications;
+  late _MockGetAsset getAsset;
 
   setUp(() {
     getDetails = _MockGetDetails();
     getNotifications = _MockGetNotifications();
+    getAsset = _MockGetAsset();
     when(() => getDetails('AST-1')).thenAnswer((_) async => Right(_details));
+    when(() => getAsset('AST-1')).thenAnswer((_) async => const Right(_asset));
   });
 
   Future<void> pumpPage(WidgetTester tester) async {
     await pumpInApp(
       tester,
-      BlocProvider(
-        create: (_) =>
-            AssetDetailsCubit(getDetails, getNotifications)..load('AST-1'),
-        child: const TrackingAssetDetailsPage(asset: _asset),
+      MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => TrackedAssetCubit(getAsset)..load('AST-1'),
+          ),
+          BlocProvider(
+            create: (_) =>
+                AssetDetailsCubit(getDetails, getNotifications)..load('AST-1'),
+          ),
+        ],
+        child: const TrackingAssetDetailsPage(assetId: 'AST-1'),
       ),
     );
     await tester.pumpAndSettle();

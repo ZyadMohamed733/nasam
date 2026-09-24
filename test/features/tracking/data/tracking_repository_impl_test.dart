@@ -22,6 +22,9 @@ class _ThrowingDataSource implements TrackingDataSource {
   @override
   Future<List<TrackedAssetModel>> getTrackedAssets() async => throw error;
   @override
+  Future<TrackedAssetModel> getTrackedAsset(String assetId) async =>
+      throw error;
+  @override
   Future<AssetDetailsModel> getAssetDetails(String assetId) async =>
       throw error;
   @override
@@ -84,6 +87,19 @@ void main() {
         vehicles.every((v) => assetIds.contains(v.assetId)),
         isTrue,
         reason: 'a marker whose asset is missing cannot open anything',
+      );
+    });
+
+    test('a single asset resolves by id, and an unknown id is a 404',
+        () async {
+      final found = (await repositoryOver().getTrackedAsset('AST-0021'))
+          .getOrElse(() => throw StateError('not found'));
+      expect(found.id, 'AST-0021');
+
+      final missing = await repositoryOver().getTrackedAsset('AST-9999');
+      expect(
+        missing.fold((f) => f, (_) => null),
+        isA<ServerFailure>().having((f) => f.code, 'code', '404'),
       );
     });
 

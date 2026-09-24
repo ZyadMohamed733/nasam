@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 
 import '../services/auth_service.dart';
 import 'app_routes.dart';
+import 'return_path.dart';
 
 @injectable
 class RouteGuard {
@@ -37,9 +38,25 @@ class RouteGuard {
     final isPublic = _publicRoutes.contains(state.matchedLocation);
 
     if (!isAuth) {
-      return isPublic ? null : AppRoutes.login;
+      if (isPublic) return null;
+      // Keep where they were going, so a deep link that meets the login
+      // screen still ends up where it pointed. Only a validated in-app path is
+      // carried — see ReturnPath — and home is left off as the default anyway.
+      final target = ReturnPath.sanitize(state.uri.toString());
+      return target == null || target == AppRoutes.home
+          ? AppRoutes.login
+          : AppRoutes.loginReturningTo(target);
     }
-    // Someone already signed in has no business in the sign-in flow.
-    return isPublic ? AppRoutes.home : null;
+
+    // Someone already signed in has no business in the sign-in flow. If the
+    // link they followed was carrying a target, honour it rather than
+    // dropping them on home.
+    if (isPublic) {
+      return ReturnPath.sanitize(
+            state.uri.queryParameters[AppRoutes.fromParam],
+          ) ??
+          AppRoutes.home;
+    }
+    return null;
   }
 }

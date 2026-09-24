@@ -13,6 +13,9 @@ abstract interface class TrackingRepository {
 
   Future<Either<Failure, List<TrackedAsset>>> getTrackedAssets();
 
+  /// One asset by id, for screens reached by a link that carries only the id.
+  Future<Either<Failure, TrackedAsset>> getTrackedAsset(String assetId);
+
   Future<Either<Failure, TrackedAssetDetails>> getAssetDetails(String assetId);
 
   Future<Either<Failure, List<TrackedAssetNotification>>> getAssetNotifications(

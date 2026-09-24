@@ -1,0 +1,277 @@
+import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:nasam/app/app_config.dart';
+import 'package:nasam/core/constants/app_sizes.dart';
+import 'package:nasam/core/di/injection_container.dart';
+import 'package:nasam/core/localization/app_localizations_setup.dart';
+import 'package:nasam/core/router/app_router.dart';
+import 'package:nasam/core/router/app_routes.dart';
+import 'package:nasam/core/services/auth_service.dart';
+import 'package:nasam/core/theme/app_theme.dart';
+import 'package:nasam/features/auth/domain/entities/auth_session_entity.dart';
+import 'package:nasam/features/auth/domain/entities/login_result.dart';
+import 'package:nasam/features/auth/domain/usecases/login_usecase.dart';
+import 'package:nasam/features/auth/presentation/pages/login_page.dart';
+import 'package:nasam/features/home/presentation/pages/home_page.dart';
+import 'package:nasam/features/tracking/data/datasources/tracking_datasource.dart';
+import 'package:nasam/features/tracking/data/datasources/tracking_fixture_datasource.dart';
+import 'package:nasam/features/tracking/presentation/pages/tracking_asset_details_page.dart';
+import 'package:nasam/features/tracking/presentation/pages/tracking_asset_playback_page.dart';
+import 'package:nasam/features/tracking/presentation/playback_range.dart';
+import 'package:nasam/features/tracking/presentation/widgets/tracking_asset_not_found.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../helpers/fake_map_platform.dart';
+import '../../helpers/fixture_bundle.dart';
+
+/// The real [AppRouter] and guard, opened the way the OS opens a link: the
+/// platform's initial route is set before the router exists, so go_router
+/// starts there rather than at splash. Only the edges are faked — the
+/// session, the login call, the map plugin and asset IO.
+
+class _FakeAuthService implements AuthService {
+  bool signedIn = false;
+
+  @override
+  Future<bool> get isAuthenticated async => signedIn;
+  @override
+  Future<String?> get accessToken async => signedIn ? 'token' : null;
+  @override
+  Future<String?> get currentUser async => null;
+}
+
+class _MockLogin extends Mock implements LoginUseCase {}
+
+class _MockSession extends Mock implements AuthSessionEntity {}
+
+/// An asset the fixture has.
+const _knownId = 'AST-0017';
+
+void main() {
+  late _FakeAuthService auth;
+  late _MockLogin login;
+
+  setUp(() async {
+    await getIt.reset();
+    SharedPreferences.setMockInitialValues({});
+    await configureDependencies(
+      const AppConfig(
+        flavor: Flavor.dev,
+        appName: 'Nasam',
+        baseUrl: 'https://api-dev.nasam.app/v1',
+        wsUrl: 'wss://ws-dev.nasam.app',
+      ),
+    );
+    getIt.allowReassignment = true;
+
+    auth = _FakeAuthService()..signedIn = true;
+    login = _MockLogin();
+    getIt
+      ..registerSingleton<AuthService>(auth)
+      ..registerSingleton<LoginUseCase>(login)
+      ..registerSingleton<TrackingDataSource>(
+        TrackingFixtureDataSource(
+          bundle: DiskAssetBundle(),
+          latency: Duration.zero,
+        ),
+      );
+    GoogleMapsFlutterPlatform.instance = FakeMapPlatform();
+  });
+
+  tearDown(() async {
+    getIt.allowReassignment = false;
+    await getIt.reset();
+  });
+
+  /// Cold-starts the app at [location] and returns its router.
+  Future<AppRouter> open(WidgetTester tester, String location) async {
+    tester.view.physicalSize = const Size(
+      AppSizes.designWidth,
+      AppSizes.designHeight,
+    );
+    tester.view.devicePixelRatio = 1.0;
+    tester.binding.platformDispatcher.defaultRouteNameTestValue = location;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+      tester.binding.platformDispatcher.clearDefaultRouteNameTestValue();
+    });
+
+    final router = getIt<AppRouter>();
+    await tester.pumpWidget(
+      ScreenUtilInit(
+        designSize: const Size(AppSizes.designWidth, AppSizes.designHeight),
+        minTextAdapt: true,
+        builder: (context, _) => MaterialApp.router(
+          routerConfig: router.config,
+          theme: AppTheme.light,
+          locale: const Locale('en'),
+          supportedLocales: AppLocalizationsSetup.supportedLocales,
+          localizationsDelegates: AppLocalizationsSetup.localizationsDelegates,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    return router;
+  }
+
+  String location(AppRouter router) =>
+      router.config.routerDelegate.currentConfiguration.uri.toString();
+
+  /// The system back gesture, as the OS delivers it.
+  Future<void> back(WidgetTester tester) async {
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+  }
+
+  testWidgets('a cold link to details opens it over home; back goes home', (
+    tester,
+  ) async {
+    final router = await open(tester, AppRoutes.assetDetails(_knownId));
+
+    expect(location(router), '/assets/$_knownId');
+    expect(find.byType(TrackingAssetDetailsPage), findsOneWidget);
+    expect(find.text(_knownId), findsWidgets, reason: 'resolved from the id');
+
+    await back(tester);
+
+    expect(location(router), AppRoutes.home);
+    expect(find.byType(HomePage), findsOneWidget);
+    expect(find.byType(TrackingAssetDetailsPage), findsNothing);
+  });
+
+  testWidgets('a cold link to playback backs out through details to home', (
+    tester,
+  ) async {
+    final router = await open(tester, AppRoutes.assetPlayback(_knownId));
+
+    expect(find.byType(TrackingAssetPlaybackPage), findsOneWidget);
+    expect(
+      find.textContaining(_knownId),
+      findsWidgets,
+      reason: 'header from the id',
+    );
+
+    await back(tester);
+    expect(location(router), '/assets/$_knownId');
+    expect(find.byType(TrackingAssetDetailsPage), findsOneWidget);
+
+    await back(tester);
+    expect(location(router), AppRoutes.home);
+    expect(find.byType(HomePage), findsOneWidget);
+  });
+
+  testWidgets('a valid range in the link reaches the page', (tester) async {
+    final today = PlaybackRange.today();
+    final from = today.from.subtract(const Duration(days: 3));
+    await open(tester, AppRoutes.assetPlayback(_knownId, from: from));
+
+    final page = tester.widget<TrackingAssetPlaybackPage>(
+      find.byType(TrackingAssetPlaybackPage),
+    );
+    expect(page.initialRange.from, from);
+    expect(page.initialRange.to, today.to, reason: 'no to: through today');
+  });
+
+  testWidgets('an invalid range in the link falls back to today', (
+    tester,
+  ) async {
+    await open(
+      tester,
+      '/assets/$_knownId/playback?from=not-a-date&to=2999-01-01',
+    );
+
+    final page = tester.widget<TrackingAssetPlaybackPage>(
+      find.byType(TrackingAssetPlaybackPage),
+    );
+    expect(page.initialRange, PlaybackRange.today());
+    expect(tester.takeException(), isNull);
+  });
+
+  for (final link in [
+    AppRoutes.assetDetails('NO-SUCH-ASSET'),
+    AppRoutes.assetPlayback('NO-SUCH-ASSET'),
+    '/assets/%20',
+  ]) {
+    testWidgets('unknown id $link shows not-found, with a way home', (
+      tester,
+    ) async {
+      final router = await open(tester, link);
+
+      expect(find.byType(TrackingAssetNotFound), findsOneWidget);
+      expect(location(router), startsWith('/assets/'), reason: 'no redirect');
+      expect(tester.takeException(), isNull);
+
+      await tester.tap(find.text('Back to home'));
+      await tester.pumpAndSettle();
+
+      expect(location(router), AppRoutes.home);
+      expect(find.byType(HomePage), findsOneWidget);
+    });
+  }
+
+  testWidgets('signed out, a deep link goes through login and on to it', (
+    tester,
+  ) async {
+    auth.signedIn = false;
+    when(
+      () => login(
+        username: any(named: 'username'),
+        password: any(named: 'password'),
+      ),
+    ).thenAnswer((_) async {
+      auth.signedIn = true;
+      return Right(LoginSucceeded(_MockSession()));
+    });
+    final target = AppRoutes.assetPlayback(_knownId);
+
+    final router = await open(tester, target);
+
+    expect(find.byType(LoginPage), findsOneWidget);
+    final atLogin = Uri.parse(location(router));
+    expect(atLogin.path, AppRoutes.login);
+    expect(atLogin.queryParameters[AppRoutes.fromParam], target);
+
+    final fields = find.byType(EditableText);
+    await tester.enterText(fields.at(0), 'aya');
+    await tester.enterText(fields.at(1), 'correct horse');
+    await tester.tap(find.text('Sign in').last);
+    await tester.pumpAndSettle();
+
+    expect(location(router), target);
+    expect(find.byType(TrackingAssetPlaybackPage), findsOneWidget);
+  });
+
+  testWidgets('a hostile login target lands on home after sign-in', (
+    tester,
+  ) async {
+    auth.signedIn = false;
+    when(
+      () => login(
+        username: any(named: 'username'),
+        password: any(named: 'password'),
+      ),
+    ).thenAnswer((_) async {
+      auth.signedIn = true;
+      return Right(LoginSucceeded(_MockSession()));
+    });
+
+    final router = await open(
+      tester,
+      AppRoutes.loginReturningTo('//evil.example/phish'),
+    );
+    expect(find.byType(LoginPage), findsOneWidget);
+
+    final fields = find.byType(EditableText);
+    await tester.enterText(fields.at(0), 'aya');
+    await tester.enterText(fields.at(1), 'correct horse');
+    await tester.tap(find.text('Sign in').last);
+    await tester.pumpAndSettle();
+
+    expect(location(router), AppRoutes.home);
+  });
+}

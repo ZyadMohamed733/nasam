@@ -16,10 +16,12 @@ import 'package:nasam/features/tracking/domain/repositories/tracking_repository.
 import 'package:nasam/features/tracking/domain/usecases/get_asset_details_usecase.dart';
 import 'package:nasam/features/tracking/domain/usecases/get_asset_notifications_usecase.dart';
 import 'package:nasam/features/tracking/domain/usecases/get_playback_segments_usecase.dart';
+import 'package:nasam/features/tracking/domain/usecases/get_tracked_asset_usecase.dart';
 import 'package:nasam/features/tracking/domain/usecases/get_tracked_assets_usecase.dart';
 import 'package:nasam/features/tracking/domain/usecases/get_tracking_vehicles_usecase.dart';
 import 'package:nasam/features/tracking/presentation/cubit/asset_details_cubit.dart';
 import 'package:nasam/features/tracking/presentation/cubit/asset_playback_cubit.dart';
+import 'package:nasam/features/tracking/presentation/cubit/tracked_asset_cubit.dart';
 import 'package:nasam/features/tracking/presentation/cubit/tracking_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -72,11 +74,15 @@ void main() {
         expect(getIt<OnboardingCubit>(), isA<OnboardingCubit>());
 
         expect(getIt<TrackingRepository>(), isA<TrackingRepository>());
-        expect(getIt<GetTrackedAssetsUseCase>(), isA<GetTrackedAssetsUseCase>());
+        expect(
+          getIt<GetTrackedAssetsUseCase>(),
+          isA<GetTrackedAssetsUseCase>(),
+        );
         expect(
           getIt<GetTrackingVehiclesUseCase>(),
           isA<GetTrackingVehiclesUseCase>(),
         );
+        expect(getIt<GetTrackedAssetUseCase>(), isA<GetTrackedAssetUseCase>());
         expect(getIt<GetAssetDetailsUseCase>(), isA<GetAssetDetailsUseCase>());
         expect(
           getIt<GetAssetNotificationsUseCase>(),
@@ -89,6 +95,7 @@ void main() {
 
         // What the router resolves for the three tracking screens.
         expect(getIt<TrackingCubit>(), isA<TrackingCubit>());
+        expect(getIt<TrackedAssetCubit>(), isA<TrackedAssetCubit>());
         expect(getIt<AssetDetailsCubit>(), isA<AssetDetailsCubit>());
         expect(getIt<AssetPlaybackCubit>(), isA<AssetPlaybackCubit>());
       });

@@ -1009,6 +1009,18 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'دقيقة'**
   String get assetPlaybackMinutes;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'لم يتم العثور على هذا الأصل.'**
+  String get assetNotFound;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'العودة إلى الرئيسية'**
+  String get backToHome;
 }
 
 class _AppLocalizationsDelegate

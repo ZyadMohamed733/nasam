@@ -8,11 +8,14 @@ import 'package:nasam/core/router/route_guard.dart';
 import '../../helpers/mock_helper.dart';
 
 class _FakeGoRouterState extends Fake implements GoRouterState {
-  _FakeGoRouterState(this._location);
-  final String _location;
+  _FakeGoRouterState(String location) : uri = Uri.parse(location);
 
   @override
-  String get matchedLocation => _location;
+  final Uri uri;
+
+  /// As go_router reports it: the path, without the query.
+  @override
+  String get matchedLocation => uri.path;
 }
 
 class _FakeBuildContext extends Fake implements BuildContext {}
@@ -68,6 +71,45 @@ void main() {
     // Otherwise a signed-in user can sit on the login screen.
     test('is redirected away from login to home', () async {
       expect(await redirectFor(AppRoutes.login), AppRoutes.home);
+    });
+  });
+
+  group('deep links and the return target', () {
+    test('an unauthenticated deep link carries its target to login', () async {
+      givenAuthenticated(value: false);
+      final redirect = await redirectFor(
+        '/assets/AST-1/playback?from=2026-09-01',
+      );
+
+      final uri = Uri.parse(redirect!);
+      expect(uri.path, AppRoutes.login);
+      expect(
+        uri.queryParameters[AppRoutes.fromParam],
+        '/assets/AST-1/playback?from=2026-09-01',
+      );
+    });
+
+    test(
+      'a signed-in user following a login link goes to its target',
+      () async {
+        givenAuthenticated(value: true);
+        expect(
+          await redirectFor(AppRoutes.loginReturningTo('/assets/AST-1')),
+          '/assets/AST-1',
+        );
+      },
+    );
+
+    // The target is untrusted query input; it must not become an open
+    // redirect even for a user who is already signed in.
+    test('a hostile target is dropped for home', () async {
+      givenAuthenticated(value: true);
+      expect(
+        await redirectFor(
+          AppRoutes.loginReturningTo('https://evil.example/phish'),
+        ),
+        AppRoutes.home,
+      );
     });
   });
 }

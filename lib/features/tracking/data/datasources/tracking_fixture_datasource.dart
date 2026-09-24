@@ -62,6 +62,15 @@ class TrackingFixtureDataSource implements TrackingDataSource {
       _list(await _response('assets.json'), TrackedAssetModel.fromJson);
 
   @override
+  Future<TrackedAssetModel> getTrackedAsset(String assetId) async {
+    final assets = await getTrackedAssets();
+    for (final asset in assets) {
+      if (asset.id == assetId) return asset;
+    }
+    throw ServerException(message: 'No asset "$assetId".', code: '404');
+  }
+
+  @override
   Future<AssetDetailsModel> getAssetDetails(String assetId) async =>
       AssetDetailsModel.fromJson(
         await _responseFor('asset_details.json', assetId)
@@ -69,12 +78,11 @@ class TrackingFixtureDataSource implements TrackingDataSource {
       );
 
   @override
-  Future<List<NotificationModel>> getAssetNotifications(
-    String assetId,
-  ) async => _list(
-    await _responseFor('asset_notifications.json', assetId),
-    NotificationModel.fromJson,
-  );
+  Future<List<NotificationModel>> getAssetNotifications(String assetId) async =>
+      _list(
+        await _responseFor('asset_notifications.json', assetId),
+        NotificationModel.fromJson,
+      );
 
   @override
   Future<List<PlaybackSegmentModel>> getPlaybackSegments({

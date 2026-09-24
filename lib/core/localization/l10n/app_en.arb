@@ -151,5 +151,7 @@
   "assetPlaybackDuration": "Duration",
   "assetPlaybackKilometers": "km",
   "assetPlaybackKilometersPerHour": "km/h",
-  "assetPlaybackMinutes": "min"
+  "assetPlaybackMinutes": "min",
+  "assetNotFound": "This asset could not be found.",
+  "backToHome": "Back to home"
 }

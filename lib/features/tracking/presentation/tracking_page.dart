@@ -182,10 +182,7 @@ class _TrackingViewState extends State<_TrackingView>
                               .read<TrackingCubit>()
                               .assetForVehicle(vehicle);
                           if (asset == null) return;
-                          context.push(
-                            AppRoutes.trackingAssetDetails,
-                            extra: asset,
-                          );
+                          context.push(AppRoutes.assetDetails(asset.id));
                         },
                       ),
                     ),
