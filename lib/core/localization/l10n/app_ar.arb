@@ -407,5 +407,83 @@
   "trackingActionEmail": "بريد إلكتروني",
   "@trackingActionEmail": {
     "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
+  "unitSpeedKph": "{value} كم/س",
+  "@unitSpeedKph": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.",
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitDistanceKm": "{value} كم",
+  "@unitDistanceKm": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.",
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitWeightKg": "{value} كجم",
+  "@unitWeightKg": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.",
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitHours": "{value} س",
+  "@unitHours": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.",
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitCelsius": "{value} °م",
+  "@unitCelsius": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.",
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitPercent": "{value}٪",
+  "@unitPercent": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.",
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "durationMinutesSeconds": "{minutes} م {seconds} ث",
+  "@durationMinutesSeconds": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording. Form taken from the design's card ('٠٧ م ٠٩ ث').",
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      },
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "durationHoursMinutes": "{hours} س {minutes} م",
+  "@durationHoursMinutes": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.",
+    "placeholders": {
+      "hours": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "String"
+      }
+    }
   }
 }

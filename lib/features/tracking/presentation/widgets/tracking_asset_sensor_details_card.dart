@@ -5,6 +5,8 @@ import '../../../../core/constants/app_icons.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 
 import '../../domain/entities/tracked_asset_details.dart';
+import '../tracking_units.dart';
+
 class TrackingAssetSensorDetailsCard extends StatelessWidget {
   const TrackingAssetSensorDetailsCard({super.key, required this.details});
 
@@ -33,15 +35,32 @@ class TrackingAssetSensorDetailsCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text(details.sensorCode, style: Theme.of(context).textTheme.titleSmall?.copyWith(color: scheme.primary)),
+              Text(
+                details.sensorCode,
+                style: Theme.of(
+                  context,
+                ).textTheme.titleSmall?.copyWith(color: scheme.primary),
+              ),
               SizedBox(width: 6.w),
-              Icon(Icons.info_outline, size: AppIconSize.small.value.r, color: scheme.primary),
+              Icon(
+                Icons.info_outline,
+                size: AppIconSize.small.value.r,
+                color: scheme.primary,
+              ),
             ],
           ),
           SizedBox(height: 8.h),
-          _SensorReading(icon: Icons.bolt_outlined, value: '${details.sensorBatteryMillivolts} mV'),
+          _SensorReading(
+            icon: Icons.bolt_outlined,
+            value: '${details.sensorBatteryMillivolts} mV',
+          ),
           SizedBox(height: 6.h),
-          _SensorReading(icon: Icons.speed_outlined, value: '${details.sensorDistanceKm} km'),
+          _SensorReading(
+            icon: Icons.speed_outlined,
+            value: TrackingUnits.of(
+              context,
+            ).distanceKm(details.sensorDistanceKm),
+          ),
           SizedBox(height: 10.h),
           Row(
             children: [
@@ -53,14 +72,20 @@ class TrackingAssetSensorDetailsCard extends StatelessWidget {
                 style: IconButton.styleFrom(
                   backgroundColor: scheme.surface,
                   foregroundColor: scheme.onSurfaceVariant,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r), side: BorderSide(color: scheme.outlineVariant)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.r),
+                    side: BorderSide(color: scheme.outlineVariant),
+                  ),
                 ),
               ),
               SizedBox(width: 8.w),
               Expanded(
                 child: SizedBox(
                   height: 40.h,
-                  child: FilledButton(onPressed: () {}, child: Text(l.assetDetailsDownload)),
+                  child: FilledButton(
+                    onPressed: () {},
+                    child: Text(l.assetDetailsDownload),
+                  ),
                 ),
               ),
             ],
@@ -85,7 +110,12 @@ class _SensorReading extends StatelessWidget {
       children: [
         Icon(icon, size: AppIconSize.small.value.r, color: scheme.primary),
         SizedBox(width: 8.w),
-        Text(value, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: scheme.primary)),
+        Text(
+          value,
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(color: scheme.primary),
+        ),
       ],
     );
   }

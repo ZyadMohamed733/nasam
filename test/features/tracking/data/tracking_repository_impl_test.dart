@@ -3,6 +3,7 @@ import 'package:nasam/core/errors/exceptions.dart';
 import 'package:nasam/core/errors/failures.dart';
 import 'package:nasam/features/tracking/data/datasources/tracking_datasource.dart';
 import 'package:nasam/features/tracking/data/datasources/tracking_fixture_datasource.dart';
+import 'package:nasam/features/tracking/data/mappers/tracking_mapper.dart';
 import 'package:nasam/features/tracking/data/models/asset_details_model.dart';
 import 'package:nasam/features/tracking/data/models/notification_model.dart';
 import 'package:nasam/features/tracking/data/models/playback_segment_model.dart';
@@ -100,6 +101,29 @@ void main() {
       expect(
         missing.fold((f) => f, (_) => null),
         isA<ServerFailure>().having((f) => f.code, 'code', '404'),
+      );
+    });
+
+    test('the time in status comes from the contract, not the widget',
+        () async {
+      final asset = (await repositoryOver().getTrackedAsset('AST-0017'))
+          .getOrElse(() => throw StateError('not found'));
+      expect(asset.statusDuration, const Duration(seconds: 429));
+    });
+
+    test('a missing or negative time in status maps to none', () {
+      TrackedAssetModel wire(Object? seconds) => TrackedAssetModel.fromJson({
+        'id': 'A',
+        'code': 'A',
+        'name': 'A',
+        'status': 'MOVING',
+        'statusDurationSeconds': seconds,
+      });
+      expect(TrackingMapper.asset(wire(null)).statusDuration, isNull);
+      expect(TrackingMapper.asset(wire(-5)).statusDuration, isNull);
+      expect(
+        TrackingMapper.asset(wire(61)).statusDuration,
+        const Duration(seconds: 61),
       );
     });
 

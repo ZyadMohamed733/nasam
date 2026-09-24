@@ -1087,6 +1087,54 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'بريد إلكتروني'**
   String get trackingActionEmail;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'{value} كم/س'**
+  String unitSpeedKph(String value);
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'{value} كم'**
+  String unitDistanceKm(String value);
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'{value} كجم'**
+  String unitWeightKg(String value);
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'{value} س'**
+  String unitHours(String value);
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'{value} °م'**
+  String unitCelsius(String value);
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'{value}٪'**
+  String unitPercent(String value);
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording. Form taken from the design's card ('٠٧ م ٠٩ ث').
+  ///
+  /// In ar, this message translates to:
+  /// **'{minutes} م {seconds} ث'**
+  String durationMinutesSeconds(String minutes, String seconds);
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'{hours} س {minutes} م'**
+  String durationHoursMinutes(String hours, String minutes);
 }
 
 class _AppLocalizationsDelegate

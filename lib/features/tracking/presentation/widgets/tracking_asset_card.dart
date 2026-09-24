@@ -9,6 +9,7 @@ import '../../../../shared/widgets/app_card.dart';
 import '../../domain/entities/tracked_asset.dart';
 import '../../domain/entities/tracking_vehicle.dart';
 import '../tracking_style.dart';
+import '../tracking_units.dart';
 import '../utils/tracking_person_initials.dart';
 
 class TrackingAssetCard extends StatelessWidget {
@@ -59,7 +60,11 @@ class TrackingAssetCard extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     Text(
-                      '${asset.code} • ٠٧ م ٠٩ ث',
+                      [
+                        asset.code,
+                        if (asset.statusDuration case final d?)
+                          TrackingUnits.of(context).duration(d),
+                      ].join(' • '),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -264,17 +269,13 @@ class _RouteProgress extends StatelessWidget {
 }
 
 class _DashedLinePainter extends CustomPainter {
-  _DashedLinePainter({
-    required this.color,
-    required this.strokeWidth,
-    this.dashWidth = 4,
-    this.dashSpace = 4,
-  });
+  _DashedLinePainter({required this.color, required this.strokeWidth});
 
   final Color color;
   final double strokeWidth;
-  final double dashWidth;
-  final double dashSpace;
+
+  static const double dashWidth = 4;
+  static const double dashSpace = 4;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -293,10 +294,7 @@ class _DashedLinePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _DashedLinePainter oldDelegate) =>
-      oldDelegate.color != color ||
-      oldDelegate.strokeWidth != strokeWidth ||
-      oldDelegate.dashWidth != dashWidth ||
-      oldDelegate.dashSpace != dashSpace;
+      oldDelegate.color != color || oldDelegate.strokeWidth != strokeWidth;
 }
 
 /// A card action: a small outlined square inside a full 48dp touch target.

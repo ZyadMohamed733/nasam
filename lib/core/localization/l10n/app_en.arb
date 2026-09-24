@@ -174,5 +174,75 @@
   "trackingActionChat": "Message",
   "trackingActionLocate": "Show on map",
   "trackingActionCall": "Call",
-  "trackingActionEmail": "Email"
+  "trackingActionEmail": "Email",
+  "unitSpeedKph": "{value} km/h",
+  "@unitSpeedKph": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitDistanceKm": "{value} km",
+  "@unitDistanceKm": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitWeightKg": "{value} kg",
+  "@unitWeightKg": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitHours": "{value} h",
+  "@unitHours": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitCelsius": "{value} °C",
+  "@unitCelsius": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "unitPercent": "{value}%",
+  "@unitPercent": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "durationMinutesSeconds": "{minutes}m {seconds}s",
+  "@durationMinutesSeconds": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      },
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "durationHoursMinutes": "{hours}h {minutes}m",
+  "@durationHoursMinutes": {
+    "placeholders": {
+      "hours": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "String"
+      }
+    }
+  }
 }

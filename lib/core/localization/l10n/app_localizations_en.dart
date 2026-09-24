@@ -570,4 +570,44 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get trackingActionEmail => 'Email';
+
+  @override
+  String unitSpeedKph(String value) {
+    return '$value km/h';
+  }
+
+  @override
+  String unitDistanceKm(String value) {
+    return '$value km';
+  }
+
+  @override
+  String unitWeightKg(String value) {
+    return '$value kg';
+  }
+
+  @override
+  String unitHours(String value) {
+    return '$value h';
+  }
+
+  @override
+  String unitCelsius(String value) {
+    return '$value °C';
+  }
+
+  @override
+  String unitPercent(String value) {
+    return '$value%';
+  }
+
+  @override
+  String durationMinutesSeconds(String minutes, String seconds) {
+    return '${minutes}m ${seconds}s';
+  }
+
+  @override
+  String durationHoursMinutes(String hours, String minutes) {
+    return '${hours}h ${minutes}m';
+  }
 }

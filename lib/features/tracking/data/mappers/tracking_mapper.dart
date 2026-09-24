@@ -31,6 +31,10 @@ abstract final class TrackingMapper {
     status: _status(m.status),
     assignedPerson: m.assignedPerson,
     routeProgress: m.routeProgress.clamp(0, 1).toDouble(),
+    statusDuration: switch (m.statusDurationSeconds) {
+      final seconds? when seconds >= 0 => Duration(seconds: seconds),
+      _ => null,
+    },
   );
 
   static TrackedAssetDetails details(AssetDetailsModel m) =>

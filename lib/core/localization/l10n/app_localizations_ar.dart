@@ -583,4 +583,44 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get trackingActionEmail => 'بريد إلكتروني';
+
+  @override
+  String unitSpeedKph(String value) {
+    return '$value كم/س';
+  }
+
+  @override
+  String unitDistanceKm(String value) {
+    return '$value كم';
+  }
+
+  @override
+  String unitWeightKg(String value) {
+    return '$value كجم';
+  }
+
+  @override
+  String unitHours(String value) {
+    return '$value س';
+  }
+
+  @override
+  String unitCelsius(String value) {
+    return '$value °م';
+  }
+
+  @override
+  String unitPercent(String value) {
+    return '$value٪';
+  }
+
+  @override
+  String durationMinutesSeconds(String minutes, String seconds) {
+    return '$minutes م $seconds ث';
+  }
+
+  @override
+  String durationHoursMinutes(String hours, String minutes) {
+    return '$hours س $minutes م';
+  }
 }

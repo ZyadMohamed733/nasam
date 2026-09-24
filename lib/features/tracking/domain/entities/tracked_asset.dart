@@ -13,6 +13,7 @@ class TrackedAsset {
     required this.status,
     required this.assignedPerson,
     required this.routeProgress,
+    this.statusDuration,
   });
 
   final String id;
@@ -23,4 +24,8 @@ class TrackedAsset {
 
   /// 0..1 along the asset's current route.
   final double routeProgress;
+
+  /// How long the asset has been in [status]. Null when the source does
+  /// not say; the card then shows no time rather than a made-up one.
+  final Duration? statusDuration;
 }

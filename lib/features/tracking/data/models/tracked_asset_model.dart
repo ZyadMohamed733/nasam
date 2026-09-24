@@ -7,6 +7,7 @@ class TrackedAssetModel {
     required this.status,
     required this.assignedPerson,
     required this.routeProgress,
+    this.statusDurationSeconds,
   });
 
   factory TrackedAssetModel.fromJson(Map<String, dynamic> json) =>
@@ -17,6 +18,7 @@ class TrackedAssetModel {
         status: json['status'] as String,
         assignedPerson: json['assignedPerson'] as String? ?? '',
         routeProgress: (json['routeProgress'] as num?)?.toDouble() ?? 0,
+        statusDurationSeconds: (json['statusDurationSeconds'] as num?)?.toInt(),
       );
 
   final String id;
@@ -25,4 +27,7 @@ class TrackedAssetModel {
   final String status;
   final String assignedPerson;
   final double routeProgress;
+
+  /// Seconds in the current status. Optional in the contract.
+  final int? statusDurationSeconds;
 }
