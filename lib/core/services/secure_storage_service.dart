@@ -1,22 +1,106 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:injectable/injectable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/app_strings.dart';
+import '../utils/app_logger.dart';
 
-@lazySingleton
+/// The session's credentials and profile, in the platform keychain.
+///
+/// Registered through `StorageModule` with [open], not constructed directly:
+/// [open] is what guarantees the reinstall check has run before anything can
+/// read a token.
 class SecureStorageService {
-  const SecureStorageService(this._storage);
+  @visibleForTesting
+  SecureStorageService(this._storage);
+
   final FlutterSecureStorage _storage;
+
+  /// The keys this app's session lives under. Signing out clears exactly
+  /// these — never `deleteAll()`, which would take anything else stored in
+  /// the keychain with it.
+  static const List<String> authKeys = [
+    AppStrings.keyAccessToken,
+    AppStrings.keyRefreshToken,
+    AppStrings.keyUserData,
+  ];
+
+  /// Builds the service for the app: clears a previous install's session if
+  /// this is the first launch, then loads the access token into memory.
+  ///
+  /// iOS keeps keychain items across an uninstall, so a reinstalled app
+  /// would otherwise wake up signed in as whoever used it last — on a phone
+  /// that may have changed hands. SharedPreferences does not survive an
+  /// uninstall, which is what makes its flag a reliable "first launch".
+  static Future<SecureStorageService> open(
+    FlutterSecureStorage storage,
+    SharedPreferences prefs,
+  ) async {
+    final service = SecureStorageService(storage);
+    if (prefs.getBool(AppStrings.keyAuthStorageInitialised) != true) {
+      try {
+        await service.clearAuth();
+        await prefs.setBool(AppStrings.keyAuthStorageInitialised, true);
+      } catch (e, stack) {
+        // Leave the flag unset so the next launch tries again, rather than
+        // failing startup over a keychain that is momentarily unavailable.
+        AppLogger.e(
+          'Could not clear a previous install\'s session',
+          error: e,
+          stackTrace: stack,
+        );
+      }
+    }
+    try {
+      await service.getAccessToken();
+    } catch (_) {
+      // Not cached; the first real read tries again.
+    }
+    return service;
+  }
+
+  // The access token is read on every request by the auth interceptor, and a
+  // keychain read is a platform-channel round trip. It is held here instead:
+  // read once, written through on save, dropped on delete. Only this class
+  // writes the key, so the copy cannot go stale behind its back.
+  String? _accessToken;
+  bool _accessTokenLoaded = false;
+  Future<String?>? _pendingAccessTokenRead;
+
+  /// Whether an access token is held. Meaningful once [open] has run.
+  bool get hasAccessToken => _accessToken?.isNotEmpty ?? false;
 
   Future<void> saveAccessToken(String token) async {
     await _storage.write(key: AppStrings.keyAccessToken, value: token);
+    _accessToken = token;
+    _accessTokenLoaded = true;
   }
 
   Future<String?> getAccessToken() async {
-    return _storage.read(key: AppStrings.keyAccessToken);
+    if (_accessTokenLoaded) return _accessToken;
+    // Callers arriving together share one read. A failed read is not
+    // remembered, so the next call tries the keychain again.
+    final read = _pendingAccessTokenRead ??= _storage.read(
+      key: AppStrings.keyAccessToken,
+    );
+    try {
+      final value = await read;
+      // A save or delete that landed while the read was in flight wins.
+      if (!_accessTokenLoaded) {
+        _accessToken = value;
+        _accessTokenLoaded = true;
+      }
+      return _accessToken;
+    } finally {
+      if (identical(_pendingAccessTokenRead, read)) {
+        _pendingAccessTokenRead = null;
+      }
+    }
   }
 
   Future<void> deleteAccessToken() async {
+    _accessToken = null;
+    _accessTokenLoaded = true;
     await _storage.delete(key: AppStrings.keyAccessToken);
   }
 
@@ -48,7 +132,13 @@ class SecureStorageService {
     await _storage.delete(key: AppStrings.keyUserData);
   }
 
-  Future<void> clearAll() async {
-    await _storage.deleteAll();
+  /// Ends the session locally: the tokens and the profile, nothing else.
+  ///
+  /// The cached token is dropped first, so even if a keychain delete fails
+  /// the app stops sending the token straight away.
+  Future<void> clearAuth() async {
+    _accessToken = null;
+    _accessTokenLoaded = true;
+    await Future.wait([for (final key in authKeys) _storage.delete(key: key)]);
   }
 }

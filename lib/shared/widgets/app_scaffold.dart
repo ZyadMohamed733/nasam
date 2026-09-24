@@ -6,9 +6,8 @@ import '../../core/di/injection_container.dart';
 import '../../core/responsive/responsive_layout.dart';
 import '../../core/router/app_routes.dart';
 import '../../core/services/websocket_service.dart';
-import '../../features/auth/domain/usecases/logout_usecase.dart';
+import '../../features/auth/presentation/widgets/session_drawer.dart';
 import 'app_bar_widget.dart';
-import 'app_drawer.dart';
 
 /// A navigation destination shown in the drawer on phones and the rail on
 /// wider screens, so the two cannot drift apart.
@@ -46,7 +45,6 @@ class AppScaffold extends StatelessWidget {
     this.floatingActionButton,
     this.bottomNavigationBar,
     this.wsService,
-    this.logout,
   });
 
   final Widget body;
@@ -67,40 +65,24 @@ class AppScaffold extends StatelessWidget {
   /// dependencies are resolved, so the leaf widgets take theirs by constructor
   /// and never reach for the service locator themselves.
   final WebSocketService? wsService;
-  final LogoutUseCase? logout;
 
   @override
   Widget build(BuildContext context) {
     final ws = wsService ?? getIt<WebSocketService>();
-    final logoutUseCase = logout ?? getIt<LogoutUseCase>();
-
     return ResponsiveLayout(
-      mobile: _buildMobile(context, ws, logoutUseCase),
+      mobile: _buildMobile(context, ws),
       tablet: _buildWide(context, ws),
     );
   }
 
   Widget _wrappedBody() => useSafeArea ? SafeArea(child: body) : body;
 
-  Widget _buildMobile(
-    BuildContext context,
-    WebSocketService ws,
-    LogoutUseCase logout,
-  ) {
+  Widget _buildMobile(BuildContext context, WebSocketService ws) {
     return Scaffold(
       appBar: showAppBar
           ? NasamAppBar(title: title, wsService: ws, showLeading: showDrawer)
           : null,
-      drawer: showDrawer
-          ? Drawer(
-              child: AppDrawer(
-                onLogout: () async {
-                  await logout();
-                  if (context.mounted) context.go(AppRoutes.login);
-                },
-              ),
-            )
-          : null,
+      drawer: showDrawer ? const Drawer(child: SessionDrawer()) : null,
       body: _wrappedBody(),
       floatingActionButton: floatingActionButton,
       bottomNavigationBar: bottomNavigationBar,

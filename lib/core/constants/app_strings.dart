@@ -7,6 +7,10 @@ class AppStrings {
   static const String keyUserData = 'user_data';
   static const String keyOnboardingSeen = 'onboarding_seen';
 
+  /// SharedPreferences flag: set once the keychain has been checked for a
+  /// previous install's session. See `SecureStorageService.open`.
+  static const String keyAuthStorageInitialised = 'auth_storage_initialised';
+
   // Network & Headers
   static const String headerAuthorization = 'Authorization';
   static const String headerContentType = 'Content-Type';

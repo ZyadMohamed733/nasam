@@ -8,7 +8,6 @@ import '../../models/login_request_model.dart';
 import '../../models/refresh_token_request_model.dart';
 import '../../models/resend_otp_request_model.dart';
 import '../../models/reset_password_request_model.dart';
-import '../../models/user_model.dart';
 import '../../models/verify_otp_request_model.dart';
 
 /// What `POST /auth/login` answers when the account has 2FA enabled: `200`
@@ -26,13 +25,6 @@ abstract class AuthRemoteDataSource {
   });
 
   Future<void> resendOtp(String username);
-
-  /// [refreshToken] is threaded back into the returned model by the caller
-  /// (see [AuthRepositoryImpl.refreshAccessToken]) since the response
-  /// itself does not carry one.
-  Future<({String accessToken, UserModel user})> refreshAccessToken(
-    String refreshToken,
-  );
 
   /// [refreshToken] is nullable and, when null, sent with no body at all --
   /// `RefreshTokenDto.refreshToken` is optional on the wire, and there is
@@ -102,26 +94,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       await _dio.post<Map<String, dynamic>>(
         '/auth/resend-otp',
         data: ResendOtpRequestModel(username: username).toJson(),
-      );
-    } on DioException catch (e) {
-      throw ExceptionMapper.fromDioException(e);
-    }
-  }
-
-  @override
-  Future<({String accessToken, UserModel user})> refreshAccessToken(
-    String refreshToken,
-  ) async {
-    try {
-      final response = await _dio.post<Map<String, dynamic>>(
-        '/auth/refresh-access-token',
-        data: RefreshTokenRequestModel(refreshToken: refreshToken).toJson(),
-      );
-
-      final data = response.data?['data'] as Map<String, dynamic>? ?? {};
-      return (
-        accessToken: data['accessToken'] as String,
-        user: UserModel.fromJson(data['user'] as Map<String, dynamic>),
       );
     } on DioException catch (e) {
       throw ExceptionMapper.fromDioException(e);

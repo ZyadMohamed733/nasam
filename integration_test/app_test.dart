@@ -25,6 +25,7 @@ void main() {
     appName: 'Nasam Dev',
     baseUrl: 'https://api-dev.nasam.app/v1',
     wsUrl: 'wss://ws-dev.nasam.app',
+    tenant: 'test-tenant',
   );
 
   setUp(() async {

@@ -23,4 +23,9 @@ abstract class NetworkModule {
       errorInterceptor: errorInterceptor,
     );
   }
+
+  @Named(bareDioName)
+  @lazySingleton
+  Dio bareDio(AppConfig config, LoggingInterceptor loggingInterceptor) =>
+      DioClient.bare(config: config, loggingInterceptor: loggingInterceptor);
 }

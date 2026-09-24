@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:nasam/core/auth/auth_session_notifier.dart';
 import 'package:nasam/core/router/app_routes.dart';
 import 'package:nasam/core/router/route_guard.dart';
 
@@ -23,10 +24,14 @@ class _FakeBuildContext extends Fake implements BuildContext {}
 void main() {
   late RouteGuard guard;
   late MockAuthService authService;
+  late AuthSessionNotifier session;
 
   setUp(() {
     authService = MockAuthService();
-    guard = RouteGuard(authService);
+    final storage = MockSecureStorageService();
+    when(() => storage.hasAccessToken).thenReturn(true);
+    session = AuthSessionNotifier(storage);
+    guard = RouteGuard(authService, session);
   });
 
   Future<String?> redirectFor(String location) =>
@@ -122,6 +127,26 @@ void main() {
         expect(backUri.queryParameters[AppRoutes.toDateParam], '2026-09-10');
       },
     );
+
+    test('an expired session keeps the screen it was on', () async {
+      session.expire();
+      givenAuthenticated(value: false);
+
+      final redirect = await redirectFor('/assets/AST-1');
+
+      expect(
+        Uri.parse(redirect!).queryParameters[AppRoutes.returnToParam],
+        '/assets/AST-1',
+      );
+    });
+
+    // Whoever signs in next may not be the person who left.
+    test('a deliberate sign-out goes to a plain login', () async {
+      session.signOut();
+      givenAuthenticated(value: false);
+
+      expect(await redirectFor('/assets/AST-1'), AppRoutes.login);
+    });
 
     // The target is untrusted query input; it must not become an open
     // redirect even for a user who is already signed in.

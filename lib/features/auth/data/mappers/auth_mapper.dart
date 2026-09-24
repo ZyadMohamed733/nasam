@@ -44,10 +44,9 @@ abstract final class AuthMapper {
   );
 
   /// [refreshToken] is threaded in separately rather than read off
-  /// [AuthSessionModel] because the refresh-access-token response doesn't
-  /// carry one (the token isn't rotated) -- the datasource fills it back
-  /// in with whichever one it sent, and this mapper stays the single place
-  /// that assembles the final, always-non-null entity.
+  /// [AuthSessionModel] because the model's may be absent -- the repository
+  /// resolves it (falling back to the stored one) and this mapper stays the
+  /// single place that assembles the final, always-non-null entity.
   static AuthSessionEntity sessionToEntity({
     required String accessToken,
     required String refreshToken,

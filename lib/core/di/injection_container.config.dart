@@ -26,8 +26,6 @@ import '../../features/auth/domain/usecases/forget_password_usecase.dart'
     as _i948;
 import '../../features/auth/domain/usecases/login_usecase.dart' as _i188;
 import '../../features/auth/domain/usecases/logout_usecase.dart' as _i48;
-import '../../features/auth/domain/usecases/refresh_access_token_usecase.dart'
-    as _i1064;
 import '../../features/auth/domain/usecases/resend_otp_usecase.dart' as _i613;
 import '../../features/auth/domain/usecases/reset_password_usecase.dart'
     as _i474;
@@ -35,6 +33,7 @@ import '../../features/auth/domain/usecases/verify_otp_usecase.dart' as _i503;
 import '../../features/auth/presentation/cubit/forgot_password_cubit.dart'
     as _i104;
 import '../../features/auth/presentation/cubit/login_cubit.dart' as _i69;
+import '../../features/auth/presentation/cubit/logout_cubit.dart' as _i159;
 import '../../features/auth/presentation/cubit/new_password_cubit.dart'
     as _i236;
 import '../../features/auth/presentation/cubit/otp_cubit.dart' as _i1033;
@@ -68,6 +67,8 @@ import '../../features/tracking/presentation/cubit/tracked_asset_cubit.dart'
     as _i1062;
 import '../../features/tracking/presentation/cubit/tracking_cubit.dart'
     as _i546;
+import '../auth/auth_session_notifier.dart' as _i745;
+import '../auth/token_refresher.dart' as _i599;
 import '../network/interceptors/auth_interceptor.dart' as _i745;
 import '../network/interceptors/error_interceptor.dart' as _i511;
 import '../network/interceptors/logging_interceptor.dart' as _i344;
@@ -98,11 +99,22 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i558.FlutterSecureStorage>(
       () => storageModule.secureStorage,
     );
-    gh.lazySingleton<_i535.SecureStorageService>(
-      () => _i535.SecureStorageService(gh<_i558.FlutterSecureStorage>()),
+    await gh.singletonAsync<_i535.SecureStorageService>(
+      () => storageModule.secureStorageService(
+        gh<_i558.FlutterSecureStorage>(),
+        gh<_i460.SharedPreferences>(),
+      ),
+      preResolve: true,
     );
     gh.lazySingleton<_i765.TrackingDataSource>(
       () => _i439.TrackingFixtureDataSource(),
+    );
+    gh.lazySingleton<_i361.Dio>(
+      () => networkModule.bareDio(
+        gh<_i861.AppConfig>(),
+        gh<_i344.LoggingInterceptor>(),
+      ),
+      instanceName: 'bareDio',
     );
     gh.lazySingleton<_i306.StorageService>(
       () => _i306.StorageService(gh<_i460.SharedPreferences>()),
@@ -114,8 +126,15 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i745.AuthService>(
       () => _i745.AuthServiceImpl(gh<_i535.SecureStorageService>()),
     );
-    gh.lazySingleton<_i745.AuthInterceptor>(
-      () => _i745.AuthInterceptor(gh<_i535.SecureStorageService>()),
+    gh.lazySingleton<_i745.AuthSessionNotifier>(
+      () => _i745.AuthSessionNotifier(gh<_i535.SecureStorageService>()),
+    );
+    gh.lazySingleton<_i599.TokenRefresher>(
+      () => _i599.TokenRefresher(
+        gh<_i535.SecureStorageService>(),
+        gh<_i745.AuthSessionNotifier>(),
+        gh<_i361.Dio>(instanceName: 'bareDio'),
+      ),
     );
     gh.factory<_i807.OnboardingCubit>(
       () => _i807.OnboardingCubit(gh<_i306.StorageService>()),
@@ -127,18 +146,23 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i279.TrackingRepositoryImpl(gh<_i765.TrackingDataSource>()),
     );
     gh.factory<_i715.RouteGuard>(
-      () => _i715.RouteGuard(gh<_i745.AuthService>()),
-    );
-    gh.lazySingleton<_i361.Dio>(
-      () => networkModule.dio(
-        gh<_i861.AppConfig>(),
-        gh<_i745.AuthInterceptor>(),
-        gh<_i344.LoggingInterceptor>(),
-        gh<_i511.ErrorInterceptor>(),
+      () => _i715.RouteGuard(
+        gh<_i745.AuthService>(),
+        gh<_i745.AuthSessionNotifier>(),
       ),
     );
     gh.lazySingleton<_i81.AppRouter>(
-      () => _i81.AppRouter(gh<_i715.RouteGuard>()),
+      () => _i81.AppRouter(
+        gh<_i715.RouteGuard>(),
+        gh<_i745.AuthSessionNotifier>(),
+      ),
+    );
+    gh.lazySingleton<_i745.AuthInterceptor>(
+      () => _i745.AuthInterceptor(
+        gh<_i535.SecureStorageService>(),
+        gh<_i599.TokenRefresher>(),
+        gh<_i361.Dio>(instanceName: 'bareDio'),
+      ),
     );
     gh.lazySingleton<_i439.GetAssetDetailsUseCase>(
       () => _i439.GetAssetDetailsUseCase(gh<_i76.TrackingRepository>()),
@@ -158,9 +182,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i886.GetTrackingVehiclesUseCase>(
       () => _i886.GetTrackingVehiclesUseCase(gh<_i76.TrackingRepository>()),
     );
-    gh.lazySingleton<_i1022.AuthRemoteDataSource>(
-      () => _i1022.AuthRemoteDataSourceImpl(gh<_i361.Dio>()),
-    );
     gh.factory<_i546.TrackingCubit>(
       () => _i546.TrackingCubit(
         gh<_i886.GetTrackingVehiclesUseCase>(),
@@ -176,13 +197,25 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i201.GetAssetNotificationsUseCase>(),
       ),
     );
+    gh.lazySingleton<_i361.Dio>(
+      () => networkModule.dio(
+        gh<_i861.AppConfig>(),
+        gh<_i745.AuthInterceptor>(),
+        gh<_i344.LoggingInterceptor>(),
+        gh<_i511.ErrorInterceptor>(),
+      ),
+    );
     gh.factory<_i719.AssetPlaybackCubit>(
       () => _i719.AssetPlaybackCubit(gh<_i405.GetPlaybackSegmentsUseCase>()),
+    );
+    gh.lazySingleton<_i1022.AuthRemoteDataSource>(
+      () => _i1022.AuthRemoteDataSourceImpl(gh<_i361.Dio>()),
     );
     gh.lazySingleton<_i787.AuthRepository>(
       () => _i153.AuthRepositoryImpl(
         gh<_i1022.AuthRemoteDataSource>(),
         gh<_i535.SecureStorageService>(),
+        gh<_i745.AuthSessionNotifier>(),
       ),
     );
     gh.lazySingleton<_i948.ForgetPasswordUseCase>(
@@ -193,9 +226,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i48.LogoutUseCase>(
       () => _i48.LogoutUseCase(gh<_i787.AuthRepository>()),
-    );
-    gh.lazySingleton<_i1064.RefreshAccessTokenUseCase>(
-      () => _i1064.RefreshAccessTokenUseCase(gh<_i787.AuthRepository>()),
     );
     gh.lazySingleton<_i613.ResendOtpUseCase>(
       () => _i613.ResendOtpUseCase(gh<_i787.AuthRepository>()),
@@ -220,6 +250,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i69.LoginCubit>(
       () => _i69.LoginCubit(gh<_i188.LoginUseCase>()),
+    );
+    gh.factory<_i159.LogoutCubit>(
+      () => _i159.LogoutCubit(gh<_i48.LogoutUseCase>()),
     );
     return this;
   }

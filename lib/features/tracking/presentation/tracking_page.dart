@@ -5,10 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../core/constants/app_sizes.dart';
-import '../../../core/di/injection_container.dart';
 import '../../../core/localization/l10n/app_localizations.dart';
 import '../../../core/router/app_routes.dart';
-import '../../../features/auth/domain/usecases/logout_usecase.dart';
+import '../../../features/auth/presentation/widgets/session_drawer.dart';
 import '../../../shared/widgets/app_drawer.dart';
 import 'cubit/tracking_cubit.dart';
 import 'widgets/tracking_controls.dart';
@@ -119,13 +118,7 @@ class _TrackingViewState extends State<_TrackingView>
           ),
           drawer: FadeTransition(
             opacity: _drawerFade,
-            child: AppDrawer(
-              showBackground: false,
-              onLogout: () async {
-                await getIt<LogoutUseCase>()();
-                if (context.mounted) context.go(AppRoutes.login);
-              },
-            ),
+            child: const SessionDrawer(showBackground: false),
           ),
           child: Scaffold(
             body: BlocConsumer<TrackingCubit, TrackingState>(

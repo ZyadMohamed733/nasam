@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/auth/auth_session_notifier.dart';
 import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failure_mapper.dart';
 import '../../../../core/errors/failures.dart';
@@ -16,10 +17,11 @@ import '../models/auth_session_model.dart';
 
 @LazySingleton(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
-  const AuthRepositoryImpl(this._remote, this._secureStorage);
+  const AuthRepositoryImpl(this._remote, this._secureStorage, this._session);
 
   final AuthRemoteDataSource _remote;
   final SecureStorageService _secureStorage;
+  final AuthSessionNotifier _session;
 
   @override
   Future<Either<Failure, LoginResult>> login({
@@ -41,48 +43,28 @@ class AuthRepositoryImpl implements AuthRepository {
   });
 
   @override
-  Future<Either<Failure, Unit>> resendOtp(String username) =>
-      _guard(() async {
-        await _remote.resendOtp(username);
-        return unit;
-      });
-
-  @override
-  Future<Either<Failure, AuthSessionEntity>> refreshAccessToken() =>
-      _guard(() async {
-        final storedRefreshToken = await _secureStorage.getRefreshToken();
-        if (storedRefreshToken == null || storedRefreshToken.isEmpty) {
-          throw const AuthException(
-            message: 'No session to refresh.',
-            code: '401',
-          );
-        }
-
-        final result = await _remote.refreshAccessToken(storedRefreshToken);
-
-        await _secureStorage.saveAccessToken(result.accessToken);
-        await _secureStorage.saveUser(jsonEncode(result.user.toJson()));
-
-        // Not rotated by this endpoint -- the caller keeps using the token
-        // it already had.
-        return AuthMapper.sessionToEntity(
-          accessToken: result.accessToken,
-          refreshToken: storedRefreshToken,
-          user: result.user,
-        );
-      });
+  Future<Either<Failure, Unit>> resendOtp(String username) => _guard(() async {
+    await _remote.resendOtp(username);
+    return unit;
+  });
 
   @override
   Future<Either<Failure, Unit>> logout() => _guard(() async {
-    final refreshToken = await _secureStorage.getRefreshToken();
     try {
-      await _remote.logout(refreshToken);
+      await _remote.logout(await _secureStorage.getRefreshToken());
     } on AppException {
       // Signing out is a local fact -- the server call is best-effort
-      // cleanup, not a precondition for it. Storage below is cleared
-      // whether or not this succeeded.
+      // cleanup, not a precondition for it. An expected failure is not
+      // worth reporting; anything else still surfaces, after the finally.
+    } finally {
+      // Whatever the call above did, the session ends here. Only the auth
+      // keys go, and the router is told even if the keychain fails.
+      try {
+        await _secureStorage.clearAuth();
+      } finally {
+        _session.signOut();
+      }
     }
-    await _secureStorage.clearAll();
     return unit;
   });
 
@@ -127,6 +109,7 @@ class AuthRepositoryImpl implements AuthRepository {
     await _secureStorage.saveAccessToken(model.accessToken);
     await _secureStorage.saveRefreshToken(refreshToken);
     await _secureStorage.saveUser(jsonEncode(model.user.toJson()));
+    _session.signIn();
 
     return AuthMapper.sessionToEntity(
       accessToken: model.accessToken,

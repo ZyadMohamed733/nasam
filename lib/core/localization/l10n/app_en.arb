@@ -153,5 +153,6 @@
   "assetPlaybackKilometersPerHour": "km/h",
   "assetPlaybackMinutes": "min",
   "assetNotFound": "This asset could not be found.",
-  "backToHome": "Back to home"
+  "backToHome": "Back to home",
+  "sessionExpired": "Your session has expired. Please sign in again."
 }

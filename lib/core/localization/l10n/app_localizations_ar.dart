@@ -548,4 +548,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get backToHome => 'العودة إلى الرئيسية';
+
+  @override
+  String get sessionExpired => 'انتهت جلستك. يرجى تسجيل الدخول مرة أخرى.';
 }

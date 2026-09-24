@@ -1021,6 +1021,12 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'العودة إلى الرئيسية'**
   String get backToHome;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording. Shown once on the login screen when the server ended the session.
+  ///
+  /// In ar, this message translates to:
+  /// **'انتهت جلستك. يرجى تسجيل الدخول مرة أخرى.'**
+  String get sessionExpired;
 }
 
 class _AppLocalizationsDelegate

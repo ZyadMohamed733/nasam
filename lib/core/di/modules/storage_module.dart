@@ -2,6 +2,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../services/secure_storage_service.dart';
+
 @module
 abstract class StorageModule {
   @lazySingleton
@@ -18,4 +20,13 @@ abstract class StorageModule {
 
   @preResolve
   Future<SharedPreferences> get prefs => SharedPreferences.getInstance();
+
+  /// Resolved up front, so the reinstall check in [SecureStorageService.open]
+  /// has finished before anything can ask for a token.
+  @singleton
+  @preResolve
+  Future<SecureStorageService> secureStorageService(
+    FlutterSecureStorage storage,
+    SharedPreferences prefs,
+  ) => SecureStorageService.open(storage, prefs);
 }

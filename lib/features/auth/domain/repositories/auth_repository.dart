@@ -26,15 +26,11 @@ abstract class AuthRepository {
   /// `login`'s OTP budget is spent too.
   Future<Either<Failure, Unit>> resendOtp(String username);
 
-  /// Exchanges the stored refresh token for a new access token, persisting
-  /// both the new access token and the refreshed user profile on success.
-  /// The refresh token itself is not rotated by the API, so the returned
-  /// session reuses whichever one was already stored.
-  Future<Either<Failure, AuthSessionEntity>> refreshAccessToken();
-
-  /// Ends the session. Clears the local session (tokens + user) regardless
-  /// of whether the network call succeeds -- signing out is a local fact,
-  /// and the server call is best-effort cleanup, not a precondition for it.
+  /// Ends the session. Clears the local session (tokens + user) whatever the
+  /// network call does, including throwing something unexpected -- signing
+  /// out is a local fact, and the server call is best-effort cleanup, not a
+  /// precondition for it. The token refresh is not here: it belongs to
+  /// `TokenRefresher` in core, the app's only refresh path.
   Future<Either<Failure, Unit>> logout();
 
   /// Starts a password reset by emailing [email] a reset link. Always

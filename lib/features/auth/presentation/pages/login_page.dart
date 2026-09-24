@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../app/app_config.dart';
+import '../../../../core/auth/auth_session_notifier.dart';
 import '../../../../core/constants/app_sizes.dart';
 import '../../../../core/di/injection_container.dart';
 import '../../../../core/extensions/context_extensions.dart';
@@ -19,10 +20,13 @@ import '../widgets/auth_link.dart';
 import '../widgets/auth_scaffold.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key, this.cubit, this.returnTo});
+  const LoginPage({super.key, this.cubit, this.returnTo, this.session});
 
   /// Injected in tests; resolved from the container otherwise.
   final LoginCubit? cubit;
+
+  /// Injected in tests; resolved from the container otherwise.
+  final AuthSessionNotifier? session;
 
   /// Where to go once signed in, if a deep link sent the user here. Already
   /// validated by the route as a safe in-app path; home when absent.
@@ -36,6 +40,22 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _username = TextEditingController();
   final _password = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Arriving here because the server ended the session is not something the
+    // user did, so say why. Acknowledged at once: the notice is shown for the
+    // expiry, not for every later visit to this screen.
+    final session = widget.session ?? getIt<AuthSessionNotifier>();
+    if (session.value == AuthSessionStatus.expired) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        AppSnackBar.showWarning(context, context.l10n.sessionExpired);
+        session.acknowledgeExpiry();
+      });
+    }
+  }
 
   @override
   void dispose() {

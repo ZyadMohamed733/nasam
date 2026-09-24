@@ -41,9 +41,13 @@ class AppDrawer extends StatelessWidget {
     this.profileName,
     this.profileRole,
     this.showBackground = true,
+    this.loggingOut = false,
   });
 
   final VoidCallback onLogout;
+
+  /// A sign-out is under way: the entry shows progress and ignores taps.
+  final bool loggingOut;
   final String? profileName;
   final String? profileRole;
   final bool showBackground;
@@ -151,7 +155,8 @@ class AppDrawer extends StatelessWidget {
                         _Entry(
                           label: l.trackingLogout,
                           icon: Icons.logout_rounded,
-                          onTap: onLogout,
+                          busy: loggingOut,
+                          onTap: loggingOut ? null : onLogout,
                         ),
                         ConstrainedBox(
                           constraints: const BoxConstraints(
@@ -228,12 +233,14 @@ class _Entry extends StatelessWidget {
     required this.icon,
     this.expanded,
     this.selected = false,
+    this.busy = false,
     this.onTap,
   });
   final String label;
   final IconData icon;
   final bool? expanded;
   final bool selected;
+  final bool busy;
   final VoidCallback? onTap;
 
   @override
@@ -256,7 +263,19 @@ class _Entry extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Icon(icon, size: AppSizes.drawerIconSize, color: color),
+                if (busy)
+                  SizedBox.square(
+                    dimension: AppSizes.drawerIconSize,
+                    child: Padding(
+                      padding: const EdgeInsets.all(AppSizes.p2),
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: color,
+                      ),
+                    ),
+                  )
+                else
+                  Icon(icon, size: AppSizes.drawerIconSize, color: color),
                 const SizedBox(width: AppSizes.p12),
                 Expanded(
                   child: Text(

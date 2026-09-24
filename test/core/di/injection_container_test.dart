@@ -1,14 +1,23 @@
+import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nasam/app/app_config.dart';
 import 'package:nasam/app/app_settings_controller.dart';
+import 'package:nasam/core/auth/auth_session_notifier.dart';
+import 'package:nasam/core/auth/token_refresher.dart';
+import 'package:nasam/core/constants/app_strings.dart';
 import 'package:nasam/core/di/injection_container.dart';
+import 'package:nasam/core/network/dio_client.dart';
+import 'package:nasam/core/network/interceptors/auth_interceptor.dart';
 import 'package:nasam/core/router/app_router.dart';
+import 'package:nasam/core/services/auth_service.dart';
 import 'package:nasam/core/services/storage_service.dart';
 import 'package:nasam/core/services/websocket_service.dart';
 import 'package:nasam/features/auth/domain/repositories/auth_repository.dart';
 import 'package:nasam/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:nasam/features/auth/presentation/cubit/forgot_password_cubit.dart';
 import 'package:nasam/features/auth/presentation/cubit/login_cubit.dart';
+import 'package:nasam/features/auth/presentation/cubit/logout_cubit.dart';
 import 'package:nasam/features/auth/presentation/cubit/new_password_cubit.dart';
 import 'package:nasam/features/auth/presentation/cubit/otp_cubit.dart';
 import 'package:nasam/features/onboarding/presentation/cubit/onboarding_cubit.dart';
@@ -40,10 +49,12 @@ void main() {
     appName: 'Nasam',
     baseUrl: 'https://api-${flavor.name}.nasam.app/v1',
     wsUrl: 'wss://ws-${flavor.name}.nasam.app',
+    tenant: 'tenant-${flavor.name}',
   );
 
   setUp(() {
     SharedPreferences.setMockInitialValues({});
+    FlutterSecureStorage.setMockInitialValues({});
   });
 
   tearDown(() async {
@@ -68,6 +79,10 @@ void main() {
         expect(getIt<AuthRepository>(), isA<AuthRepository>());
         expect(getIt<LogoutUseCase>(), isA<LogoutUseCase>());
         expect(getIt<LoginCubit>(), isA<LoginCubit>());
+        expect(getIt<LogoutCubit>(), isA<LogoutCubit>());
+        expect(getIt<AuthSessionNotifier>(), isA<AuthSessionNotifier>());
+        expect(getIt<TokenRefresher>(), isA<TokenRefresher>());
+        expect(getIt<AuthInterceptor>(), isA<AuthInterceptor>());
         expect(getIt<OtpCubit>(), isA<OtpCubit>());
         expect(getIt<ForgotPasswordCubit>(), isA<ForgotPasswordCubit>());
         expect(getIt<NewPasswordCubit>(), isA<NewPasswordCubit>());
@@ -100,6 +115,22 @@ void main() {
         expect(getIt<AssetPlaybackCubit>(), isA<AssetPlaybackCubit>());
       });
 
+      // One refresh client for the life of the app, carrying this flavor's
+      // headers -- not a new Dio per refresh.
+      test('the refresh client is built once, from AppConfig', () async {
+        await configure();
+
+        final bare = getIt<Dio>(instanceName: bareDioName);
+        expect(getIt<Dio>(instanceName: bareDioName), same(bare));
+        expect(bare, isNot(same(getIt<Dio>())));
+        expect(bare.options.headers['X-Client'], 'mobile');
+        expect(bare.options.headers['x-tenant'], 'tenant-${flavor.name}');
+        expect(
+          getIt<Dio>().options.headers['x-tenant'],
+          'tenant-${flavor.name}',
+        );
+      });
+
       // No tracking API exists yet, so every flavor is bound to the fixture.
       // What matters is that the screens get data rather than a container
       // error; when the real source lands this becomes a check that each
@@ -114,4 +145,40 @@ void main() {
       });
     });
   }
+
+  // iOS keeps the keychain across an uninstall. The container is where the
+  // wipe has to happen: before it returns, nothing can have read a token.
+  group('reinstall', () {
+    const leftover = {
+      AppStrings.keyAccessToken: 'previous-owner',
+      AppStrings.keyRefreshToken: 'previous-refresh',
+      AppStrings.keyUserData: '{}',
+    };
+
+    test(
+      'a first launch starts signed out, whatever the keychain held',
+      () async {
+        FlutterSecureStorage.setMockInitialValues(Map.of(leftover));
+        await configureDependencies(configFor(Flavor.prod));
+
+        expect(await getIt<AuthService>().isAuthenticated, isFalse);
+        expect(getIt<AuthSessionNotifier>().value, AuthSessionStatus.signedOut);
+        const keychain = FlutterSecureStorage();
+        for (final key in leftover.keys) {
+          expect(await keychain.read(key: key), isNull, reason: key);
+        }
+      },
+    );
+
+    test('a later launch keeps the session', () async {
+      SharedPreferences.setMockInitialValues({
+        AppStrings.keyAuthStorageInitialised: true,
+      });
+      FlutterSecureStorage.setMockInitialValues(Map.of(leftover));
+      await configureDependencies(configFor(Flavor.prod));
+
+      expect(await getIt<AuthService>().isAuthenticated, isTrue);
+      expect(getIt<AuthSessionNotifier>().value, AuthSessionStatus.signedIn);
+    });
+  });
 }

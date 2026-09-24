@@ -15,6 +15,7 @@ void main() {
       baseUrl: 'http://localhost',
       appName: 'Nasam',
       wsUrl: 'ws://localhost',
+      tenant: 'test-tenant',
     ),
   );
 

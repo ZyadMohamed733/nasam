@@ -1,13 +1,12 @@
 import 'user_model.dart';
 
-/// Wire shape of the `data` payload on a successful (non-2FA) login,
-/// verify-otp, or refresh-access-token response.
+/// Wire shape of the `data` payload on a successful (non-2FA) login or
+/// verify-otp response. (The token refresh does not use it: that response is
+/// read by `TokenRefresher` in core.)
 ///
-/// `refreshToken` is nullable here even though [toEntity] always needs one:
-/// the refresh-access-token endpoint's `data` doesn't include it at all
-/// (the token isn't rotated), so `AuthRemoteDataSourceImpl.refreshAccessToken`
-/// fills it back in from the token it sent, rather than this model pretending
-/// the server returned one.
+/// `refreshToken` is nullable because the API only puts it in the body when
+/// asked with `X-Client: mobile`; `AuthRepositoryImpl` falls back to the
+/// stored one rather than this model pretending the server returned one.
 class AuthSessionModel {
   const AuthSessionModel({
     required this.accessToken,

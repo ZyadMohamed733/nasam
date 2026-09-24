@@ -18,6 +18,7 @@ import '../../features/tracking/presentation/cubit/tracking_cubit.dart';
 import '../../features/tracking/presentation/pages/tracking_asset_details_page.dart';
 import '../../features/tracking/presentation/pages/tracking_asset_playback_page.dart';
 import '../../features/tracking/presentation/playback_range.dart';
+import '../auth/auth_session_notifier.dart';
 import '../di/injection_container.dart';
 import 'app_error_page.dart';
 import 'app_routes.dart';
@@ -27,15 +28,20 @@ import 'route_guard.dart';
 
 @lazySingleton
 class AppRouter {
-  AppRouter(this._routeGuard);
+  AppRouter(this._routeGuard, this._session);
 
   final RouteGuard _routeGuard;
+
+  /// Re-runs the guard whenever the session changes, so an expired session
+  /// leaves the screen it was on for login, and a sign-in moves on from it.
+  final AuthSessionNotifier _session;
 
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   late final GoRouter config = GoRouter(
     navigatorKey: navigatorKey,
     initialLocation: AppRoutes.splash,
+    refreshListenable: _session,
     redirect: (context, state) => _routeGuard.handleRedirect(context, state),
     errorPageBuilder: (context, state) => appTransitionPage(
       context: context,

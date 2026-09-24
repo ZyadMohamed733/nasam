@@ -7,12 +7,14 @@ void main() {
     Flavor flavor = Flavor.dev,
     String baseUrl = 'https://api-dev.nasam.app/v1',
     String wsUrl = 'wss://ws-dev.nasam.app',
+    String tenant = 'saudi-tracking',
     String? configuredFlavor,
   }) {
     return AppConfigLoader.build(
       flavor: flavor,
       baseUrl: baseUrl,
       wsUrl: wsUrl,
+      tenant: tenant,
       configuredFlavor: configuredFlavor ?? flavor.name,
     );
   }
@@ -30,6 +32,16 @@ void main() {
     test('a missing dart-define fails loudly instead of falling back', () {
       expect(() => build(baseUrl: ''), throwsA(isA<StateError>()));
       expect(() => build(wsUrl: ''), throwsA(isA<StateError>()));
+      expect(() => build(tenant: ''), throwsA(isA<StateError>()));
+    });
+
+    test('the tenant comes from the config and reaches the API headers', () {
+      final config = build(tenant: 'another-tenant');
+      expect(config.tenant, 'another-tenant');
+      expect(config.apiHeaders, {
+        'X-Client': 'mobile',
+        'x-tenant': 'another-tenant',
+      });
     });
 
     // Guards the prod entrypoint being run against a dev config file.

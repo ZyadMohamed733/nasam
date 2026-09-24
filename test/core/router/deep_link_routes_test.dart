@@ -1,17 +1,14 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:nasam/app/app_config.dart';
-import 'package:nasam/core/constants/app_sizes.dart';
 import 'package:nasam/core/di/injection_container.dart';
-import 'package:nasam/core/localization/app_localizations_setup.dart';
 import 'package:nasam/core/router/app_router.dart';
 import 'package:nasam/core/router/app_routes.dart';
 import 'package:nasam/core/services/auth_service.dart';
-import 'package:nasam/core/theme/app_theme.dart';
 import 'package:nasam/features/auth/domain/entities/auth_session_entity.dart';
 import 'package:nasam/features/auth/domain/entities/login_result.dart';
 import 'package:nasam/features/auth/domain/usecases/login_usecase.dart';
@@ -25,6 +22,7 @@ import 'package:nasam/features/tracking/presentation/playback_range.dart';
 import 'package:nasam/features/tracking/presentation/widgets/tracking_asset_not_found.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../helpers/app_harness.dart';
 import '../../helpers/fake_map_platform.dart';
 import '../../helpers/fixture_bundle.dart';
 
@@ -58,12 +56,14 @@ void main() {
   setUp(() async {
     await getIt.reset();
     SharedPreferences.setMockInitialValues({});
+    FlutterSecureStorage.setMockInitialValues({});
     await configureDependencies(
       const AppConfig(
         flavor: Flavor.dev,
         appName: 'Nasam',
         baseUrl: 'https://api-dev.nasam.app/v1',
         wsUrl: 'wss://ws-dev.nasam.app',
+        tenant: 'test-tenant',
       ),
     );
     getIt.allowReassignment = true;
@@ -87,40 +87,10 @@ void main() {
     await getIt.reset();
   });
 
-  /// Cold-starts the app at [location] and returns its router.
-  Future<AppRouter> open(WidgetTester tester, String location) async {
-    tester.view.physicalSize = const Size(
-      AppSizes.designWidth,
-      AppSizes.designHeight,
-    );
-    tester.view.devicePixelRatio = 1.0;
-    tester.binding.platformDispatcher.defaultRouteNameTestValue = location;
-    addTearDown(() {
-      tester.view.resetPhysicalSize();
-      tester.view.resetDevicePixelRatio();
-      tester.binding.platformDispatcher.clearDefaultRouteNameTestValue();
-    });
+  Future<AppRouter> open(WidgetTester tester, String location) =>
+      openApp(tester, location);
 
-    final router = getIt<AppRouter>();
-    await tester.pumpWidget(
-      ScreenUtilInit(
-        designSize: const Size(AppSizes.designWidth, AppSizes.designHeight),
-        minTextAdapt: true,
-        builder: (context, _) => MaterialApp.router(
-          routerConfig: router.config,
-          theme: AppTheme.light,
-          locale: const Locale('en'),
-          supportedLocales: AppLocalizationsSetup.supportedLocales,
-          localizationsDelegates: AppLocalizationsSetup.localizationsDelegates,
-        ),
-      ),
-    );
-    await tester.pumpAndSettle();
-    return router;
-  }
-
-  String location(AppRouter router) =>
-      router.config.routerDelegate.currentConfiguration.uri.toString();
+  String location(AppRouter router) => currentLocation(router);
 
   /// The system back gesture, as the OS delivers it.
   Future<void> back(WidgetTester tester) async {

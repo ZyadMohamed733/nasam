@@ -2,5 +2,6 @@
   "_README": "NO SECRETS IN THIS FILE. It is committed to git and compiled into the app binary, where any user can read it. Hostnames and flavour names are fine. For anything secret, use config/<flavor>.local.json (gitignored) and pass it with a second --dart-define-from-file.",
   "FLAVOR": "staging",
   "BASE_URL": "https://api-stage.nasam.app/v1",
-  "WS_URL": "wss://ws-stage.nasam.app"
+  "WS_URL": "wss://ws-stage.nasam.app",
+  "TENANT": "saudi-tracking"
 }

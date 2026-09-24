@@ -534,4 +534,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get backToHome => 'Back to home';
+
+  @override
+  String get sessionExpired =>
+      'Your session has expired. Please sign in again.';
 }

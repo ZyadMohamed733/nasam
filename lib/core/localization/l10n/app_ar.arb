@@ -355,5 +355,9 @@
   "backToHome": "العودة إلى الرئيسية",
   "@backToHome": {
     "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
+  "sessionExpired": "انتهت جلستك. يرجى تسجيل الدخول مرة أخرى.",
+  "@sessionExpired": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording. Shown once on the login screen when the server ended the session."
   }
 }

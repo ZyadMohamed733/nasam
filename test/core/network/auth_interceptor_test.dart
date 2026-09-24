@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:nasam/core/auth/auth_session_notifier.dart';
+import 'package:nasam/core/auth/token_refresher.dart';
 import 'package:nasam/core/network/interceptors/auth_interceptor.dart';
 
 import '../../helpers/mock_helper.dart';
@@ -19,8 +21,13 @@ class _FakeErrorHandler extends ErrorInterceptorHandler {
 }
 
 void main() {
-  late AuthInterceptor interceptor;
   late MockSecureStorageService storage;
+  late MockDio bare;
+  late AuthInterceptor interceptor;
+
+  /// Refresh calls, which the test can hold open with [gate].
+  late List<String> refreshCalls;
+  Completer<Response<Map<String, dynamic>>>? gate;
 
   // A fresh RequestOptions per call: onError sets extra['isRetry'] on it, so a
   // shared instance would leak that flag into later tests.
@@ -35,49 +42,36 @@ void main() {
     );
   }
 
+  Response<Map<String, dynamic>> refreshed() => Response(
+    requestOptions: origin(),
+    statusCode: 200,
+    data: const {
+      'data': {'accessToken': 'new-access'},
+    },
+  );
+
   setUpAll(() {
     registerFallbackValue(RequestOptions(path: '/'));
   });
 
   setUp(() {
     storage = MockSecureStorageService();
-    interceptor = AuthInterceptor(storage);
-
+    when(() => storage.hasAccessToken).thenReturn(true);
     when(() => storage.getAccessToken()).thenAnswer((_) async => 'old-access');
     when(() => storage.getRefreshToken()).thenAnswer((_) async => 'refresh-1');
     when(() => storage.saveAccessToken(any())).thenAnswer((_) async {});
-    when(() => storage.saveRefreshToken(any())).thenAnswer((_) async {});
-    when(() => storage.clearAll()).thenAnswer((_) async {});
-  });
+    when(() => storage.clearAuth()).thenAnswer((_) async {});
 
-  /// Counts refresh calls and lets the test control when they complete.
-  ({
-    MockDio dio,
-    List<String> calls,
-    Completer<Response<Map<String, dynamic>>> gate,
-  })
-  refreshClient({bool gated = false}) {
-    final dio = MockDio();
-    final calls = <String>[];
-    final gate = Completer<Response<Map<String, dynamic>>>();
-
+    refreshCalls = [];
+    gate = null;
+    bare = MockDio();
     when(
-      () => dio.post<Map<String, dynamic>>(any(), data: any(named: 'data')),
+      () => bare.post<Map<String, dynamic>>(any(), data: any(named: 'data')),
     ).thenAnswer((invocation) {
-      calls.add(invocation.positionalArguments.first as String);
-      if (gated) return gate.future;
-      return Future.value(
-        Response<Map<String, dynamic>>(
-          requestOptions: origin(),
-          statusCode: 200,
-          data: const {
-            'data': {'accessToken': 'new-access'},
-          },
-        ),
-      );
+      refreshCalls.add(invocation.positionalArguments.first as String);
+      return gate?.future ?? Future.value(refreshed());
     });
-
-    when(() => dio.fetch<dynamic>(any())).thenAnswer(
+    when(() => bare.fetch<dynamic>(any())).thenAnswer(
       (_) async => Response<dynamic>(
         requestOptions: origin(),
         statusCode: 200,
@@ -85,16 +79,20 @@ void main() {
       ),
     );
 
-    interceptor.refreshClientFactory = (_) => dio;
-    return (dio: dio, calls: calls, gate: gate);
-  }
+    // The real refresher: the single-flight lock lives there now.
+    final refresher = TokenRefresher(
+      storage,
+      AuthSessionNotifier(storage),
+      bare,
+    );
+    interceptor = AuthInterceptor(storage, refresher, bare);
+  });
 
   group('concurrency', () {
-    // The bug: as a factory-scoped interceptor with no lock, five parallel
-    // requests against an expired token sent five refreshes, and with token
-    // rotation the first response invalidated the other four.
+    // Five parallel requests against an expired token must not send five
+    // refreshes: with rotation the first would invalidate the other four.
     test('five concurrent 401s trigger exactly one refresh', () async {
-      final client = refreshClient(gated: true);
+      gate = Completer();
       final handlers = List.generate(5, (_) => _FakeErrorHandler());
 
       final inFlight = [
@@ -102,137 +100,55 @@ void main() {
           interceptor.onError(unauthorized(), handler),
       ];
 
-      // All five are now waiting on the same refresh.
       await Future<void>.delayed(Duration.zero);
-      expect(client.calls, hasLength(1));
+      expect(refreshCalls, hasLength(1));
 
-      client.gate.complete(
-        Response<Map<String, dynamic>>(
-          requestOptions: origin(),
-          statusCode: 200,
-          data: const {
-            'data': {'accessToken': 'new-access'},
-          },
-        ),
-      );
+      gate!.complete(refreshed());
       await Future.wait(inFlight);
 
-      expect(client.calls, hasLength(1));
-      expect(client.calls.single, '/auth/refresh-access-token');
+      expect(refreshCalls.single, TokenRefresher.refreshPath);
       verify(() => storage.saveAccessToken('new-access')).called(1);
-      // Every caller got its request retried and resolved.
+      // Every caller got its request retried with the new token.
       expect(handlers.every((h) => h.resolved.length == 1), isTrue);
+      final retried = verify(() => bare.fetch<dynamic>(captureAny())).captured;
+      expect(retried, hasLength(5));
+      for (final options in retried.cast<RequestOptions>()) {
+        expect(options.headers['Authorization'], 'Bearer new-access');
+      }
     });
 
     test(
       'a later 401 starts a fresh refresh once the first has settled',
       () async {
-        final client = refreshClient();
-
         await interceptor.onError(unauthorized(), _FakeErrorHandler());
         await interceptor.onError(unauthorized(), _FakeErrorHandler());
 
-        expect(client.calls, hasLength(2));
+        expect(refreshCalls, hasLength(2));
       },
     );
   });
 
-  group('credential clearing', () {
-    test('a 401 from the refresh endpoint clears credentials', () async {
-      final dio = MockDio();
-      when(
-        () => dio.post<Map<String, dynamic>>(any(), data: any(named: 'data')),
-      ).thenThrow(
-        DioException(
-          requestOptions: origin(),
-          response: Response<dynamic>(
-            requestOptions: origin(),
-            statusCode: 401,
-          ),
-        ),
-      );
-      interceptor.refreshClientFactory = (_) => dio;
-
-      final handler = _FakeErrorHandler();
-      await interceptor.onError(unauthorized(), handler);
-
-      verify(() => storage.clearAll()).called(1);
-      expect(handler.forwarded, hasLength(1));
-    });
-
-    test('a 403 from the refresh endpoint clears credentials', () async {
-      final dio = MockDio();
-      when(
-        () => dio.post<Map<String, dynamic>>(any(), data: any(named: 'data')),
-      ).thenThrow(
-        DioException(
-          requestOptions: origin(),
-          response: Response<dynamic>(
-            requestOptions: origin(),
-            statusCode: 403,
-          ),
-        ),
-      );
-      interceptor.refreshClientFactory = (_) => dio;
-
-      await interceptor.onError(unauthorized(), _FakeErrorHandler());
-
-      verify(() => storage.clearAll()).called(1);
-    });
-
-    // A two-second network blip is not a revoked token. The previous
-    // `catch (_)` wiped credentials on any refresh failure.
-    test('a timeout during refresh does NOT clear credentials', () async {
-      final dio = MockDio();
-      when(
-        () => dio.post<Map<String, dynamic>>(any(), data: any(named: 'data')),
-      ).thenThrow(
-        DioException(
-          requestOptions: origin(),
-          type: DioExceptionType.receiveTimeout,
-        ),
-      );
-      interceptor.refreshClientFactory = (_) => dio;
-
-      final handler = _FakeErrorHandler();
-      await interceptor.onError(unauthorized(), handler);
-
-      verifyNever(() => storage.clearAll());
-      expect(handler.forwarded, hasLength(1));
-    });
-
-    test(
-      'a connection error during refresh does NOT clear credentials',
-      () async {
-        final dio = MockDio();
-        when(
-          () => dio.post<Map<String, dynamic>>(any(), data: any(named: 'data')),
-        ).thenThrow(
-          DioException(
-            requestOptions: origin(),
-            type: DioExceptionType.connectionError,
-          ),
-        );
-        interceptor.refreshClientFactory = (_) => dio;
-
-        await interceptor.onError(unauthorized(), _FakeErrorHandler());
-
-        verifyNever(() => storage.clearAll());
-      },
+  test('a failed refresh hands the original 401 on', () async {
+    final rejected = origin();
+    when(
+      () => bare.post<Map<String, dynamic>>(any(), data: any(named: 'data')),
+    ).thenThrow(
+      DioException(
+        requestOptions: rejected,
+        response: Response<dynamic>(requestOptions: rejected, statusCode: 401),
+      ),
     );
+    final original = unauthorized();
+    final handler = _FakeErrorHandler();
 
-    test('no stored refresh token clears credentials', () async {
-      when(() => storage.getRefreshToken()).thenAnswer((_) async => null);
+    await interceptor.onError(original, handler);
 
-      await interceptor.onError(unauthorized(), _FakeErrorHandler());
-
-      verify(() => storage.clearAll()).called(1);
-    });
+    expect(handler.forwarded.single, same(original));
+    verifyNever(() => bare.fetch<dynamic>(any()));
   });
 
   group('pass-through', () {
     test('a non-401 is forwarded untouched', () async {
-      final client = refreshClient();
       final handler = _FakeErrorHandler();
 
       await interceptor.onError(
@@ -246,13 +162,12 @@ void main() {
         handler,
       );
 
-      expect(client.calls, isEmpty);
+      expect(refreshCalls, isEmpty);
       expect(handler.forwarded, hasLength(1));
     });
 
     // Without this the retried request 401s again and refreshes forever.
     test('an already-retried request is not refreshed again', () async {
-      final client = refreshClient();
       final retried = RequestOptions(
         path: '/vehicles',
         baseUrl: 'https://api.test',
@@ -268,7 +183,7 @@ void main() {
         handler,
       );
 
-      expect(client.calls, isEmpty);
+      expect(refreshCalls, isEmpty);
       expect(handler.forwarded, hasLength(1));
     });
   });

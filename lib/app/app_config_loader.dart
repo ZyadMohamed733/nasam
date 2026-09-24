@@ -13,11 +13,13 @@ abstract final class AppConfigLoader {
   static const String _baseUrl = String.fromEnvironment('BASE_URL');
   static const String _wsUrl = String.fromEnvironment('WS_URL');
   static const String _flavorName = String.fromEnvironment('FLAVOR');
+  static const String _tenant = String.fromEnvironment('TENANT');
 
   static AppConfig forFlavor(Flavor flavor) => build(
     flavor: flavor,
     baseUrl: _baseUrl,
     wsUrl: _wsUrl,
+    tenant: _tenant,
     configuredFlavor: _flavorName,
   );
 
@@ -27,11 +29,12 @@ abstract final class AppConfigLoader {
     required Flavor flavor,
     required String baseUrl,
     required String wsUrl,
+    required String tenant,
     required String configuredFlavor,
   }) {
-    if (baseUrl.isEmpty || wsUrl.isEmpty) {
+    if (baseUrl.isEmpty || wsUrl.isEmpty || tenant.isEmpty) {
       throw StateError(
-        'Missing BASE_URL or WS_URL for the "${flavor.name}" flavor.\n'
+        'Missing BASE_URL, WS_URL or TENANT for the "${flavor.name}" flavor.\n'
         '\n'
         'These are compile-time defines, so they have to be supplied to the '
         'build — a hot restart cannot add them.\n'
@@ -73,6 +76,7 @@ abstract final class AppConfigLoader {
       appName: _appNameFor(flavor),
       baseUrl: baseUrl,
       wsUrl: wsUrl,
+      tenant: tenant,
     );
   }
 
