@@ -14,7 +14,9 @@ import 'tracking_datasource.dart';
 
 /// Serves the tracking screens from JSON fixtures shaped like the API.
 ///
-/// TODO(api): temporary until the tracking API is delivered. Replace with a
+/// TODO(api): temporary until the tracking API is delivered. The contract
+/// the real endpoints must meet is docs/api/tracking_contract.md, generated
+/// from these fixtures by tool/tracking_contract.dart. Replace with a
 /// Dio-backed `TrackingRemoteDataSource` carrying the same
 /// `@LazySingleton(as: TrackingDataSource)` annotation and delete this class;
 /// nothing above the data source changes. The fixtures under
