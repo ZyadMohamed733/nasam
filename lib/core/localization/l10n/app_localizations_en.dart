@@ -616,4 +616,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get userTypeClientEmployee => 'Client employee';
+
+  @override
+  String unitMillivolts(String value) {
+    return '$value mV';
+  }
 }

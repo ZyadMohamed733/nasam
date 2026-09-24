@@ -246,5 +246,13 @@
   "userTypeAdmin": "System administrator",
   "userTypeEmployee": "Employee",
   "userTypeClientAdmin": "Client administrator",
-  "userTypeClientEmployee": "Client employee"
+  "userTypeClientEmployee": "Client employee",
+  "unitMillivolts": "{value} mV",
+  "@unitMillivolts": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  }
 }

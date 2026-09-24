@@ -198,24 +198,23 @@ class _TrackingAssetPlaybackSegmentCardState
           Row(
             textDirection: ui.TextDirection.ltr,
             children: [
-              SizedBox(
-                width: 34.w,
-                height: 32.h,
-                child: IconButton.filled(
-                  tooltip: widget.playing
-                      ? l.assetPlaybackPause
-                      : l.assetPlaybackPlay,
-                  visualDensity: VisualDensity.compact,
-                  padding: EdgeInsets.zero,
-                  onPressed: widget.onPlayPressed,
-                  icon: Icon(
-                    widget.playing ? Icons.pause : Icons.play_arrow,
-                    size: AppIconSize.medium.value.r,
-                  ),
-                  style: IconButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(7.r),
-                    ),
+              // The design's 34x32 button, inside a padded 48dp target.
+              IconButton.filled(
+                tooltip: widget.playing
+                    ? l.assetPlaybackPause
+                    : l.assetPlaybackPlay,
+                padding: EdgeInsets.zero,
+                onPressed: widget.onPlayPressed,
+                icon: Icon(
+                  widget.playing ? Icons.pause : Icons.play_arrow,
+                  size: AppIconSize.medium.value.r,
+                ),
+                style: IconButton.styleFrom(
+                  fixedSize: Size(34.r, 32.r),
+                  minimumSize: Size(34.r, 32.r),
+                  tapTargetSize: MaterialTapTargetSize.padded,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(7.r),
                   ),
                 ),
               ),

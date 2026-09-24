@@ -629,4 +629,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get userTypeClientEmployee => 'موظف العميل';
+
+  @override
+  String unitMillivolts(String value) {
+    return '$value مللي فولت';
+  }
 }

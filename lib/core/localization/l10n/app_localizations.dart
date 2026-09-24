@@ -1147,6 +1147,12 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'موظف العميل'**
   String get userTypeClientEmployee;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'{value} مللي فولت'**
+  String unitMillivolts(String value);
 }
 
 class _AppLocalizationsDelegate

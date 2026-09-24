@@ -499,5 +499,14 @@
   "userTypeClientEmployee": "موظف العميل",
   "@userTypeClientEmployee": {
     "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
+  "unitMillivolts": "{value} مللي فولت",
+  "@unitMillivolts": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.",
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
   }
 }

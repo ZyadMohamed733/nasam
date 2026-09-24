@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/constants/app_icons.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
-
 import '../../domain/entities/tracked_asset_details.dart';
 import '../tracking_units.dart';
 
@@ -52,7 +51,9 @@ class TrackingAssetSensorDetailsCard extends StatelessWidget {
           SizedBox(height: 8.h),
           _SensorReading(
             icon: Icons.bolt_outlined,
-            value: '${details.sensorBatteryMillivolts} mV',
+            value: TrackingUnits.of(
+              context,
+            ).millivolts(details.sensorBatteryMillivolts),
           ),
           SizedBox(height: 6.h),
           _SensorReading(
@@ -62,28 +63,37 @@ class TrackingAssetSensorDetailsCard extends StatelessWidget {
             ).distanceKm(details.sensorDistanceKm),
           ),
           SizedBox(height: 10.h),
+          // Neither action exists yet: shown, disabled, and announced as
+          // coming soon rather than enabled and doing nothing.
           Row(
             children: [
-              IconButton(
-                tooltip: l.assetDetailsSensorHistory,
-                visualDensity: VisualDensity.compact,
-                onPressed: () {},
-                icon: Icon(Icons.history, size: AppIconSize.medium.value.r),
-                style: IconButton.styleFrom(
-                  backgroundColor: scheme.surface,
-                  foregroundColor: scheme.onSurfaceVariant,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                    side: BorderSide(color: scheme.outlineVariant),
+              Semantics(
+                hint: l.comingSoon,
+                child: IconButton(
+                  tooltip: '${l.assetDetailsSensorHistory} · ${l.comingSoon}',
+                  onPressed: null,
+                  icon: Icon(Icons.history, size: AppIconSize.medium.value.r),
+                  style: IconButton.styleFrom(
+                    backgroundColor: scheme.surface,
+                    foregroundColor: scheme.onSurfaceVariant,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                      side: BorderSide(color: scheme.outlineVariant),
+                    ),
                   ),
                 ),
               ),
               SizedBox(width: 8.w),
               Expanded(
-                child: SizedBox(
-                  height: 40.h,
+                child: Semantics(
+                  hint: l.comingSoon,
                   child: FilledButton(
-                    onPressed: () {},
+                    onPressed: null,
+                    style: FilledButton.styleFrom(
+                      minimumSize: const Size.fromHeight(
+                        kMinInteractiveDimension,
+                      ),
+                    ),
                     child: Text(l.assetDetailsDownload),
                   ),
                 ),

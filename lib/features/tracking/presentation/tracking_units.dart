@@ -29,6 +29,7 @@ class TrackingUnits {
   String hours(num value) => _l.unitHours(number(value));
   String celsius(num value) => _l.unitCelsius(number(value));
   String percent(num value) => _l.unitPercent(number(value));
+  String millivolts(num value) => _l.unitMillivolts(number(value));
 
   /// "07m 09s" under an hour, "1h 02m" from an hour up.
   String duration(Duration d) {
