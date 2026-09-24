@@ -168,5 +168,11 @@
         "type": "int"
       }
     }
-  }
+  },
+  "comingSoon": "Coming soon",
+  "trackingActionCamera": "Live camera",
+  "trackingActionChat": "Message",
+  "trackingActionLocate": "Show on map",
+  "trackingActionCall": "Call",
+  "trackingActionEmail": "Email"
 }

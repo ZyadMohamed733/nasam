@@ -21,6 +21,7 @@ class _MockLogout extends Mock implements LogoutUseCase {}
 /// Registers what the tracking screen's drawer resolves from the container,
 /// with fakes, and removes them after the test.
 void registerTrackingScreenFakes() {
+  if (getIt.isRegistered<LogoutCubit>()) return;
   final logout = _MockLogout();
   when(logout.call).thenAnswer((_) async => const Right(unit));
   getIt.registerFactory<LogoutCubit>(() => LogoutCubit(logout));
@@ -47,8 +48,10 @@ Future<void> pumpTrackingScreen(
   double textScale = 1,
   Locale locale = const Locale('en'),
   bool dark = false,
+  FakeMapPlatform? platform,
+  Widget Function(Widget screen)? wrap,
 }) async {
-  GoogleMapsFlutterPlatform.instance = FakeMapPlatform();
+  GoogleMapsFlutterPlatform.instance = platform ?? FakeMapPlatform();
   registerTrackingScreenFakes();
   await pumpInApp(
     tester,
@@ -57,7 +60,7 @@ Future<void> pumpTrackingScreen(
         data: MediaQuery.of(
           context,
         ).copyWith(textScaler: TextScaler.linear(textScale)),
-        child: trackingScreen(),
+        child: (wrap ?? (screen) => screen)(trackingScreen()),
       ),
     ),
     locale: locale,

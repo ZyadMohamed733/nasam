@@ -4,6 +4,7 @@ import '../constants/app_colors.dart';
 import 'app_drawer_theme.dart';
 import 'app_theme_data.dart';
 import 'app_typography.dart';
+import 'tracking_colors.dart';
 
 class AppTheme {
   /// Lazily built, so the first read happens inside the `ScreenUtilInit`
@@ -95,7 +96,13 @@ class AppTheme {
       colorScheme: colorScheme,
       // Carries the tokens M3 has no role for — button and icon states — so
       // widgets never have to import AppColors to get a themed colour.
-      extensions: <ThemeExtension<dynamic>>[semantic, const AppDrawerTheme()],
+      extensions: <ThemeExtension<dynamic>>[
+        semantic,
+        const AppDrawerTheme(),
+        brightness == Brightness.dark
+            ? TrackingColors.dark
+            : TrackingColors.light,
+      ],
       scaffoldBackgroundColor: semantic.pageBackground,
       textTheme: textTheme,
       appBarTheme: appBarTheme.copyWith(

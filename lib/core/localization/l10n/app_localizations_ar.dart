@@ -565,4 +565,22 @@ class AppLocalizationsAr extends AppLocalizations {
   String trackingStatusChip(String status, int count) {
     return '$status: $count';
   }
+
+  @override
+  String get comingSoon => 'قريبًا';
+
+  @override
+  String get trackingActionCamera => 'الكاميرا المباشرة';
+
+  @override
+  String get trackingActionChat => 'مراسلة';
+
+  @override
+  String get trackingActionLocate => 'إظهار على الخريطة';
+
+  @override
+  String get trackingActionCall => 'اتصال';
+
+  @override
+  String get trackingActionEmail => 'بريد إلكتروني';
 }

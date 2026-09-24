@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/constants/app_colors.dart';
 import '../../../core/localization/l10n/app_localizations.dart';
+import '../../../core/theme/tracking_colors.dart';
 import '../domain/entities/tracking_vehicle.dart';
 
-/// Tracking-specific semantic tokens transcribed from the map reference.
+/// How a vehicle status is shown: its colour from [TrackingColors], and the
+/// icon and label that always go with it, so no status is told by colour
+/// alone.
 abstract final class TrackingStyle {
-  static Color status(BuildContext context, VehicleStatus status) =>
-      switch (status) {
-        VehicleStatus.moving => const Color(0xFF17663A),
-        VehicleStatus.idle => const Color(0xFFAC7600),
-        VehicleStatus.stopped => const Color(0xFFE0004D),
-        VehicleStatus.offline => Theme.of(
-          context,
-        ).extension<AppSemanticColors>()!.textPlaceholder,
-      };
+  static Color status(BuildContext context, VehicleStatus status) {
+    final colors = TrackingColors.of(context);
+    return switch (status) {
+      VehicleStatus.moving => colors.moving,
+      VehicleStatus.idle => colors.idle,
+      VehicleStatus.stopped => colors.stopped,
+      VehicleStatus.offline => colors.offline,
+    };
+  }
 
-  /// Shown beside every status colour, so no status is told by colour alone.
   static IconData icon(VehicleStatus status) => switch (status) {
     VehicleStatus.moving => Icons.check,
     VehicleStatus.idle => Icons.schedule,

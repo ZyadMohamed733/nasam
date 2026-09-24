@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/localization/l10n/app_localizations.dart';
+import '../../../../core/theme/tracking_colors.dart';
 import '../../domain/entities/tracked_asset.dart';
 import 'tracking_asset_card.dart';
 import 'tracking_asset_search_field.dart';
@@ -100,6 +101,9 @@ class _NoMatches extends StatelessWidget {
             SizedBox(height: 8.h),
             TextButton(
               onPressed: onClearFilters,
+              style: TextButton.styleFrom(
+                foregroundColor: TrackingColors.of(context).accent,
+              ),
               child: Text(l.trackingClearFilters),
             ),
           ],

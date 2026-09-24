@@ -247,8 +247,15 @@ class _Entry extends StatelessWidget {
   Widget build(BuildContext context) {
     final palette = AppDrawerTheme.of(context);
     final color = selected ? palette.background : palette.foreground;
+    // An entry with nowhere to go yet is disabled and says so, rather than
+    // looking like a link that does nothing. The selected entry is where the
+    // user already is.
+    final unavailable = onTap == null && !selected && !busy;
     return Semantics(
       selected: selected,
+      button: !selected,
+      enabled: !unavailable,
+      hint: unavailable ? AppLocalizations.of(context)!.comingSoon : null,
       child: Material(
         type: selected ? MaterialType.canvas : MaterialType.transparency,
         color: selected ? palette.selected : null,

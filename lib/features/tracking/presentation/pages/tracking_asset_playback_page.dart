@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_icons.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
+import '../../../../core/theme/tracking_colors.dart';
 import '../../domain/entities/tracked_asset.dart';
 import '../cubit/asset_playback_cubit.dart';
 import '../playback_range.dart';
@@ -107,9 +107,9 @@ class _PlaybackViewState extends State<_PlaybackView> {
     final locale = Localizations.localeOf(context).toString();
 
     final playbackTheme = Theme.of(context).copyWith(
-      colorScheme: Theme.of(
-        context,
-      ).colorScheme.copyWith(primary: AppColors.bluePurple700),
+      colorScheme: Theme.of(context).colorScheme.copyWith(
+        primary: TrackingColors.of(context).playbackPrimary,
+      ),
     );
 
     return Theme(

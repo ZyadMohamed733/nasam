@@ -1051,6 +1051,42 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'{status}: {count}'**
   String trackingStatusChip(String status, int count);
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'قريبًا'**
+  String get comingSoon;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'الكاميرا المباشرة'**
+  String get trackingActionCamera;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'مراسلة'**
+  String get trackingActionChat;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'إظهار على الخريطة'**
+  String get trackingActionLocate;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'اتصال'**
+  String get trackingActionCall;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'بريد إلكتروني'**
+  String get trackingActionEmail;
 }
 
 class _AppLocalizationsDelegate

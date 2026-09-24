@@ -51,6 +51,8 @@ class TrackingIconButton extends StatelessWidget {
       label: label,
       button: true,
       enabled: onTap != null,
+      // Not wired up yet: shown, but disabled and announced as such.
+      hint: onTap == null ? AppLocalizations.of(context)!.comingSoon : null,
       child: SizedBox.square(
         dimension: TrackingControlsLayout.hitTarget,
         child: Center(

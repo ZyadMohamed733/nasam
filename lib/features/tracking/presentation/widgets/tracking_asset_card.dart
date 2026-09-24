@@ -37,7 +37,7 @@ class TrackingAssetCard extends StatelessWidget {
                   color: scheme.onPrimaryContainer,
                   borderRadius: BorderRadius.circular(10.r),
                   border: Border.all(
-                    color: Colors.white.withOpacity(0.15),
+                    color: Colors.white.withValues(alpha: .15),
                     width: 1,
                   ),
                 ),
@@ -86,13 +86,22 @@ class TrackingAssetCard extends StatelessWidget {
           _RouteProgress(progress: asset.routeProgress, color: color),
           SizedBox(height: 12.h),
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              _ActionIcon(icon: Icons.videocam_outlined),
-              _ActionIcon(icon: Icons.chat_bubble_outline),
-              _ActionIcon(icon: Icons.my_location_outlined),
+              _ActionIcon(
+                icon: Icons.videocam_outlined,
+                label: l.trackingActionCamera,
+              ),
+              _ActionIcon(
+                icon: Icons.chat_bubble_outline,
+                label: l.trackingActionChat,
+              ),
+              _ActionIcon(
+                icon: Icons.my_location_outlined,
+                label: l.trackingActionLocate,
+              ),
               _ActionIcon(
                 icon: Icons.play_arrow_outlined,
+                label: l.assetPlaybackTitle,
                 onPressed: () =>
                     context.push(AppRoutes.assetPlayback(asset.id)),
               ),
@@ -106,7 +115,7 @@ class TrackingAssetCard extends StatelessWidget {
                 backgroundColor: scheme.primary,
                 child: Text(
                   TrackingPersonInitials.fromName(asset.assignedPerson),
-                  style: TextStyle(color: scheme.onPrimary, fontSize: 10.sp),
+                  style: TextStyle(color: scheme.onPrimary, fontSize: 11.sp),
                 ),
               ),
 
@@ -133,9 +142,14 @@ class TrackingAssetCard extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 8.w),
-              _ActionIcon(icon: Icons.call_outlined),
-              SizedBox(width: 6.w),
-              _ActionIcon(icon: Icons.mail_outline),
+              _ActionIcon(
+                icon: Icons.call_outlined,
+                label: l.trackingActionCall,
+              ),
+              _ActionIcon(
+                icon: Icons.mail_outline,
+                label: l.trackingActionEmail,
+              ),
             ],
           ),
         ],
@@ -144,7 +158,6 @@ class TrackingAssetCard extends StatelessWidget {
   }
 }
 
-//ss
 class _StatusBadge extends StatelessWidget {
   const _StatusBadge({
     required this.label,
@@ -167,7 +180,7 @@ class _StatusBadge extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Icon(
-          _statusIcon(status),
+          TrackingStyle.icon(status),
           color: color,
           size: AppIconSize.extraSmall.value.r,
         ),
@@ -177,7 +190,7 @@ class _StatusBadge extends StatelessWidget {
             label,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(color: color, fontSize: 10.sp),
+            style: TextStyle(color: color, fontSize: 11.sp),
           ),
         ),
       ],
@@ -286,35 +299,60 @@ class _DashedLinePainter extends CustomPainter {
       oldDelegate.dashSpace != dashSpace;
 }
 
+/// A card action: a small outlined square inside a full 48dp touch target.
+///
+/// Actions that are not built yet are shown disabled and announced as
+/// coming soon, rather than enabled and doing nothing.
 class _ActionIcon extends StatelessWidget {
-  const _ActionIcon({required this.icon, this.onPressed});
+  const _ActionIcon({required this.icon, required this.label, this.onPressed});
   final IconData icon;
+  final String label;
   final VoidCallback? onPressed;
 
   @override
-  Widget build(BuildContext context) => Padding(
-    padding: EdgeInsetsDirectional.only(start: 5.w),
-    child: SizedBox.square(
-      dimension: 28.r,
-      child: OutlinedButton(
-        onPressed: onPressed ?? () {},
-        style: OutlinedButton.styleFrom(
-          padding: EdgeInsets.zero,
-          minimumSize: Size.zero,
-          side: BorderSide(color: Theme.of(context).colorScheme.outlineVariant),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(7.r),
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+    final scheme = Theme.of(context).colorScheme;
+    final enabled = onPressed != null;
+    final radius = BorderRadius.circular(7.r);
+    return Semantics(
+      button: true,
+      enabled: enabled,
+      label: label,
+      hint: enabled ? null : l.comingSoon,
+      // Declared here: excludeSemantics would drop the InkWell's own.
+      onTap: onPressed,
+      excludeSemantics: true,
+      child: Tooltip(
+        message: enabled ? label : '$label · ${l.comingSoon}',
+        child: InkWell(
+          onTap: onPressed,
+          customBorder: RoundedRectangleBorder(borderRadius: radius),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              minWidth: kMinInteractiveDimension,
+              minHeight: kMinInteractiveDimension,
+            ),
+            child: Center(
+              child: Container(
+                width: 28.r,
+                height: 28.r,
+                decoration: BoxDecoration(
+                  borderRadius: radius,
+                  border: Border.all(color: scheme.outlineVariant),
+                ),
+                child: Icon(
+                  icon,
+                  size: AppIconSize.small.value.r,
+                  color: enabled
+                      ? scheme.primary
+                      : scheme.onSurface.withValues(alpha: .38),
+                ),
+              ),
+            ),
           ),
         ),
-        child: Icon(icon, size: AppIconSize.small.value.r),
       ),
-    ),
-  );
+    );
+  }
 }
-
-IconData _statusIcon(VehicleStatus status) => switch (status) {
-  VehicleStatus.moving => Icons.check,
-  VehicleStatus.idle => Icons.schedule,
-  VehicleStatus.stopped => Icons.pause_circle_outline,
-  VehicleStatus.offline => Icons.power_off_outlined,
-};

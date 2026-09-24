@@ -552,4 +552,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String trackingStatusChip(String status, int count) {
     return '$status: $count';
   }
+
+  @override
+  String get comingSoon => 'Coming soon';
+
+  @override
+  String get trackingActionCamera => 'Live camera';
+
+  @override
+  String get trackingActionChat => 'Message';
+
+  @override
+  String get trackingActionLocate => 'Show on map';
+
+  @override
+  String get trackingActionCall => 'Call';
+
+  @override
+  String get trackingActionEmail => 'Email';
 }

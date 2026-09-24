@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../core/constants/app_assets.dart';
 import '../../../../core/constants/app_icons.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
+import '../../../../core/theme/tracking_colors.dart';
 import '../../domain/entities/tracking_vehicle.dart';
 import '../cubit/tracking_cubit.dart';
 import '../tracking_style.dart';
@@ -68,7 +69,7 @@ class TrackingSummary extends StatelessWidget {
                   _StatusChip(
                     label: l.trackingAll,
                     count: state.vehicles.length,
-                    color: scheme.primary,
+                    color: TrackingColors.of(context).accent,
                     selected: selectedStatus == null,
                     onTap: () => cubit.setFilter(null),
                   ),
@@ -164,6 +165,7 @@ class _Header extends StatelessWidget {
                     onPressed: onToggle,
                     style: TextButton.styleFrom(
                       minimumSize: const Size(48, 48),
+                      foregroundColor: TrackingColors.of(context).accent,
                     ),
                     child: Text(l.trackingShow),
                   ),
@@ -216,6 +218,10 @@ class _StatusChip extends StatelessWidget {
         button: true,
         selected: selected,
         label: l.trackingStatusChip(label, count),
+        // excludeSemantics drops the InkWell's tap action along with its
+        // text, so the action is declared here or a screen reader cannot
+        // activate the chip at all.
+        onTap: onTap,
         excludeSemantics: true,
         child: InkWell(
           onTap: onTap,

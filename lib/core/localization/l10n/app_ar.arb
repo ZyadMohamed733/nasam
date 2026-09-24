@@ -383,5 +383,29 @@
         "type": "int"
       }
     }
+  },
+  "comingSoon": "قريبًا",
+  "@comingSoon": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
+  "trackingActionCamera": "الكاميرا المباشرة",
+  "@trackingActionCamera": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
+  "trackingActionChat": "مراسلة",
+  "@trackingActionChat": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
+  "trackingActionLocate": "إظهار على الخريطة",
+  "@trackingActionLocate": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
+  "trackingActionCall": "اتصال",
+  "@trackingActionCall": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
+  "trackingActionEmail": "بريد إلكتروني",
+  "@trackingActionEmail": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
   }
 }
