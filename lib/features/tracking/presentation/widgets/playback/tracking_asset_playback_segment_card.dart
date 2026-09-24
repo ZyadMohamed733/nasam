@@ -11,7 +11,7 @@ import '../../../../../core/localization/l10n/app_localizations.dart';
 import '../../../domain/entities/tracking_playback_segment.dart';
 
 const _playbackTimelineColor = Color(0xFF8A8AA3);
-//test
+
 class TrackingAssetPlaybackSegmentCard extends StatefulWidget {
   const TrackingAssetPlaybackSegmentCard({
     super.key,
@@ -62,7 +62,9 @@ class _TrackingAssetPlaybackSegmentCardState
               Expanded(
                 child: _TimeLabel(
                   time: timeFormat.format(widget.segment.startedAt),
-                  date: DateFormat.yMd(widget.locale).format(widget.segment.startedAt),
+                  date: DateFormat.yMd(
+                    widget.locale,
+                  ).format(widget.segment.startedAt),
                   leading: false,
                 ),
               ),
@@ -70,7 +72,9 @@ class _TrackingAssetPlaybackSegmentCardState
               Expanded(
                 child: _TimeLabel(
                   time: timeFormat.format(widget.segment.endedAt),
-                  date: DateFormat.yMd(widget.locale).format(widget.segment.endedAt),
+                  date: DateFormat.yMd(
+                    widget.locale,
+                  ).format(widget.segment.endedAt),
                   leading: true,
                 ),
               ),
@@ -86,7 +90,10 @@ class _TrackingAssetPlaybackSegmentCardState
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   color: scheme.surfaceContainerHighest,
-                  border: Border.all(color: scheme.outlineVariant, width: 1.2.w),
+                  border: Border.all(
+                    color: scheme.outlineVariant,
+                    width: 1.2.w,
+                  ),
                   shape: BoxShape.circle,
                 ),
                 child: SvgPicture.asset(
@@ -139,14 +146,20 @@ class _TrackingAssetPlaybackSegmentCardState
                   child: Row(
                     textDirection: ui.TextDirection.ltr,
                     children: [
-                      Icon(Icons.location_on_outlined, size: AppIconSize.extraSmall.value.r, color: scheme.onSurfaceVariant),
+                      Icon(
+                        Icons.location_on_outlined,
+                        size: AppIconSize.extraSmall.value.r,
+                        color: scheme.onSurfaceVariant,
+                      ),
                       SizedBox(width: 3.w),
                       Flexible(
                         child: Text(
                           widget.segment.startPlace,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.labelSmall?.copyWith(fontSize: 9.sp),
+                          style: Theme.of(
+                            context,
+                          ).textTheme.labelSmall?.copyWith(fontSize: 9.sp),
                         ),
                       ),
                     ],
@@ -158,7 +171,11 @@ class _TrackingAssetPlaybackSegmentCardState
                     textDirection: ui.TextDirection.rtl,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Icon(Icons.location_on_outlined, size: AppIconSize.extraSmall.value.r, color: scheme.onSurfaceVariant),
+                      Icon(
+                        Icons.location_on_outlined,
+                        size: AppIconSize.extraSmall.value.r,
+                        color: scheme.onSurfaceVariant,
+                      ),
                       SizedBox(width: 3.w),
                       Flexible(
                         child: Text(
@@ -166,7 +183,9 @@ class _TrackingAssetPlaybackSegmentCardState
                           textAlign: TextAlign.end,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.labelSmall?.copyWith(fontSize: 9.sp),
+                          style: Theme.of(
+                            context,
+                          ).textTheme.labelSmall?.copyWith(fontSize: 9.sp),
                         ),
                       ),
                     ],
@@ -183,13 +202,20 @@ class _TrackingAssetPlaybackSegmentCardState
                 width: 34.w,
                 height: 32.h,
                 child: IconButton.filled(
-                  tooltip: widget.playing ? l.assetPlaybackPause : l.assetPlaybackPlay,
+                  tooltip: widget.playing
+                      ? l.assetPlaybackPause
+                      : l.assetPlaybackPlay,
                   visualDensity: VisualDensity.compact,
                   padding: EdgeInsets.zero,
                   onPressed: widget.onPlayPressed,
-                  icon: Icon(widget.playing ? Icons.pause : Icons.play_arrow, size: AppIconSize.medium.value.r),
+                  icon: Icon(
+                    widget.playing ? Icons.pause : Icons.play_arrow,
+                    size: AppIconSize.medium.value.r,
+                  ),
                   style: IconButton.styleFrom(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.r)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(7.r),
+                    ),
                   ),
                 ),
               ),
@@ -198,7 +224,8 @@ class _TrackingAssetPlaybackSegmentCardState
                 children: [
                   _SegmentMetric(
                     icon: Icons.timer_outlined,
-                    label: '${widget.segment.durationMinutes} ${l.assetPlaybackMinutes}',
+                    label:
+                        '${widget.segment.durationMinutes} ${l.assetPlaybackMinutes}',
                     semanticsLabel: l.assetPlaybackDuration,
                   ),
                   SizedBox(width: 8.w),
@@ -218,7 +245,11 @@ class _TrackingAssetPlaybackSegmentCardState
 }
 
 class _TimeLabel extends StatelessWidget {
-  const _TimeLabel({required this.time, required this.date, required this.leading});
+  const _TimeLabel({
+    required this.time,
+    required this.date,
+    required this.leading,
+  });
 
   final String time;
   final String date;
@@ -231,7 +262,12 @@ class _TimeLabel extends StatelessWidget {
       textDirection: leading ? ui.TextDirection.rtl : ui.TextDirection.ltr,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        if (!leading) Icon(Icons.access_time, size: AppIconSize.extraSmall.value.r, color: scheme.onSurfaceVariant),
+        if (!leading)
+          Icon(
+            Icons.access_time,
+            size: AppIconSize.extraSmall.value.r,
+            color: scheme.onSurfaceVariant,
+          ),
         if (!leading) SizedBox(width: 3.w),
         Flexible(
           child: Text(
@@ -239,18 +275,29 @@ class _TimeLabel extends StatelessWidget {
             textAlign: leading ? TextAlign.right : TextAlign.left,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(fontSize: 9.sp),
+            style: Theme.of(
+              context,
+            ).textTheme.labelSmall?.copyWith(fontSize: 9.sp),
           ),
         ),
         if (leading) SizedBox(width: 3.w),
-        if (leading) Icon(Icons.access_time, size: AppIconSize.extraSmall.value.r, color: scheme.onSurfaceVariant),
+        if (leading)
+          Icon(
+            Icons.access_time,
+            size: AppIconSize.extraSmall.value.r,
+            color: scheme.onSurfaceVariant,
+          ),
       ],
     );
   }
 }
 
 class _SegmentMetric extends StatelessWidget {
-  const _SegmentMetric({required this.icon, required this.label, required this.semanticsLabel});
+  const _SegmentMetric({
+    required this.icon,
+    required this.label,
+    required this.semanticsLabel,
+  });
 
   final IconData icon;
   final String label;
@@ -271,9 +318,18 @@ class _SegmentMetric extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: AppIconSize.extraSmall.value.r, color: scheme.primary),
+            Icon(
+              icon,
+              size: AppIconSize.extraSmall.value.r,
+              color: scheme.primary,
+            ),
             SizedBox(width: 3.w),
-            Text(label, style: Theme.of(context).textTheme.labelSmall?.copyWith(fontSize: 9.sp)),
+            Text(
+              label,
+              style: Theme.of(
+                context,
+              ).textTheme.labelSmall?.copyWith(fontSize: 9.sp),
+            ),
           ],
         ),
       ),
