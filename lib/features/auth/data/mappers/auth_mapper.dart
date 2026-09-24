@@ -43,7 +43,7 @@ abstract final class AuthMapper {
   );
 
   /// [refreshToken] is threaded in separately rather than read off
-  /// [AuthSessionModel] because the model's may be absent -- the repository
+  /// `AuthSessionModel` because the model's may be absent -- the repository
   /// resolves it (falling back to the stored one) and this mapper stays the
   /// single place that assembles the final, always-non-null entity.
   static AuthSessionEntity sessionToEntity({

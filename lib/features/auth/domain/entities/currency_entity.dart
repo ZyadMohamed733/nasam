@@ -1,4 +1,4 @@
-/// The currency an [AccountEntity] bills and reports in.
+/// The currency an `AccountEntity` bills and reports in.
 ///
 /// Hand-written rather than `@freezed`: this feature slice is built in an
 /// environment with no `build_runner` available, so generated `.freezed.dart`

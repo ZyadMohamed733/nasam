@@ -109,7 +109,7 @@ class RateLimitFailure extends Failure {
     super.stackTrace,
   });
 
-  /// Seconds until the caller may retry -- see [RateLimitException].
+  /// Seconds until the caller may retry -- see `RateLimitException`.
   final int? retryAfterSeconds;
 
   @override

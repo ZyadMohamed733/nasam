@@ -21,7 +21,7 @@ class OtpVerificationPage extends StatefulWidget {
   });
 
   /// The account this login's second factor belongs to. Threaded from
-  /// [LoginPage] via the route `extra`, not re-derived: the screen cannot be
+  /// `LoginPage` via the route `extra`, not re-derived: the screen cannot be
   /// reached without it.
   final String username;
 

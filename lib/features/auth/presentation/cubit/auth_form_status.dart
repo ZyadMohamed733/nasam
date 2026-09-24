@@ -46,7 +46,7 @@ class AuthFormFailed extends AuthFormStatus {
 }
 
 /// The account has 2FA enabled: `POST /auth/login` answered with
-/// `requiresOtp: true` and no tokens. Not a failure -- [LoginPage] uses this
+/// `requiresOtp: true` and no tokens. Not a failure -- `LoginPage` uses this
 /// to navigate to the OTP screen instead of home, carrying [username] since
 /// `verifyOtp`/`resendOtp` are keyed by it, not by a token the app was never
 /// given.

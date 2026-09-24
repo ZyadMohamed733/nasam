@@ -40,8 +40,13 @@ jobs:
       - name: Check formatting
         run: dart format --set-exit-if-changed .
 
+      # Infos fail the build too: the tree is at zero, and a lint left as an
+      # info is one nobody reads.
       - name: Analyze
-        run: flutter analyze
+        run: flutter analyze --fatal-infos
+
+      - name: Verify the API contract doc matches the fixtures
+        run: dart run tool/tracking_contract.dart --check
 
       # Goldens are excluded here: they are rendered by the host font stack
       # and generated on macOS, so a Linux runner produces different pixels.

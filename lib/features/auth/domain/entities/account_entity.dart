@@ -1,6 +1,6 @@
 import 'currency_entity.dart';
 
-/// The company/individual account a signed-in [UserEntity] belongs to.
+/// The company/individual account a signed-in `UserEntity` belongs to.
 ///
 /// `type` is kept as the raw wire string (`"COMPANY"`, ...) rather than an
 /// enum: the API reference lists only that one example value, and turning it
