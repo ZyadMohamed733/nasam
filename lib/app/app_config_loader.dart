@@ -62,13 +62,15 @@ abstract final class AppConfigLoader {
     }
 
     if (!hostsAgree(baseUrl, wsUrl)) {
-      // Warning-only: the dev API and the (still-placeholder) WS host are
-      // expected to disagree for now. Flip back to a hard StateError once
-      // WS_URL points at a real socket host for this environment.
-      AppLogger.w(
-        'API host "${Uri.parse(baseUrl).host}" and socket host '
-        '"${Uri.parse(wsUrl).host}" are not from the same environment.',
-      );
+      final message =
+          'API host "${Uri.parse(baseUrl).host}" and socket host '
+          '"${Uri.parse(wsUrl).host}" are not from the same environment.';
+      // A staging or production build talking to another environment's
+      // socket is a release bug; it fails at startup, not in the field.
+      // Dev only warns: its API and its (still placeholder) WS host are on
+      // different domains until a real dev socket host exists.
+      if (flavor != Flavor.dev) throw StateError(message);
+      AppLogger.w(message);
     }
 
     return AppConfig(

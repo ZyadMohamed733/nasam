@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nasam/app/app_config.dart';
 import 'package:nasam/app/app_config_loader.dart';
@@ -68,6 +71,26 @@ void main() {
     });
   });
 
+  group('an API/socket environment mismatch', () {
+    AppConfig mismatched(Flavor flavor) => build(
+      flavor: flavor,
+      baseUrl: 'https://api-stage.nasam.app/v1',
+      wsUrl: 'wss://ws.nasam.app',
+    );
+
+    test('fails a staging build', () {
+      expect(() => mismatched(Flavor.staging), throwsStateError);
+    });
+
+    test('fails a prod build', () {
+      expect(() => mismatched(Flavor.prod), throwsStateError);
+    });
+
+    test('only warns in dev', () {
+      expect(mismatched(Flavor.dev).flavor, Flavor.dev);
+    });
+  });
+
   group('hostsAgree', () {
     // The exact bug: the API was per-flavor while the socket always resolved
     // to production.
@@ -123,24 +146,25 @@ void main() {
       expect(AppConfigLoader.hostsAgree('not a url', 'also not'), isFalse);
     });
 
-    test('the shipped config files each pass the environment check', () {
-      // Mirrors config/<flavor>.json so a hand edit that crosses environments
-      // is caught here rather than at runtime.
-      const shipped = {
-        'dev': ('https://api-dev.nasam.app/v1', 'wss://ws-dev.nasam.app'),
-        'staging': (
-          'https://api-stage.nasam.app/v1',
-          'wss://ws-stage.nasam.app',
-        ),
-        'prod': ('https://api.nasam.app/v1', 'wss://ws.nasam.app'),
-      };
-      shipped.forEach((flavor, urls) {
+    // Read from config/<flavor>.json itself, so a hand edit that crosses
+    // environments is caught here rather than by a release build refusing
+    // to start.
+    for (final flavor in Flavor.values) {
+      test('the shipped ${flavor.name} config loads', () {
+        final json =
+            jsonDecode(File('config/${flavor.name}.json').readAsStringSync())
+                as Map<String, dynamic>;
         expect(
-          AppConfigLoader.hostsAgree(urls.$1, urls.$2),
-          isTrue,
-          reason: '$flavor config crosses environments',
+          () => AppConfigLoader.build(
+            flavor: flavor,
+            baseUrl: json['BASE_URL'] as String,
+            wsUrl: json['WS_URL'] as String,
+            tenant: json['TENANT'] as String,
+            configuredFlavor: json['FLAVOR'] as String,
+          ),
+          returnsNormally,
         );
       });
-    });
+    }
   });
 }
