@@ -39,8 +39,8 @@ class RouteGuard {
 
     if (!isAuth) {
       if (isPublic) return null;
-      // Keep where they were going, so a deep link that meets the login
-      // screen still ends up where it pointed. Only a validated in-app path is
+      // Keep where they were going, so a protected location that meets the
+      // login screen still ends up where it pointed. Only a validated in-app path is
       // carried — see ReturnPath — and home is left off as the default anyway.
       final target = ReturnPath.sanitize(state.uri.toString());
       return target == null || target == AppRoutes.home
@@ -53,7 +53,7 @@ class RouteGuard {
     // dropping them on home.
     if (isPublic) {
       return ReturnPath.sanitize(
-            state.uri.queryParameters[AppRoutes.fromParam],
+            state.uri.queryParameters[AppRoutes.returnToParam],
           ) ??
           AppRoutes.home;
     }

@@ -17,14 +17,21 @@ class AppRoutes {
   static const String home = '/';
   static const String error = '/error';
 
-  /// Route patterns for the tracking screens, nested under [home] so a deep
-  /// link builds home → details → playback as its back stack. Relative, as
+  /// Route patterns for the tracking screens, nested under [home] so opening one
+  /// directly builds home → details → playback as its back stack. Relative, as
   /// go_router requires for child routes.
   static const String assetDetailsPattern = 'assets/:$assetIdParam';
   static const String assetPlaybackPattern = 'playback';
   static const String assetIdParam = 'assetId';
-  static const String fromParam = 'from';
-  static const String toParam = 'to';
+
+  /// The playback range, as ISO dates.
+  static const String fromDateParam = 'from';
+  static const String toDateParam = 'to';
+
+  /// Where to carry on after signing in. Named apart from the playback
+  /// dates so a return target that is itself a playback link keeps its own
+  /// `from`/`to` intact inside this one value.
+  static const String returnToParam = 'returnTo';
 
   /// `/assets/<id>`. The id is encoded, so an id with a slash or a space still
   /// lands on this route rather than on some other path.
@@ -34,8 +41,8 @@ class AppRoutes {
   /// `/assets/<id>/playback`, with an optional `from`/`to` range as ISO dates.
   static String assetPlayback(String assetId, {DateTime? from, DateTime? to}) {
     final query = {
-      if (from != null) fromParam: isoDate(from),
-      if (to != null) toParam: isoDate(to),
+      if (from != null) fromDateParam: isoDate(from),
+      if (to != null) toDateParam: isoDate(to),
     };
     return Uri(
       path: '${assetDetails(assetId)}/playback',
@@ -43,15 +50,15 @@ class AppRoutes {
     ).toString();
   }
 
-  /// `/login?from=<target>`: sign in, then carry on to [target].
+  /// `/login?returnTo=<target>`: sign in, then carry on to [target].
   static String loginReturningTo(String target) =>
-      Uri(path: login, queryParameters: {fromParam: target}).toString();
+      Uri(path: login, queryParameters: {returnToParam: target}).toString();
 
-  /// `/verify-code?from=<target>`, so the return target survives the second
+  /// `/verify-code?returnTo=<target>`, so the return target survives the second
   /// factor as well as the first.
   static String otpVerificationReturningTo(String? target) => Uri(
     path: otpVerification,
-    queryParameters: target == null ? null : {fromParam: target},
+    queryParameters: target == null ? null : {returnToParam: target},
   ).toString();
 
   /// `YYYY-MM-DD`, the form the playback range travels in.

@@ -227,14 +227,17 @@ void main() {
       auth.signedIn = true;
       return Right(LoginSucceeded(_MockSession()));
     });
-    final target = AppRoutes.assetPlayback(_knownId);
+    final day = PlaybackRange.today().from;
+    final from = day.subtract(const Duration(days: 5));
+    final to = day.subtract(const Duration(days: 2));
+    final target = AppRoutes.assetPlayback(_knownId, from: from, to: to);
 
     final router = await open(tester, target);
 
     expect(find.byType(LoginPage), findsOneWidget);
     final atLogin = Uri.parse(location(router));
     expect(atLogin.path, AppRoutes.login);
-    expect(atLogin.queryParameters[AppRoutes.fromParam], target);
+    expect(atLogin.queryParameters[AppRoutes.returnToParam], target);
 
     final fields = find.byType(EditableText);
     await tester.enterText(fields.at(0), 'aya');
@@ -243,7 +246,11 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(location(router), target);
-    expect(find.byType(TrackingAssetPlaybackPage), findsOneWidget);
+    final page = tester.widget<TrackingAssetPlaybackPage>(
+      find.byType(TrackingAssetPlaybackPage),
+    );
+    expect(page.initialRange.from, from, reason: 'dates survive the detour');
+    expect(page.initialRange.to, to);
   });
 
   testWidgets('a hostile login target lands on home after sign-in', (

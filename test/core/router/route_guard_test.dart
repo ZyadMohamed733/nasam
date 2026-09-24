@@ -84,7 +84,7 @@ void main() {
       final uri = Uri.parse(redirect!);
       expect(uri.path, AppRoutes.login);
       expect(
-        uri.queryParameters[AppRoutes.fromParam],
+        uri.queryParameters[AppRoutes.returnToParam],
         '/assets/AST-1/playback?from=2026-09-01',
       );
     });
@@ -97,6 +97,29 @@ void main() {
           await redirectFor(AppRoutes.loginReturningTo('/assets/AST-1')),
           '/assets/AST-1',
         );
+      },
+    );
+
+    test(
+      'a playback target keeps its dates through the login round trip',
+      () async {
+        const target = '/assets/AST-1/playback?from=2026-09-01&to=2026-09-10';
+
+        givenAuthenticated(value: false);
+        final toLogin = await redirectFor(target);
+        final loginUri = Uri.parse(toLogin!);
+        expect(
+          loginUri.queryParameters.keys,
+          [AppRoutes.returnToParam],
+          reason: 'the dates travel inside returnTo, not beside it',
+        );
+
+        givenAuthenticated(value: true);
+        final back = await redirectFor(toLogin);
+        expect(back, target);
+        final backUri = Uri.parse(back!);
+        expect(backUri.queryParameters[AppRoutes.fromDateParam], '2026-09-01');
+        expect(backUri.queryParameters[AppRoutes.toDateParam], '2026-09-10');
       },
     );
 

@@ -65,10 +65,10 @@ class AppRouter {
           context: context,
           state: state,
           slide: false,
-          // `from` is untrusted input; only a validated in-app path survives.
+          // `returnTo` is untrusted input; only a validated in-app path survives.
           child: LoginPage(
             returnTo: ReturnPath.sanitize(
-              state.uri.queryParameters[AppRoutes.fromParam],
+              state.uri.queryParameters[AppRoutes.returnToParam],
             ),
           ),
         ),
@@ -99,7 +99,7 @@ class AppRouter {
           child: OtpVerificationPage(
             username: state.extra! as String,
             returnTo: ReturnPath.sanitize(
-              state.uri.queryParameters[AppRoutes.fromParam],
+              state.uri.queryParameters[AppRoutes.returnToParam],
             ),
           ),
         ),
@@ -190,8 +190,8 @@ class AppRouter {
                       child: TrackingAssetPlaybackPage(
                         assetId: assetId,
                         initialRange: PlaybackRange.fromQuery(
-                          from: query[AppRoutes.fromParam],
-                          to: query[AppRoutes.toParam],
+                          from: query[AppRoutes.fromDateParam],
+                          to: query[AppRoutes.toDateParam],
                         ),
                       ),
                     ),

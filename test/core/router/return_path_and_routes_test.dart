@@ -34,7 +34,7 @@ void main() {
     test('rejects the sign-in screens, which would loop', () {
       for (final path in [
         AppRoutes.login,
-        '${AppRoutes.login}?from=/assets/1',
+        '${AppRoutes.login}?returnTo=/assets/1',
         AppRoutes.otpVerification,
         AppRoutes.forgotPassword,
         AppRoutes.splash,
@@ -72,7 +72,7 @@ void main() {
     test('the login return target round-trips through the query', () {
       final url = AppRoutes.loginReturningTo('/assets/AST-1/playback?to=x');
       expect(
-        Uri.parse(url).queryParameters[AppRoutes.fromParam],
+        Uri.parse(url).queryParameters[AppRoutes.returnToParam],
         '/assets/AST-1/playback?to=x',
       );
       expect(Uri.parse(url).path, AppRoutes.login);
