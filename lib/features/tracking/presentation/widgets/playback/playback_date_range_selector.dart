@@ -78,15 +78,33 @@ class _PlaybackDateField extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Icon(Icons.calendar_month_outlined, size: AppIconSize.small.value.r, color: scheme.onSurfaceVariant),
+              Icon(
+                Icons.calendar_month_outlined,
+                size: AppIconSize.small.value.r,
+                color: scheme.onSurfaceVariant,
+              ),
               SizedBox(width: 6.w),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(label, maxLines: 1, overflow: TextOverflow.ellipsis, style: Theme.of(context).textTheme.labelSmall?.copyWith(fontSize: 9.sp)),
-                    Text(DateFormat.yMd(locale).format(date), maxLines: 1, overflow: TextOverflow.ellipsis, style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 10.sp)),
+                    Text(
+                      label,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(
+                        context,
+                      ).textTheme.labelSmall?.copyWith(fontSize: 9.sp),
+                    ),
+                    Text(
+                      DateFormat.yMd(locale).format(date),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodySmall?.copyWith(fontSize: 10.sp),
+                    ),
                   ],
                 ),
               ),

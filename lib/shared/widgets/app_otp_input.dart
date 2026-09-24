@@ -227,7 +227,10 @@ class _Countdown extends StatelessWidget {
       TextSpan(
         children: [
           TextSpan(text: sentence.substring(0, at)),
-          TextSpan(text: clock, style: TextStyle(color: semantic.failText)),
+          TextSpan(
+            text: clock,
+            style: TextStyle(color: semantic.failText),
+          ),
           TextSpan(text: sentence.substring(at + clock.length)),
         ],
       ),

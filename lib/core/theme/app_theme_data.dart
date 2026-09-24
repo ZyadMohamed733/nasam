@@ -21,51 +21,53 @@ class AppThemeData {
     AppSemanticColors s,
     TextTheme textTheme,
   ) => ElevatedButtonThemeData(
-    style: ElevatedButton.styleFrom(
-      minimumSize: const Size.fromHeight(AppSizes.buttonHeight),
-      backgroundColor: s.primaryButtonBackground,
-      foregroundColor: s.primaryButtonText,
-      // The design specifies a real disabled fill rather than an opacity, but
-      // says nothing about disabled *text*; white on the light-mode 30% tint is
-      // thin. AppButton owns the button states properly in step 06 — this is
-      // only the fallback for bare ElevatedButtons.
-      disabledBackgroundColor: s.primaryButtonDisabled,
-      disabledForegroundColor: s.primaryButtonText,
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppSizes.r8),
-      ),
-      textStyle: textTheme.labelLarge,
-    ).copyWith(
-      overlayColor: WidgetStateProperty.resolveWith(
-        (states) => states.contains(WidgetState.hovered)
-            ? s.primaryButtonHover
-            : null,
-      ),
-    ),
+    style:
+        ElevatedButton.styleFrom(
+          minimumSize: const Size.fromHeight(AppSizes.buttonHeight),
+          backgroundColor: s.primaryButtonBackground,
+          foregroundColor: s.primaryButtonText,
+          // The design specifies a real disabled fill rather than an opacity, but
+          // says nothing about disabled *text*; white on the light-mode 30% tint is
+          // thin. AppButton owns the button states properly in step 06 — this is
+          // only the fallback for bare ElevatedButtons.
+          disabledBackgroundColor: s.primaryButtonDisabled,
+          disabledForegroundColor: s.primaryButtonText,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppSizes.r8),
+          ),
+          textStyle: textTheme.labelLarge,
+        ).copyWith(
+          overlayColor: WidgetStateProperty.resolveWith(
+            (states) => states.contains(WidgetState.hovered)
+                ? s.primaryButtonHover
+                : null,
+          ),
+        ),
   );
 
   static OutlinedButtonThemeData outlinedButtonTheme(
     AppSemanticColors s,
     TextTheme textTheme,
   ) => OutlinedButtonThemeData(
-    style: OutlinedButton.styleFrom(
-      minimumSize: const Size.fromHeight(AppSizes.buttonHeight),
-      backgroundColor: s.secondaryButtonBackground,
-      foregroundColor: s.secondaryButtonText,
-      disabledForegroundColor: s.iconDisabled,
-      side: BorderSide(color: s.secondaryButtonOutline),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppSizes.r8),
-      ),
-      textStyle: textTheme.labelLarge,
-    ).copyWith(
-      overlayColor: WidgetStateProperty.resolveWith(
-        (states) => states.contains(WidgetState.hovered)
-            ? s.secondaryButtonHover
-            : null,
-      ),
-    ),
+    style:
+        OutlinedButton.styleFrom(
+          minimumSize: const Size.fromHeight(AppSizes.buttonHeight),
+          backgroundColor: s.secondaryButtonBackground,
+          foregroundColor: s.secondaryButtonText,
+          disabledForegroundColor: s.iconDisabled,
+          side: BorderSide(color: s.secondaryButtonOutline),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppSizes.r8),
+          ),
+          textStyle: textTheme.labelLarge,
+        ).copyWith(
+          overlayColor: WidgetStateProperty.resolveWith(
+            (states) => states.contains(WidgetState.hovered)
+                ? s.secondaryButtonHover
+                : null,
+          ),
+        ),
   );
 
   /// Fills in the text-dependent slots once the [TextTheme] exists.

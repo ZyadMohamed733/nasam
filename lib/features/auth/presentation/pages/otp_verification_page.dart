@@ -55,9 +55,7 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
               context.go(widget.returnTo ?? AppRoutes.home);
             case AuthFormFailed(:final failure):
               AppSnackBar.showError(context, failure.message);
-            case AuthFormIdle() ||
-                AuthFormSubmitting() ||
-                LoginNeedsOtp():
+            case AuthFormIdle() || AuthFormSubmitting() || LoginNeedsOtp():
               break;
           }
         },
@@ -85,8 +83,10 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
                   // explicit path for anyone who pastes or edits a digit.
                   onPressed: _code.length < _codeLength
                       ? null
-                      : () =>
-                          cubit.submit(username: widget.username, code: _code),
+                      : () => cubit.submit(
+                          username: widget.username,
+                          code: _code,
+                        ),
                   label: l10n.otpSubmit,
                   isLoading: busy,
                 ),

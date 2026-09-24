@@ -20,7 +20,10 @@ void main() {
       final size = tester.getSize(find.byType(AppButton));
       expect(size.height, AppSizes.buttonHeight);
       // Center gives it the full width of the surface.
-      expect(size.width, tester.view.physicalSize.width / tester.view.devicePixelRatio);
+      expect(
+        size.width,
+        tester.view.physicalSize.width / tester.view.devicePixelRatio,
+      );
     });
 
     testWidgets('honours an explicit width', (tester) async {
@@ -65,9 +68,7 @@ void main() {
 
       expect(find.byType(Opacity), findsNothing);
 
-      final button = tester.widget<ElevatedButton>(
-        find.byType(ElevatedButton),
-      );
+      final button = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
       expect(button.onPressed, isNull);
       expect(
         button.style?.backgroundColor?.resolve({WidgetState.disabled}),
@@ -113,9 +114,7 @@ void main() {
         dark: true,
       );
 
-      final button = tester.widget<ElevatedButton>(
-        find.byType(ElevatedButton),
-      );
+      final button = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
       expect(
         button.style?.backgroundColor?.resolve(<WidgetState>{}),
         AppSemanticColors.dark.primaryButtonBackground,

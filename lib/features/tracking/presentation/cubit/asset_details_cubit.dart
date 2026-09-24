@@ -129,7 +129,8 @@ class AssetDetailsCubit extends Cubit<AssetDetailsState> {
     emit(
       details.fold(
         AssetDetailsFailure.new,
-        (d) => AssetDetailsLoaded(details: d, alerts: _alertsFrom(notifications)),
+        (d) =>
+            AssetDetailsLoaded(details: d, alerts: _alertsFrom(notifications)),
       ),
     );
   }

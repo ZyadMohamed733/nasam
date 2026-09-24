@@ -69,22 +69,25 @@ void main() {
   });
 
   group('UserModel.fromJson', () {
-    test('parses account: null exactly as the real API returns for ADMIN users', () {
-      final json = {
-        'id': 'user-2',
-        'username': 'saudi_tracking_admin',
-        'email': 'admin@nasam.sa',
-        'nameEn': null,
-        'nameAr': null,
-        'account': null,
-        'type': 'ADMIN',
-        'permissions': <String>['core.user_management.view'],
-      };
+    test(
+      'parses account: null exactly as the real API returns for ADMIN users',
+      () {
+        final json = {
+          'id': 'user-2',
+          'username': 'saudi_tracking_admin',
+          'email': 'admin@nasam.sa',
+          'nameEn': null,
+          'nameAr': null,
+          'account': null,
+          'type': 'ADMIN',
+          'permissions': <String>['core.user_management.view'],
+        };
 
-      final model = UserModel.fromJson(json);
+        final model = UserModel.fromJson(json);
 
-      expect(model.account, isNull);
-    });
+        expect(model.account, isNull);
+      },
+    );
 
     test('parses a populated account object', () {
       final json = {

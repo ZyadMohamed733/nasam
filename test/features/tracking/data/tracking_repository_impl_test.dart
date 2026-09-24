@@ -29,9 +29,8 @@ class _ThrowingDataSource implements TrackingDataSource {
   Future<AssetDetailsModel> getAssetDetails(String assetId) async =>
       throw error;
   @override
-  Future<List<NotificationModel>> getAssetNotifications(
-    String assetId,
-  ) async => throw error;
+  Future<List<NotificationModel>> getAssetNotifications(String assetId) async =>
+      throw error;
   @override
   Future<List<PlaybackSegmentModel>> getPlaybackSegments({
     required String assetId,
@@ -91,10 +90,10 @@ void main() {
       );
     });
 
-    test('a single asset resolves by id, and an unknown id is a 404',
-        () async {
-      final found = (await repositoryOver().getTrackedAsset('AST-0021'))
-          .getOrElse(() => throw StateError('not found'));
+    test('a single asset resolves by id, and an unknown id is a 404', () async {
+      final found = (await repositoryOver().getTrackedAsset(
+        'AST-0021',
+      )).getOrElse(() => throw StateError('not found'));
       expect(found.id, 'AST-0021');
 
       final missing = await repositoryOver().getTrackedAsset('AST-9999');
@@ -104,12 +103,15 @@ void main() {
       );
     });
 
-    test('the time in status comes from the contract, not the widget',
-        () async {
-      final asset = (await repositoryOver().getTrackedAsset('AST-0017'))
-          .getOrElse(() => throw StateError('not found'));
-      expect(asset.statusDuration, const Duration(seconds: 429));
-    });
+    test(
+      'the time in status comes from the contract, not the widget',
+      () async {
+        final asset = (await repositoryOver().getTrackedAsset(
+          'AST-0017',
+        )).getOrElse(() => throw StateError('not found'));
+        expect(asset.statusDuration, const Duration(seconds: 429));
+      },
+    );
 
     test('a missing or negative time in status maps to none', () {
       TrackedAssetModel wire(Object? seconds) => TrackedAssetModel.fromJson({
@@ -128,8 +130,9 @@ void main() {
     });
 
     test('details come back for the asset that was asked for', () async {
-      final details = (await repositoryOver().getAssetDetails('AST-0024'))
-          .getOrElse(() => throw StateError('no details'));
+      final details = (await repositoryOver().getAssetDetails(
+        'AST-0024',
+      )).getOrElse(() => throw StateError('no details'));
 
       expect(details.assetId, 'AST-0024');
       expect(details.name, isNotEmpty);
@@ -137,42 +140,43 @@ void main() {
       expect(details.lastGpsAt, DateTime(2025, 10, 17, 9));
     });
 
-    test('an unknown asset id is a failure, as the endpoint would 404',
-        () async {
-      final result = await repositoryOver().getAssetDetails('AST-9999');
+    test(
+      'an unknown asset id is a failure, as the endpoint would 404',
+      () async {
+        final result = await repositoryOver().getAssetDetails('AST-9999');
 
-      expect(
-        result.fold((f) => f, (_) => null),
-        isA<ServerFailure>().having((f) => f.code, 'code', '404'),
-      );
-    });
+        expect(
+          result.fold((f) => f, (_) => null),
+          isA<ServerFailure>().having((f) => f.code, 'code', '404'),
+        );
+      },
+    );
 
     test('notification wire types map onto the domain enum', () async {
-      final notifications =
-          (await repositoryOver().getAssetNotifications('AST-0017'))
-              .getOrElse(() => const []);
+      final notifications = (await repositoryOver().getAssetNotifications(
+        'AST-0017',
+      )).getOrElse(() => const []);
 
       expect(notifications, hasLength(3));
     });
 
-    test('playback replays on the requested day, identically each time',
-        () async {
-      final day = DateTime(2026, 3, 1);
-      Future<List<DateTime>> starts() async =>
-          (await repositoryOver().getPlaybackSegments(
-                assetId: 'AST-0017',
-                from: day,
-                to: day.add(const Duration(days: 1)),
-              ))
-              .getOrElse(() => const [])
-              .map((s) => s.startedAt)
-              .toList();
+    test(
+      'playback replays on the requested day, identically each time',
+      () async {
+        final day = DateTime(2026, 3, 1);
+        Future<List<DateTime>> starts() async =>
+            (await repositoryOver().getPlaybackSegments(
+              assetId: 'AST-0017',
+              from: day,
+              to: day.add(const Duration(days: 1)),
+            )).getOrElse(() => const []).map((s) => s.startedAt).toList();
 
-      final first = await starts();
-      expect(first, hasLength(6));
-      expect(first.every((t) => _sameDay(t, day)), isTrue);
-      expect(await starts(), first, reason: 'goldens need a stable fixture');
-    });
+        final first = await starts();
+        expect(first, hasLength(6));
+        expect(first.every((t) => _sameDay(t, day)), isTrue);
+        expect(await starts(), first, reason: 'goldens need a stable fixture');
+      },
+    );
 
     test('the debug failure flag fails every call as a Failure', () async {
       final result = await repositoryOver(fail: true).getTrackedAssets();
@@ -214,14 +218,16 @@ void main() {
       expect(result.fold((f) => f, (_) => null), isA<ServerFailure>());
     });
 
-    test('anything else becomes an UnknownFailure rather than escaping',
-        () async {
-      final result = await TrackingRepositoryImpl(
-        _ThrowingDataSource(const FormatException('bad shape')),
-      ).getTrackedAssets();
+    test(
+      'anything else becomes an UnknownFailure rather than escaping',
+      () async {
+        final result = await TrackingRepositoryImpl(
+          _ThrowingDataSource(const FormatException('bad shape')),
+        ).getTrackedAssets();
 
-      expect(result.fold((f) => f, (_) => null), isA<UnknownFailure>());
-    });
+        expect(result.fold((f) => f, (_) => null), isA<UnknownFailure>());
+      },
+    );
   });
 }
 

@@ -36,11 +36,7 @@ class AppErrorWidget extends StatelessWidget {
             ),
             if (onRetry != null) ...[
               const SizedBox(height: AppSizes.p24),
-              AppButton(
-                width: 140,
-                onPressed: onRetry,
-                label: retryLabel,
-              ),
+              AppButton(width: 140, onPressed: onRetry, label: retryLabel),
             ],
           ],
         ),

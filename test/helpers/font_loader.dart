@@ -33,8 +33,8 @@ Future<void> loadAppFonts() async {
   for (final entry in manifest.cast<Map<String, dynamic>>()) {
     final family = entry['family'] as String;
     final loader = FontLoader(family);
-    for (final font in (entry['fonts'] as List<dynamic>)
-        .cast<Map<String, dynamic>>()) {
+    for (final font
+        in (entry['fonts'] as List<dynamic>).cast<Map<String, dynamic>>()) {
       loader.addFont(rootBundle.load(font['asset'] as String));
     }
     await loader.load();

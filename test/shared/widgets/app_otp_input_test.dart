@@ -52,10 +52,7 @@ void main() {
     // hardware keyboard puts letters in a numeric code.
     testWidgets('rejects non-digits', (tester) async {
       final changes = <String>[];
-      await pumpInApp(
-        tester,
-        AppOtpInput(length: 4, onChanged: changes.add),
-      );
+      await pumpInApp(tester, AppOtpInput(length: 4, onChanged: changes.add));
 
       await tester.enterText(editable(), 'a1b2');
       await tester.pump();
@@ -117,18 +114,17 @@ void main() {
       tester,
     ) async {
       await pumpInApp(tester, const AppOtpInput());
-      expect(tester.widget<TextButton>(find.byType(TextButton)).onPressed,
-          isNull);
+      expect(
+        tester.widget<TextButton>(find.byType(TextButton)).onPressed,
+        isNull,
+      );
       await unmount(tester);
     });
 
     testWidgets('renders the submit action between countdown and resend', (
       tester,
     ) async {
-      await pumpInApp(
-        tester,
-        const AppOtpInput(action: Text('SUBMIT')),
-      );
+      await pumpInApp(tester, const AppOtpInput(action: Text('SUBMIT')));
 
       final submitY = tester.getTopLeft(find.text('SUBMIT')).dy;
       final resendY = tester.getTopLeft(find.text('Resend code')).dy;

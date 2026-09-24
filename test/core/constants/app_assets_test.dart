@@ -32,7 +32,8 @@ void main() {
           (entry) => entry.endsWith('/')
               // A directory entry covers the files directly inside it, but
               // Flutter does not recurse into subdirectories.
-              ? path.startsWith(entry) && !path.substring(entry.length).contains('/')
+              ? path.startsWith(entry) &&
+                    !path.substring(entry.length).contains('/')
               : entry == path,
         );
         expect(
@@ -81,7 +82,8 @@ void main() {
         expect(
           AppAssets.all,
           contains(path),
-          reason: '$path is declared in AppAssets but missing from AppAssets.all',
+          reason:
+              '$path is declared in AppAssets but missing from AppAssets.all',
         );
       }
       expect(AppAssets.all, hasLength(declaredPaths.length));

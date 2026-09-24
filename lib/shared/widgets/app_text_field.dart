@@ -212,9 +212,7 @@ class _AppTextFieldState extends State<AppTextField> {
         filled: true,
         // The design has no dedicated disabled fill; `hover` is the palette's
         // subtle neutral and reads as inert against the page.
-        fillColor: enabled
-            ? semantic.containerBackground
-            : semantic.hover,
+        fillColor: enabled ? semantic.containerBackground : semantic.hover,
         // Vertical padding is what sizes the drawn box, and 12 is not a taste
         // decision: bodyMedium is 16 on a 20/16 line, so its line box is 20,
         // and 20 + 2*12 is the design's 44. Setting a BoxConstraints minHeight

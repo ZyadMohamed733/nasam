@@ -146,7 +146,10 @@ void main() {
   group('400 validation errors', () {
     test('a single string message maps to ValidationException', () {
       final result = ExceptionMapper.fromDioException(
-        httpError(400, data: {'message': 'email must be a valid email address'}),
+        httpError(
+          400,
+          data: {'message': 'email must be a valid email address'},
+        ),
       );
       expect(result, isA<ValidationException>());
       expect(result.code, '400');
@@ -156,31 +159,40 @@ void main() {
       });
     });
 
-    test('an array of class-validator sentences groups by leading field name', () {
-      final result = ExceptionMapper.fromDioException(
-        httpError(
-          400,
-          data: {
-            'message': [
-              'username should not be empty',
-              'password should not be empty',
-            ],
-          },
-        ),
-      );
+    test(
+      'an array of class-validator sentences groups by leading field name',
+      () {
+        final result = ExceptionMapper.fromDioException(
+          httpError(
+            400,
+            data: {
+              'message': [
+                'username should not be empty',
+                'password should not be empty',
+              ],
+            },
+          ),
+        );
 
-      expect((result as ValidationException).message, 'username should not be empty');
-      expect(result.fieldErrors, {
-        'username': ['username should not be empty'],
-        'password': ['password should not be empty'],
-      });
-    });
+        expect(
+          (result as ValidationException).message,
+          'username should not be empty',
+        );
+        expect(result.fieldErrors, {
+          'username': ['username should not be empty'],
+          'password': ['password should not be empty'],
+        });
+      },
+    );
 
-    test('a 400 with no recognisable body yields a generic validation failure, not a throw', () {
-      final result = ExceptionMapper.fromDioException(httpError(400));
-      expect(result, isA<ValidationException>());
-      expect((result as ValidationException).fieldErrors, isEmpty);
-    });
+    test(
+      'a 400 with no recognisable body yields a generic validation failure, not a throw',
+      () {
+        final result = ExceptionMapper.fromDioException(httpError(400));
+        expect(result, isA<ValidationException>());
+        expect((result as ValidationException).fieldErrors, isEmpty);
+      },
+    );
   });
 
   group('429 rate limiting', () {
@@ -201,13 +213,16 @@ void main() {
       expect(result.message, 'Too many attempts.');
     });
 
-    test('falls back to parsing minutes out of the message when the header is missing', () {
-      final result = ExceptionMapper.fromDioException(
-        httpError(429, data: {'message': 'Try again in 3 minutes.'}),
-      );
+    test(
+      'falls back to parsing minutes out of the message when the header is missing',
+      () {
+        final result = ExceptionMapper.fromDioException(
+          httpError(429, data: {'message': 'Try again in 3 minutes.'}),
+        );
 
-      expect((result as RateLimitException).retryAfterSeconds, 180);
-    });
+        expect((result as RateLimitException).retryAfterSeconds, 180);
+      },
+    );
 
     test('is null when neither the header nor the message says how long', () {
       final result = ExceptionMapper.fromDioException(httpError(429));

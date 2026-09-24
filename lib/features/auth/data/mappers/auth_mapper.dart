@@ -8,14 +8,13 @@ import '../models/currency_model.dart';
 import '../models/user_model.dart';
 
 abstract final class AuthMapper {
-  static CurrencyEntity currencyToEntity(CurrencyModel model) =>
-      CurrencyEntity(
-        id: model.id,
-        code: model.code,
-        nameEn: model.nameEn,
-        nameAr: model.nameAr,
-        symbol: model.symbol,
-      );
+  static CurrencyEntity currencyToEntity(CurrencyModel model) => CurrencyEntity(
+    id: model.id,
+    code: model.code,
+    nameEn: model.nameEn,
+    nameAr: model.nameAr,
+    symbol: model.symbol,
+  );
 
   static AccountEntity accountToEntity(AccountModel model) => AccountEntity(
     id: model.id,

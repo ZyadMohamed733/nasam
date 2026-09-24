@@ -1,7 +1,6 @@
 import 'package:mocktail/mocktail.dart';
 import 'package:nasam/core/errors/failures.dart';
 
-
 class TestHelper {
   static void registerFallbackValues() {
     // Register custom Mocktail fallback values if needed for parameters.

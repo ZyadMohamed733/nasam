@@ -46,9 +46,9 @@ class TrackingAssetDetailField extends StatelessWidget {
           Text(
             value,
             textAlign: TextAlign.start,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontSize: 14.sp,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(fontSize: 14.sp),
           ),
         ],
       ),

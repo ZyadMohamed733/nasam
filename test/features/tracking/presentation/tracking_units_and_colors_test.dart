@@ -71,7 +71,9 @@ void main() {
     ) async {
       await pumpInApp(
         tester,
-        TrackingAssetCard(asset: _asset(inStatus: const Duration(seconds: 429))),
+        TrackingAssetCard(
+          asset: _asset(inStatus: const Duration(seconds: 429)),
+        ),
       );
       expect(
         find.text(joinIsolated(['AST-1', '07m 09s'], ' • ')),
@@ -105,10 +107,7 @@ void main() {
 
     // A theme built without the extension must not crash on a `!`.
     testWidgets('falls back to the brightness default', (tester) async {
-      expect(
-        await statusIn(tester, ThemeData()),
-        TrackingColors.light.stopped,
-      );
+      expect(await statusIn(tester, ThemeData()), TrackingColors.light.stopped);
       expect(
         await statusIn(tester, ThemeData(brightness: Brightness.dark)),
         TrackingColors.dark.stopped,

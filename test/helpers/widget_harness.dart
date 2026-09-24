@@ -53,7 +53,10 @@ Future<void> pumpInApp(
         theme: dark ? AppTheme.dark : AppTheme.light,
         supportedLocales: AppLocalizationsSetup.supportedLocales,
         localizationsDelegates: AppLocalizationsSetup.localizationsDelegates,
-        home: Scaffold(appBar: appBar, body: Center(child: child)),
+        home: Scaffold(
+          appBar: appBar,
+          body: Center(child: child),
+        ),
       ),
     ),
   );

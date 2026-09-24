@@ -30,10 +30,9 @@ class UserModel {
     // Kept as the raw wire string here too -- see UserType for why the
     // enum conversion happens in the mapper, not this model.
     type: json['type'] as String,
-    permissions:
-        (json['permissions'] as List<dynamic>? ?? const [])
-            .whereType<String>()
-            .toList(),
+    permissions: (json['permissions'] as List<dynamic>? ?? const [])
+        .whereType<String>()
+        .toList(),
   );
 
   final String id;

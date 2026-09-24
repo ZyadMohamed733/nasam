@@ -79,10 +79,7 @@ void main() {
       return cubit;
     },
     act: (c) => c.submit(username: 'john.doe', password: 'S3curePass!'),
-    expect: () => [
-      const AuthFormSubmitting(),
-      const LoginNeedsOtp('john.doe'),
-    ],
+    expect: () => [const AuthFormSubmitting(), const LoginNeedsOtp('john.doe')],
   );
 
   blocTest<LoginCubit, AuthFormStatus>(

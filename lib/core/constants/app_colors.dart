@@ -269,10 +269,7 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
       primary: mix(primary, other.primary),
       secondary: mix(secondary, other.secondary),
       pageBackground: mix(pageBackground, other.pageBackground),
-      containerBackground: mix(
-        containerBackground,
-        other.containerBackground,
-      ),
+      containerBackground: mix(containerBackground, other.containerBackground),
       containerBorder: mix(containerBorder, other.containerBorder),
       divider: mix(divider, other.divider),
       hover: mix(hover, other.hover),

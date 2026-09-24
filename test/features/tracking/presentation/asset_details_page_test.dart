@@ -123,7 +123,10 @@ void main() {
     await _openAlertsTab(tester);
 
     // A failure, not the empty-state copy.
-    expect(find.text('Something went wrong. Please try again.'), findsOneWidget);
+    expect(
+      find.text('Something went wrong. Please try again.'),
+      findsOneWidget,
+    );
     expect(find.text('No notifications for this asset.'), findsNothing);
 
     await tester.tap(find.widgetWithText(TextButton, 'Retry'));
@@ -134,8 +137,9 @@ void main() {
     verify(() => getNotifications('AST-1')).called(2);
   });
 
-  testWidgets('an asset with genuinely no alerts shows the empty state',
-      (tester) async {
+  testWidgets('an asset with genuinely no alerts shows the empty state', (
+    tester,
+  ) async {
     when(
       () => getNotifications('AST-1'),
     ).thenAnswer((_) async => const Right([]));

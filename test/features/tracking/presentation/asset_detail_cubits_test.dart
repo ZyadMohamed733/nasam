@@ -70,12 +70,15 @@ void main() {
       getNotifications = _MockGetNotifications();
     });
 
-    AssetDetailsCubit build() => AssetDetailsCubit(getDetails, getNotifications);
+    AssetDetailsCubit build() =>
+        AssetDetailsCubit(getDetails, getNotifications);
 
     blocTest<AssetDetailsCubit, AssetDetailsState>(
       'loading → loaded with details and alerts',
       setUp: () {
-        when(() => getDetails('AST-1')).thenAnswer((_) async => Right(_details));
+        when(
+          () => getDetails('AST-1'),
+        ).thenAnswer((_) async => Right(_details));
         when(
           () => getNotifications('AST-1'),
         ).thenAnswer((_) async => Right([_alert]));
@@ -114,7 +117,9 @@ void main() {
     blocTest<AssetDetailsCubit, AssetDetailsState>(
       'an alerts failure still loads, with the failure carried for the tab',
       setUp: () {
-        when(() => getDetails('AST-1')).thenAnswer((_) async => Right(_details));
+        when(
+          () => getDetails('AST-1'),
+        ).thenAnswer((_) async => Right(_details));
         when(
           () => getNotifications('AST-1'),
         ).thenAnswer((_) async => const Left(_failure));
@@ -133,7 +138,9 @@ void main() {
     blocTest<AssetDetailsCubit, AssetDetailsState>(
       'retry from failure goes back through loading',
       setUp: () {
-        when(() => getDetails('AST-1')).thenAnswer((_) async => Right(_details));
+        when(
+          () => getDetails('AST-1'),
+        ).thenAnswer((_) async => Right(_details));
         when(
           () => getNotifications('AST-1'),
         ).thenAnswer((_) async => const Right([]));
@@ -153,7 +160,9 @@ void main() {
     blocTest<AssetDetailsCubit, AssetDetailsState>(
       'retrying the alerts re-requests them alone, details untouched',
       setUp: () {
-        when(() => getDetails('AST-1')).thenAnswer((_) async => Right(_details));
+        when(
+          () => getDetails('AST-1'),
+        ).thenAnswer((_) async => Right(_details));
         var calls = 0;
         when(() => getNotifications('AST-1')).thenAnswer(
           (_) async => calls++ == 0 ? const Left(_failure) : Right([_alert]),
@@ -184,7 +193,9 @@ void main() {
     blocTest<AssetDetailsCubit, AssetDetailsState>(
       'an alerts retry that fails again stays a failure, not an empty list',
       setUp: () {
-        when(() => getDetails('AST-1')).thenAnswer((_) async => Right(_details));
+        when(
+          () => getDetails('AST-1'),
+        ).thenAnswer((_) async => Right(_details));
         when(
           () => getNotifications('AST-1'),
         ).thenAnswer((_) async => const Left(_failure));

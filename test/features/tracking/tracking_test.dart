@@ -46,19 +46,21 @@ void main() {
   // container; the stored user is Aya Al-Rashidi.
   setUp(registerTrackingScreenFakes);
 
-  test('the fixture fleet has distinct ids and consistent status counts',
-      () async {
-    final fleet = await _fleet();
-    expect(fleet, hasLength(68));
-    expect(fleet.map((v) => v.id).toSet(), hasLength(68));
-    expect(
-      VehicleStatus.values.fold<int>(
-        0,
-        (sum, s) => sum + fleet.where((v) => v.status == s).length,
-      ),
-      68,
-    );
-  });
+  test(
+    'the fixture fleet has distinct ids and consistent status counts',
+    () async {
+      final fleet = await _fleet();
+      expect(fleet, hasLength(68));
+      expect(fleet.map((v) => v.id).toSet(), hasLength(68));
+      expect(
+        VehicleStatus.values.fold<int>(
+          0,
+          (sum, s) => sum + fleet.where((v) => v.status == s).length,
+        ),
+        68,
+      );
+    },
+  );
   test(
     'bounds contain the entire fleet and handle empty and single fleets',
     () async {
@@ -162,10 +164,7 @@ void main() {
     'drawer animates through intermediate values opening and closing',
     (tester) async {
       GoogleMapsFlutterPlatform.instance = FakeMapPlatform();
-      await pumpInApp(
-        tester,
-        _trackingScreen(),
-      );
+      await pumpInApp(tester, _trackingScreen());
       await tester.pumpAndSettle();
       final drawer = tester.widget<AdvancedDrawer>(find.byType(AdvancedDrawer));
       final animation = drawer.animationController!;
@@ -197,11 +196,7 @@ void main() {
       '$locale tracking drawer opens and closes; tools stay inactive',
       (tester) async {
         GoogleMapsFlutterPlatform.instance = FakeMapPlatform();
-        await pumpInApp(
-          tester,
-          _trackingScreen(),
-          locale: Locale(locale),
-        );
+        await pumpInApp(tester, _trackingScreen(), locale: Locale(locale));
         await tester.pumpAndSettle();
         final buttons = tester.widgetList<TrackingIconButton>(
           find.byType(TrackingIconButton),

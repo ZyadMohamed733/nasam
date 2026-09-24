@@ -23,9 +23,7 @@ class AccountModel {
     phoneNumber1: json['phoneNumber1'] as String,
     phoneNumber2: json['phoneNumber2'] as String?,
     fax: json['fax'] as String?,
-    currency: CurrencyModel.fromJson(
-      json['currency'] as Map<String, dynamic>,
-    ),
+    currency: CurrencyModel.fromJson(json['currency'] as Map<String, dynamic>),
   );
 
   final String id;

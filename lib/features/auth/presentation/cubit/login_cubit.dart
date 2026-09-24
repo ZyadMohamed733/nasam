@@ -18,20 +18,20 @@ class LoginCubit extends Cubit<AuthFormStatus> {
     if (state is AuthFormSubmitting) return;
     emit(const AuthFormSubmitting());
 
-    final result = await _login(
-      username: username.trim(),
-      password: password,
-    );
+    final result = await _login(username: username.trim(), password: password);
     if (isClosed) return;
 
     emit(
-      result.fold(AuthFormFailed.new, (loginResult) => switch (loginResult) {
-        // The session is already persisted by the repository, so there is
-        // nothing to carry into the state: the page only needs to know it
-        // may navigate.
-        LoginSucceeded() => const AuthFormSucceeded(),
-        LoginRequiresOtp(:final username) => LoginNeedsOtp(username),
-      }),
+      result.fold(
+        AuthFormFailed.new,
+        (loginResult) => switch (loginResult) {
+          // The session is already persisted by the repository, so there is
+          // nothing to carry into the state: the page only needs to know it
+          // may navigate.
+          LoginSucceeded() => const AuthFormSucceeded(),
+          LoginRequiresOtp(:final username) => LoginNeedsOtp(username),
+        },
+      ),
     );
   }
 }
