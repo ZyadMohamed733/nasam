@@ -34,6 +34,27 @@ class AppLocalizationsAr extends AppLocalizations {
   String get cancel => 'إلغاء';
 
   @override
+  String get save => 'حفظ';
+
+  @override
+  String get playbackTime => 'الوقت';
+
+  @override
+  String get morning => 'صباحا';
+
+  @override
+  String get evening => 'مساء';
+
+  @override
+  String get hour => 'الساعة';
+
+  @override
+  String get minute => 'الدقيقة';
+
+  @override
+  String get playbackChooseDay => 'اختار اليوم';
+
+  @override
   String get confirm => 'تأكيد';
 
   @override
@@ -502,10 +523,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get assetPlaybackTitle => 'إعادة التشغيل';
 
   @override
-  String get assetPlaybackFrom => 'من تاريخ';
+  String get assetPlaybackFrom => 'تاريخ البداية';
 
   @override
-  String get assetPlaybackTo => 'إلى تاريخ';
+  String get assetPlaybackTo => 'تاريخ النهاية';
 
   @override
   String get assetPlaybackStart => 'بدء التشغيل';

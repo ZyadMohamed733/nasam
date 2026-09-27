@@ -146,6 +146,48 @@ abstract class AppLocalizations {
   /// **'إلغاء'**
   String get cancel;
 
+  /// No description provided for @save.
+  ///
+  /// In ar, this message translates to:
+  /// **'حفظ'**
+  String get save;
+
+  /// No description provided for @playbackTime.
+  ///
+  /// In ar, this message translates to:
+  /// **'الوقت'**
+  String get playbackTime;
+
+  /// No description provided for @morning.
+  ///
+  /// In ar, this message translates to:
+  /// **'صباحا'**
+  String get morning;
+
+  /// No description provided for @evening.
+  ///
+  /// In ar, this message translates to:
+  /// **'مساء'**
+  String get evening;
+
+  /// No description provided for @hour.
+  ///
+  /// In ar, this message translates to:
+  /// **'الساعة'**
+  String get hour;
+
+  /// No description provided for @minute.
+  ///
+  /// In ar, this message translates to:
+  /// **'الدقيقة'**
+  String get minute;
+
+  /// No description provided for @playbackChooseDay.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختار اليوم'**
+  String get playbackChooseDay;
+
   /// No description provided for @confirm.
   ///
   /// In ar, this message translates to:
@@ -929,13 +971,13 @@ abstract class AppLocalizations {
   /// No description provided for @assetPlaybackFrom.
   ///
   /// In ar, this message translates to:
-  /// **'من تاريخ'**
+  /// **'تاريخ البداية'**
   String get assetPlaybackFrom;
 
   /// No description provided for @assetPlaybackTo.
   ///
   /// In ar, this message translates to:
-  /// **'إلى تاريخ'**
+  /// **'تاريخ النهاية'**
   String get assetPlaybackTo;
 
   /// No description provided for @assetPlaybackStart.

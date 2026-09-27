@@ -34,6 +34,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cancel => 'Cancel';
 
   @override
+  String get save => 'Save';
+
+  @override
+  String get playbackTime => 'Time';
+
+  @override
+  String get morning => 'AM';
+
+  @override
+  String get evening => 'PM';
+
+  @override
+  String get hour => 'Hour';
+
+  @override
+  String get minute => 'Minute';
+
+  @override
+  String get playbackChooseDay => 'Choose day';
+
+  @override
   String get confirm => 'Confirm';
 
   @override
@@ -488,10 +509,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get assetPlaybackTitle => 'Playback';
 
   @override
-  String get assetPlaybackFrom => 'From date';
+  String get assetPlaybackFrom => 'Start date';
 
   @override
-  String get assetPlaybackTo => 'To date';
+  String get assetPlaybackTo => 'End date';
 
   @override
   String get assetPlaybackStart => 'Start playback';

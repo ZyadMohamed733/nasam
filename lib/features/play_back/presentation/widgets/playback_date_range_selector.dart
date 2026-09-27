@@ -1,3 +1,5 @@
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -62,57 +64,72 @@ class _PlaybackDateField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    return Material(
-      color: scheme.surface,
-      borderRadius: BorderRadius.circular(8.r),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(8.r),
-        onTap: onTap,
-        child: Container(
-          constraints: BoxConstraints(minHeight: 48.h),
-          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 5.h),
-          decoration: BoxDecoration(
-            border: Border.all(color: scheme.outlineVariant),
-            borderRadius: BorderRadius.circular(8.r),
-          ),
-          child: Row(
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final dateTimeLabel = DateFormat.yMMMd(locale).add_jm().format(date);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text.rich(
+          TextSpan(
             children: [
-              Icon(
-                Icons.calendar_month_outlined,
-                size: AppIconSize.small.value.r,
-                color: scheme.onSurfaceVariant,
-              ),
-              SizedBox(width: 6.w),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      label,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(
-                        context,
-                      ).textTheme.labelSmall?.copyWith(fontSize: 9.sp),
-                    ),
-                    Text(
-                      DateFormat.yMd(locale).format(date),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodySmall?.copyWith(fontSize: 10.sp),
-                    ),
-                  ],
+              TextSpan(
+                text: '* ',
+                style: theme.textTheme.labelMedium?.copyWith(
+                  fontSize: 11.sp,
+                  color: scheme.error,
                 ),
               ),
+              TextSpan(text: label),
             ],
           ),
+          textDirection: ui.TextDirection.rtl,
+          textAlign: TextAlign.right,
+          style: theme.textTheme.labelMedium?.copyWith(fontSize: 11.sp),
         ),
-      ),
+        SizedBox(height: 6.h),
+        Material(
+          color: scheme.surface,
+          borderRadius: BorderRadius.circular(8.r),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(8.r),
+            onTap: onTap,
+            child: Container(
+              constraints: BoxConstraints(minHeight: 48.h),
+              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+              decoration: BoxDecoration(
+                border: Border.all(color: scheme.outlineVariant),
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              child: Row(
+                textDirection: ui.TextDirection.ltr,
+                children: [
+                  Icon(
+                    Icons.calendar_month,
+                    size: AppIconSize.small.value.r,
+                    color: scheme.onSurfaceVariant,
+                  ),
+                  SizedBox(width: 8.w),
+                  Expanded(
+                    child: Text(
+                      dateTimeLabel,
+                      textDirection: ui.TextDirection.rtl,
+                      textAlign: TextAlign.right,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        fontSize: 12.sp,
+                        color: scheme.onSurface,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
-//tesr

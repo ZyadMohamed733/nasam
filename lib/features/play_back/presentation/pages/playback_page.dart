@@ -13,6 +13,7 @@ import '../../../tracking/domain/entities/tracked_asset.dart';
 import '../cubit/playback_cubit.dart';
 import '../utils/playback_range.dart';
 import '../widgets/playback_date_range_selector.dart';
+import '../widgets/playback_date_picker_sheet.dart';
 import '../widgets/playback_segment_card.dart';
 import '../../../tracking/presentation/widgets/tracked_asset_gate.dart';
 
@@ -70,16 +71,23 @@ class _PlaybackViewState extends State<_PlaybackView> {
   );
 
   Future<void> _chooseDate({required bool isStart}) async {
+    final l = AppLocalizations.of(context)!;
     final current = isStart ? _fromDate : _toDate;
-    final picked = await showDatePicker(
+    final picked = await showModalBottomSheet<DateTime>(
       context: context,
-      initialDate: current,
-      // Whole days, from the same source the link parser clamps against. The
-      // picker asserts if opened on a date outside these bounds, and the old
-      // bounds carried a time of day while the dates did not, so a boundary
-      // date could fall a few hours outside them.
-      firstDate: PlaybackRange.earliest(DateUtils.dateOnly(DateTime.now())),
-      lastDate: DateUtils.dateOnly(DateTime.now()),
+      isScrollControlled: true,
+      useSafeArea: true,
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(12.r)),
+      ),
+      builder: (context) => PlaybackDatePickerSheet(
+        title: l.playbackChooseDay,
+        initialDate: current,
+        // Whole days, from the same source the link parser clamps against.
+        firstDate: PlaybackRange.earliest(DateUtils.dateOnly(DateTime.now())),
+        lastDate: DateUtils.dateOnly(DateTime.now()),
+      ),
     );
     if (picked == null || !mounted) return;
     setState(() {
@@ -200,8 +208,7 @@ class _PlaybackViewState extends State<_PlaybackView> {
                         ],
                       ),
                     ),
-                    PlaybackLoaded(:final segments)
-                        when segments.isEmpty =>
+                    PlaybackLoaded(:final segments) when segments.isEmpty =>
                       Center(child: Text(l.assetPlaybackEmpty)),
                     PlaybackLoaded(:final segments) => ListView.separated(
                       padding: EdgeInsetsDirectional.fromSTEB(
@@ -213,14 +220,12 @@ class _PlaybackViewState extends State<_PlaybackView> {
                       itemCount: segments.length,
                       separatorBuilder: (context, index) =>
                           SizedBox(height: 7.h),
-                      itemBuilder: (context, index) =>
-                          PlaybackSegmentCard(
-                            segment: segments[index],
-                            locale: locale,
-                            playing:
-                                _playingAll || _playingSegmentIndex == index,
-                            onPlayPressed: () => _toggleSegment(index),
-                          ),
+                      itemBuilder: (context, index) => PlaybackSegmentCard(
+                        segment: segments[index],
+                        locale: locale,
+                        playing: _playingAll || _playingSegmentIndex == index,
+                        onPlayPressed: () => _toggleSegment(index),
+                      ),
                     ),
                   },
                 ),
