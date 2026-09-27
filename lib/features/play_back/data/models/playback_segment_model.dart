@@ -8,6 +8,7 @@ class PlaybackSegmentModel {
     required this.maxSpeedKph,
     required this.startPlace,
     required this.endPlace,
+    required this.status,
   });
 
   factory PlaybackSegmentModel.fromJson(Map<String, dynamic> json) =>
@@ -19,6 +20,7 @@ class PlaybackSegmentModel {
         maxSpeedKph: (json['maxSpeedKph'] as num).toInt(),
         startPlace: json['startPlace'] as String? ?? '',
         endPlace: json['endPlace'] as String? ?? '',
+        status: json['status'] as String? ?? '',
       );
 
   final DateTime startedAt;
@@ -28,4 +30,5 @@ class PlaybackSegmentModel {
   final int maxSpeedKph;
   final String startPlace;
   final String endPlace;
+  final String status;
 }

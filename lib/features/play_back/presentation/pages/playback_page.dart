@@ -3,25 +3,26 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../shared/widgets/app_button.dart';
+import '../../../../shared/widgets/app_bar_widget.dart';
 import '../../../../core/constants/app_icons.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 import '../../../../core/theme/tracking_colors.dart';
 import '../../../../core/utils/bidi.dart';
-import '../../domain/entities/tracked_asset.dart';
-import '../cubit/asset_playback_cubit.dart';
-import '../playback_range.dart';
-import '../widgets/playback/playback_date_range_selector.dart';
-import '../widgets/playback/playback_start_button.dart';
-import '../widgets/playback/tracking_asset_playback_segment_card.dart';
-import '../widgets/tracked_asset_gate.dart';
+import '../../../tracking/domain/entities/tracked_asset.dart';
+import '../cubit/playback_cubit.dart';
+import '../utils/playback_range.dart';
+import '../widgets/playback_date_range_selector.dart';
+import '../widgets/playback_segment_card.dart';
+import '../../../tracking/presentation/widgets/tracked_asset_gate.dart';
 
 /// An asset's journey legs over a date range, opened by id.
 ///
 /// Expects a TrackedAssetCubit (loaded by the route) and an
-/// [AssetPlaybackCubit] above it. The starting range comes from the link's
+/// [PlaybackCubit] above it. The starting range comes from the link's
 /// `?from=&to=`, already clamped to what the picker accepts.
-class TrackingAssetPlaybackPage extends StatelessWidget {
-  const TrackingAssetPlaybackPage({
+class PlaybackPage extends StatelessWidget {
+  const PlaybackPage({
     super.key,
     required this.assetId,
     required this.initialRange,
@@ -53,6 +54,7 @@ class _PlaybackViewState extends State<_PlaybackView> {
   late DateTime _toDate = widget.initialRange.to;
   bool _playingAll = false;
   int? _playingSegmentIndex;
+
   @override
   void initState() {
     super.initState();
@@ -61,7 +63,7 @@ class _PlaybackViewState extends State<_PlaybackView> {
 
   /// The pickers are day-granular and inclusive, so the range sent is
   /// [from, to + 1 day).
-  void _loadSegments() => context.read<AssetPlaybackCubit>().load(
+  void _loadSegments() => context.read<PlaybackCubit>().load(
     assetId: widget.asset.id,
     from: _fromDate,
     to: _toDate.add(const Duration(days: 1)),
@@ -116,7 +118,8 @@ class _PlaybackViewState extends State<_PlaybackView> {
     return Theme(
       data: playbackTheme,
       child: Scaffold(
-        appBar: AppBar(
+        appBar: NasamAppBar(
+          showLeading: false,
           toolbarHeight: 64.h,
           leading: IconButton(
             tooltip: MaterialLocalizations.of(context).backButtonTooltip,
@@ -126,7 +129,7 @@ class _PlaybackViewState extends State<_PlaybackView> {
               child: BackButtonIcon(),
             ),
           ),
-          title: Column(
+          titleWidget: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -161,37 +164,46 @@ class _PlaybackViewState extends State<_PlaybackView> {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 14.w),
-                child: PlaybackStartButton(
-                  playing: _playingAll,
+                child: AppButton(
                   label: _playingAll
                       ? l.assetPlaybackPause
                       : l.assetPlaybackStart,
                   onPressed: _togglePlayback,
+                  icon: _playingAll ? Icons.pause : Icons.play_arrow,
+                  iconSize: AppIconSize.medium.value.r,
+                  height: kMinInteractiveDimension,
+                  variant: AppButtonVariant.primary,
+                  labelStyle: TextStyle(fontSize: 13.sp),
                 ),
               ),
               SizedBox(height: 8.h),
               Expanded(
-                child: BlocBuilder<AssetPlaybackCubit, AssetPlaybackState>(
+                child: BlocBuilder<PlaybackCubit, PlaybackState>(
                   builder: (context, state) => switch (state) {
-                    AssetPlaybackLoading() => const Center(
+                    PlaybackLoading() => const Center(
                       child: CircularProgressIndicator(),
                     ),
-                    AssetPlaybackFailure() => Center(
+                    PlaybackFailure() => Center(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(l.errorGeneric),
-                          TextButton(
+                          // TextButton(
+                          //   onPressed: _loadSegments,
+                          //   child: Text(l.retry),
+                          // ),
+                          AppButton(
                             onPressed: _loadSegments,
-                            child: Text(l.retry),
+                            label: l.retry,
+                            variant: AppButtonVariant.tertiary,
                           ),
                         ],
                       ),
                     ),
-                    AssetPlaybackLoaded(:final segments)
+                    PlaybackLoaded(:final segments)
                         when segments.isEmpty =>
                       Center(child: Text(l.assetPlaybackEmpty)),
-                    AssetPlaybackLoaded(:final segments) => ListView.separated(
+                    PlaybackLoaded(:final segments) => ListView.separated(
                       padding: EdgeInsetsDirectional.fromSTEB(
                         14.w,
                         4.h,
@@ -202,7 +214,7 @@ class _PlaybackViewState extends State<_PlaybackView> {
                       separatorBuilder: (context, index) =>
                           SizedBox(height: 7.h),
                       itemBuilder: (context, index) =>
-                          TrackingAssetPlaybackSegmentCard(
+                          PlaybackSegmentCard(
                             segment: segments[index],
                             locale: locale,
                             playing:

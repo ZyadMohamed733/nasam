@@ -42,6 +42,18 @@ import '../../features/auth/presentation/cubit/new_password_cubit.dart'
 import '../../features/auth/presentation/cubit/otp_cubit.dart' as _i1033;
 import '../../features/onboarding/presentation/cubit/onboarding_cubit.dart'
     as _i807;
+import '../../features/play_back/data/datasources/playback_datasource.dart'
+    as _i2001;
+import '../../features/play_back/data/datasources/playback_fixture_datasource.dart'
+    as _i2002;
+import '../../features/play_back/data/repositories/playback_repository_impl.dart'
+    as _i2003;
+import '../../features/play_back/domain/repositories/playback_repository.dart'
+    as _i2004;
+import '../../features/play_back/domain/usecases/get_playback_segments_usecase.dart'
+    as _i2005;
+import '../../features/play_back/presentation/cubit/playback_cubit.dart'
+    as _i2006;
 import '../../features/tracking/data/datasources/tracking_datasource.dart'
     as _i765;
 import '../../features/tracking/data/datasources/tracking_fixture_datasource.dart'
@@ -54,8 +66,6 @@ import '../../features/tracking/domain/usecases/get_asset_details_usecase.dart'
     as _i439;
 import '../../features/tracking/domain/usecases/get_asset_notifications_usecase.dart'
     as _i201;
-import '../../features/tracking/domain/usecases/get_playback_segments_usecase.dart'
-    as _i405;
 import '../../features/tracking/domain/usecases/get_tracked_asset_usecase.dart'
     as _i127;
 import '../../features/tracking/domain/usecases/get_tracked_assets_usecase.dart'
@@ -64,8 +74,6 @@ import '../../features/tracking/domain/usecases/get_tracking_vehicles_usecase.da
     as _i886;
 import '../../features/tracking/presentation/cubit/asset_details_cubit.dart'
     as _i784;
-import '../../features/tracking/presentation/cubit/asset_playback_cubit.dart'
-    as _i719;
 import '../../features/tracking/presentation/cubit/tracked_asset_cubit.dart'
     as _i1062;
 import '../../features/tracking/presentation/cubit/tracking_cubit.dart'
@@ -113,6 +121,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i765.TrackingDataSource>(
       () => _i439.TrackingFixtureDataSource(),
+    );
+    gh.lazySingleton<_i2001.PlaybackDataSource>(
+      () => _i2002.PlaybackFixtureDataSource(),
     );
     gh.lazySingleton<_i361.Dio>(
       () => networkModule.bareDio(
@@ -176,8 +187,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i201.GetAssetNotificationsUseCase>(
       () => _i201.GetAssetNotificationsUseCase(gh<_i76.TrackingRepository>()),
     );
-    gh.lazySingleton<_i405.GetPlaybackSegmentsUseCase>(
-      () => _i405.GetPlaybackSegmentsUseCase(gh<_i76.TrackingRepository>()),
+    gh.lazySingleton<_i2004.PlaybackRepository>(
+      () => _i2003.PlaybackRepositoryImpl(gh<_i2001.PlaybackDataSource>()),
+    );
+    gh.lazySingleton<_i2005.GetPlaybackSegmentsUseCase>(
+      () => _i2005.GetPlaybackSegmentsUseCase(gh<_i2004.PlaybackRepository>()),
     );
     gh.lazySingleton<_i127.GetTrackedAssetUseCase>(
       () => _i127.GetTrackedAssetUseCase(gh<_i76.TrackingRepository>()),
@@ -211,8 +225,8 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i511.ErrorInterceptor>(),
       ),
     );
-    gh.factory<_i719.AssetPlaybackCubit>(
-      () => _i719.AssetPlaybackCubit(gh<_i405.GetPlaybackSegmentsUseCase>()),
+    gh.factory<_i2006.PlaybackCubit>(
+      () => _i2006.PlaybackCubit(gh<_i2005.GetPlaybackSegmentsUseCase>()),
     );
     gh.lazySingleton<_i1022.AuthRemoteDataSource>(
       () => _i1022.AuthRemoteDataSourceImpl(gh<_i361.Dio>()),

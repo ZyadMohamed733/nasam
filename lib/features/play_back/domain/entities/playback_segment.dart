@@ -1,6 +1,6 @@
 /// One leg of an asset's journey, as the playback screen lists them.
-class TrackingPlaybackSegment {
-  const TrackingPlaybackSegment({
+class PlaybackSegment {
+  const PlaybackSegment({
     required this.startedAt,
     required this.endedAt,
     required this.distanceKm,
@@ -8,6 +8,7 @@ class TrackingPlaybackSegment {
     required this.maxSpeedKph,
     required this.startPlace,
     required this.endPlace,
+    required this.status,
   });
 
   final DateTime startedAt;
@@ -21,4 +22,5 @@ class TrackingPlaybackSegment {
   /// the same airport.
   final String startPlace;
   final String endPlace;
+  final String status;
 }

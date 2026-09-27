@@ -6,7 +6,6 @@ import 'package:nasam/features/tracking/data/datasources/tracking_fixture_dataso
 import 'package:nasam/features/tracking/data/mappers/tracking_mapper.dart';
 import 'package:nasam/features/tracking/data/models/asset_details_model.dart';
 import 'package:nasam/features/tracking/data/models/notification_model.dart';
-import 'package:nasam/features/tracking/data/models/playback_segment_model.dart';
 import 'package:nasam/features/tracking/data/models/tracked_asset_model.dart';
 import 'package:nasam/features/tracking/data/models/vehicle_model.dart';
 import 'package:nasam/features/tracking/data/repositories/tracking_repository_impl.dart';
@@ -31,12 +30,6 @@ class _ThrowingDataSource implements TrackingDataSource {
   @override
   Future<List<NotificationModel>> getAssetNotifications(String assetId) async =>
       throw error;
-  @override
-  Future<List<PlaybackSegmentModel>> getPlaybackSegments({
-    required String assetId,
-    required DateTime from,
-    required DateTime to,
-  }) async => throw error;
 }
 
 /// Serves one hand-written vehicle, to check the mapper's handling of the wire
@@ -160,24 +153,6 @@ void main() {
       expect(notifications, hasLength(3));
     });
 
-    test(
-      'playback replays on the requested day, identically each time',
-      () async {
-        final day = DateTime(2026, 3, 1);
-        Future<List<DateTime>> starts() async =>
-            (await repositoryOver().getPlaybackSegments(
-              assetId: 'AST-0017',
-              from: day,
-              to: day.add(const Duration(days: 1)),
-            )).getOrElse(() => const []).map((s) => s.startedAt).toList();
-
-        final first = await starts();
-        expect(first, hasLength(6));
-        expect(first.every((t) => _sameDay(t, day)), isTrue);
-        expect(await starts(), first, reason: 'goldens need a stable fixture');
-      },
-    );
-
     test('the debug failure flag fails every call as a Failure', () async {
       final result = await repositoryOver(fail: true).getTrackedAssets();
 
@@ -230,6 +205,3 @@ void main() {
     );
   });
 }
-
-bool _sameDay(DateTime a, DateTime b) =>
-    a.year == b.year && a.month == b.month && a.day == b.day;

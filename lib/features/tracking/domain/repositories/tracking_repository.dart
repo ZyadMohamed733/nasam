@@ -3,7 +3,6 @@ import 'package:dartz/dartz.dart';
 import '../../../../core/errors/failures.dart';
 import '../entities/tracked_asset.dart';
 import '../entities/tracked_asset_details.dart';
-import '../entities/tracking_playback_segment.dart';
 import '../entities/tracking_vehicle.dart';
 
 abstract interface class TrackingRepository {
@@ -22,9 +21,4 @@ abstract interface class TrackingRepository {
     String assetId,
   );
 
-  Future<Either<Failure, List<TrackingPlaybackSegment>>> getPlaybackSegments({
-    required String assetId,
-    required DateTime from,
-    required DateTime to,
-  });
 }

@@ -10,14 +10,14 @@ import '../../features/auth/presentation/pages/otp_verification_page.dart';
 import '../../features/auth/presentation/pages/password_reset_success_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/onboarding/presentation/pages/onboarding_page.dart';
+import '../../features/play_back/presentation/cubit/playback_cubit.dart';
+import '../../features/play_back/presentation/pages/playback_page.dart';
+import '../../features/play_back/presentation/utils/playback_range.dart';
 import '../../features/splash/presentation/pages/splash_page.dart';
 import '../../features/tracking/presentation/cubit/asset_details_cubit.dart';
-import '../../features/tracking/presentation/cubit/asset_playback_cubit.dart';
 import '../../features/tracking/presentation/cubit/tracked_asset_cubit.dart';
 import '../../features/tracking/presentation/cubit/tracking_cubit.dart';
 import '../../features/tracking/presentation/pages/tracking_asset_details_page.dart';
-import '../../features/tracking/presentation/pages/tracking_asset_playback_page.dart';
-import '../../features/tracking/presentation/playback_range.dart';
 import '../auth/auth_session_notifier.dart';
 import '../di/injection_container.dart';
 import 'app_error_page.dart';
@@ -190,10 +190,10 @@ class AppRouter {
                               getIt<TrackedAssetCubit>()..load(assetId),
                         ),
                         BlocProvider(
-                          create: (_) => getIt<AssetPlaybackCubit>(),
+                          create: (_) => getIt<PlaybackCubit>(),
                         ),
                       ],
-                      child: TrackingAssetPlaybackPage(
+                      child: PlaybackPage(
                         assetId: assetId,
                         initialRange: PlaybackRange.fromQuery(
                           from: query[AppRoutes.fromDateParam],

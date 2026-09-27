@@ -5,15 +5,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../../core/constants/app_assets.dart';
-import '../../../../../core/constants/app_icons.dart';
-import '../../../../../core/localization/l10n/app_localizations.dart';
-import '../../../domain/entities/tracking_playback_segment.dart';
+import '../../../../core/constants/app_assets.dart';
+import '../../../../core/constants/app_icons.dart';
+import '../../../../core/localization/l10n/app_localizations.dart';
+import '../../domain/entities/playback_segment.dart';
 
 const _playbackTimelineColor = Color(0xFF8A8AA3);
 
-class TrackingAssetPlaybackSegmentCard extends StatefulWidget {
-  const TrackingAssetPlaybackSegmentCard({
+class PlaybackSegmentCard extends StatefulWidget {
+  const PlaybackSegmentCard({
     super.key,
     required this.segment,
     required this.locale,
@@ -21,18 +21,16 @@ class TrackingAssetPlaybackSegmentCard extends StatefulWidget {
     required this.onPlayPressed,
   });
 
-  final TrackingPlaybackSegment segment;
+  final PlaybackSegment segment;
   final String locale;
   final bool playing;
   final VoidCallback onPlayPressed;
 
   @override
-  State<TrackingAssetPlaybackSegmentCard> createState() =>
-      _TrackingAssetPlaybackSegmentCardState();
+  State<PlaybackSegmentCard> createState() => _PlaybackSegmentCardState();
 }
 
-class _TrackingAssetPlaybackSegmentCardState
-    extends State<TrackingAssetPlaybackSegmentCard> {
+class _PlaybackSegmentCardState extends State<PlaybackSegmentCard> {
   double _progress = .98;
 
   @override
@@ -100,15 +98,6 @@ class _TrackingAssetPlaybackSegmentCardState
                   AppAssets.mapArrowLeft,
                   width: AppIconSize.medium.value.r,
                   height: AppIconSize.medium.value.r,
-                ),
-              ),
-              SizedBox(width: 5.w),
-              Container(
-                width: 7.r,
-                height: 7.r,
-                decoration: BoxDecoration(
-                  color: _playbackTimelineColor,
-                  shape: BoxShape.circle,
                 ),
               ),
               Expanded(
@@ -205,13 +194,15 @@ class _TrackingAssetPlaybackSegmentCardState
                     : l.assetPlaybackPlay,
                 padding: EdgeInsets.zero,
                 onPressed: widget.onPlayPressed,
-                icon: Icon(
-                  widget.playing ? Icons.pause : Icons.play_arrow,
-                  size: AppIconSize.medium.value.r,
+                icon: SvgPicture.asset(
+                  widget.playing ? AppAssets.pauseIcon : AppAssets.playIcon,
+                  width: AppIconSize.small.value.r,
+                  height: AppIconSize.small.value.r,
+                  excludeFromSemantics: true,
                 ),
                 style: IconButton.styleFrom(
-                  fixedSize: Size(34.r, 32.r),
-                  minimumSize: Size(34.r, 32.r),
+                  fixedSize: Size(AppIconSize.medium.value, AppIconSize.medium.value),
+                  minimumSize:  Size(AppIconSize.medium.value, AppIconSize.medium.value),
                   tapTargetSize: MaterialTapTargetSize.padded,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(7.r),
@@ -222,15 +213,17 @@ class _TrackingAssetPlaybackSegmentCardState
               Row(
                 children: [
                   _SegmentMetric(
-                    icon: Icons.timer_outlined,
+                    icon: Icons.access_time,
                     label:
-                        '${widget.segment.durationMinutes} ${l.assetPlaybackMinutes}',
+                    '${widget.segment.durationMinutes} ${l.assetPlaybackMinutes}',
                     semanticsLabel: l.assetPlaybackDuration,
+                    outlined: false,
+                    emphasize: true,
                   ),
                   SizedBox(width: 8.w),
                   _SegmentMetric(
                     icon: Icons.local_parking_outlined,
-                    label: widget.segment.endPlace,
+                    label: widget.segment.status,
                     semanticsLabel: widget.segment.endPlace,
                   ),
                 ],
@@ -296,11 +289,15 @@ class _SegmentMetric extends StatelessWidget {
     required this.icon,
     required this.label,
     required this.semanticsLabel,
+    this.outlined = true,
+    this.emphasize = false,
   });
 
   final IconData icon;
   final String label;
   final String semanticsLabel;
+  final bool outlined;
+  final bool emphasize;
 
   @override
   Widget build(BuildContext context) {
@@ -308,26 +305,32 @@ class _SegmentMetric extends StatelessWidget {
     return Semantics(
       label: '$semanticsLabel $label',
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 4.h),
-        decoration: BoxDecoration(
-          color: scheme.surface,
-          border: Border.all(color: scheme.outlineVariant),
-          borderRadius: BorderRadius.circular(7.r),
-        ),
+        padding: outlined
+            ? EdgeInsets.symmetric(horizontal: 6.w, vertical: 4.h)
+            : EdgeInsets.zero,
+        decoration: outlined
+            ? BoxDecoration(
+                color: scheme.surface,
+                border: Border.all(color: scheme.outlineVariant),
+                borderRadius: BorderRadius.circular(7.r),
+              )
+            : null,
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
               icon,
               size: AppIconSize.extraSmall.value.r,
-              color: scheme.primary,
+              color: outlined ? scheme.primary : scheme.onSurfaceVariant,
             ),
             SizedBox(width: 3.w),
             Text(
               label,
-              style: Theme.of(
-                context,
-              ).textTheme.labelSmall?.copyWith(fontSize: 9.sp),
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                fontSize: emphasize ? 10.sp : 9.sp,
+                fontWeight: emphasize ? FontWeight.w700 : null,
+                color: emphasize ? scheme.onSurface : null,
+              ),
             ),
           ],
         ),
@@ -335,3 +338,4 @@ class _SegmentMetric extends StatelessWidget {
     );
   }
 }
+//test

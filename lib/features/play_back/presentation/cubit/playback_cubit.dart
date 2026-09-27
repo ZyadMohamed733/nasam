@@ -3,45 +3,45 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/errors/failures.dart';
-import '../../domain/entities/tracking_playback_segment.dart';
+import '../../domain/entities/playback_segment.dart';
 import '../../domain/usecases/get_playback_segments_usecase.dart';
 
-sealed class AssetPlaybackState {
-  const AssetPlaybackState();
+sealed class PlaybackState {
+  const PlaybackState();
 }
 
-final class AssetPlaybackLoading extends AssetPlaybackState {
-  const AssetPlaybackLoading();
+final class PlaybackLoading extends PlaybackState {
+  const PlaybackLoading();
 
   @override
-  bool operator ==(Object other) => other is AssetPlaybackLoading;
+  bool operator ==(Object other) => other is PlaybackLoading;
 
   @override
-  int get hashCode => (AssetPlaybackLoading).hashCode;
+  int get hashCode => (PlaybackLoading).hashCode;
 }
 
-final class AssetPlaybackLoaded extends AssetPlaybackState {
-  const AssetPlaybackLoaded(this.segments);
-  final List<TrackingPlaybackSegment> segments;
+final class PlaybackLoaded extends PlaybackState {
+  const PlaybackLoaded(this.segments);
+  final List<PlaybackSegment> segments;
 
   @override
   bool operator ==(Object other) =>
-      other is AssetPlaybackLoaded && listEquals(other.segments, segments);
+      other is PlaybackLoaded && listEquals(other.segments, segments);
 
   @override
   int get hashCode => Object.hashAll(segments);
 }
 
-final class AssetPlaybackFailure extends AssetPlaybackState {
-  const AssetPlaybackFailure(this.failure);
+final class PlaybackFailure extends PlaybackState {
+  const PlaybackFailure(this.failure);
   final Failure failure;
 
   @override
   bool operator ==(Object other) =>
-      other is AssetPlaybackFailure && other.failure == failure;
+      other is PlaybackFailure && other.failure == failure;
 
   @override
-  int get hashCode => Object.hash(AssetPlaybackFailure, failure);
+  int get hashCode => Object.hash(PlaybackFailure, failure);
 }
 
 /// Loads an asset's journey legs for a date range.
@@ -50,8 +50,8 @@ final class AssetPlaybackFailure extends AssetPlaybackState {
 /// the range changes. A request that finishes after a newer one was made is
 /// dropped, so a slow answer for last week cannot overwrite today's.
 @injectable
-class AssetPlaybackCubit extends Cubit<AssetPlaybackState> {
-  AssetPlaybackCubit(this._getSegments) : super(const AssetPlaybackLoading());
+final class PlaybackCubit extends Cubit<PlaybackState> {
+  PlaybackCubit(this._getSegments) : super(const PlaybackLoading());
 
   final GetPlaybackSegmentsUseCase _getSegments;
   int _request = 0;
@@ -63,15 +63,15 @@ class AssetPlaybackCubit extends Cubit<AssetPlaybackState> {
     required DateTime to,
   }) async {
     final request = ++_request;
-    emit(const AssetPlaybackLoading());
+    emit(const PlaybackLoading());
 
     final result = await _getSegments(assetId: assetId, from: from, to: to);
     if (isClosed || request != _request) return;
 
     emit(
       result.fold(
-        AssetPlaybackFailure.new,
-        (segments) => AssetPlaybackLoaded(List.unmodifiable(segments)),
+        PlaybackFailure.new,
+        (segments) => PlaybackLoaded(List.unmodifiable(segments)),
       ),
     );
   }

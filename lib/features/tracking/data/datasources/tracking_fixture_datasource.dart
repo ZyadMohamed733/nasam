@@ -7,12 +7,11 @@ import 'package:injectable/injectable.dart';
 import '../../../../core/errors/exceptions.dart';
 import '../models/asset_details_model.dart';
 import '../models/notification_model.dart';
-import '../models/playback_segment_model.dart';
 import '../models/tracked_asset_model.dart';
 import '../models/vehicle_model.dart';
 import 'tracking_datasource.dart';
 
-/// Serves the tracking screens from JSON fixtures shaped like the API.
+/// Serves the tracking feature from JSON fixtures shaped like the API.
 ///
 /// TODO(api): temporary until the tracking API is delivered. The contract
 /// the real endpoints must meet is docs/api/tracking_contract.md, generated
@@ -48,9 +47,6 @@ class TrackingFixtureDataSource implements TrackingDataSource {
 
   static const _root = 'assets/fixtures/tracking';
 
-  /// The day the recorded playback legs were captured on.
-  static final _playbackDay = DateTime(2025, 10, 17);
-
   final AssetBundle _bundle;
   final Duration _latency;
   final bool _simulateFailure;
@@ -85,26 +81,6 @@ class TrackingFixtureDataSource implements TrackingDataSource {
         await _responseFor('asset_notifications.json', assetId),
         NotificationModel.fromJson,
       );
-
-  @override
-  Future<List<PlaybackSegmentModel>> getPlaybackSegments({
-    required String assetId,
-    required DateTime from,
-    required DateTime to,
-  }) async {
-    final recorded = _list(
-      await _response('playback_segments.json'),
-      PlaybackSegmentModel.fromJson,
-    );
-    // The recording covers one day. A real service answers for whatever range
-    // is asked, so the fixture replays that day's legs on the requested one —
-    // same times of day, so a given range always yields the same legs and a
-    // golden of the screen is stable.
-    return recorded
-        .map((s) => _onDay(s, from))
-        .where((s) => !s.startedAt.isBefore(from) && !s.endedAt.isAfter(to))
-        .toList(growable: false);
-  }
 
   /// Reads a list-endpoint response and returns its `data`.
   Future<Object?> _response(String file) async {
@@ -146,25 +122,4 @@ class TrackingFixtureDataSource implements TrackingDataSource {
       .map(fromJson)
       .toList(growable: false);
 
-  static PlaybackSegmentModel _onDay(PlaybackSegmentModel s, DateTime day) {
-    // Rebuilt from the date parts rather than shifted by a Duration: adding
-    // days across a DST change moves the wall-clock time by an hour.
-    DateTime moved(DateTime t) => DateTime(
-      day.year,
-      day.month,
-      day.day + t.difference(_playbackDay).inDays,
-      t.hour,
-      t.minute,
-      t.second,
-    );
-    return PlaybackSegmentModel(
-      startedAt: moved(s.startedAt),
-      endedAt: moved(s.endedAt),
-      distanceKm: s.distanceKm,
-      durationMinutes: s.durationMinutes,
-      maxSpeedKph: s.maxSpeedKph,
-      startPlace: s.startPlace,
-      endPlace: s.endPlace,
-    );
-  }
 }

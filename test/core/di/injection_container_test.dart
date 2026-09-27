@@ -21,15 +21,16 @@ import 'package:nasam/features/auth/presentation/cubit/logout_cubit.dart';
 import 'package:nasam/features/auth/presentation/cubit/new_password_cubit.dart';
 import 'package:nasam/features/auth/presentation/cubit/otp_cubit.dart';
 import 'package:nasam/features/onboarding/presentation/cubit/onboarding_cubit.dart';
+import 'package:nasam/features/play_back/domain/repositories/playback_repository.dart';
+import 'package:nasam/features/play_back/domain/usecases/get_playback_segments_usecase.dart';
+import 'package:nasam/features/play_back/presentation/cubit/playback_cubit.dart';
 import 'package:nasam/features/tracking/domain/repositories/tracking_repository.dart';
 import 'package:nasam/features/tracking/domain/usecases/get_asset_details_usecase.dart';
 import 'package:nasam/features/tracking/domain/usecases/get_asset_notifications_usecase.dart';
-import 'package:nasam/features/tracking/domain/usecases/get_playback_segments_usecase.dart';
 import 'package:nasam/features/tracking/domain/usecases/get_tracked_asset_usecase.dart';
 import 'package:nasam/features/tracking/domain/usecases/get_tracked_assets_usecase.dart';
 import 'package:nasam/features/tracking/domain/usecases/get_tracking_vehicles_usecase.dart';
 import 'package:nasam/features/tracking/presentation/cubit/asset_details_cubit.dart';
-import 'package:nasam/features/tracking/presentation/cubit/asset_playback_cubit.dart';
 import 'package:nasam/features/tracking/presentation/cubit/tracked_asset_cubit.dart';
 import 'package:nasam/features/tracking/presentation/cubit/tracking_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -89,6 +90,7 @@ void main() {
         expect(getIt<OnboardingCubit>(), isA<OnboardingCubit>());
 
         expect(getIt<TrackingRepository>(), isA<TrackingRepository>());
+        expect(getIt<PlaybackRepository>(), isA<PlaybackRepository>());
         expect(
           getIt<GetTrackedAssetsUseCase>(),
           isA<GetTrackedAssetsUseCase>(),
@@ -108,11 +110,11 @@ void main() {
           isA<GetPlaybackSegmentsUseCase>(),
         );
 
-        // What the router resolves for the three tracking screens.
+        // What the router resolves for the tracking and playback screens.
         expect(getIt<TrackingCubit>(), isA<TrackingCubit>());
         expect(getIt<TrackedAssetCubit>(), isA<TrackedAssetCubit>());
         expect(getIt<AssetDetailsCubit>(), isA<AssetDetailsCubit>());
-        expect(getIt<AssetPlaybackCubit>(), isA<AssetPlaybackCubit>());
+        expect(getIt<PlaybackCubit>(), isA<PlaybackCubit>());
       });
 
       // One refresh client for the life of the app, carrying this flavor's

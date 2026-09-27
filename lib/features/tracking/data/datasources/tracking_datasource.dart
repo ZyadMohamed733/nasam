@@ -1,6 +1,5 @@
 import '../models/asset_details_model.dart';
 import '../models/notification_model.dart';
-import '../models/playback_segment_model.dart';
 import '../models/tracked_asset_model.dart';
 import '../models/vehicle_model.dart';
 
@@ -18,9 +17,4 @@ abstract interface class TrackingDataSource {
   Future<TrackedAssetModel> getTrackedAsset(String assetId);
   Future<AssetDetailsModel> getAssetDetails(String assetId);
   Future<List<NotificationModel>> getAssetNotifications(String assetId);
-  Future<List<PlaybackSegmentModel>> getPlaybackSegments({
-    required String assetId,
-    required DateTime from,
-    required DateTime to,
-  });
 }

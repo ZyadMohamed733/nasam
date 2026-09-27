@@ -41,8 +41,11 @@ class AppButton extends StatelessWidget {
     this.variant = AppButtonVariant.primary,
     this.isLoading = false,
     this.icon,
+    this.iconSize,
     this.trailingIcon,
     this.width,
+    this.height,
+    this.labelStyle,
   });
 
   final VoidCallback? onPressed;
@@ -53,12 +56,21 @@ class AppButton extends StatelessWidget {
   /// Drawn at 16 before the label, per the design's inline icon size.
   final IconData? icon;
 
+  /// Optional icon size for actions whose icon is larger than the inline size.
+  final double? iconSize;
+
   /// Drawn at 16 after the label — which under RTL puts it on the left, the
   /// way the onboarding and auth buttons carry their onward arrow.
   final IconData? trailingIcon;
 
   /// Defaults to full width.
   final double? width;
+
+  /// Defaults to the shared design height.
+  final double? height;
+
+  /// Optional label style for specialized actions.
+  final TextStyle? labelStyle;
 
   bool get _enabled => onPressed != null && !isLoading;
 
@@ -68,7 +80,7 @@ class AppButton extends StatelessWidget {
 
     return SizedBox(
       width: width ?? double.infinity,
-      height: AppSizes.buttonHeight,
+      height: height ?? AppSizes.buttonHeight,
       child: switch (variant) {
         AppButtonVariant.primary => ElevatedButton(
           onPressed: _enabled ? onPressed : null,
@@ -100,7 +112,7 @@ class AppButton extends StatelessWidget {
       shape: const WidgetStatePropertyAll(_shape),
       padding: const WidgetStatePropertyAll(_padding),
       elevation: const WidgetStatePropertyAll(0),
-      textStyle: WidgetStatePropertyAll(context.textTheme.labelLarge),
+      textStyle: WidgetStatePropertyAll(labelStyle ?? context.textTheme.labelLarge),
       backgroundColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.disabled)) {
           return s.primaryButtonDisabled;
@@ -119,7 +131,7 @@ class AppButton extends StatelessWidget {
     return ButtonStyle(
       shape: const WidgetStatePropertyAll(_shape),
       padding: const WidgetStatePropertyAll(_padding),
-      textStyle: WidgetStatePropertyAll(context.textTheme.labelLarge),
+      textStyle: WidgetStatePropertyAll(labelStyle ?? context.textTheme.labelLarge),
       backgroundColor: WidgetStateProperty.resolveWith((states) {
         if (_isHighlighted(states)) return s.secondaryButtonHover;
         return s.secondaryButtonBackground;
@@ -147,7 +159,7 @@ class AppButton extends StatelessWidget {
     return ButtonStyle(
       shape: const WidgetStatePropertyAll(_shape),
       padding: const WidgetStatePropertyAll(_padding),
-      textStyle: WidgetStatePropertyAll(context.textTheme.labelLarge),
+      textStyle: WidgetStatePropertyAll(labelStyle ?? context.textTheme.labelLarge),
       backgroundColor: WidgetStateProperty.resolveWith(
         (states) => _isHighlighted(states)
             ? s.secondaryButtonHover
@@ -181,7 +193,7 @@ class AppButton extends StatelessWidget {
           ),
           const SizedBox(width: AppSizes.p4),
         ] else if (icon != null) ...[
-          Icon(icon, size: AppIconSize.small.value),
+          Icon(icon, size: iconSize ?? AppIconSize.small.value),
           const SizedBox(width: AppSizes.p4),
         ],
         Flexible(

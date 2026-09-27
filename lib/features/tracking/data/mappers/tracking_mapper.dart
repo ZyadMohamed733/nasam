@@ -1,10 +1,8 @@
 import '../../domain/entities/tracked_asset.dart';
 import '../../domain/entities/tracked_asset_details.dart';
-import '../../domain/entities/tracking_playback_segment.dart';
 import '../../domain/entities/tracking_vehicle.dart';
 import '../models/asset_details_model.dart';
 import '../models/notification_model.dart';
-import '../models/playback_segment_model.dart';
 import '../models/tracked_asset_model.dart';
 import '../models/vehicle_model.dart';
 
@@ -68,17 +66,6 @@ abstract final class TrackingMapper {
         type: _notificationType(m.type),
         date: m.date,
         speedKph: m.speedKph,
-      );
-
-  static TrackingPlaybackSegment segment(PlaybackSegmentModel m) =>
-      TrackingPlaybackSegment(
-        startedAt: m.startedAt,
-        endedAt: m.endedAt,
-        distanceKm: m.distanceKm,
-        durationMinutes: m.durationMinutes,
-        maxSpeedKph: m.maxSpeedKph,
-        startPlace: m.startPlace,
-        endPlace: m.endPlace,
       );
 
   static VehicleStatus _status(String value) => switch (value) {

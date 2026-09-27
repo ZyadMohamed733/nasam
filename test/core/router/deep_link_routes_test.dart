@@ -14,11 +14,13 @@ import 'package:nasam/features/auth/domain/entities/login_result.dart';
 import 'package:nasam/features/auth/domain/usecases/login_usecase.dart';
 import 'package:nasam/features/auth/presentation/pages/login_page.dart';
 import 'package:nasam/features/home/presentation/pages/home_page.dart';
+import 'package:nasam/features/play_back/data/datasources/playback_datasource.dart';
+import 'package:nasam/features/play_back/data/datasources/playback_fixture_datasource.dart';
 import 'package:nasam/features/tracking/data/datasources/tracking_datasource.dart';
 import 'package:nasam/features/tracking/data/datasources/tracking_fixture_datasource.dart';
 import 'package:nasam/features/tracking/presentation/pages/tracking_asset_details_page.dart';
-import 'package:nasam/features/tracking/presentation/pages/tracking_asset_playback_page.dart';
-import 'package:nasam/features/tracking/presentation/playback_range.dart';
+import 'package:nasam/features/play_back/presentation/pages/playback_page.dart';
+import 'package:nasam/features/play_back/presentation/utils/playback_range.dart';
 import 'package:nasam/features/tracking/presentation/widgets/tracking_asset_not_found.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -78,6 +80,12 @@ void main() {
           bundle: DiskAssetBundle(),
           latency: Duration.zero,
         ),
+      )
+      ..registerSingleton<PlaybackDataSource>(
+        PlaybackFixtureDataSource(
+          bundle: DiskAssetBundle(),
+          latency: Duration.zero,
+        ),
       );
     GoogleMapsFlutterPlatform.instance = FakeMapPlatform();
   });
@@ -119,7 +127,7 @@ void main() {
   ) async {
     final router = await open(tester, AppRoutes.assetPlayback(_knownId));
 
-    expect(find.byType(TrackingAssetPlaybackPage), findsOneWidget);
+    expect(find.byType(PlaybackPage), findsOneWidget);
     expect(
       find.textContaining(_knownId),
       findsWidgets,
@@ -140,8 +148,8 @@ void main() {
     final from = today.from.subtract(const Duration(days: 3));
     await open(tester, AppRoutes.assetPlayback(_knownId, from: from));
 
-    final page = tester.widget<TrackingAssetPlaybackPage>(
-      find.byType(TrackingAssetPlaybackPage),
+    final page = tester.widget<PlaybackPage>(
+      find.byType(PlaybackPage),
     );
     expect(page.initialRange.from, from);
     expect(page.initialRange.to, today.to, reason: 'no to: through today');
@@ -155,8 +163,8 @@ void main() {
       '/assets/$_knownId/playback?from=not-a-date&to=2999-01-01',
     );
 
-    final page = tester.widget<TrackingAssetPlaybackPage>(
-      find.byType(TrackingAssetPlaybackPage),
+    final page = tester.widget<PlaybackPage>(
+      find.byType(PlaybackPage),
     );
     expect(page.initialRange, PlaybackRange.today());
     expect(tester.takeException(), isNull);
@@ -216,8 +224,8 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(location(router), target);
-    final page = tester.widget<TrackingAssetPlaybackPage>(
-      find.byType(TrackingAssetPlaybackPage),
+    final page = tester.widget<PlaybackPage>(
+      find.byType(PlaybackPage),
     );
     expect(page.initialRange.from, from, reason: 'dates survive the detour');
     expect(page.initialRange.to, to);

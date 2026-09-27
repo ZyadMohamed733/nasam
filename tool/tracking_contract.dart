@@ -3,8 +3,8 @@
 //   dart run tool/tracking_contract.dart          # rewrite the doc
 //   dart run tool/tracking_contract.dart --check  # exit 1 if it is stale
 //
-// The fixtures under assets/fixtures/tracking/ are the working contract
-// until the tracking API exists. Field names, JSON types and optionality are
+// The tracking and playback fixtures under assets/fixtures/ are the working
+// contract until their APIs exist. Field names, JSON types and optionality are
 // read from them, never typed here, so the doc cannot drift from what the
 // app is actually tested against. Whether a field is optional is decided by
 // the app's own models: each is parsed with the field removed, and if that
@@ -16,11 +16,11 @@ import 'dart:io';
 
 import 'package:nasam/features/tracking/data/models/asset_details_model.dart';
 import 'package:nasam/features/tracking/data/models/notification_model.dart';
-import 'package:nasam/features/tracking/data/models/playback_segment_model.dart';
+import 'package:nasam/features/play_back/data/models/playback_segment_model.dart';
 import 'package:nasam/features/tracking/data/models/tracked_asset_model.dart';
 import 'package:nasam/features/tracking/data/models/vehicle_model.dart';
 
-const fixtureRoot = 'assets/fixtures/tracking';
+const fixtureRoot = 'assets/fixtures';
 const docPath = 'docs/api/tracking_contract.md';
 
 /// Fields added to the contract after it was first shared with the API team.
@@ -64,21 +64,21 @@ const endpoints = [
   Endpoint(
     'GET',
     '/tracking/vehicles',
-    'vehicles.json',
+    'tracking/vehicles.json',
     summary: 'Every vehicle position, for the map.',
     parse: VehicleModel.fromJson,
   ),
   Endpoint(
     'GET',
     '/tracking/assets',
-    'assets.json',
+    'tracking/assets.json',
     summary: 'Every tracked asset, for the fleet list.',
     parse: TrackedAssetModel.fromJson,
   ),
   Endpoint(
     'GET',
     '/tracking/assets/:id',
-    'assets.json',
+    'tracking/assets.json',
     single: true,
     summary: 'One asset, for a screen opened by id. Unknown id: 404.',
     parse: TrackedAssetModel.fromJson,
@@ -86,7 +86,7 @@ const endpoints = [
   Endpoint(
     'GET',
     '/tracking/assets/:id/details',
-    'asset_details.json',
+    'tracking/asset_details.json',
     keyedById: true,
     single: true,
     summary: "The details screen's tabs. Unknown id: 404.",
@@ -95,7 +95,7 @@ const endpoints = [
   Endpoint(
     'GET',
     '/tracking/assets/:id/notifications',
-    'asset_notifications.json',
+    'tracking/asset_notifications.json',
     keyedById: true,
     summary: 'Alerts for one asset. Unknown id: 404.',
     parse: NotificationModel.fromJson,
@@ -103,7 +103,7 @@ const endpoints = [
   Endpoint(
     'GET',
     '/tracking/assets/:id/playback',
-    'playback_segments.json',
+    'play_back/playback_segments.json',
     summary: 'Trip legs between two instants.',
     parse: PlaybackSegmentModel.fromJson,
     query: {
@@ -202,8 +202,8 @@ String render() {
     ..writeln(
       'What the app expects from the tracking backend, which does not exist '
       'yet. Until it does, the app reads these same shapes from the fixtures '
-      'in `$fixtureRoot/` (`TrackingFixtureDataSource`), so every field '
-      'below is exercised by the models, mapper and tests exactly as the '
+      'in `$fixtureRoot/` (the tracking and playback fixture datasources), so '
+      'every field below is exercised by the models, mapper and tests exactly '
       'real responses will be.',
     )
     ..writeln()

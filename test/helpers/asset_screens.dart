@@ -5,14 +5,16 @@ import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:nasam/features/tracking/domain/usecases/get_asset_details_usecase.dart';
 import 'package:nasam/features/tracking/domain/usecases/get_asset_notifications_usecase.dart';
-import 'package:nasam/features/tracking/domain/usecases/get_playback_segments_usecase.dart';
+import 'package:nasam/features/play_back/data/datasources/playback_fixture_datasource.dart';
+import 'package:nasam/features/play_back/data/repositories/playback_repository_impl.dart';
+import 'package:nasam/features/play_back/domain/usecases/get_playback_segments_usecase.dart';
+import 'package:nasam/features/play_back/presentation/cubit/playback_cubit.dart';
+import 'package:nasam/features/play_back/presentation/pages/playback_page.dart';
+import 'package:nasam/features/play_back/presentation/utils/playback_range.dart';
 import 'package:nasam/features/tracking/domain/usecases/get_tracked_asset_usecase.dart';
 import 'package:nasam/features/tracking/presentation/cubit/asset_details_cubit.dart';
-import 'package:nasam/features/tracking/presentation/cubit/asset_playback_cubit.dart';
 import 'package:nasam/features/tracking/presentation/cubit/tracked_asset_cubit.dart';
 import 'package:nasam/features/tracking/presentation/pages/tracking_asset_details_page.dart';
-import 'package:nasam/features/tracking/presentation/pages/tracking_asset_playback_page.dart';
-import 'package:nasam/features/tracking/presentation/playback_range.dart';
 
 import 'fixture_bundle.dart';
 import 'widget_harness.dart';
@@ -60,6 +62,9 @@ Widget assetDetailsScreen([String id = fixtureAssetId]) {
 /// The playback screen as the route builds it, over the fixtures.
 Widget assetPlaybackScreen([String id = fixtureAssetId, PlaybackRange? range]) {
   final repository = fixtureTrackingRepository();
+  final playbackRepository = PlaybackRepositoryImpl(
+    PlaybackFixtureDataSource(bundle: DiskAssetBundle(), latency: Duration.zero),
+  );
   return MultiBlocProvider(
     providers: [
       BlocProvider(
@@ -68,10 +73,10 @@ Widget assetPlaybackScreen([String id = fixtureAssetId, PlaybackRange? range]) {
       ),
       BlocProvider(
         create: (_) =>
-            AssetPlaybackCubit(GetPlaybackSegmentsUseCase(repository)),
+            PlaybackCubit(GetPlaybackSegmentsUseCase(playbackRepository)),
       ),
     ],
-    child: TrackingAssetPlaybackPage(
+    child: PlaybackPage(
       assetId: id,
       initialRange: range ?? PlaybackRange.today(),
     ),

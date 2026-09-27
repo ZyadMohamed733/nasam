@@ -9,79 +9,92 @@ class NasamAppBar extends StatelessWidget implements PreferredSizeWidget {
   const NasamAppBar({
     super.key,
     this.title,
-    required this.wsService,
+    this.wsService,
     this.showLeading = true,
     this.actions,
+    this.titleWidget,
+    this.leading,
+    this.toolbarHeight = AppSizes.appBarHeight,
+    this.bottom,
   });
 
   /// Optional: the design's auth screens carry a back affordance and no title.
   /// When present it is centred.
   final String? title;
 
-  /// Injected rather than resolved from getIt inside build(), so the bar is
-  /// testable with a fake socket.
-  final WebSocketService wsService;
+  /// Optional connection indicator. Callers inject this rather than having
+  /// the app bar resolve it from the service locator.
+  final WebSocketService? wsService;
 
   final bool showLeading;
   final List<Widget>? actions;
+  final Widget? titleWidget;
+  final Widget? leading;
+  final double toolbarHeight;
+  final PreferredSizeWidget? bottom;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (title != null) ...[
-            Text(title!, style: Theme.of(context).textTheme.headlineSmall),
-            const SizedBox(width: AppSizes.p8),
-          ],
-          // Connection Status Indicator
-          StreamBuilder<WsConnectionState>(
-            stream: wsService.connectionState,
-            initialData: WsConnectionState.disconnected,
-            builder: (context, snapshot) {
-              final state = snapshot.data ?? WsConnectionState.disconnected;
-              return Tooltip(
-                message: 'WebSocket: ${state.name.toUpperCase()}',
-                child: Container(
-                  width: 8,
-                  height: 8,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: _connectionColor(context, state),
-                    boxShadow: [
-                      BoxShadow(
-                        color: _connectionColor(
-                          context,
-                          state,
-                        ).withValues(alpha: 0.4),
-                        blurRadius: 4,
-                        spreadRadius: 1,
+      title: titleWidget ??
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (title != null) ...[
+                Text(title!, style: Theme.of(context).textTheme.headlineSmall),
+                const SizedBox(width: AppSizes.p8),
+              ],
+              if (wsService != null)
+                StreamBuilder<WsConnectionState>(
+                  stream: wsService!.connectionState,
+                  initialData: WsConnectionState.disconnected,
+                  builder: (context, snapshot) {
+                    final state =
+                        snapshot.data ?? WsConnectionState.disconnected;
+                    return Tooltip(
+                      message: 'WebSocket: ${state.name.toUpperCase()}',
+                      child: Container(
+                        width: 8,
+                        height: 8,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: _connectionColor(context, state),
+                          boxShadow: [
+                            BoxShadow(
+                              color: _connectionColor(
+                                context,
+                                state,
+                              ).withValues(alpha: 0.4),
+                              blurRadius: 4,
+                              spreadRadius: 1,
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
-              );
-            },
+            ],
           ),
-        ],
-      ),
       centerTitle: true,
-      toolbarHeight: AppSizes.appBarHeight,
+      toolbarHeight: toolbarHeight,
       elevation: 0.5,
       shadowColor: Theme.of(context).colorScheme.outline,
       backgroundColor: Theme.of(context).colorScheme.surface,
-      leading: showLeading
-          ? IconButton(
-              icon: Icon(
-                AppIcons.menu,
-                size: AppIconSize.medium.value,
-                color: context.semanticColors.iconPrimary,
-              ),
-              onPressed: () => Scaffold.of(context).openDrawer(),
-            )
-          : null,
+      leading:
+          leading ??
+          (showLeading
+              ? IconButton(
+                  icon: Icon(
+                    AppIcons.menu,
+                    size: AppIconSize.medium.value,
+                    color: context.semanticColors.iconPrimary,
+                  ),
+                  onPressed: () => Scaffold.of(context).openDrawer(),
+                )
+              : null),
       actions: actions,
+      bottom: bottom,
     );
   }
 
@@ -98,5 +111,7 @@ class NasamAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(AppSizes.appBarHeight);
+  Size get preferredSize => Size.fromHeight(
+    toolbarHeight + (bottom?.preferredSize.height ?? 0),
+  );
 }

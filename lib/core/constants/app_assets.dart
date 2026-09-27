@@ -18,6 +18,14 @@ abstract final class AppAssets {
   static const String mapNotification = 'assets/icons/notification.svg';
   static const String mapZoomIn = 'assets/icons/zoom_in.svg';
   static const String mapZoomOut = 'assets/icons/zoom_out.svg';
+  static const String playIcon = 'assets/icons/play_icon.svg';
+  static const String playOutlineIcon = 'assets/icons/play_outline_icon.svg';
+  static const String pauseIcon = 'assets/icons/pause_icon.svg';
+  static const String gps = 'assets/icons/GPS.svg';
+  static const String message = 'assets/icons/message.svg';
+  static const String videoCameraRecord = 'assets/icons/video_camer_record.svg';
+  static const String email = 'assets/icons/email.svg';
+  static const String phoneCalling = 'assets/icons/phone_ calling.svg';
 
   // Images.
   static const String successMark = '$_images/password_reset_success.png';
@@ -48,6 +56,14 @@ abstract final class AppAssets {
     mapNotification,
     mapZoomIn,
     mapZoomOut,
+    playIcon,
+    playOutlineIcon,
+    pauseIcon,
+    gps,
+    message,
+    videoCameraRecord,
+    email,
+    phoneCalling,
     successMark,
     splashBackground,
     splashParticles,

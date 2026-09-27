@@ -23,6 +23,11 @@ Status chips, Show, drawer search and destinations remain presentation only for 
 phase. The profile is dummy data. Arabic and English use the existing localization
 system; the drawer follows text direction.
 
+Asset playback is a separate feature slice in `lib/features/play_back/`. The asset
+card links to its nested route, while playback owns its repository, fixture source,
+date range, cubit and screen. It reads the asset summary and lookup gate from the
+tracking feature because its route is scoped to a tracked asset.
+
 ## Native Maps setup
 
 Set `GOOGLE_MAPS_API_KEY` in the root `.env` (already git-ignored), or supply the
