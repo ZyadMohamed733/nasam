@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_icons.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
+import '../../../../shared/widgets/app_bar_widget.dart';
 import '../../domain/entities/tracked_asset.dart';
 import '../cubit/asset_details_cubit.dart';
 import '../widgets/tabs/tracking_asset_information_tab.dart';
@@ -41,10 +43,18 @@ class _AssetDetailsView extends StatelessWidget {
     return DefaultTabController(
       length: 5,
       child: Scaffold(
-        appBar: AppBar(
+        appBar: NasamAppBar(
+          showLeading: false,
           toolbarHeight: 62.h,
-          iconTheme: IconThemeData(size: AppIconSize.medium.value.r),
-          title: Column(
+          leading: IconButton(
+            tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+            onPressed: () => context.pop(),
+            icon: IconTheme(
+              data: IconThemeData(size: AppIconSize.medium.value.r),
+              child: const BackButtonIcon(),
+            ),
+          ),
+          titleWidget: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [

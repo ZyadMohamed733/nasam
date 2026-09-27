@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/constants/app_assets.dart';
 import '../../../../core/constants/app_icons.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/utils/bidi.dart';
+import '../../../../shared/widgets/action_icon.dart';
 import '../../../../shared/widgets/app_card.dart';
 import '../../domain/entities/tracked_asset.dart';
 import '../../domain/entities/tracking_vehicle.dart';
-import '../tracking_style.dart';
-import '../tracking_units.dart';
+import '../utils/tracking_style.dart';
+import '../utils/tracking_units.dart';
 import '../utils/tracking_person_initials.dart';
 
 class TrackingAssetCard extends StatelessWidget {
@@ -76,14 +78,16 @@ class TrackingAssetCard extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 8.w),
-              // Shares the row with the name rather than pushing it off: a
-              // long status at a large text scale ellipsizes, and the icon
-              // still says which status it is.
+              // Keep the badge flush to the card's trailing edge. The title
+              // takes the remaining row width, while long labels stay bounded.
               Flexible(
-                child: _StatusBadge(
-                  label: label,
-                  color: color,
-                  status: asset.status,
+                child: Align(
+                  alignment: AlignmentDirectional.centerEnd,
+                  child: _StatusBadge(
+                    label: label,
+                    color: color,
+                    status: asset.status,
+                  ),
                 ),
               ),
             ],
@@ -93,20 +97,23 @@ class TrackingAssetCard extends StatelessWidget {
           SizedBox(height: 12.h),
           Row(
             children: [
-              _ActionIcon(
-                icon: Icons.videocam_outlined,
+              ActionIcon(
+                asset: AppAssets.videoCameraRecord,
                 label: l.trackingActionCamera,
+                disabledHint: l.comingSoon,
               ),
-              _ActionIcon(
-                icon: Icons.chat_bubble_outline,
+              ActionIcon(
+                asset: AppAssets.message,
                 label: l.trackingActionChat,
+                disabledHint: l.comingSoon,
               ),
-              _ActionIcon(
-                icon: Icons.my_location_outlined,
+              ActionIcon(
+                asset: AppAssets.gps,
                 label: l.trackingActionLocate,
+                disabledHint: l.comingSoon,
               ),
-              _ActionIcon(
-                icon: Icons.play_arrow_outlined,
+              ActionIcon(
+                asset: AppAssets.playOutlineIcon,
                 label: l.assetPlaybackTitle,
                 onPressed: () =>
                     context.push(AppRoutes.assetPlayback(asset.id)),
@@ -121,7 +128,7 @@ class TrackingAssetCard extends StatelessWidget {
                 backgroundColor: scheme.primary,
                 child: Text(
                   TrackingPersonInitials.fromName(asset.assignedPerson),
-                  style: TextStyle(color: scheme.onPrimary, fontSize: 11.sp),
+                  style: TextStyle(color: scheme.onPrimary, fontSize: 10.sp),
                 ),
               ),
 
@@ -148,13 +155,15 @@ class TrackingAssetCard extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 8.w),
-              _ActionIcon(
-                icon: Icons.call_outlined,
+              ActionIcon(
+                asset: AppAssets.phoneCalling,
                 label: l.trackingActionCall,
+                disabledHint: l.comingSoon,
               ),
-              _ActionIcon(
-                icon: Icons.mail_outline,
+              ActionIcon(
+                asset: AppAssets.email,
                 label: l.trackingActionEmail,
+                disabledHint: l.comingSoon,
               ),
             ],
           ),
@@ -296,62 +305,4 @@ class _DashedLinePainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant _DashedLinePainter oldDelegate) =>
       oldDelegate.color != color || oldDelegate.strokeWidth != strokeWidth;
-}
-
-/// A card action: a small outlined square inside a full 48dp touch target.
-///
-/// Actions that are not built yet are shown disabled and announced as
-/// coming soon, rather than enabled and doing nothing.
-class _ActionIcon extends StatelessWidget {
-  const _ActionIcon({required this.icon, required this.label, this.onPressed});
-  final IconData icon;
-  final String label;
-  final VoidCallback? onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    final l = AppLocalizations.of(context)!;
-    final scheme = Theme.of(context).colorScheme;
-    final enabled = onPressed != null;
-    final radius = BorderRadius.circular(7.r);
-    return Semantics(
-      button: true,
-      enabled: enabled,
-      label: label,
-      hint: enabled ? null : l.comingSoon,
-      // Declared here: excludeSemantics would drop the InkWell's own.
-      onTap: onPressed,
-      excludeSemantics: true,
-      child: Tooltip(
-        message: enabled ? label : '$label · ${l.comingSoon}',
-        child: InkWell(
-          onTap: onPressed,
-          customBorder: RoundedRectangleBorder(borderRadius: radius),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(
-              minWidth: kMinInteractiveDimension,
-              minHeight: kMinInteractiveDimension,
-            ),
-            child: Center(
-              child: Container(
-                width: 28.r,
-                height: 28.r,
-                decoration: BoxDecoration(
-                  borderRadius: radius,
-                  border: Border.all(color: scheme.outlineVariant),
-                ),
-                child: Icon(
-                  icon,
-                  size: AppIconSize.small.value.r,
-                  color: enabled
-                      ? scheme.primary
-                      : scheme.onSurface.withValues(alpha: .38),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 }

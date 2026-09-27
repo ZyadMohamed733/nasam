@@ -14,8 +14,7 @@ import 'package:nasam/features/auth/presentation/cubit/logout_cubit.dart';
 import 'package:nasam/features/tracking/domain/usecases/get_tracked_assets_usecase.dart';
 import 'package:nasam/features/tracking/domain/usecases/get_tracking_vehicles_usecase.dart';
 import 'package:nasam/features/tracking/presentation/cubit/tracking_cubit.dart';
-import 'package:nasam/features/tracking/presentation/tracking_page.dart';
-
+import 'package:nasam/features/tracking/presentation/pages/tracking_page.dart';
 import 'fake_map_platform.dart';
 import 'fixture_bundle.dart';
 import 'widget_harness.dart';

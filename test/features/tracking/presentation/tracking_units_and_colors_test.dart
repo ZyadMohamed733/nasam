@@ -5,8 +5,8 @@ import 'package:nasam/core/theme/tracking_colors.dart';
 import 'package:nasam/core/utils/bidi.dart';
 import 'package:nasam/features/tracking/domain/entities/tracked_asset.dart';
 import 'package:nasam/features/tracking/domain/entities/tracking_vehicle.dart';
-import 'package:nasam/features/tracking/presentation/tracking_style.dart';
-import 'package:nasam/features/tracking/presentation/tracking_units.dart';
+import 'package:nasam/features/tracking/presentation/utils/tracking_style.dart';
+import 'package:nasam/features/tracking/presentation/utils/tracking_units.dart';
 import 'package:nasam/features/tracking/presentation/widgets/tracking_asset_card.dart';
 
 import '../../../helpers/widget_harness.dart';

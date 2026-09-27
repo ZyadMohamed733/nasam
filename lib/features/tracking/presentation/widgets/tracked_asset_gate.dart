@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/localization/l10n/app_localizations.dart';
+import '../../../../shared/widgets/app_bar_widget.dart';
 import '../../domain/entities/tracked_asset.dart';
 import '../cubit/tracked_asset_cubit.dart';
 import 'tracking_asset_not_found.dart';
@@ -30,7 +31,9 @@ class TrackedAssetGate extends StatelessWidget {
         TrackedAssetLoaded(:final asset) => builder(context, asset),
         TrackedAssetNotFound() => const TrackingAssetNotFound(),
         TrackedAssetFailure() => Scaffold(
-          appBar: AppBar(),
+          appBar: NasamAppBar(
+            showLeading: false,
+          ),
           body: Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -46,7 +49,9 @@ class TrackedAssetGate extends StatelessWidget {
           ),
         ),
         TrackedAssetLoading() => Scaffold(
-          appBar: AppBar(),
+          appBar: NasamAppBar(
+            showLeading: false,
+          ),
           body: const Center(child: CircularProgressIndicator()),
         ),
       },

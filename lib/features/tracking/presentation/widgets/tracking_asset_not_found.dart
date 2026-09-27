@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_sizes.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 import '../../../../core/router/app_routes.dart';
+import '../../../../shared/widgets/app_bar_widget.dart';
 
 /// What a details or playback link shows when its id names no asset.
 ///
@@ -17,7 +18,9 @@ class TrackingAssetNotFound extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(),
+      appBar: NasamAppBar(
+        showLeading: false,
+      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(AppSizes.screenPadding),

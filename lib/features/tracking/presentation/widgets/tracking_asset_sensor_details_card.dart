@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/app_icons.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 import '../../domain/entities/tracked_asset_details.dart';
-import '../tracking_units.dart';
+import '../utils/tracking_units.dart';
 
 class TrackingAssetSensorDetailsCard extends StatelessWidget {
   const TrackingAssetSensorDetailsCard({super.key, required this.details});

@@ -5,8 +5,8 @@ import '../../../../../core/localization/l10n/app_localizations.dart';
 import '../../../domain/entities/tracked_asset.dart';
 import '../../../domain/entities/tracked_asset_details.dart';
 import '../../../domain/entities/tracking_vehicle.dart';
-import '../../tracking_style.dart';
-import '../../tracking_units.dart';
+import '../../utils/tracking_style.dart';
+import '../../utils/tracking_units.dart';
 import '../tracking_asset_detail_field.dart';
 import 'tracking_asset_details_list.dart';
 

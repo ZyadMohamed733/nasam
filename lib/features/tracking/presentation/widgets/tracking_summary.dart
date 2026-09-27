@@ -9,7 +9,7 @@ import '../../../../core/localization/l10n/app_localizations.dart';
 import '../../../../core/theme/tracking_colors.dart';
 import '../../domain/entities/tracking_vehicle.dart';
 import '../cubit/tracking_cubit.dart';
-import '../tracking_style.dart';
+import '../utils/tracking_style.dart';
 import 'tracking_asset_list.dart';
 
 /// The fleet sheet: a handle, the title with its toggle, the status chips,

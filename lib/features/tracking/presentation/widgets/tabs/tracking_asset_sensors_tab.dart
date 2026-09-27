@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/localization/l10n/app_localizations.dart';
 import '../../../domain/entities/tracked_asset_details.dart';
-import '../../tracking_units.dart';
+import '../../utils/tracking_units.dart';
 import '../tracking_asset_detail_field.dart';
 import '../tracking_asset_sensor_details_card.dart';
 import 'tracking_asset_details_list.dart';

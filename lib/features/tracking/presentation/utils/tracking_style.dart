@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/localization/l10n/app_localizations.dart';
-import '../../../core/theme/tracking_colors.dart';
-import '../domain/entities/tracking_vehicle.dart';
+import '../../../../core/localization/l10n/app_localizations.dart';
+import '../../../../core/theme/tracking_colors.dart';
+import '../../domain/entities/tracking_vehicle.dart';
 
 /// How a vehicle status is shown: its colour from [TrackingColors], and the
 /// icon and label that always go with it, so no status is told by colour

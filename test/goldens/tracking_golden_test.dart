@@ -9,7 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
 import 'package:nasam/features/tracking/domain/entities/tracked_asset.dart';
 import 'package:nasam/features/tracking/domain/entities/tracking_vehicle.dart';
-import 'package:nasam/features/tracking/presentation/playback_range.dart';
+import 'package:nasam/features/play_back/presentation/utils/playback_range.dart';
 import 'package:nasam/features/tracking/presentation/widgets/tracking_asset_card.dart';
 import 'package:nasam/features/tracking/presentation/widgets/tracking_summary.dart';
 

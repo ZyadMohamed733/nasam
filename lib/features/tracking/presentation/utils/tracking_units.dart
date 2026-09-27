@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
-import '../../../core/localization/l10n/app_localizations.dart';
+import '../../../../core/localization/l10n/app_localizations.dart';
 
 /// Measurements as the reader's locale writes them: digits, decimal mark
 /// and grouping from [NumberFormat], the unit and its position from the

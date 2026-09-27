@@ -12,7 +12,7 @@ import 'package:nasam/features/tracking/data/repositories/tracking_repository_im
 import 'package:nasam/features/tracking/domain/usecases/get_tracked_assets_usecase.dart';
 import 'package:nasam/features/tracking/domain/usecases/get_tracking_vehicles_usecase.dart';
 import 'package:nasam/features/tracking/presentation/cubit/tracking_cubit.dart';
-import 'package:nasam/features/tracking/presentation/tracking_page.dart';
+import 'package:nasam/features/tracking/presentation/pages/tracking_page.dart';
 import 'package:nasam/features/tracking/presentation/widgets/tracking_controls.dart';
 
 /// Runs the real native map without requiring a backend login.

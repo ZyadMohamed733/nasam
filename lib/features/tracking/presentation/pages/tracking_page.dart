@@ -4,15 +4,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../../../core/constants/app_sizes.dart';
-import '../../../core/localization/l10n/app_localizations.dart';
-import '../../../core/router/app_routes.dart';
-import '../../../features/auth/presentation/widgets/session_drawer.dart';
-import '../../../shared/widgets/app_drawer.dart';
-import 'cubit/tracking_cubit.dart';
-import 'widgets/tracking_controls.dart';
-import 'widgets/tracking_map.dart';
-import 'widgets/tracking_summary.dart';
+import '../../../../core/constants/app_sizes.dart';
+import '../../../../core/localization/l10n/app_localizations.dart';
+import '../../../../core/router/app_routes.dart';
+import '../../../../shared/widgets/app_drawer.dart';
+import '../../../auth/presentation/widgets/session_drawer.dart';
+
+import '../cubit/tracking_cubit.dart';
+import '../widgets/tracking_controls.dart';
+import '../widgets/tracking_map.dart';
+import '../widgets/tracking_summary.dart';
+
 
 /// The map, the drawer and the fleet sheet.
 ///
@@ -175,8 +177,8 @@ class _TrackingViewState extends State<_TrackingView>
           rtlOpening: Directionality.of(context) == TextDirection.rtl,
           disabledGestures: true, // Map drags must not open the drawer.
           openRatio:
-              (AppSizes.drawerMaxWidth / MediaQuery.sizeOf(context).width)
-                  .clamp(0.0, AppSizes.drawerOpenRatio),
+          (AppSizes.drawerMaxWidth / MediaQuery.sizeOf(context).width)
+              .clamp(0.0, AppSizes.drawerOpenRatio),
           openScale: AppSizes.drawerOpenScale,
           initialDrawerScale: AppSizes.drawerInitialScale,
           backdrop: const AppDrawerBackground(),
@@ -192,7 +194,7 @@ class _TrackingViewState extends State<_TrackingView>
               // A failed refresh keeps the last fleet on screen and says so
               // here, rather than replacing the map with an error page.
               listenWhen: (_, state) =>
-                  state is TrackingFailure && state.previous != null,
+              state is TrackingFailure && state.previous != null,
               listener: (context, _) {
                 ScaffoldMessenger.of(context)
                   ..hideCurrentSnackBar()
