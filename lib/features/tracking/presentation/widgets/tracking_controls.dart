@@ -39,11 +39,13 @@ class TrackingIconButton extends StatelessWidget {
     required this.label,
     this.onTap,
     this.menu = false,
+    this.materialIcon,
   });
   final String asset;
   final String label;
   final VoidCallback? onTap;
   final bool menu;
+  final IconData? materialIcon;
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
@@ -74,16 +76,22 @@ class TrackingIconButton extends StatelessWidget {
               child: SizedBox.square(
                 dimension: TrackingControlsLayout.visual,
                 child: Center(
-                  child: SvgPicture.asset(
-                    asset,
-                    width: AppIconSize.medium.value,
-                    height: AppIconSize.medium.value,
-                    excludeFromSemantics: true,
-                    colorFilter: ColorFilter.mode(
-                      menu ? scheme.onSurface : scheme.primary,
-                      BlendMode.srcIn,
-                    ),
-                  ),
+                  child: materialIcon == null
+                      ? SvgPicture.asset(
+                          asset,
+                          width: AppIconSize.medium.value,
+                          height: AppIconSize.medium.value,
+                          excludeFromSemantics: true,
+                          colorFilter: ColorFilter.mode(
+                            menu ? scheme.onSurface : scheme.primary,
+                            BlendMode.srcIn,
+                          ),
+                        )
+                      : Icon(
+                          materialIcon,
+                          size: AppIconSize.medium.value,
+                          color: menu ? scheme.onSurface : scheme.primary,
+                        ),
                 ),
               ),
             ),

@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/constants/app_assets.dart';
 import '../../../../shared/widgets/app_button.dart';
+import '../../../../core/router/app_routes.dart';
 import '../../../../shared/widgets/app_bar_widget.dart';
 import '../../../../core/constants/app_icons.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
@@ -62,7 +64,7 @@ class _PlaybackViewState extends State<_PlaybackView> {
     _loadSegments();
   }
 
-  /// The pickers are day-granular and inclusive, so the range sent is
+  /// /The pickers are day-granular and inclusive, so the range sent is
   /// [from, to + 1 day).
   void _loadSegments() => context.read<PlaybackCubit>().load(
     assetId: widget.asset.id,
@@ -176,11 +178,22 @@ class _PlaybackViewState extends State<_PlaybackView> {
                   label: _playingAll
                       ? l.assetPlaybackPause
                       : l.assetPlaybackStart,
-                  onPressed: _togglePlayback,
-                  icon: _playingAll ? Icons.pause : Icons.play_arrow,
-                  iconSize: AppIconSize.medium.value.r,
+                  onPressed: () {
+                    //   _togglePlayback();
+                    context.push(
+                      AppRoutes.assetPlaybackMap(
+                        widget.asset.id,
+                        from: _fromDate,
+                        to: _toDate,
+                      ),
+                    );
+                  },
+                  assetIcon: _playingAll? AppAssets.pauseIcon : AppAssets.playIcon,
                   height: kMinInteractiveDimension,
                   variant: AppButtonVariant.primary,
+                  primaryBackgroundColor: TrackingColors.of(
+                    context,
+                  ).playbackPrimary,
                   labelStyle: TextStyle(fontSize: 13.sp),
                 ),
               ),

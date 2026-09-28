@@ -8,6 +8,8 @@ import 'package:intl/intl.dart';
 import '../../../../core/constants/app_assets.dart';
 import '../../../../core/constants/app_icons.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
+import '../../../../core/theme/tracking_colors.dart';
+import '../../../../shared/widgets/action_icon.dart';
 import '../../domain/entities/playback_segment.dart';
 
 const _playbackTimelineColor = Color(0xFF8A8AA3);
@@ -54,6 +56,7 @@ class _PlaybackSegmentCardState extends State<PlaybackSegmentCard> {
       ),
       child: Column(
         children: [
+          /// Segment start and end timestamps.
           Row(
             textDirection: ui.TextDirection.ltr,
             children: [
@@ -79,6 +82,7 @@ class _PlaybackSegmentCardState extends State<PlaybackSegmentCard> {
             ],
           ),
           SizedBox(height: 3.h),
+          /// Playback timeline with its leading direction icon.
           Row(
             textDirection: ui.TextDirection.ltr,
             children: [
@@ -126,6 +130,7 @@ class _PlaybackSegmentCardState extends State<PlaybackSegmentCard> {
               ),
             ],
           ),
+          /// Start and end location labels below the timeline.
           Padding(
             padding: EdgeInsetsDirectional.only(start: 3.w, top: 2.h),
             child: Row(
@@ -184,29 +189,22 @@ class _PlaybackSegmentCardState extends State<PlaybackSegmentCard> {
             ),
           ),
           SizedBox(height: 4.h),
+          /// Play or pause action alongside segment duration and status.
           Row(
             textDirection: ui.TextDirection.ltr,
             children: [
-              // The design's 34x32 button, inside a padded 48dp target.
-              IconButton.filled(
-                tooltip: widget.playing
+              AppAssetsIconWidget(
+                label: widget.playing
                     ? l.assetPlaybackPause
                     : l.assetPlaybackPlay,
-                padding: EdgeInsets.zero,
                 onPressed: widget.onPlayPressed,
-                icon: SvgPicture.asset(
-                  widget.playing ? AppAssets.pauseIcon : AppAssets.playIcon,
-                  width: AppIconSize.small.value.r,
-                  height: AppIconSize.small.value.r,
-                  excludeFromSemantics: true,
-                ),
-                style: IconButton.styleFrom(
-                  fixedSize: Size(AppIconSize.medium.value, AppIconSize.medium.value),
-                  minimumSize:  Size(AppIconSize.medium.value, AppIconSize.medium.value),
-                  tapTargetSize: MaterialTapTargetSize.padded,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(7.r),
-                  ),
+                asset: widget.playing
+                    ? AppAssets.pauseIcon
+                    : AppAssets.playIcon,
+                size: AppIconSize.small.value.r,
+                boxDecoration: BoxDecoration(
+                  color: TrackingColors.of(context).playbackPrimary,
+                  borderRadius: BorderRadius.circular(7.r),
                 ),
               ),
               Spacer(),
@@ -215,7 +213,7 @@ class _PlaybackSegmentCardState extends State<PlaybackSegmentCard> {
                   _SegmentMetric(
                     icon: Icons.access_time,
                     label:
-                    '${widget.segment.durationMinutes} ${l.assetPlaybackMinutes}',
+                        '${widget.segment.durationMinutes} ${l.assetPlaybackMinutes}',
                     semanticsLabel: l.assetPlaybackDuration,
                     outlined: false,
                     emphasize: true,
@@ -236,6 +234,7 @@ class _PlaybackSegmentCardState extends State<PlaybackSegmentCard> {
   }
 }
 
+/// Displays one segment timestamp, with its clock icon on the outer edge.
 class _TimeLabel extends StatelessWidget {
   const _TimeLabel({
     required this.time,
@@ -284,6 +283,7 @@ class _TimeLabel extends StatelessWidget {
   }
 }
 
+/// Displays a compact duration or status value for the segment.
 class _SegmentMetric extends StatelessWidget {
   const _SegmentMetric({
     required this.icon,
@@ -338,4 +338,3 @@ class _SegmentMetric extends StatelessWidget {
     );
   }
 }
-//test

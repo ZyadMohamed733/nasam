@@ -25,6 +25,10 @@ class TrackingAssetCard extends StatelessWidget {
     final color = TrackingStyle.status(context, asset.status);
     final label = TrackingStyle.label(l, asset.status);
     final scheme = Theme.of(context).colorScheme;
+    final actionIconDecoration = BoxDecoration(
+      borderRadius: BorderRadius.circular(4.r),
+      border: Border.all(color: scheme.outlineVariant),
+    );
     return AppCard(
       onTap: () => context.push(AppRoutes.assetDetails(asset.id)),
       padding: EdgeInsets.fromLTRB(12.w, 10.h, 12.w, 8.h),
@@ -97,27 +101,34 @@ class TrackingAssetCard extends StatelessWidget {
           SizedBox(height: 12.h),
           Row(
             children: [
-              ActionIcon(
-                asset: AppAssets.videoCameraRecord,
-                label: l.trackingActionCamera,
-                disabledHint: l.comingSoon,
-              ),
-              ActionIcon(
-                asset: AppAssets.message,
-                label: l.trackingActionChat,
-                disabledHint: l.comingSoon,
-              ),
-              ActionIcon(
-                asset: AppAssets.gps,
-                label: l.trackingActionLocate,
-                disabledHint: l.comingSoon,
-              ),
-              ActionIcon(
+              AppAssetsIconWidget(
                 asset: AppAssets.playOutlineIcon,
                 label: l.assetPlaybackTitle,
                 onPressed: () =>
                     context.push(AppRoutes.assetPlayback(asset.id)),
+                boxDecoration: actionIconDecoration,
               ),
+              AppAssetsIconWidget(
+                asset: AppAssets.gps,
+                label: l.trackingActionLocate,
+                disabledHint: l.comingSoon,
+                boxDecoration: actionIconDecoration,
+              ),
+              AppAssetsIconWidget(
+                asset: AppAssets.message,
+                label: l.trackingActionChat,
+                disabledHint: l.comingSoon,
+                boxDecoration: actionIconDecoration,
+              ),
+              AppAssetsIconWidget(
+                asset: AppAssets.videoCameraRecord,
+                label: l.trackingActionCamera,
+                disabledHint: l.comingSoon,
+                boxDecoration: actionIconDecoration,
+              ),
+
+
+
             ],
           ),
           Divider(height: 12.h, color: scheme.outlineVariant),
@@ -155,15 +166,17 @@ class TrackingAssetCard extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 8.w),
-              ActionIcon(
+              AppAssetsIconWidget(
                 asset: AppAssets.phoneCalling,
                 label: l.trackingActionCall,
                 disabledHint: l.comingSoon,
+                boxDecoration: actionIconDecoration,
               ),
-              ActionIcon(
+              AppAssetsIconWidget(
                 asset: AppAssets.email,
                 label: l.trackingActionEmail,
                 disabledHint: l.comingSoon,
+                boxDecoration: actionIconDecoration,
               ),
             ],
           ),

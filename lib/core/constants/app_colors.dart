@@ -154,7 +154,7 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
     hover: AppColors.neutral50,
     textColor: AppColors.neutral900,
     textPlaceholder: AppColors.neutral600,
-    primaryButtonBackground: AppColors.bluePurple500,
+    primaryButtonBackground: AppColors.bluePurple700,
     primaryButtonText: AppColors.neutralWhite,
     primaryButtonHover: AppColors.bluePurple400,
     primaryButtonDisabled: AppColors.transparentBluePurple30,

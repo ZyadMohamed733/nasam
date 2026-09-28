@@ -1,0 +1,1404 @@
+{
+  "data": [
+    {
+      "latitude": 26.365,
+      "longitude": 43.95,
+      "recordedAt": "2025-10-17T08:00:00",
+      "headingDegrees": 79.9,
+      "speedKph": 34.0
+    },
+    {
+      "latitude": 26.365426,
+      "longitude": 43.952399,
+      "recordedAt": "2025-10-17T08:03:00",
+      "headingDegrees": 80.8,
+      "speedKph": 34.3
+    },
+    {
+      "latitude": 26.36581,
+      "longitude": 43.954769,
+      "recordedAt": "2025-10-17T08:06:00",
+      "headingDegrees": 82.5,
+      "speedKph": 35.2
+    },
+    {
+      "latitude": 26.366116,
+      "longitude": 43.957083,
+      "recordedAt": "2025-10-17T08:09:00",
+      "headingDegrees": 85.0,
+      "speedKph": 36.6
+    },
+    {
+      "latitude": 26.366309,
+      "longitude": 43.959315,
+      "recordedAt": "2025-10-17T08:12:00",
+      "headingDegrees": 88.5,
+      "speedKph": 38.3
+    },
+    {
+      "latitude": 26.366365,
+      "longitude": 43.961443,
+      "recordedAt": "2025-10-17T08:15:00",
+      "headingDegrees": 92.8,
+      "speedKph": 40.4
+    },
+    {
+      "latitude": 26.366268,
+      "longitude": 43.963448,
+      "recordedAt": "2025-10-17T08:18:00",
+      "headingDegrees": 97.9,
+      "speedKph": 42.5
+    },
+    {
+      "latitude": 26.36601,
+      "longitude": 43.965317,
+      "recordedAt": "2025-10-17T08:21:00",
+      "headingDegrees": 103.5,
+      "speedKph": 44.5
+    },
+    {
+      "latitude": 26.365596,
+      "longitude": 43.967041,
+      "recordedAt": "2025-10-17T08:24:00",
+      "headingDegrees": 109.4,
+      "speedKph": 46.3
+    },
+    {
+      "latitude": 26.36504,
+      "longitude": 43.968616,
+      "recordedAt": "2025-10-17T08:27:00",
+      "headingDegrees": 115.3,
+      "speedKph": 47.8
+    },
+    {
+      "latitude": 26.364364,
+      "longitude": 43.970044,
+      "recordedAt": "2025-10-17T08:30:00",
+      "headingDegrees": 120.7,
+      "speedKph": 48.7
+    },
+    {
+      "latitude": 26.363599,
+      "longitude": 43.971333,
+      "recordedAt": "2025-10-17T08:33:00",
+      "headingDegrees": 125.3,
+      "speedKph": 49.0
+    },
+    {
+      "latitude": 26.362778,
+      "longitude": 43.972493,
+      "recordedAt": "2025-10-17T08:36:00",
+      "headingDegrees": 128.7,
+      "speedKph": 48.7
+    },
+    {
+      "latitude": 26.361939,
+      "longitude": 43.973542,
+      "recordedAt": "2025-10-17T08:39:00",
+      "headingDegrees": 130.7,
+      "speedKph": 47.9
+    },
+    {
+      "latitude": 26.361116,
+      "longitude": 43.974497,
+      "recordedAt": "2025-10-17T08:42:00",
+      "headingDegrees": 131.1,
+      "speedKph": 46.5
+    },
+    {
+      "latitude": 26.360342,
+      "longitude": 43.975383,
+      "recordedAt": "2025-10-17T08:45:00",
+      "headingDegrees": 129.7,
+      "speedKph": 44.8
+    },
+    {
+      "latitude": 26.359644,
+      "longitude": 43.976222,
+      "recordedAt": "2025-10-17T08:48:00",
+      "headingDegrees": 126.4,
+      "speedKph": 42.7
+    },
+    {
+      "latitude": 26.359042,
+      "longitude": 43.977038,
+      "recordedAt": "2025-10-17T08:51:00",
+      "headingDegrees": 121.3,
+      "speedKph": 40.6
+    },
+    {
+      "latitude": 26.358545,
+      "longitude": 43.977855,
+      "recordedAt": "2025-10-17T08:54:00",
+      "headingDegrees": 115.0,
+      "speedKph": 38.6
+    },
+    {
+      "latitude": 26.358153,
+      "longitude": 43.978695,
+      "recordedAt": "2025-10-17T08:57:00",
+      "headingDegrees": 108.6,
+      "speedKph": 36.7
+    },
+    {
+      "latitude": 26.357856,
+      "longitude": 43.979576,
+      "recordedAt": "2025-10-17T09:00:00",
+      "headingDegrees": 103.2,
+      "speedKph": 35.3
+    },
+    {
+      "latitude": 26.357636,
+      "longitude": 43.980516,
+      "recordedAt": "2025-10-17T09:03:00",
+      "headingDegrees": 99.6,
+      "speedKph": 34.4
+    },
+    {
+      "latitude": 26.357464,
+      "longitude": 43.981524,
+      "recordedAt": "2025-10-17T09:06:00",
+      "headingDegrees": 98.1,
+      "speedKph": 34.0
+    },
+    {
+      "latitude": 26.357309,
+      "longitude": 43.98261,
+      "recordedAt": "2025-10-17T09:09:00",
+      "headingDegrees": 98.6,
+      "speedKph": 34.2
+    },
+    {
+      "latitude": 26.357134,
+      "longitude": 43.983773,
+      "recordedAt": "2025-10-17T09:12:00",
+      "headingDegrees": 100.7,
+      "speedKph": 35.1
+    },
+    {
+      "latitude": 26.3569,
+      "longitude": 43.985012,
+      "recordedAt": "2025-10-17T09:15:00",
+      "headingDegrees": 104.1,
+      "speedKph": 36.4
+    },
+    {
+      "latitude": 26.356573,
+      "longitude": 43.986318,
+      "recordedAt": "2025-10-17T09:18:00",
+      "headingDegrees": 108.4,
+      "speedKph": 38.1
+    },
+    {
+      "latitude": 26.356121,
+      "longitude": 43.987679,
+      "recordedAt": "2025-10-17T09:21:00",
+      "headingDegrees": 113.3,
+      "speedKph": 40.1
+    },
+    {
+      "latitude": 26.35552,
+      "longitude": 43.989077,
+      "recordedAt": "2025-10-17T09:24:00",
+      "headingDegrees": 118.4,
+      "speedKph": 42.3
+    },
+    {
+      "latitude": 26.354754,
+      "longitude": 43.990493,
+      "recordedAt": "2025-10-17T09:27:00",
+      "headingDegrees": 123.6,
+      "speedKph": 44.3
+    },
+    {
+      "latitude": 26.353817,
+      "longitude": 43.991904,
+      "recordedAt": "2025-10-17T09:30:00",
+      "headingDegrees": 128.6,
+      "speedKph": 46.2
+    },
+    {
+      "latitude": 26.352713,
+      "longitude": 43.993285,
+      "recordedAt": "2025-10-17T09:33:00",
+      "headingDegrees": 133.4,
+      "speedKph": 47.6
+    },
+    {
+      "latitude": 26.351458,
+      "longitude": 43.994612,
+      "recordedAt": "2025-10-17T09:36:00",
+      "headingDegrees": 137.9,
+      "speedKph": 48.6
+    },
+    {
+      "latitude": 26.350074,
+      "longitude": 43.99586,
+      "recordedAt": "2025-10-17T09:39:00",
+      "headingDegrees": 142.2,
+      "speedKph": 49.0
+    },
+    {
+      "latitude": 26.348595,
+      "longitude": 43.997008,
+      "recordedAt": "2025-10-17T09:42:00",
+      "headingDegrees": 146.3,
+      "speedKph": 48.8
+    },
+    {
+      "latitude": 26.347056,
+      "longitude": 43.998035,
+      "recordedAt": "2025-10-17T09:45:00",
+      "headingDegrees": 150.2,
+      "speedKph": 48.0
+    },
+    {
+      "latitude": 26.3455,
+      "longitude": 43.998925,
+      "recordedAt": "2025-10-17T09:48:00",
+      "headingDegrees": 154.2,
+      "speedKph": 46.7
+    },
+    {
+      "latitude": 26.343965,
+      "longitude": 43.999665,
+      "recordedAt": "2025-10-17T09:51:00",
+      "headingDegrees": 158.3,
+      "speedKph": 45.0
+    },
+    {
+      "latitude": 26.342492,
+      "longitude": 44.00025,
+      "recordedAt": "2025-10-17T09:54:00",
+      "headingDegrees": 162.8,
+      "speedKph": 43.0
+    },
+    {
+      "latitude": 26.341114,
+      "longitude": 44.000677,
+      "recordedAt": "2025-10-17T09:57:00",
+      "headingDegrees": 167.8,
+      "speedKph": 40.8
+    },
+    {
+      "latitude": 26.339857,
+      "longitude": 44.000949,
+      "recordedAt": "2025-10-17T10:00:00",
+      "headingDegrees": 173.5,
+      "speedKph": 38.8
+    },
+    {
+      "latitude": 26.338739,
+      "longitude": 44.001075,
+      "recordedAt": "2025-10-17T10:03:00",
+      "headingDegrees": 180.3,
+      "speedKph": 36.9
+    },
+    {
+      "latitude": 26.337768,
+      "longitude": 44.00107,
+      "recordedAt": "2025-10-17T10:06:00",
+      "headingDegrees": 188.2,
+      "speedKph": 35.4
+    },
+    {
+      "latitude": 26.336941,
+      "longitude": 44.000952,
+      "recordedAt": "2025-10-17T10:09:00",
+      "headingDegrees": 196.8,
+      "speedKph": 34.4
+    },
+    {
+      "latitude": 26.336245,
+      "longitude": 44.000742,
+      "recordedAt": "2025-10-17T10:12:00",
+      "headingDegrees": 205.2,
+      "speedKph": 34.0
+    },
+    {
+      "latitude": 26.335661,
+      "longitude": 44.000467,
+      "recordedAt": "2025-10-17T10:15:00",
+      "headingDegrees": 211.9,
+      "speedKph": 34.2
+    },
+    {
+      "latitude": 26.335158,
+      "longitude": 44.000155,
+      "recordedAt": "2025-10-17T10:18:00",
+      "headingDegrees": 215.4,
+      "speedKph": 34.9
+    },
+    {
+      "latitude": 26.334705,
+      "longitude": 43.999833,
+      "recordedAt": "2025-10-17T10:21:00",
+      "headingDegrees": 214.5,
+      "speedKph": 36.2
+    },
+    {
+      "latitude": 26.334264,
+      "longitude": 43.99953,
+      "recordedAt": "2025-10-17T10:24:00",
+      "headingDegrees": 209.0,
+      "speedKph": 37.9
+    },
+    {
+      "latitude": 26.333802,
+      "longitude": 43.999274,
+      "recordedAt": "2025-10-17T10:27:00",
+      "headingDegrees": 199.6,
+      "speedKph": 39.9
+    },
+    {
+      "latitude": 26.333286,
+      "longitude": 43.999091,
+      "recordedAt": "2025-10-17T10:30:00",
+      "headingDegrees": 188.5,
+      "speedKph": 42.0
+    },
+    {
+      "latitude": 26.332689,
+      "longitude": 43.999001,
+      "recordedAt": "2025-10-17T10:33:00",
+      "headingDegrees": 178.1,
+      "speedKph": 44.1
+    },
+    {
+      "latitude": 26.331991,
+      "longitude": 43.999024,
+      "recordedAt": "2025-10-17T10:36:00",
+      "headingDegrees": 169.5,
+      "speedKph": 46.0
+    },
+    {
+      "latitude": 26.331184,
+      "longitude": 43.999173,
+      "recordedAt": "2025-10-17T10:39:00",
+      "headingDegrees": 162.8,
+      "speedKph": 47.5
+    },
+    {
+      "latitude": 26.330266,
+      "longitude": 43.999457,
+      "recordedAt": "2025-10-17T10:42:00",
+      "headingDegrees": 157.5,
+      "speedKph": 48.5
+    },
+    {
+      "latitude": 26.329248,
+      "longitude": 43.99988,
+      "recordedAt": "2025-10-17T10:45:00",
+      "headingDegrees": 153.1,
+      "speedKph": 49.0
+    },
+    {
+      "latitude": 26.328148,
+      "longitude": 44.000438,
+      "recordedAt": "2025-10-17T10:48:00",
+      "headingDegrees": 149.2,
+      "speedKph": 48.8
+    },
+    {
+      "latitude": 26.326994,
+      "longitude": 44.001125,
+      "recordedAt": "2025-10-17T10:51:00",
+      "headingDegrees": 145.6,
+      "speedKph": 48.1
+    },
+    {
+      "latitude": 26.32582,
+      "longitude": 44.00193,
+      "recordedAt": "2025-10-17T10:54:00",
+      "headingDegrees": 142.0,
+      "speedKph": 46.9
+    },
+    {
+      "latitude": 26.324662,
+      "longitude": 44.002835,
+      "recordedAt": "2025-10-17T10:57:00",
+      "headingDegrees": 138.1,
+      "speedKph": 45.2
+    },
+    {
+      "latitude": 26.323559,
+      "longitude": 44.003823,
+      "recordedAt": "2025-10-17T11:00:00",
+      "headingDegrees": 133.9,
+      "speedKph": 43.2
+    },
+    {
+      "latitude": 26.322549,
+      "longitude": 44.004871,
+      "recordedAt": "2025-10-17T11:03:00",
+      "headingDegrees": 129.2,
+      "speedKph": 41.1
+    },
+    {
+      "latitude": 26.321665,
+      "longitude": 44.005957,
+      "recordedAt": "2025-10-17T11:06:00",
+      "headingDegrees": 123.7,
+      "speedKph": 39.0
+    },
+    {
+      "latitude": 26.320931,
+      "longitude": 44.007056,
+      "recordedAt": "2025-10-17T11:09:00",
+      "headingDegrees": 117.3,
+      "speedKph": 37.1
+    },
+    {
+      "latitude": 26.320368,
+      "longitude": 44.008145,
+      "recordedAt": "2025-10-17T11:12:00",
+      "headingDegrees": 110.0,
+      "speedKph": 35.6
+    },
+    {
+      "latitude": 26.319982,
+      "longitude": 44.009205,
+      "recordedAt": "2025-10-17T11:15:00",
+      "headingDegrees": 101.8,
+      "speedKph": 34.5
+    },
+    {
+      "latitude": 26.319772,
+      "longitude": 44.010216,
+      "recordedAt": "2025-10-17T11:18:00",
+      "headingDegrees": 92.9,
+      "speedKph": 34.0
+    },
+    {
+      "latitude": 26.319724,
+      "longitude": 44.011163,
+      "recordedAt": "2025-10-17T11:21:00",
+      "headingDegrees": 83.9,
+      "speedKph": 34.1
+    },
+    {
+      "latitude": 26.319817,
+      "longitude": 44.012036,
+      "recordedAt": "2025-10-17T11:24:00",
+      "headingDegrees": 75.6,
+      "speedKph": 34.8
+    },
+    {
+      "latitude": 26.32002,
+      "longitude": 44.012829,
+      "recordedAt": "2025-10-17T11:27:00",
+      "headingDegrees": 68.7,
+      "speedKph": 36.1
+    },
+    {
+      "latitude": 26.320298,
+      "longitude": 44.01354,
+      "recordedAt": "2025-10-17T11:30:00",
+      "headingDegrees": 63.8,
+      "speedKph": 37.7
+    },
+    {
+      "latitude": 26.32061,
+      "longitude": 44.014175,
+      "recordedAt": "2025-10-17T11:33:00",
+      "headingDegrees": 61.6,
+      "speedKph": 39.7
+    },
+    {
+      "latitude": 26.320917,
+      "longitude": 44.014743,
+      "recordedAt": "2025-10-17T11:36:00",
+      "headingDegrees": 62.9,
+      "speedKph": 41.8
+    },
+    {
+      "latitude": 26.321179,
+      "longitude": 44.015256,
+      "recordedAt": "2025-10-17T11:39:00",
+      "headingDegrees": 68.9,
+      "speedKph": 43.9
+    },
+    {
+      "latitude": 26.321364,
+      "longitude": 44.015734,
+      "recordedAt": "2025-10-17T11:42:00",
+      "headingDegrees": 80.3,
+      "speedKph": 45.8
+    },
+    {
+      "latitude": 26.321443,
+      "longitude": 44.016196,
+      "recordedAt": "2025-10-17T11:45:00",
+      "headingDegrees": 95.4,
+      "speedKph": 47.3
+    },
+    {
+      "latitude": 26.321398,
+      "longitude": 44.016668,
+      "recordedAt": "2025-10-17T11:48:00",
+      "headingDegrees": 109.4,
+      "speedKph": 48.4
+    },
+    {
+      "latitude": 26.32122,
+      "longitude": 44.017173,
+      "recordedAt": "2025-10-17T11:51:00",
+      "headingDegrees": 118.7,
+      "speedKph": 49.0
+    },
+    {
+      "latitude": 26.320911,
+      "longitude": 44.017737,
+      "recordedAt": "2025-10-17T11:54:00",
+      "headingDegrees": 123.5,
+      "speedKph": 48.9
+    },
+    {
+      "latitude": 26.320482,
+      "longitude": 44.018385,
+      "recordedAt": "2025-10-17T11:57:00",
+      "headingDegrees": 125.0,
+      "speedKph": 48.2
+    },
+    {
+      "latitude": 26.319954,
+      "longitude": 44.01914,
+      "recordedAt": "2025-10-17T12:00:00",
+      "headingDegrees": 124.3,
+      "speedKph": 47.0
+    },
+    {
+      "latitude": 26.319352,
+      "longitude": 44.020023,
+      "recordedAt": "2025-10-17T12:03:00",
+      "headingDegrees": 122.0,
+      "speedKph": 45.4
+    },
+    {
+      "latitude": 26.318711,
+      "longitude": 44.021049,
+      "recordedAt": "2025-10-17T12:06:00",
+      "headingDegrees": 118.6,
+      "speedKph": 43.4
+    },
+    {
+      "latitude": 26.318065,
+      "longitude": 44.022231,
+      "recordedAt": "2025-10-17T12:09:00",
+      "headingDegrees": 114.6,
+      "speedKph": 41.3
+    },
+    {
+      "latitude": 26.31745,
+      "longitude": 44.023577,
+      "recordedAt": "2025-10-17T12:12:00",
+      "headingDegrees": 110.1,
+      "speedKph": 39.2
+    },
+    {
+      "latitude": 26.316897,
+      "longitude": 44.025089,
+      "recordedAt": "2025-10-17T12:15:00",
+      "headingDegrees": 105.5,
+      "speedKph": 37.3
+    },
+    {
+      "latitude": 26.316433,
+      "longitude": 44.026762,
+      "recordedAt": "2025-10-17T12:18:00",
+      "headingDegrees": 101.0,
+      "speedKph": 35.7
+    },
+    {
+      "latitude": 26.316078,
+      "longitude": 44.028589,
+      "recordedAt": "2025-10-17T12:21:00",
+      "headingDegrees": 96.8,
+      "speedKph": 34.6
+    },
+    {
+      "latitude": 26.315842,
+      "longitude": 44.030555,
+      "recordedAt": "2025-10-17T12:24:00",
+      "headingDegrees": 93.2,
+      "speedKph": 34.1
+    },
+    {
+      "latitude": 26.315726,
+      "longitude": 44.032643,
+      "recordedAt": "2025-10-17T12:27:00",
+      "headingDegrees": 90.1,
+      "speedKph": 34.1
+    },
+    {
+      "latitude": 26.315721,
+      "longitude": 44.034829,
+      "recordedAt": "2025-10-17T12:30:00",
+      "headingDegrees": 87.8,
+      "speedKph": 34.7
+    },
+    {
+      "latitude": 26.315807,
+      "longitude": 44.037089,
+      "recordedAt": "2025-10-17T12:33:00",
+      "headingDegrees": 86.3,
+      "speedKph": 35.9
+    },
+    {
+      "latitude": 26.315958,
+      "longitude": 44.039395,
+      "recordedAt": "2025-10-17T12:36:00",
+      "headingDegrees": 85.6,
+      "speedKph": 37.5
+    },
+    {
+      "latitude": 26.316138,
+      "longitude": 44.041719,
+      "recordedAt": "2025-10-17T12:39:00",
+      "headingDegrees": 85.7,
+      "speedKph": 39.5
+    },
+    {
+      "latitude": 26.316311,
+      "longitude": 44.044033,
+      "recordedAt": "2025-10-17T12:42:00",
+      "headingDegrees": 86.8,
+      "speedKph": 41.6
+    },
+    {
+      "latitude": 26.316436,
+      "longitude": 44.046309,
+      "recordedAt": "2025-10-17T12:45:00",
+      "headingDegrees": 89.0,
+      "speedKph": 43.7
+    },
+    {
+      "latitude": 26.316476,
+      "longitude": 44.048523,
+      "recordedAt": "2025-10-17T12:48:00",
+      "headingDegrees": 92.2,
+      "speedKph": 45.6
+    },
+    {
+      "latitude": 26.316395,
+      "longitude": 44.050652,
+      "recordedAt": "2025-10-17T12:51:00",
+      "headingDegrees": 96.5,
+      "speedKph": 47.2
+    },
+    {
+      "latitude": 26.316165,
+      "longitude": 44.052679,
+      "recordedAt": "2025-10-17T12:54:00",
+      "headingDegrees": 101.8,
+      "speedKph": 48.3
+    },
+    {
+      "latitude": 26.315766,
+      "longitude": 44.05459,
+      "recordedAt": "2025-10-17T12:57:00",
+      "headingDegrees": 107.9,
+      "speedKph": 48.9
+    },
+    {
+      "latitude": 26.315188,
+      "longitude": 44.056378,
+      "recordedAt": "2025-10-17T13:00:00",
+      "headingDegrees": 114.5,
+      "speedKph": 48.9
+    },
+    {
+      "latitude": 26.314431,
+      "longitude": 44.058039,
+      "recordedAt": "2025-10-17T13:03:00",
+      "headingDegrees": 121.1,
+      "speedKph": 48.3
+    },
+    {
+      "latitude": 26.313505,
+      "longitude": 44.059576,
+      "recordedAt": "2025-10-17T13:06:00",
+      "headingDegrees": 127.1,
+      "speedKph": 47.2
+    },
+    {
+      "latitude": 26.312431,
+      "longitude": 44.060995,
+      "recordedAt": "2025-10-17T13:09:00",
+      "headingDegrees": 132.3,
+      "speedKph": 45.6
+    },
+    {
+      "latitude": 26.311235,
+      "longitude": 44.062309,
+      "recordedAt": "2025-10-17T13:12:00",
+      "headingDegrees": 136.3,
+      "speedKph": 43.7
+    },
+    {
+      "latitude": 26.309954,
+      "longitude": 44.063534,
+      "recordedAt": "2025-10-17T13:15:00",
+      "headingDegrees": 139.0,
+      "speedKph": 41.6
+    },
+    {
+      "latitude": 26.308626,
+      "longitude": 44.064688,
+      "recordedAt": "2025-10-17T13:18:00",
+      "headingDegrees": 140.4,
+      "speedKph": 39.5
+    },
+    {
+      "latitude": 26.307289,
+      "longitude": 44.065794,
+      "recordedAt": "2025-10-17T13:21:00",
+      "headingDegrees": 140.4,
+      "speedKph": 37.5
+    },
+    {
+      "latitude": 26.305983,
+      "longitude": 44.066874,
+      "recordedAt": "2025-10-17T13:24:00",
+      "headingDegrees": 139.1,
+      "speedKph": 35.9
+    },
+    {
+      "latitude": 26.304741,
+      "longitude": 44.067952,
+      "recordedAt": "2025-10-17T13:27:00",
+      "headingDegrees": 136.4,
+      "speedKph": 34.7
+    },
+    {
+      "latitude": 26.30359,
+      "longitude": 44.069048,
+      "recordedAt": "2025-10-17T13:30:00",
+      "headingDegrees": 132.5,
+      "speedKph": 34.1
+    },
+    {
+      "latitude": 26.30255,
+      "longitude": 44.070185,
+      "recordedAt": "2025-10-17T13:33:00",
+      "headingDegrees": 127.6,
+      "speedKph": 34.1
+    },
+    {
+      "latitude": 26.30163,
+      "longitude": 44.07138,
+      "recordedAt": "2025-10-17T13:36:00",
+      "headingDegrees": 122.3,
+      "speedKph": 34.6
+    },
+    {
+      "latitude": 26.30083,
+      "longitude": 44.072646,
+      "recordedAt": "2025-10-17T13:39:00",
+      "headingDegrees": 117.2,
+      "speedKph": 35.7
+    },
+    {
+      "latitude": 26.300138,
+      "longitude": 44.073994,
+      "recordedAt": "2025-10-17T13:42:00",
+      "headingDegrees": 112.8,
+      "speedKph": 37.3
+    },
+    {
+      "latitude": 26.299535,
+      "longitude": 44.075428,
+      "recordedAt": "2025-10-17T13:45:00",
+      "headingDegrees": 109.6,
+      "speedKph": 39.2
+    },
+    {
+      "latitude": 26.298995,
+      "longitude": 44.076947,
+      "recordedAt": "2025-10-17T13:48:00",
+      "headingDegrees": 107.7,
+      "speedKph": 41.3
+    },
+    {
+      "latitude": 26.298485,
+      "longitude": 44.078548,
+      "recordedAt": "2025-10-17T13:51:00",
+      "headingDegrees": 107.1,
+      "speedKph": 43.4
+    },
+    {
+      "latitude": 26.297971,
+      "longitude": 44.08022,
+      "recordedAt": "2025-10-17T13:54:00",
+      "headingDegrees": 107.8,
+      "speedKph": 45.4
+    },
+    {
+      "latitude": 26.297416,
+      "longitude": 44.081947,
+      "recordedAt": "2025-10-17T13:57:00",
+      "headingDegrees": 109.6,
+      "speedKph": 47.0
+    },
+    {
+      "latitude": 26.296789,
+      "longitude": 44.083711,
+      "recordedAt": "2025-10-17T14:00:00",
+      "headingDegrees": 112.2,
+      "speedKph": 48.2
+    },
+    {
+      "latitude": 26.296062,
+      "longitude": 44.08549,
+      "recordedAt": "2025-10-17T14:03:00",
+      "headingDegrees": 115.6,
+      "speedKph": 48.9
+    },
+    {
+      "latitude": 26.295215,
+      "longitude": 44.08726,
+      "recordedAt": "2025-10-17T14:06:00",
+      "headingDegrees": 119.4,
+      "speedKph": 49.0
+    },
+    {
+      "latitude": 26.294237,
+      "longitude": 44.088994,
+      "recordedAt": "2025-10-17T14:09:00",
+      "headingDegrees": 123.6,
+      "speedKph": 48.4
+    },
+    {
+      "latitude": 26.293126,
+      "longitude": 44.090667,
+      "recordedAt": "2025-10-17T14:12:00",
+      "headingDegrees": 127.9,
+      "speedKph": 47.3
+    },
+    {
+      "latitude": 26.291891,
+      "longitude": 44.092253,
+      "recordedAt": "2025-10-17T14:15:00",
+      "headingDegrees": 132.3,
+      "speedKph": 45.8
+    },
+    {
+      "latitude": 26.290551,
+      "longitude": 44.093728,
+      "recordedAt": "2025-10-17T14:18:00",
+      "headingDegrees": 136.5,
+      "speedKph": 43.9
+    },
+    {
+      "latitude": 26.289133,
+      "longitude": 44.095072,
+      "recordedAt": "2025-10-17T14:21:00",
+      "headingDegrees": 140.7,
+      "speedKph": 41.8
+    },
+    {
+      "latitude": 26.28767,
+      "longitude": 44.096268,
+      "recordedAt": "2025-10-17T14:24:00",
+      "headingDegrees": 144.8,
+      "speedKph": 39.7
+    },
+    {
+      "latitude": 26.286202,
+      "longitude": 44.097303,
+      "recordedAt": "2025-10-17T14:27:00",
+      "headingDegrees": 148.8,
+      "speedKph": 37.7
+    },
+    {
+      "latitude": 26.284769,
+      "longitude": 44.09817,
+      "recordedAt": "2025-10-17T14:30:00",
+      "headingDegrees": 152.9,
+      "speedKph": 36.1
+    },
+    {
+      "latitude": 26.28341,
+      "longitude": 44.098866,
+      "recordedAt": "2025-10-17T14:33:00",
+      "headingDegrees": 157.1,
+      "speedKph": 34.8
+    },
+    {
+      "latitude": 26.282161,
+      "longitude": 44.099394,
+      "recordedAt": "2025-10-17T14:36:00",
+      "headingDegrees": 161.6,
+      "speedKph": 34.1
+    },
+    {
+      "latitude": 26.281053,
+      "longitude": 44.099763,
+      "recordedAt": "2025-10-17T14:39:00",
+      "headingDegrees": 166.7,
+      "speedKph": 34.0
+    },
+    {
+      "latitude": 26.280108,
+      "longitude": 44.099987,
+      "recordedAt": "2025-10-17T14:42:00",
+      "headingDegrees": 172.8,
+      "speedKph": 34.5
+    },
+    {
+      "latitude": 26.279338,
+      "longitude": 44.100084,
+      "recordedAt": "2025-10-17T14:45:00",
+      "headingDegrees": 180.8,
+      "speedKph": 35.6
+    },
+    {
+      "latitude": 26.278746,
+      "longitude": 44.100075,
+      "recordedAt": "2025-10-17T14:48:00",
+      "headingDegrees": 191.9,
+      "speedKph": 37.1
+    },
+    {
+      "latitude": 26.278323,
+      "longitude": 44.099987,
+      "recordedAt": "2025-10-17T14:51:00",
+      "headingDegrees": 207.7,
+      "speedKph": 39.0
+    },
+    {
+      "latitude": 26.278052,
+      "longitude": 44.099845,
+      "recordedAt": "2025-10-17T14:54:00",
+      "headingDegrees": 228.9,
+      "speedKph": 41.1
+    },
+    {
+      "latitude": 26.277906,
+      "longitude": 44.099677,
+      "recordedAt": "2025-10-17T14:57:00",
+      "headingDegrees": 252.1,
+      "speedKph": 43.2
+    },
+    {
+      "latitude": 26.277853,
+      "longitude": 44.099513,
+      "recordedAt": "2025-10-17T15:00:00",
+      "headingDegrees": 270.9,
+      "speedKph": 45.2
+    },
+    {
+      "latitude": 26.277855,
+      "longitude": 44.099377,
+      "recordedAt": "2025-10-17T15:03:00",
+      "headingDegrees": 282.9,
+      "speedKph": 46.9
+    },
+    {
+      "latitude": 26.277874,
+      "longitude": 44.099296,
+      "recordedAt": "2025-10-17T15:06:00",
+      "headingDegrees": 254.6,
+      "speedKph": 48.1
+    },
+    {
+      "latitude": 26.277872,
+      "longitude": 44.099289,
+      "recordedAt": "2025-10-17T15:09:00",
+      "headingDegrees": 123.2,
+      "speedKph": 48.8
+    },
+    {
+      "latitude": 26.277816,
+      "longitude": 44.099375,
+      "recordedAt": "2025-10-17T15:12:00",
+      "headingDegrees": 125.8,
+      "speedKph": 49.0
+    },
+    {
+      "latitude": 26.277678,
+      "longitude": 44.099565,
+      "recordedAt": "2025-10-17T15:15:00",
+      "headingDegrees": 128.1,
+      "speedKph": 48.5
+    },
+    {
+      "latitude": 26.27744,
+      "longitude": 44.099869,
+      "recordedAt": "2025-10-17T15:18:00",
+      "headingDegrees": 129.8,
+      "speedKph": 47.5
+    },
+    {
+      "latitude": 26.277092,
+      "longitude": 44.100287,
+      "recordedAt": "2025-10-17T15:21:00",
+      "headingDegrees": 130.8,
+      "speedKph": 46.0
+    },
+    {
+      "latitude": 26.276633,
+      "longitude": 44.100818,
+      "recordedAt": "2025-10-17T15:24:00",
+      "headingDegrees": 131.3,
+      "speedKph": 44.1
+    },
+    {
+      "latitude": 26.276075,
+      "longitude": 44.101455,
+      "recordedAt": "2025-10-17T15:27:00",
+      "headingDegrees": 131.3,
+      "speedKph": 42.0
+    },
+    {
+      "latitude": 26.275435,
+      "longitude": 44.102183,
+      "recordedAt": "2025-10-17T15:30:00",
+      "headingDegrees": 130.7,
+      "speedKph": 39.9
+    },
+    {
+      "latitude": 26.274742,
+      "longitude": 44.102989,
+      "recordedAt": "2025-10-17T15:33:00",
+      "headingDegrees": 129.7,
+      "speedKph": 37.9
+    },
+    {
+      "latitude": 26.274026,
+      "longitude": 44.103852,
+      "recordedAt": "2025-10-17T15:36:00",
+      "headingDegrees": 128.0,
+      "speedKph": 36.2
+    },
+    {
+      "latitude": 26.273324,
+      "longitude": 44.104751,
+      "recordedAt": "2025-10-17T15:39:00",
+      "headingDegrees": 125.6,
+      "speedKph": 34.9
+    },
+    {
+      "latitude": 26.272671,
+      "longitude": 44.105662,
+      "recordedAt": "2025-10-17T15:42:00",
+      "headingDegrees": 122.3,
+      "speedKph": 34.2
+    },
+    {
+      "latitude": 26.2721,
+      "longitude": 44.106565,
+      "recordedAt": "2025-10-17T15:45:00",
+      "headingDegrees": 117.9,
+      "speedKph": 34.0
+    },
+    {
+      "latitude": 26.271639,
+      "longitude": 44.107436,
+      "recordedAt": "2025-10-17T15:48:00",
+      "headingDegrees": 111.9,
+      "speedKph": 34.4
+    },
+    {
+      "latitude": 26.27131,
+      "longitude": 44.108255,
+      "recordedAt": "2025-10-17T15:51:00",
+      "headingDegrees": 103.8,
+      "speedKph": 35.4
+    },
+    {
+      "latitude": 26.271126,
+      "longitude": 44.109007,
+      "recordedAt": "2025-10-17T15:54:00",
+      "headingDegrees": 93.2,
+      "speedKph": 36.9
+    },
+    {
+      "latitude": 26.271088,
+      "longitude": 44.109676,
+      "recordedAt": "2025-10-17T15:57:00",
+      "headingDegrees": 80.1,
+      "speedKph": 38.8
+    },
+    {
+      "latitude": 26.27119,
+      "longitude": 44.110256,
+      "recordedAt": "2025-10-17T16:00:00",
+      "headingDegrees": 65.4,
+      "speedKph": 40.8
+    },
+    {
+      "latitude": 26.271412,
+      "longitude": 44.110741,
+      "recordedAt": "2025-10-17T16:03:00",
+      "headingDegrees": 51.0,
+      "speedKph": 43.0
+    },
+    {
+      "latitude": 26.271729,
+      "longitude": 44.111132,
+      "recordedAt": "2025-10-17T16:06:00",
+      "headingDegrees": 38.8,
+      "speedKph": 45.0
+    },
+    {
+      "latitude": 26.272108,
+      "longitude": 44.111436,
+      "recordedAt": "2025-10-17T16:09:00",
+      "headingDegrees": 29.7,
+      "speedKph": 46.7
+    },
+    {
+      "latitude": 26.272509,
+      "longitude": 44.111665,
+      "recordedAt": "2025-10-17T16:12:00",
+      "headingDegrees": 23.7,
+      "speedKph": 48.0
+    },
+    {
+      "latitude": 26.272891,
+      "longitude": 44.111833,
+      "recordedAt": "2025-10-17T16:15:00",
+      "headingDegrees": 21.5,
+      "speedKph": 48.8
+    },
+    {
+      "latitude": 26.273215,
+      "longitude": 44.11196,
+      "recordedAt": "2025-10-17T16:18:00",
+      "headingDegrees": 25.8,
+      "speedKph": 49.0
+    },
+    {
+      "latitude": 26.273442,
+      "longitude": 44.11207,
+      "recordedAt": "2025-10-17T16:21:00",
+      "headingDegrees": 49.8,
+      "speedKph": 48.6
+    },
+    {
+      "latitude": 26.273542,
+      "longitude": 44.112188,
+      "recordedAt": "2025-10-17T16:24:00",
+      "headingDegrees": 108.9,
+      "speedKph": 47.6
+    },
+    {
+      "latitude": 26.27349,
+      "longitude": 44.112341,
+      "recordedAt": "2025-10-17T16:27:00",
+      "headingDegrees": 135.7,
+      "speedKph": 46.2
+    },
+    {
+      "latitude": 26.273271,
+      "longitude": 44.112554,
+      "recordedAt": "2025-10-17T16:30:00",
+      "headingDegrees": 142.3,
+      "speedKph": 44.3
+    },
+    {
+      "latitude": 26.272882,
+      "longitude": 44.112855,
+      "recordedAt": "2025-10-17T16:33:00",
+      "headingDegrees": 143.4,
+      "speedKph": 42.3
+    },
+    {
+      "latitude": 26.272327,
+      "longitude": 44.113267,
+      "recordedAt": "2025-10-17T16:36:00",
+      "headingDegrees": 142.3,
+      "speedKph": 40.1
+    },
+    {
+      "latitude": 26.271623,
+      "longitude": 44.113811,
+      "recordedAt": "2025-10-17T16:39:00",
+      "headingDegrees": 140.0,
+      "speedKph": 38.1
+    },
+    {
+      "latitude": 26.270795,
+      "longitude": 44.114505,
+      "recordedAt": "2025-10-17T16:42:00",
+      "headingDegrees": 137.1,
+      "speedKph": 36.4
+    },
+    {
+      "latitude": 26.269872,
+      "longitude": 44.115363,
+      "recordedAt": "2025-10-17T16:45:00",
+      "headingDegrees": 133.6,
+      "speedKph": 35.1
+    },
+    {
+      "latitude": 26.268892,
+      "longitude": 44.116391,
+      "recordedAt": "2025-10-17T16:48:00",
+      "headingDegrees": 129.8,
+      "speedKph": 34.2
+    },
+    {
+      "latitude": 26.267892,
+      "longitude": 44.117592,
+      "recordedAt": "2025-10-17T16:51:00",
+      "headingDegrees": 125.7,
+      "speedKph": 34.0
+    },
+    {
+      "latitude": 26.266907,
+      "longitude": 44.118964,
+      "recordedAt": "2025-10-17T16:54:00",
+      "headingDegrees": 121.4,
+      "speedKph": 34.4
+    },
+    {
+      "latitude": 26.265972,
+      "longitude": 44.120498,
+      "recordedAt": "2025-10-17T16:57:00",
+      "headingDegrees": 117.0,
+      "speedKph": 35.3
+    },
+    {
+      "latitude": 26.265113,
+      "longitude": 44.122182,
+      "recordedAt": "2025-10-17T17:00:00",
+      "headingDegrees": 112.8,
+      "speedKph": 36.7
+    },
+    {
+      "latitude": 26.264349,
+      "longitude": 44.123996,
+      "recordedAt": "2025-10-17T17:03:00",
+      "headingDegrees": 108.9,
+      "speedKph": 38.6
+    },
+    {
+      "latitude": 26.26369,
+      "longitude": 44.12592,
+      "recordedAt": "2025-10-17T17:06:00",
+      "headingDegrees": 105.4,
+      "speedKph": 40.6
+    },
+    {
+      "latitude": 26.263137,
+      "longitude": 44.127928,
+      "recordedAt": "2025-10-17T17:09:00",
+      "headingDegrees": 102.5,
+      "speedKph": 42.7
+    },
+    {
+      "latitude": 26.262678,
+      "longitude": 44.129996,
+      "recordedAt": "2025-10-17T17:12:00",
+      "headingDegrees": 100.3,
+      "speedKph": 44.8
+    },
+    {
+      "latitude": 26.262296,
+      "longitude": 44.132094,
+      "recordedAt": "2025-10-17T17:15:00",
+      "headingDegrees": 99.0,
+      "speedKph": 46.5
+    },
+    {
+      "latitude": 26.261964,
+      "longitude": 44.134195,
+      "recordedAt": "2025-10-17T17:18:00",
+      "headingDegrees": 98.6,
+      "speedKph": 47.9
+    },
+    {
+      "latitude": 26.261648,
+      "longitude": 44.136274,
+      "recordedAt": "2025-10-17T17:21:00",
+      "headingDegrees": 99.4,
+      "speedKph": 48.7
+    },
+    {
+      "latitude": 26.261313,
+      "longitude": 44.138307,
+      "recordedAt": "2025-10-17T17:24:00",
+      "headingDegrees": 101.2,
+      "speedKph": 49.0
+    },
+    {
+      "latitude": 26.260922,
+      "longitude": 44.140273,
+      "recordedAt": "2025-10-17T17:27:00",
+      "headingDegrees": 104.3,
+      "speedKph": 48.7
+    },
+    {
+      "latitude": 26.260442,
+      "longitude": 44.142156,
+      "recordedAt": "2025-10-17T17:30:00",
+      "headingDegrees": 108.5,
+      "speedKph": 47.8
+    },
+    {
+      "latitude": 26.259842,
+      "longitude": 44.143944,
+      "recordedAt": "2025-10-17T17:33:00",
+      "headingDegrees": 113.8,
+      "speedKph": 46.3
+    },
+    {
+      "latitude": 26.2591,
+      "longitude": 44.145629,
+      "recordedAt": "2025-10-17T17:36:00",
+      "headingDegrees": 119.6,
+      "speedKph": 44.5
+    },
+    {
+      "latitude": 26.258202,
+      "longitude": 44.147209,
+      "recordedAt": "2025-10-17T17:39:00",
+      "headingDegrees": 125.6,
+      "speedKph": 42.5
+    },
+    {
+      "latitude": 26.257144,
+      "longitude": 44.148689,
+      "recordedAt": "2025-10-17T17:42:00",
+      "headingDegrees": 131.1,
+      "speedKph": 40.4
+    },
+    {
+      "latitude": 26.255932,
+      "longitude": 44.150076,
+      "recordedAt": "2025-10-17T17:45:00",
+      "headingDegrees": 135.9,
+      "speedKph": 38.3
+    },
+    {
+      "latitude": 26.254583,
+      "longitude": 44.151382,
+      "recordedAt": "2025-10-17T17:48:00",
+      "headingDegrees": 139.6,
+      "speedKph": 36.6
+    },
+    {
+      "latitude": 26.253122,
+      "longitude": 44.152625,
+      "recordedAt": "2025-10-17T17:51:00",
+      "headingDegrees": 142.1,
+      "speedKph": 35.2
+    },
+    {
+      "latitude": 26.251581,
+      "longitude": 44.153824,
+      "recordedAt": "2025-10-17T17:54:00",
+      "headingDegrees": 143.4,
+      "speedKph": 34.3
+    },
+    {
+      "latitude": 26.25,
+      "longitude": 44.155,
+      "recordedAt": "2025-10-17T17:57:00",
+      "headingDegrees": 125,
+      "speedKph": 34.0
+    }
+  ]
+}

@@ -29,7 +29,9 @@ class TrackingMarkerFactory {
     required this.pixelRatio,
     this.capacity = defaultCapacity,
     Future<PictureInfo> Function()? loadArrow,
-  }) : _loadArrow = loadArrow ?? _loadArrowAsset;
+    Future<PictureInfo> Function()? loadPlaybackArrow,
+  }) : _loadArrow = loadArrow ?? _loadArrowAsset,
+       _loadPlaybackArrow = loadPlaybackArrow ?? _loadPlaybackArrowAsset;
 
   /// Bitmaps are rasterised at this many pixels per logical pixel: the
   /// device's, so they are sharp without being oversized on a 2x screen.
@@ -46,6 +48,11 @@ class TrackingMarkerFactory {
   /// by a degree does not need a new bitmap, and the cache stays small.
   static const int headingSteps = 16;
 
+  /// The supplied playback arrow points 33.69° west of north in its SVG.
+  /// Add this to Google Maps' clockwise marker rotation to align its tip with
+  /// the route bearing.
+  static const double playbackArrowBearingCorrection = 33.69;
+
   /// The vehicle bitmap, in logical pixels, and where its arrow sits: the
   /// marker is anchored there, not at the label below it.
   static const Size vehicleSize = Size(112, 78);
@@ -56,10 +63,12 @@ class TrackingMarkerFactory {
   static const Offset clusterAnchor = Offset(.5, .5);
 
   final Future<PictureInfo> Function() _loadArrow;
+  final Future<PictureInfo> Function() _loadPlaybackArrow;
 
   /// Insertion-ordered, so the first key is the least recently used.
   final _cache = <String, Future<BitmapDescriptor>>{};
   Future<PictureInfo>? _arrow;
+  Future<PictureInfo>? _playbackArrow;
   bool _disposed = false;
 
   @visibleForTesting
@@ -89,6 +98,22 @@ class TrackingMarkerFactory {
       );
     }),
   );
+
+  /// The playback position pin uses the supplied white-ring navigation glyph.
+  /// Keep this bitmap upright; Google Maps applies the live heading rotation.
+  Future<BitmapDescriptor> playbackCurrent() {
+    const size = Size(44, 44);
+    return _cached('playback-current', () async {
+      final info = await _playbackArrowPicture();
+      return _draw(size, (canvas) async {
+        canvas
+          ..translate(size.width / 2, size.height / 2)
+          ..translate(-size.width / 2, -size.height / 2)
+          ..scale(size.width / info.size.width, size.height / info.size.height)
+          ..drawPicture(info.picture);
+      });
+    });
+  }
 
   Future<BitmapDescriptor> vehicle({
     required String label,
@@ -139,8 +164,11 @@ class TrackingMarkerFactory {
   void dispose() {
     _disposed = true;
     final arrow = _arrow;
+    final playbackArrow = _playbackArrow;
     _arrow = null;
+    _playbackArrow = null;
     arrow?.then((info) => info.picture.dispose(), onError: (_) {});
+    playbackArrow?.then((info) => info.picture.dispose(), onError: (_) {});
     _cache.clear();
   }
 
@@ -188,8 +216,26 @@ class TrackingMarkerFactory {
     }
   }
 
+  Future<PictureInfo> _playbackArrowPicture() async {
+    if (_disposed) throw const MarkerDrawException('factory disposed');
+    final pending = _playbackArrow ??= _loadPlaybackArrow();
+    try {
+      final info = await pending;
+      if (_disposed) throw const MarkerDrawException('factory disposed');
+      return info;
+    } catch (_) {
+      if (identical(_playbackArrow, pending)) _playbackArrow = null;
+      rethrow;
+    }
+  }
+
   static Future<PictureInfo> _loadArrowAsset() =>
       vg.loadPicture(const SvgAssetLoader(AppAssets.mapArrow), null);
+
+  static Future<PictureInfo> _loadPlaybackArrowAsset() => vg.loadPicture(
+    const SvgAssetLoader(AppAssets.playbackNavigationIcon),
+    null,
+  );
 
   static void _text(
     Canvas canvas,

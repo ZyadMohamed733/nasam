@@ -950,6 +950,30 @@ abstract class AppLocalizations {
   /// **'إعادة التشغيل'**
   String get assetPlaybackTitle;
 
+  /// AWAITING DESIGN COPY
+  ///
+  /// In ar, this message translates to:
+  /// **'الموقع السابق'**
+  String get playbackPrevious;
+
+  /// AWAITING DESIGN COPY
+  ///
+  /// In ar, this message translates to:
+  /// **'الموقع التالي'**
+  String get playbackNext;
+
+  /// AWAITING DESIGN COPY
+  ///
+  /// In ar, this message translates to:
+  /// **'معلومات المسار'**
+  String get playbackInfo;
+
+  /// AWAITING DESIGN COPY
+  ///
+  /// In ar, this message translates to:
+  /// **'رجوع'**
+  String get playbackBack;
+
   /// No description provided for @assetPlaybackFrom.
   ///
   /// In ar, this message translates to:

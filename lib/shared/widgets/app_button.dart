@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_icons.dart';
@@ -41,12 +42,14 @@ class AppButton extends StatelessWidget {
     this.variant = AppButtonVariant.primary,
     this.isLoading = false,
     this.icon,
+    this.assetIcon,
     this.iconSize,
     this.trailingIcon,
     this.width,
     this.height,
     this.labelStyle,
-  });
+    this.primaryBackgroundColor,
+  }) : assert(icon == null || assetIcon == null);
 
   final VoidCallback? onPressed;
   final String label;
@@ -55,6 +58,9 @@ class AppButton extends StatelessWidget {
 
   /// Drawn at 16 before the label, per the design's inline icon size.
   final IconData? icon;
+
+  /// SVG asset drawn before the label, using the button's foreground colour.
+  final String? assetIcon;
 
   /// Optional icon size for actions whose icon is larger than the inline size.
   final double? iconSize;
@@ -72,6 +78,9 @@ class AppButton extends StatelessWidget {
   /// Optional label style for specialized actions.
   final TextStyle? labelStyle;
 
+  /// Optional screen-specific fill for enabled primary buttons.
+  final Color? primaryBackgroundColor;
+
   bool get _enabled => onPressed != null && !isLoading;
 
   @override
@@ -84,7 +93,11 @@ class AppButton extends StatelessWidget {
       child: switch (variant) {
         AppButtonVariant.primary => ElevatedButton(
           onPressed: _enabled ? onPressed : null,
-          style: _primaryStyle(context, semantic),
+          style: _primaryStyle(
+            context,
+            semantic,
+            backgroundOverride: primaryBackgroundColor,
+          ),
           child: _content(context, semantic),
         ),
         AppButtonVariant.secondary => OutlinedButton(
@@ -107,18 +120,26 @@ class AppButton extends StatelessWidget {
 
   static const _padding = EdgeInsets.symmetric(horizontal: AppSizes.p8);
 
-  ButtonStyle _primaryStyle(BuildContext context, AppSemanticColors s) {
+  ButtonStyle _primaryStyle(
+    BuildContext context,
+    AppSemanticColors s, {
+    Color? backgroundOverride,
+  }) {
     return ButtonStyle(
       shape: const WidgetStatePropertyAll(_shape),
       padding: const WidgetStatePropertyAll(_padding),
       elevation: const WidgetStatePropertyAll(0),
-      textStyle: WidgetStatePropertyAll(labelStyle ?? context.textTheme.labelLarge),
+      textStyle: WidgetStatePropertyAll(
+        labelStyle ?? context.textTheme.labelLarge,
+      ),
       backgroundColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.disabled)) {
           return s.primaryButtonDisabled;
         }
-        if (_isHighlighted(states)) return s.primaryButtonHover;
-        return s.primaryButtonBackground;
+        if (_isHighlighted(states)) {
+          return backgroundOverride ?? s.primaryButtonHover;
+        }
+        return backgroundOverride ?? s.primaryButtonBackground;
       }),
       foregroundColor: WidgetStatePropertyAll(s.primaryButtonText),
       // The background already changes on hover; an ink overlay on top of it
@@ -131,7 +152,9 @@ class AppButton extends StatelessWidget {
     return ButtonStyle(
       shape: const WidgetStatePropertyAll(_shape),
       padding: const WidgetStatePropertyAll(_padding),
-      textStyle: WidgetStatePropertyAll(labelStyle ?? context.textTheme.labelLarge),
+      textStyle: WidgetStatePropertyAll(
+        labelStyle ?? context.textTheme.labelLarge,
+      ),
       backgroundColor: WidgetStateProperty.resolveWith((states) {
         if (_isHighlighted(states)) return s.secondaryButtonHover;
         return s.secondaryButtonBackground;
@@ -159,7 +182,9 @@ class AppButton extends StatelessWidget {
     return ButtonStyle(
       shape: const WidgetStatePropertyAll(_shape),
       padding: const WidgetStatePropertyAll(_padding),
-      textStyle: WidgetStatePropertyAll(labelStyle ?? context.textTheme.labelLarge),
+      textStyle: WidgetStatePropertyAll(
+        labelStyle ?? context.textTheme.labelLarge,
+      ),
       backgroundColor: WidgetStateProperty.resolveWith(
         (states) => _isHighlighted(states)
             ? s.secondaryButtonHover
@@ -192,8 +217,20 @@ class AppButton extends StatelessWidget {
             child: const CircularProgressIndicator(strokeWidth: 2),
           ),
           const SizedBox(width: AppSizes.p4),
-        ] else if (icon != null) ...[
-          Icon(icon, size: iconSize ?? AppIconSize.small.value),
+        ] else if (icon != null || assetIcon != null) ...[
+          if (assetIcon != null)
+            SvgPicture.asset(
+              assetIcon!,
+              width: iconSize ?? AppIconSize.small.value,
+              height: iconSize ?? AppIconSize.small.value,
+              colorFilter: ColorFilter.mode(
+                s.primaryButtonText,
+                BlendMode.srcIn,
+              ),
+              excludeFromSemantics: true,
+            )
+          else
+            Icon(icon, size: iconSize ?? AppIconSize.small.value),
           const SizedBox(width: AppSizes.p4),
         ],
         Flexible(

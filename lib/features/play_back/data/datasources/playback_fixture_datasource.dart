@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/errors/exceptions.dart';
+import '../models/playback_point_model.dart';
 import '../models/playback_segment_model.dart';
 import 'playback_datasource.dart';
 
@@ -17,16 +18,23 @@ class PlaybackFixtureDataSource implements PlaybackDataSource {
     @ignoreParam bool? simulateFailure,
   }) : _bundle = bundle ?? rootBundle,
        _latency = latency ?? const Duration(milliseconds: 300),
-       _simulateFailure = simulateFailure ?? _failureFlag;
+       _simulateFailure = simulateFailure ?? _failureFlag,
+       _simulateEmpty = _emptyFlag;
 
   static const bool _failureFlag =
-      kDebugMode && bool.fromEnvironment('TRACKING_FIXTURE_FAIL');
+      kDebugMode && bool.fromEnvironment(
+        'PLAYBACK_FIXTURE_FAIL',
+        defaultValue: bool.fromEnvironment('TRACKING_FIXTURE_FAIL'),
+      );
+  static const bool _emptyFlag =
+      kDebugMode && bool.fromEnvironment('PLAYBACK_FIXTURE_EMPTY');
   static const _root = 'assets/fixtures/play_back';
   static final _recordedDay = DateTime(2025, 10, 17);
 
   final AssetBundle _bundle;
   final Duration _latency;
   final bool _simulateFailure;
+  final bool _simulateEmpty;
 
   @override
   Future<List<PlaybackSegmentModel>> getSegments({
@@ -35,9 +43,10 @@ class PlaybackFixtureDataSource implements PlaybackDataSource {
     required DateTime to,
   }) async {
     await _simulateNetwork();
-    final json = jsonDecode(
-      await _bundle.loadString('$_root/playback_segments.json'),
-    ) as Map<String, dynamic>;
+    if (_simulateEmpty) return const [];
+    final json =
+        jsonDecode(await _bundle.loadString('$_root/playback_segments.json'))
+            as Map<String, dynamic>;
     final recorded = (json['data'] as List<dynamic>? ?? const [])
         .cast<Map<String, dynamic>>()
         .map(PlaybackSegmentModel.fromJson)
@@ -50,6 +59,41 @@ class PlaybackFixtureDataSource implements PlaybackDataSource {
           (segment) =>
               !segment.startedAt.isBefore(from) && !segment.endedAt.isAfter(to),
         )
+        .toList(growable: false);
+  }
+
+  @override
+  Future<List<PlaybackPointModel>> getRoute({
+    required String assetId,
+    required DateTime from,
+    required DateTime to,
+  }) async {
+    await _simulateNetwork();
+    if (_simulateEmpty) return const [];
+    final json =
+        jsonDecode(await _bundle.loadString('$_root/playback_route.json'))
+            as Map<String, dynamic>;
+    final recorded = (json['data'] as List<dynamic>? ?? const [])
+        .cast<Map<String, dynamic>>()
+        .map(PlaybackPointModel.fromJson);
+    return recorded
+        .map(
+          (point) => PlaybackPointModel(
+            latitude: point.latitude,
+            longitude: point.longitude,
+            recordedAt: DateTime(
+              from.year,
+              from.month,
+              from.day,
+              point.recordedAt.hour,
+              point.recordedAt.minute,
+              point.recordedAt.second,
+            ),
+            headingDegrees: point.headingDegrees,
+            speedKph: point.speedKph,
+          ),
+        )
+        .where((p) => !p.recordedAt.isBefore(from) && p.recordedAt.isBefore(to))
         .toList(growable: false);
   }
 
@@ -79,7 +123,7 @@ class PlaybackFixtureDataSource implements PlaybackDataSource {
     if (_latency > Duration.zero) await Future<void>.delayed(_latency);
     if (_simulateFailure) {
       throw const ServerException(
-        message: 'Simulated tracking failure (TRACKING_FIXTURE_FAIL).',
+        message: 'Simulated playback failure.',
         code: '503',
       );
     }

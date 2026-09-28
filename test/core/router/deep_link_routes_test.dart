@@ -16,11 +16,12 @@ import 'package:nasam/features/auth/presentation/pages/login_page.dart';
 import 'package:nasam/features/home/presentation/pages/home_page.dart';
 import 'package:nasam/features/play_back/data/datasources/playback_datasource.dart';
 import 'package:nasam/features/play_back/data/datasources/playback_fixture_datasource.dart';
+import 'package:nasam/features/play_back/presentation/pages/playback_page.dart';
+import 'package:nasam/features/play_back/presentation/pages/playback_map_page.dart';
+import 'package:nasam/features/play_back/presentation/utils/playback_range.dart';
 import 'package:nasam/features/tracking/data/datasources/tracking_datasource.dart';
 import 'package:nasam/features/tracking/data/datasources/tracking_fixture_datasource.dart';
 import 'package:nasam/features/tracking/presentation/pages/tracking_asset_details_page.dart';
-import 'package:nasam/features/play_back/presentation/pages/playback_page.dart';
-import 'package:nasam/features/play_back/presentation/utils/playback_range.dart';
 import 'package:nasam/features/tracking/presentation/widgets/tracking_asset_not_found.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -143,14 +144,23 @@ void main() {
     expect(find.byType(HomePage), findsOneWidget);
   });
 
+  testWidgets('the start playback button opens the map playback child route', (
+    tester,
+  ) async {
+    final router = await open(tester, AppRoutes.assetPlayback(_knownId));
+    await tester.tap(find.text('Start playback'));
+    await tester.pumpAndSettle();
+    expect(location(router), startsWith(AppRoutes.assetPlaybackMap(_knownId)));
+    expect(find.byType(PlaybackMapPage), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('a valid range in the link reaches the page', (tester) async {
     final today = PlaybackRange.today();
     final from = today.from.subtract(const Duration(days: 3));
     await open(tester, AppRoutes.assetPlayback(_knownId, from: from));
 
-    final page = tester.widget<PlaybackPage>(
-      find.byType(PlaybackPage),
-    );
+    final page = tester.widget<PlaybackPage>(find.byType(PlaybackPage));
     expect(page.initialRange.from, from);
     expect(page.initialRange.to, today.to, reason: 'no to: through today');
   });
@@ -163,9 +173,7 @@ void main() {
       '/assets/$_knownId/playback?from=not-a-date&to=2999-01-01',
     );
 
-    final page = tester.widget<PlaybackPage>(
-      find.byType(PlaybackPage),
-    );
+    final page = tester.widget<PlaybackPage>(find.byType(PlaybackPage));
     expect(page.initialRange, PlaybackRange.today());
     expect(tester.takeException(), isNull);
   });
@@ -224,9 +232,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(location(router), target);
-    final page = tester.widget<PlaybackPage>(
-      find.byType(PlaybackPage),
-    );
+    final page = tester.widget<PlaybackPage>(find.byType(PlaybackPage));
     expect(page.initialRange.from, from, reason: 'dates survive the detour');
     expect(page.initialRange.to, to);
   });

@@ -513,6 +513,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get assetPlaybackTitle => 'إعادة التشغيل';
 
   @override
+  String get playbackPrevious => 'الموقع السابق';
+
+  @override
+  String get playbackNext => 'الموقع التالي';
+
+  @override
+  String get playbackInfo => 'معلومات المسار';
+
+  @override
+  String get playbackBack => 'رجوع';
+
+  @override
   String get assetPlaybackFrom => 'تاريخ البداية';
 
   @override

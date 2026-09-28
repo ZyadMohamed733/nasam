@@ -499,6 +499,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get assetPlaybackTitle => 'Playback';
 
   @override
+  String get playbackPrevious => 'Previous point';
+
+  @override
+  String get playbackNext => 'Next point';
+
+  @override
+  String get playbackInfo => 'Route information';
+
+  @override
+  String get playbackBack => 'Back';
+
+  @override
   String get assetPlaybackFrom => 'Start date';
 
   @override

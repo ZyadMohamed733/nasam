@@ -52,10 +52,14 @@ import '../../features/play_back/data/repositories/playback_repository_impl.dart
     as _i604;
 import '../../features/play_back/domain/repositories/playback_repository.dart'
     as _i832;
+import '../../features/play_back/domain/usecases/get_playback_route_usecase.dart'
+    as _i95;
 import '../../features/play_back/domain/usecases/get_playback_segments_usecase.dart'
     as _i948;
 import '../../features/play_back/presentation/cubit/playback_cubit.dart'
     as _i943;
+import '../../features/play_back/presentation/cubit/playback_map_cubit.dart'
+    as _i624;
 import '../../features/tracking/data/datasources/tracking_datasource.dart'
     as _i765;
 import '../../features/tracking/data/datasources/tracking_fixture_datasource.dart'
@@ -174,6 +178,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i745.AuthSessionNotifier>(),
       ),
     );
+    gh.lazySingleton<_i95.GetPlaybackRouteUseCase>(
+      () => _i95.GetPlaybackRouteUseCase(gh<_i832.PlaybackRepository>()),
+    );
     gh.lazySingleton<_i948.GetPlaybackSegmentsUseCase>(
       () => _i948.GetPlaybackSegmentsUseCase(gh<_i832.PlaybackRepository>()),
     );
@@ -210,6 +217,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i886.GetTrackingVehiclesUseCase>(
       () => _i886.GetTrackingVehiclesUseCase(gh<_i76.TrackingRepository>()),
+    );
+    gh.factory<_i624.PlaybackMapCubit>(
+      () => _i624.PlaybackMapCubit(gh<_i95.GetPlaybackRouteUseCase>()),
     );
     gh.factory<_i546.TrackingCubit>(
       () => _i546.TrackingCubit(
