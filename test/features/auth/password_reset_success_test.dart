@@ -20,6 +20,7 @@ import 'package:nasam/features/auth/presentation/pages/password_reset_success_pa
 import 'package:nasam/shared/widgets/animated_success_icon.dart';
 
 import '../../helpers/font_loader.dart';
+import '../../helpers/recovery.dart';
 
 class _Repository extends Mock implements AuthRepository {}
 
@@ -46,7 +47,7 @@ void main() {
         GoRoute(
           path: AppRoutes.newPassword,
           builder: (context, state) =>
-              NewPasswordPage(resetToken: 'verified-token', cubit: cubit),
+              withRecovery(NewPasswordPage(cubit: cubit)),
         ),
         GoRoute(
           path: AppRoutes.passwordResetSuccess,

@@ -15,11 +15,11 @@ import 'package:nasam/core/services/storage_service.dart';
 import 'package:nasam/core/services/websocket_service.dart';
 import 'package:nasam/features/auth/domain/repositories/auth_repository.dart';
 import 'package:nasam/features/auth/domain/usecases/logout_usecase.dart';
-import 'package:nasam/features/auth/presentation/cubit/forgot_password_cubit.dart';
 import 'package:nasam/features/auth/presentation/cubit/login_cubit.dart';
 import 'package:nasam/features/auth/presentation/cubit/logout_cubit.dart';
 import 'package:nasam/features/auth/presentation/cubit/new_password_cubit.dart';
 import 'package:nasam/features/auth/presentation/cubit/otp_cubit.dart';
+import 'package:nasam/features/auth/presentation/cubit/password_recovery_cubit.dart';
 import 'package:nasam/features/onboarding/presentation/cubit/onboarding_cubit.dart';
 import 'package:nasam/features/play_back/domain/repositories/playback_repository.dart';
 import 'package:nasam/features/play_back/domain/usecases/get_playback_segments_usecase.dart';
@@ -85,7 +85,7 @@ void main() {
         expect(getIt<TokenRefresher>(), isA<TokenRefresher>());
         expect(getIt<AuthInterceptor>(), isA<AuthInterceptor>());
         expect(getIt<OtpCubit>(), isA<OtpCubit>());
-        expect(getIt<ForgotPasswordCubit>(), isA<ForgotPasswordCubit>());
+        expect(getIt<PasswordRecoveryCubit>(), isA<PasswordRecoveryCubit>());
         expect(getIt<NewPasswordCubit>(), isA<NewPasswordCubit>());
         expect(getIt<OnboardingCubit>(), isA<OnboardingCubit>());
 

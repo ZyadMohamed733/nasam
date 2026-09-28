@@ -23,6 +23,19 @@ class AuthInterceptor extends Interceptor {
   final SecureStorageService _storage;
   final TokenRefresher _refresher;
 
+  /// `RequestOptions.extra` key marking a request that must go out without
+  /// the session: no bearer token, and a 401 is handed back as it is rather
+  /// than refreshing. For endpoints used by someone who is signed out —
+  /// password recovery — where a stale token must not be sent and a failed
+  /// refresh must not end or expire anything. Use [unauthenticated].
+  static const String skipAuthKey = 'skipAuth';
+
+  /// Request options for an endpoint that does not take the session.
+  static Options unauthenticated() => Options(extra: {skipAuthKey: true});
+
+  static bool _skipsAuth(RequestOptions options) =>
+      options.extra[skipAuthKey] == true;
+
   /// Replays the failed request. Without this interceptor, so a retry that
   /// 401s again is handed back rather than refreshed forever.
   final Dio _retryClient;
@@ -32,6 +45,10 @@ class AuthInterceptor extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
+    if (_skipsAuth(options)) {
+      handler.next(options);
+      return;
+    }
     // Served from memory after the first read; see SecureStorageService.
     final token = await _storage.getAccessToken();
     if (token != null && token.isNotEmpty) {
@@ -46,6 +63,7 @@ class AuthInterceptor extends Interceptor {
     ErrorInterceptorHandler handler,
   ) async {
     if (err.response?.statusCode != 401 ||
+        _skipsAuth(err.requestOptions) ||
         err.requestOptions.extra['isRetry'] == true) {
       handler.next(err);
       return;

@@ -8,10 +8,15 @@ class AppRoutes {
   static const String onboarding = '/onboarding';
   static const String login = '/login';
 
-  // The password reset flow, in the order it is walked.
-  static const String forgotPassword = '/forgot-password';
+  /// Login's second factor, for accounts with 2FA.
   static const String otpVerification = '/verify-code';
-  static const String newPassword = '/new-password';
+
+  // Password recovery, in the order it is walked: email, emailed code, new
+  // password, then success (which is outside the flow, so reaching it ends
+  // the flow and drops its reset token).
+  static const String forgotPassword = '/forgot-password';
+  static const String resetCode = '/forgot-password/verify';
+  static const String newPassword = '/forgot-password/new-password';
   static const String passwordResetSuccess = '/password-reset-success';
 
   static const String home = '/';

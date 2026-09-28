@@ -1,5 +1,10 @@
 # Auth backend integration — implementation plan
 
+> **Superseded:** password recovery is now in-app — email, a six-digit
+> code (`POST /auth/verify-reset-otp`), then a new password — driven by
+> `PasswordRecoveryCubit`; the emailed-link, web-only flow described below
+> is gone.
+>
 > **Superseded:** refresh is handled by `core/auth/TokenRefresher`. The
 > repository refresh method and `RefreshAccessTokenUseCase` described below
 > were removed.

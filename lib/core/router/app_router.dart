@@ -3,11 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../features/auth/presentation/cubit/password_recovery_cubit.dart';
 import '../../features/auth/presentation/pages/forgot_password_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/new_password_page.dart';
 import '../../features/auth/presentation/pages/otp_verification_page.dart';
 import '../../features/auth/presentation/pages/password_reset_success_page.dart';
+import '../../features/auth/presentation/pages/reset_code_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/onboarding/presentation/pages/onboarding_page.dart';
 import '../../features/play_back/presentation/cubit/playback_cubit.dart';
@@ -79,19 +81,52 @@ class AppRouter {
           ),
         ),
       ),
-      GoRoute(
-        path: AppRoutes.forgotPassword,
-        pageBuilder: (context, state) => appTransitionPage(
+      // Password recovery. One shell around its three screens owns the
+      // PasswordRecoveryCubit — the email, and the reset token once the code
+      // is verified — so leaving the flow in any direction (back to login,
+      // on to the success screen, a cold start into its middle) disposes the
+      // cubit and the token with it. Nothing about the flow is in a URL.
+      ShellRoute(
+        pageBuilder: (context, state, child) => appTransitionPage(
           context: context,
           state: state,
           slide: true,
-          child: const ForgotPasswordPage(),
+          child: BlocProvider(
+            create: (_) => getIt<PasswordRecoveryCubit>(),
+            child: child,
+          ),
         ),
+        routes: [
+          GoRoute(
+            path: AppRoutes.forgotPassword,
+            pageBuilder: (context, state) => NoTransitionPage<void>(
+              key: state.pageKey,
+              child: const ForgotPasswordPage(),
+            ),
+          ),
+          GoRoute(
+            path: AppRoutes.resetCode,
+            pageBuilder: (context, state) => appTransitionPage(
+              context: context,
+              state: state,
+              slide: true,
+              child: const ResetCodePage(),
+            ),
+          ),
+          GoRoute(
+            path: AppRoutes.newPassword,
+            pageBuilder: (context, state) => appTransitionPage(
+              context: context,
+              state: state,
+              slide: true,
+              child: const NewPasswordPage(),
+            ),
+          ),
+        ],
       ),
-      // OTP verification is login's second factor now, reached from `login`
-      // with the username that started the attempt -- not from
-      // forgot-password, which is web-only (see
-      // docs/plans/AUTH_INTEGRATION_PLAN.md). An arrival without that state
+      // OTP verification is login's second factor, reached from `login` with
+      // the username that started the attempt. Password recovery has its own
+      // code screen (AppRoutes.resetCode). An arrival without that state
       // (a cold deep link, a resume after the app was evicted) restarts the
       // flow at login rather than building with a placeholder.
       GoRoute(
@@ -108,22 +143,6 @@ class AppRouter {
               state.uri.queryParameters[AppRoutes.returnToParam],
             ),
           ),
-        ),
-      ),
-      // newPassword/passwordResetSuccess below carry the reset token from
-      // the emailed link. Nothing currently navigates to them -- reset is
-      // web-only for now -- but the implementation is correct and complete
-      // against PATCH /auth/reset-password, ready for a future deep-link
-      // handler to land on (see docs/plans/AUTH_INTEGRATION_PLAN.md).
-      GoRoute(
-        path: AppRoutes.newPassword,
-        redirect: (context, state) =>
-            state.extra is String ? null : AppRoutes.forgotPassword,
-        pageBuilder: (context, state) => appTransitionPage(
-          context: context,
-          state: state,
-          slide: true,
-          child: NewPasswordPage(resetToken: state.extra! as String),
         ),
       ),
       GoRoute(
@@ -189,9 +208,7 @@ class AppRouter {
                           create: (_) =>
                               getIt<TrackedAssetCubit>()..load(assetId),
                         ),
-                        BlocProvider(
-                          create: (_) => getIt<PlaybackCubit>(),
-                        ),
+                        BlocProvider(create: (_) => getIt<PlaybackCubit>()),
                       ],
                       child: PlaybackPage(
                         assetId: assetId,

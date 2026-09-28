@@ -476,18 +476,6 @@ abstract class AppLocalizations {
   /// **'أرسلنا رمزًا مكونًا من ستة أرقام إلى عنوان بريدك الإلكتروني المسجل.'**
   String get otpSubtitle;
 
-  /// NOT design-verified -- inline confirmation shown on ForgotPasswordPage after forget-password succeeds (per the web-only reset decision in docs/plans/AUTH_INTEGRATION_PLAN.md). Needs a design/localization pass before shipping.
-  ///
-  /// In ar, this message translates to:
-  /// **'تحقق من بريدك الإلكتروني'**
-  String get forgotPasswordCheckEmailTitle;
-
-  /// NOT design-verified. Deliberately non-committal about whether the address exists, matching the API's own message (POST /auth/forget-password never signals existence either way). Needs a design/localization pass before shipping.
-  ///
-  /// In ar, this message translates to:
-  /// **'إذا كان هناك حساب مرتبط بهذا البريد الإلكتروني، فسنرسل إليه رابطًا لإعادة تعيين كلمة المرور.'**
-  String get forgotPasswordCheckEmailSubtitle;
-
   /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
   ///
   /// In ar, this message translates to:
@@ -1195,6 +1183,18 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'{value} مللي فولت'**
   String unitMillivolts(String value);
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم إرسال رمز جديد.'**
+  String get resetCodeResent;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'طلب رمز جديد'**
+  String get resetStartOver;
 }
 
 class _AppLocalizationsDelegate

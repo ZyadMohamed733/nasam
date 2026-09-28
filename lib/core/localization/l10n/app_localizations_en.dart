@@ -258,13 +258,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'We sent a six-digit code to your registered email address.';
 
   @override
-  String get forgotPasswordCheckEmailTitle => 'Check your email';
-
-  @override
-  String get forgotPasswordCheckEmailSubtitle =>
-      'If an account exists for that email address, we\'ve sent a password reset link to it.';
-
-  @override
   String get otpSubmit => 'Verify';
 
   @override
@@ -642,4 +635,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String unitMillivolts(String value) {
     return '$value mV';
   }
+
+  @override
+  String get resetCodeResent => 'A new code has been sent.';
+
+  @override
+  String get resetStartOver => 'Request a new code';
 }

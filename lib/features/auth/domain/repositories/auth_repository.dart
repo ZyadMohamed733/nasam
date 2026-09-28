@@ -38,12 +38,20 @@ abstract class AuthRepository {
   /// nobody is signed in. Local only: no network call.
   Future<Either<Failure, UserEntity?>> currentUser();
 
-  /// Starts a password reset by emailing [email] a reset link. Always
-  /// succeeds with the same message whether or not the address has an
-  /// account -- never signal existence either way.
+  /// Starts a password reset by emailing [email] a six-digit code. Also how
+  /// the code is resent. An unknown address is a 404 from this backend.
   Future<Either<Failure, Unit>> forgetPassword(String email);
 
-  /// Completes a reset using the token from the emailed link.
+  /// Exchanges the emailed code for a temporary reset token. [code] is a
+  /// string so leading zeros survive. The token is for this recovery only:
+  /// callers keep it in memory and never persist or log it.
+  Future<Either<Failure, String>> verifyResetOtp({
+    required String email,
+    required String code,
+  });
+
+  /// Sets a new password using the token from [verifyResetOtp]. Does not
+  /// sign the user in.
   Future<Either<Failure, Unit>> resetPassword({
     required String resetToken,
     required String newPassword,

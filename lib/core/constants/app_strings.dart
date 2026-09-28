@@ -15,6 +15,10 @@ class AppStrings {
   static const String headerAuthorization = 'Authorization';
   static const String headerContentType = 'Content-Type';
   static const String headerAccept = 'Accept';
+
+  /// The language the backend should answer in (`en` or `ar`), so its
+  /// user-facing error messages can be shown as they are.
+  static const String headerLanguage = 'x-lang';
   static const String valueJsonType = 'application/json';
 
   // WebSocket Events

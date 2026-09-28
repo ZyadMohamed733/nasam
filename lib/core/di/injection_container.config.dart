@@ -32,28 +32,30 @@ import '../../features/auth/domain/usecases/resend_otp_usecase.dart' as _i613;
 import '../../features/auth/domain/usecases/reset_password_usecase.dart'
     as _i474;
 import '../../features/auth/domain/usecases/verify_otp_usecase.dart' as _i503;
+import '../../features/auth/domain/usecases/verify_reset_otp_usecase.dart'
+    as _i752;
 import '../../features/auth/presentation/cubit/current_user_cubit.dart' as _i18;
-import '../../features/auth/presentation/cubit/forgot_password_cubit.dart'
-    as _i104;
 import '../../features/auth/presentation/cubit/login_cubit.dart' as _i69;
 import '../../features/auth/presentation/cubit/logout_cubit.dart' as _i159;
 import '../../features/auth/presentation/cubit/new_password_cubit.dart'
     as _i236;
 import '../../features/auth/presentation/cubit/otp_cubit.dart' as _i1033;
+import '../../features/auth/presentation/cubit/password_recovery_cubit.dart'
+    as _i648;
 import '../../features/onboarding/presentation/cubit/onboarding_cubit.dart'
     as _i807;
 import '../../features/play_back/data/datasources/playback_datasource.dart'
-    as _i2001;
+    as _i550;
 import '../../features/play_back/data/datasources/playback_fixture_datasource.dart'
-    as _i2002;
+    as _i1044;
 import '../../features/play_back/data/repositories/playback_repository_impl.dart'
-    as _i2003;
+    as _i604;
 import '../../features/play_back/domain/repositories/playback_repository.dart'
-    as _i2004;
+    as _i832;
 import '../../features/play_back/domain/usecases/get_playback_segments_usecase.dart'
-    as _i2005;
+    as _i948;
 import '../../features/play_back/presentation/cubit/playback_cubit.dart'
-    as _i2006;
+    as _i943;
 import '../../features/tracking/data/datasources/tracking_datasource.dart'
     as _i765;
 import '../../features/tracking/data/datasources/tracking_fixture_datasource.dart'
@@ -83,6 +85,7 @@ import '../auth/token_refresher.dart' as _i599;
 import '../errors/error_reporter.dart' as _i720;
 import '../network/interceptors/auth_interceptor.dart' as _i745;
 import '../network/interceptors/error_interceptor.dart' as _i511;
+import '../network/interceptors/language_interceptor.dart' as _i465;
 import '../network/interceptors/logging_interceptor.dart' as _i344;
 import '../router/app_router.dart' as _i81;
 import '../router/route_guard.dart' as _i715;
@@ -122,8 +125,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i765.TrackingDataSource>(
       () => _i439.TrackingFixtureDataSource(),
     );
-    gh.lazySingleton<_i2001.PlaybackDataSource>(
-      () => _i2002.PlaybackFixtureDataSource(),
+    gh.lazySingleton<_i550.PlaybackDataSource>(
+      () => _i1044.PlaybackFixtureDataSource(),
     );
     gh.lazySingleton<_i361.Dio>(
       () => networkModule.bareDio(
@@ -153,6 +156,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i720.ErrorReporter>(),
       ),
     );
+    gh.lazySingleton<_i832.PlaybackRepository>(
+      () => _i604.PlaybackRepositoryImpl(gh<_i550.PlaybackDataSource>()),
+    );
     gh.factory<_i807.OnboardingCubit>(
       () => _i807.OnboardingCubit(gh<_i306.StorageService>()),
     );
@@ -168,6 +174,12 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i745.AuthSessionNotifier>(),
       ),
     );
+    gh.lazySingleton<_i948.GetPlaybackSegmentsUseCase>(
+      () => _i948.GetPlaybackSegmentsUseCase(gh<_i832.PlaybackRepository>()),
+    );
+    gh.factory<_i943.PlaybackCubit>(
+      () => _i943.PlaybackCubit(gh<_i948.GetPlaybackSegmentsUseCase>()),
+    );
     gh.lazySingleton<_i81.AppRouter>(
       () => _i81.AppRouter(
         gh<_i715.RouteGuard>(),
@@ -181,17 +193,14 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i361.Dio>(instanceName: 'bareDio'),
       ),
     );
+    gh.lazySingleton<_i465.LanguageInterceptor>(
+      () => _i465.LanguageInterceptor(gh<_i461.AppSettingsController>()),
+    );
     gh.lazySingleton<_i439.GetAssetDetailsUseCase>(
       () => _i439.GetAssetDetailsUseCase(gh<_i76.TrackingRepository>()),
     );
     gh.lazySingleton<_i201.GetAssetNotificationsUseCase>(
       () => _i201.GetAssetNotificationsUseCase(gh<_i76.TrackingRepository>()),
-    );
-    gh.lazySingleton<_i2004.PlaybackRepository>(
-      () => _i2003.PlaybackRepositoryImpl(gh<_i2001.PlaybackDataSource>()),
-    );
-    gh.lazySingleton<_i2005.GetPlaybackSegmentsUseCase>(
-      () => _i2005.GetPlaybackSegmentsUseCase(gh<_i2004.PlaybackRepository>()),
     );
     gh.lazySingleton<_i127.GetTrackedAssetUseCase>(
       () => _i127.GetTrackedAssetUseCase(gh<_i76.TrackingRepository>()),
@@ -211,22 +220,20 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i1062.TrackedAssetCubit>(
       () => _i1062.TrackedAssetCubit(gh<_i127.GetTrackedAssetUseCase>()),
     );
+    gh.lazySingleton<_i361.Dio>(
+      () => networkModule.dio(
+        gh<_i861.AppConfig>(),
+        gh<_i745.AuthInterceptor>(),
+        gh<_i465.LanguageInterceptor>(),
+        gh<_i344.LoggingInterceptor>(),
+        gh<_i511.ErrorInterceptor>(),
+      ),
+    );
     gh.factory<_i784.AssetDetailsCubit>(
       () => _i784.AssetDetailsCubit(
         gh<_i439.GetAssetDetailsUseCase>(),
         gh<_i201.GetAssetNotificationsUseCase>(),
       ),
-    );
-    gh.lazySingleton<_i361.Dio>(
-      () => networkModule.dio(
-        gh<_i861.AppConfig>(),
-        gh<_i745.AuthInterceptor>(),
-        gh<_i344.LoggingInterceptor>(),
-        gh<_i511.ErrorInterceptor>(),
-      ),
-    );
-    gh.factory<_i2006.PlaybackCubit>(
-      () => _i2006.PlaybackCubit(gh<_i2005.GetPlaybackSegmentsUseCase>()),
     );
     gh.lazySingleton<_i1022.AuthRemoteDataSource>(
       () => _i1022.AuthRemoteDataSourceImpl(gh<_i361.Dio>()),
@@ -259,6 +266,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i503.VerifyOtpUseCase>(
       () => _i503.VerifyOtpUseCase(gh<_i787.AuthRepository>()),
     );
+    gh.lazySingleton<_i752.VerifyResetOtpUseCase>(
+      () => _i752.VerifyResetOtpUseCase(gh<_i787.AuthRepository>()),
+    );
     gh.factory<_i236.NewPasswordCubit>(
       () => _i236.NewPasswordCubit(gh<_i474.ResetPasswordUseCase>()),
     );
@@ -268,14 +278,17 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i613.ResendOtpUseCase>(),
       ),
     );
-    gh.factory<_i104.ForgotPasswordCubit>(
-      () => _i104.ForgotPasswordCubit(gh<_i948.ForgetPasswordUseCase>()),
-    );
     gh.factory<_i69.LoginCubit>(
       () => _i69.LoginCubit(gh<_i188.LoginUseCase>()),
     );
     gh.factory<_i18.CurrentUserCubit>(
       () => _i18.CurrentUserCubit(gh<_i17.GetCurrentUserUseCase>()),
+    );
+    gh.factory<_i648.PasswordRecoveryCubit>(
+      () => _i648.PasswordRecoveryCubit(
+        gh<_i948.ForgetPasswordUseCase>(),
+        gh<_i752.VerifyResetOtpUseCase>(),
+      ),
     );
     gh.factory<_i159.LogoutCubit>(
       () => _i159.LogoutCubit(gh<_i48.LogoutUseCase>()),

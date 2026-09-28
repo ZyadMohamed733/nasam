@@ -99,6 +99,12 @@ class AuthRepositoryImpl implements AuthRepository {
       });
 
   @override
+  Future<Either<Failure, String>> verifyResetOtp({
+    required String email,
+    required String code,
+  }) => _guard(() => _remote.verifyResetOtp(email: email, code: code));
+
+  @override
   Future<Either<Failure, Unit>> resetPassword({
     required String resetToken,
     required String newPassword,

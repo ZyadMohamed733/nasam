@@ -5,6 +5,7 @@ import '../constants/app_constants.dart';
 import '../constants/app_strings.dart';
 import 'interceptors/auth_interceptor.dart';
 import 'interceptors/error_interceptor.dart';
+import 'interceptors/language_interceptor.dart';
 import 'interceptors/logging_interceptor.dart';
 
 /// The injectable name of the client without the auth interceptor.
@@ -29,14 +30,16 @@ class DioClient {
   static Dio create({
     required AppConfig config,
     required AuthInterceptor authInterceptor,
+    required LanguageInterceptor languageInterceptor,
     required LoggingInterceptor loggingInterceptor,
     required ErrorInterceptor errorInterceptor,
   }) {
     final dio = Dio(baseOptions(config));
 
-    // Add interceptors in order: Auth -> Logging -> Error
+    // In order: Auth -> Language -> Logging -> Error
     dio.interceptors.addAll([
       authInterceptor,
+      languageInterceptor,
       loggingInterceptor,
       errorInterceptor,
     ]);

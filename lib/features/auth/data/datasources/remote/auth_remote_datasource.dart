@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/errors/exception_mapper.dart';
+import '../../../../../core/errors/exceptions.dart';
+import '../../../../../core/network/interceptors/auth_interceptor.dart';
 import '../../models/auth_session_model.dart';
 import '../../models/forget_password_request_model.dart';
 import '../../models/login_request_model.dart';
@@ -9,6 +11,7 @@ import '../../models/refresh_token_request_model.dart';
 import '../../models/resend_otp_request_model.dart';
 import '../../models/reset_password_request_model.dart';
 import '../../models/verify_otp_request_model.dart';
+import '../../models/verify_reset_otp_request_model.dart';
 
 /// What `POST /auth/login` answers when the account has 2FA enabled: `200`
 /// with `{ requiresOtp: true }` and no tokens. [AuthRemoteDataSourceImpl.login]
@@ -33,7 +36,16 @@ abstract class AuthRemoteDataSource {
   /// cleared storage).
   Future<void> logout(String? refreshToken);
 
+  // Password recovery. Sent without the session (see
+  // AuthInterceptor.unauthenticated): the user is signed out, and a 401 here
+  // must not trigger a token refresh.
+
+  /// Emails [email] a six-digit reset code. Resending is the same call.
   Future<void> forgetPassword(String email);
+
+  /// Exchanges the emailed code for a short-lived reset token. Throws a
+  /// [ServerException] if the response carries no token.
+  Future<String> verifyResetOtp({required String email, required String code});
 
   Future<void> resetPassword({
     required String resetToken,
@@ -120,10 +132,44 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       await _dio.post<Map<String, dynamic>>(
         '/auth/forget-password',
         data: ForgetPasswordRequestModel(email: email).toJson(),
+        options: AuthInterceptor.unauthenticated(),
       );
     } on DioException catch (e) {
       throw ExceptionMapper.fromDioException(e);
     }
+  }
+
+  @override
+  Future<String> verifyResetOtp({
+    required String email,
+    required String code,
+  }) async {
+    final Response<Map<String, dynamic>> response;
+    try {
+      response = await _dio.post<Map<String, dynamic>>(
+        '/auth/verify-reset-otp',
+        data: VerifyResetOtpRequestModel(email: email, code: code).toJson(),
+        options: AuthInterceptor.unauthenticated(),
+      );
+    } on DioException catch (e) {
+      throw ExceptionMapper.fromDioException(e);
+    }
+    // Documented as `{ message, resetToken }`, unlike the other auth
+    // endpoints' `{ data: … }`; either shape is read, so the flow survives
+    // the backend aligning this one. Without a token there is no next step,
+    // so a 200 without one is an unexpected response, not a success.
+    final body = response.data;
+    final nested = body?['data'];
+    final token =
+        body?['resetToken'] ??
+        (nested is Map<String, dynamic> ? nested['resetToken'] : null);
+    if (token is! String || token.isEmpty) {
+      throw const ServerException(
+        message: 'The server did not return a reset token.',
+        code: 'missing_reset_token',
+      );
+    }
+    return token;
   }
 
   @override
@@ -138,6 +184,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           resetToken: resetToken,
           newPassword: newPassword,
         ).toJson(),
+        options: AuthInterceptor.unauthenticated(),
       );
     } on DioException catch (e) {
       throw ExceptionMapper.fromDioException(e);

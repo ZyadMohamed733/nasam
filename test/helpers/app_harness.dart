@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nasam/core/constants/app_sizes.dart';
 import 'package:nasam/core/di/injection_container.dart';
 import 'package:nasam/core/localization/app_localizations_setup.dart';
@@ -43,6 +44,12 @@ Future<AppRouter> openApp(WidgetTester tester, String location) async {
   return router;
 }
 
-/// Where the router is now, query included.
-String currentLocation(AppRouter router) =>
-    router.config.routerDelegate.currentConfiguration.uri.toString();
+/// Where the router is now, query included — the top pushed route when
+/// there is one, since go_router's configuration `uri` only follows `go`.
+String currentLocation(AppRouter router) {
+  final configuration = router.config.routerDelegate.currentConfiguration;
+  final top = configuration.isEmpty ? null : configuration.last;
+  return top is ImperativeRouteMatch
+      ? top.matches.uri.toString()
+      : configuration.uri.toString();
+}

@@ -75,4 +75,36 @@ void main() {
       expect(LoggingInterceptor.truncate('short'), 'short');
     });
   });
+
+  // Password recovery sends a code, a reset token and a new password; none
+  // of them may reach a log, request or response.
+  test('password recovery payloads are redacted', () {
+    expect(
+      LoggingInterceptor.redact({
+        'email': 'user@example.com',
+        'code': '012345',
+      }),
+      {'email': 'user@example.com', 'code': '[REDACTED]'},
+    );
+    // Only a field named exactly `code`: status and asset codes stay
+    // readable in the log.
+    expect(
+      LoggingInterceptor.redact({'statusCode': 400, 'assetCode': 'AST-1'}),
+      {'statusCode': 400, 'assetCode': 'AST-1'},
+    );
+    expect(
+      LoggingInterceptor.redact({
+        'resetToken': 'tok-1',
+        'newPassword': 'Str0ng!Pass',
+      }),
+      {'resetToken': '[REDACTED]', 'newPassword': '[REDACTED]'},
+    );
+    expect(
+      LoggingInterceptor.redact({
+        'message': 'OTP verified successfully.',
+        'resetToken': 'tok-1',
+      }),
+      {'message': 'OTP verified successfully.', 'resetToken': '[REDACTED]'},
+    );
+  });
 }

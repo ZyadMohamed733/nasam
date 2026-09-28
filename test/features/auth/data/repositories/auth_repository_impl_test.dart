@@ -244,4 +244,45 @@ void main() {
       expect(result.fold((f) => f, (_) => null), isA<CacheFailure>());
     });
   });
+
+  group('verifyResetOtp', () {
+    test('hands back the reset token and stores nothing', () async {
+      when(
+        () => remote.verifyResetOtp(email: 'a@b.c', code: '012345'),
+      ).thenAnswer((_) async => 'tok-1');
+
+      final result = await repository.verifyResetOtp(
+        email: 'a@b.c',
+        code: '012345',
+      );
+
+      expect(result, const Right<Failure, String>('tok-1'));
+      // A reset token is not a session: nothing is persisted.
+      verifyNever(() => storage.saveAccessToken(any()));
+      verifyNever(() => storage.saveRefreshToken(any()));
+      expect(notifier.value, AuthSessionStatus.signedOut);
+    });
+
+    test('a response without a token is a failure', () async {
+      when(
+        () => remote.verifyResetOtp(
+          email: any(named: 'email'),
+          code: any(named: 'code'),
+        ),
+      ).thenThrow(
+        const ServerException(message: 'no token', code: 'missing_reset_token'),
+      );
+
+      final result = await repository.verifyResetOtp(email: 'a@b.c', code: '1');
+
+      expect(
+        result.fold((f) => f, (_) => null),
+        isA<ServerFailure>().having(
+          (f) => f.code,
+          'code',
+          'missing_reset_token',
+        ),
+      );
+    });
+  });
 }

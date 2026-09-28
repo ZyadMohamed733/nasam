@@ -19,6 +19,7 @@ class RouteGuard {
   static const Set<String> _publicRoutes = {
     AppRoutes.login,
     AppRoutes.forgotPassword,
+    AppRoutes.resetCode,
     AppRoutes.otpVerification,
     AppRoutes.newPassword,
     AppRoutes.passwordResetSuccess,

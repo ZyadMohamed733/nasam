@@ -15,6 +15,7 @@ abstract final class ReturnPath {
     AppRoutes.onboarding,
     AppRoutes.login,
     AppRoutes.forgotPassword,
+    AppRoutes.resetCode,
     AppRoutes.otpVerification,
     AppRoutes.newPassword,
     AppRoutes.passwordResetSuccess,

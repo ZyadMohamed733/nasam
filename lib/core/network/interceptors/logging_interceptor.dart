@@ -28,6 +28,12 @@ class LoggingInterceptor extends Interceptor {
     'api_key',
   ];
 
+  /// Matched only as the whole key, because as a substring they would hide
+  /// harmless fields: `code` is the one-time code sent to verify a login or
+  /// a password reset, but `statusCode` and an asset's `code` are not
+  /// secret.
+  static const Set<String> _sensitiveExactKeys = {'code'};
+
   static const int _maxBodyChars = 2048;
 
   @override
@@ -100,6 +106,7 @@ class LoggingInterceptor extends Interceptor {
   static bool _isSensitive(Object? key) {
     if (key is! String) return false;
     final normalised = key.toLowerCase().replaceAll(RegExp(r'[-_\s]'), '');
+    if (_sensitiveExactKeys.contains(normalised)) return true;
     return _sensitiveKeys.any(
       (sensitive) =>
           normalised.contains(sensitive.replaceAll(RegExp(r'[-_]'), '')),

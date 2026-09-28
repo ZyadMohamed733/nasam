@@ -57,8 +57,10 @@ abstract final class ExceptionMapper {
             stackTrace: err.stackTrace,
           );
         case 404:
+          // The backend's message says what was not found ("no account
+          // with that email") and is shown when present.
           return ServerException(
-            message: 'Resource not found.',
+            message: _messageFrom(err.response?.data) ?? 'Resource not found.',
             code: '404',
             stackTrace: err.stackTrace,
           );

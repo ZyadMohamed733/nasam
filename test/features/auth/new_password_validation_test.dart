@@ -10,6 +10,7 @@ import 'package:nasam/features/auth/presentation/widgets/password_rule_checklist
 import 'package:nasam/shared/widgets/app_button.dart';
 import 'package:nasam/shared/widgets/app_text_field.dart';
 
+import '../../helpers/recovery.dart';
 import '../../helpers/widget_harness.dart';
 
 class _Repository extends Mock implements AuthRepository {}
@@ -23,7 +24,7 @@ void main() {
       final cubit = NewPasswordCubit(ResetPasswordUseCase(repository));
       await pumpInApp(
         tester,
-        NewPasswordPage(resetToken: 'token', cubit: cubit),
+        withRecovery(NewPasswordPage(cubit: cubit)),
         locale: Locale(language),
       );
       final context = tester.element(find.byType(NewPasswordPage));

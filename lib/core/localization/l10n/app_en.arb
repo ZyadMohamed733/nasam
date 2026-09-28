@@ -63,8 +63,6 @@
   "forgotPasswordSubmit": "Send code",
   "otpTitle": "Enter the code",
   "otpSubtitle": "We sent a six-digit code to your registered email address.",
-  "forgotPasswordCheckEmailTitle": "Check your email",
-  "forgotPasswordCheckEmailSubtitle": "If an account exists for that email address, we've sent a password reset link to it.",
   "otpSubmit": "Verify",
   "newPasswordTitle": "Choose a new password",
   "newPasswordLabel": "New password",
@@ -261,5 +259,7 @@
         "type": "String"
       }
     }
-  }
+  },
+  "resetCodeResent": "A new code has been sent.",
+  "resetStartOver": "Request a new code"
 }

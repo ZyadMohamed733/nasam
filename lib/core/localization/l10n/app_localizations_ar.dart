@@ -273,13 +273,6 @@ class AppLocalizationsAr extends AppLocalizations {
       'أرسلنا رمزًا مكونًا من ستة أرقام إلى عنوان بريدك الإلكتروني المسجل.';
 
   @override
-  String get forgotPasswordCheckEmailTitle => 'تحقق من بريدك الإلكتروني';
-
-  @override
-  String get forgotPasswordCheckEmailSubtitle =>
-      'إذا كان هناك حساب مرتبط بهذا البريد الإلكتروني، فسنرسل إليه رابطًا لإعادة تعيين كلمة المرور.';
-
-  @override
   String get otpSubmit => 'ارسال';
 
   @override
@@ -655,4 +648,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String unitMillivolts(String value) {
     return '$value مللي فولت';
   }
+
+  @override
+  String get resetCodeResent => 'تم إرسال رمز جديد.';
+
+  @override
+  String get resetStartOver => 'طلب رمز جديد';
 }
