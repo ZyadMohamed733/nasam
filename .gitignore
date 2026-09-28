@@ -71,3 +71,11 @@ docs/*
 
 # Generated local Google Maps native configuration.
 ios/Flutter/MapsSecrets.xcconfig
+
+# Design extraction working files — the Figma canvas, image blobs, video and
+# decoded node dumps. Large, and not a runtime or build input. Only the POI
+# provenance note is versioned.
+design_exports/*
+!design_exports/poi/
+design_exports/poi/*
+!design_exports/poi/README.md
