@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../../../../core/constants/app_sizes.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 import '../../../../core/router/app_routes.dart';
-import '../../../../shared/widgets/app_drawer.dart';
-import '../../../auth/presentation/widgets/session_drawer.dart';
+import '../../../home/presentation/widgets/home_scaffold.dart';
 
 import '../cubit/tracking_cubit.dart';
 import '../widgets/tracking_controls.dart';
@@ -21,28 +18,27 @@ import '../widgets/tracking_summary.dart';
 /// `getIt`; the page never builds its own, so it can be pumped in a test over
 /// a cubit in any state.
 class TrackingPage extends StatelessWidget {
-  const TrackingPage({super.key});
+  const TrackingPage({super.key, this.openDrawer});
+
+  final VoidCallback? openDrawer;
 
   @override
-  Widget build(BuildContext context) => const _TrackingView();
+  Widget build(BuildContext context) => openDrawer != null
+      ? _TrackingView(openDrawer: openDrawer!)
+      : HomeScaffold(
+          builder: (context, openDrawer) =>
+              _TrackingView(openDrawer: openDrawer),
+        );
 }
 
 class _TrackingView extends StatefulWidget {
-  const _TrackingView();
+  const _TrackingView({required this.openDrawer});
+  final VoidCallback openDrawer;
   @override
   State<_TrackingView> createState() => _TrackingViewState();
 }
 
-class _TrackingViewState extends State<_TrackingView>
-    with SingleTickerProviderStateMixin {
-  final _drawer = AdvancedDrawerController();
-  // Keep the transition alive across visibility-driven rebuilds. The package
-  // recreates its default controller in didUpdateWidget, which skips motion.
-  late final _drawerAnimation = AnimationController(vsync: this);
-  late final _drawerFade = CurvedAnimation(
-    parent: _drawerAnimation,
-    curve: Curves.easeInOutCubic,
-  );
+class _TrackingViewState extends State<_TrackingView> {
   final _map = TrackingMapController();
   var _mapType = MapType.normal;
   late final _summaryController = DraggableScrollableController();
@@ -79,9 +75,6 @@ class _TrackingViewState extends State<_TrackingView>
     _summaryController.dispose();
     _searchController.dispose();
     _searchFocus.dispose();
-    _drawerFade.dispose();
-    _drawerAnimation.dispose();
-    _drawer.dispose();
     super.dispose();
   }
 
@@ -133,15 +126,6 @@ class _TrackingViewState extends State<_TrackingView>
     );
   }
 
-  /// A drawer entry was tapped. This screen is the tracking dashboard, so
-  /// that entry just closes the drawer; others will navigate once their
-  /// screens exist.
-  void _onDrawerSelect(DrawerDestination destination) {
-    if (destination == DrawerDestination.trackingDashboard) {
-      _drawer.hideDrawer();
-    }
-  }
-
   void _clearFilters() {
     _searchController.clear();
     context.read<TrackingCubit>().clearFilters();
@@ -150,90 +134,50 @@ class _TrackingViewState extends State<_TrackingView>
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
-    return ValueListenableBuilder<AdvancedDrawerValue>(
-      valueListenable: _drawer,
-      builder: (context, value, _) => PopScope(
-        canPop: !value.visible,
-        onPopInvokedWithResult: (didPop, _) {
-          if (!didPop && value.visible) _drawer.hideDrawer();
+    return Scaffold(
+      body: BlocConsumer<TrackingCubit, TrackingState>(
+        // A failed refresh keeps the last fleet on screen and says so
+        // here, rather than replacing the map with an error page.
+        listenWhen: (_, state) =>
+            state is TrackingFailure && state.previous != null,
+        listener: (context, _) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                content: Text(l.errorGeneric),
+                action: SnackBarAction(
+                  label: l.retry,
+                  onPressed: context.read<TrackingCubit>().load,
+                ),
+              ),
+            );
         },
-        child: AdvancedDrawer(
-          animationCurve: Curves.easeInOutCubic,
-          animationDuration: MediaQuery.disableAnimationsOf(context)
-              ? Duration.zero
-              : Durations.long2,
-          animateChildDecoration: true,
-          controller: _drawer,
-          animationController: _drawerAnimation,
-          drawerSlideRatio: Directionality.of(context) == TextDirection.rtl
-              ? -AppSizes.drawerSlideRatio
-              : AppSizes.drawerSlideRatio,
-          rtlOpening: Directionality.of(context) == TextDirection.rtl,
-          disabledGestures: true, // Map drags must not open the drawer.
-          openRatio:
-              (AppSizes.drawerMaxWidth / MediaQuery.sizeOf(context).width)
-                  .clamp(0.0, AppSizes.drawerOpenRatio),
-          openScale: AppSizes.drawerOpenScale,
-          initialDrawerScale: AppSizes.drawerInitialScale,
-          backdrop: const AppDrawerBackground(),
-          childDecoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppSizes.r32),
-          ),
-          drawer: FadeTransition(
-            opacity: _drawerFade,
-            child: SessionDrawer(
-              showBackground: false,
-              selected: DrawerDestination.trackingDashboard,
-              onSelect: _onDrawerSelect,
-            ),
-          ),
-          child: Scaffold(
-            body: BlocConsumer<TrackingCubit, TrackingState>(
-              // A failed refresh keeps the last fleet on screen and says so
-              // here, rather than replacing the map with an error page.
-              listenWhen: (_, state) =>
-                  state is TrackingFailure && state.previous != null,
-              listener: (context, _) {
-                ScaffoldMessenger.of(context)
-                  ..hideCurrentSnackBar()
-                  ..showSnackBar(
-                    SnackBar(
-                      content: Text(l.errorGeneric),
-                      action: SnackBarAction(
-                        label: l.retry,
-                        onPressed: context.read<TrackingCubit>().load,
-                      ),
+        builder: (context, state) {
+          final data = state.visible;
+          if (data == null) {
+            return switch (state) {
+              TrackingEmpty() => Center(child: Text(l.emptyState)),
+              TrackingFailure() => Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(l.errorGeneric),
+                    TextButton(
+                      onPressed: context.read<TrackingCubit>().load,
+                      child: Text(l.retry),
                     ),
-                  );
-              },
-              builder: (context, state) {
-                final data = state.visible;
-                if (data == null) {
-                  return switch (state) {
-                    TrackingEmpty() => Center(child: Text(l.emptyState)),
-                    TrackingFailure() => Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(l.errorGeneric),
-                          TextButton(
-                            onPressed: context.read<TrackingCubit>().load,
-                            child: Text(l.retry),
-                          ),
-                        ],
-                      ),
-                    ),
-                    _ => const Center(child: CircularProgressIndicator()),
-                  };
-                }
-                return LayoutBuilder(
-                  builder: (context, constraints) =>
-                      _fleet(context, data, constraints.maxHeight),
-                );
-              },
-            ),
-          ),
-        ),
+                  ],
+                ),
+              ),
+              _ => const Center(child: CircularProgressIndicator()),
+            };
+          }
+          return LayoutBuilder(
+            builder: (context, constraints) =>
+                _fleet(context, data, constraints.maxHeight),
+          );
+        },
       ),
     );
   }
@@ -267,7 +211,7 @@ class _TrackingViewState extends State<_TrackingView>
         Positioned.fill(
           bottom: bottomInset,
           child: TrackingControls(
-            openDrawer: _drawer.showDrawer,
+            openDrawer: widget.openDrawer,
             onLayersTap: _cycleMapType,
             onZoomIn: _map.zoomIn,
             onZoomOut: _map.zoomOut,

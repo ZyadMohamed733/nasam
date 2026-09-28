@@ -647,4 +647,211 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get drawerClearSearch => 'Clear search';
+
+  @override
+  String get poiAdd => 'Add POI';
+
+  @override
+  String get poiUpload => 'Upload';
+
+  @override
+  String get poiDownload => 'Download';
+
+  @override
+  String get poiNoResults => 'No matching points of interest';
+
+  @override
+  String get poiEmpty => 'No points of interest yet';
+
+  @override
+  String get poiHide => 'Hide';
+
+  @override
+  String get poiLatitude => 'Latitude';
+
+  @override
+  String get poiLongitude => 'Longitude';
+
+  @override
+  String get poiDetails => 'Point of interest details';
+
+  @override
+  String get poiShowOnMap => 'Show on map';
+
+  @override
+  String get poiActions => 'Point of interest actions';
+
+  @override
+  String get poiEdit => 'Edit';
+
+  @override
+  String get poiDelete => 'Delete';
+
+  @override
+  String get poiCreateTitle => 'Create a point of interest';
+
+  @override
+  String get poiSubtitle => 'Enter the point details';
+
+  @override
+  String get poiBasicInfo => 'Basic information';
+
+  @override
+  String get poiName => 'Point of interest name';
+
+  @override
+  String get poiLocation => 'Location';
+
+  @override
+  String get poiIcon => 'Icon';
+
+  @override
+  String get poiNotes => 'Notes';
+
+  @override
+  String get poiFuel => 'Fuel station';
+
+  @override
+  String get poiHospital => 'Hospital';
+
+  @override
+  String get poiLibrary => 'Library';
+
+  @override
+  String get poiCreate => 'Create POI';
+
+  @override
+  String get poiSave => 'Save changes';
+
+  @override
+  String get poiCancel => 'Cancel';
+
+  @override
+  String get poiRequired => 'This field is required';
+
+  @override
+  String get poiInvalidCoordinate => 'Enter a valid coordinate';
+
+  @override
+  String get poiNameLimit => 'Maximum 200 characters';
+
+  @override
+  String get poiNotesLimit => 'Maximum 2,000 characters';
+
+  @override
+  String get poiSelectLocation => 'Choose a location on the map';
+
+  @override
+  String get poiConfirmLocation => 'Confirm location';
+
+  @override
+  String get poiDeleteTitle => 'Delete point of interest';
+
+  @override
+  String get poiDeleteMessage =>
+      'Are you sure you want to delete this point of interest?';
+
+  @override
+  String get poiNotFound => 'Point of interest not found';
+
+  @override
+  String get poiDiscardTitle => 'Discard changes?';
+
+  @override
+  String get poiDiscardMessage =>
+      'Your changes have not been saved. Leave this screen?';
+
+  @override
+  String get poiDiscard => 'Discard';
+
+  @override
+  String get poiImportTitle => 'Upload points of interest';
+
+  @override
+  String get poiImportSubtitle =>
+      'Upload multiple points using the Excel template';
+
+  @override
+  String get poiUploadStep => 'Upload file';
+
+  @override
+  String get poiValidate => 'Validate';
+
+  @override
+  String get poiPreview => 'Preview';
+
+  @override
+  String get poiConfirm => 'Confirm';
+
+  @override
+  String get poiTemplate => 'Download template';
+
+  @override
+  String get poiBrowse => 'Browse files';
+
+  @override
+  String get poiFileHint => 'Choose an Excel file to import';
+
+  @override
+  String get poiFileLimits =>
+      'Supported format: .xlsx\nMaximum file size: 20 MB\nMaximum records: 5,000';
+
+  @override
+  String get poiValidationTitle => 'Validation results';
+
+  @override
+  String get poiPreviewTitle => 'Preview points of interest';
+
+  @override
+  String get poiValid => 'Valid';
+
+  @override
+  String get poiInvalid => 'Invalid';
+
+  @override
+  String get poiDuplicate => 'Duplicate';
+
+  @override
+  String get poiAll => 'All';
+
+  @override
+  String get poiPrevious => 'Previous';
+
+  @override
+  String get poiValidOnly =>
+      'Only valid records will be imported. Invalid or duplicate records will be skipped.';
+
+  @override
+  String get poiImportComplete => 'POI import complete';
+
+  @override
+  String get poiTotal => 'Total records';
+
+  @override
+  String get poiImported => 'Imported';
+
+  @override
+  String get poiSkipped => 'Skipped';
+
+  @override
+  String get poiShowPoints => 'Show points on the map';
+
+  @override
+  String get poiInvalidFile =>
+      'Could not read the file. Use the XLSX template, up to 20 MB and 5,000 records.';
+
+  @override
+  String get poiFileSaved => 'File saved';
+
+  @override
+  String get poiFileError => 'Could not save the file. Please try again.';
+
+  @override
+  String get poiReason => 'Reason';
+
+  @override
+  String get poiInvalidRow => 'Check name, coordinates, icon and notes length';
+
+  @override
+  String get poiStatus => 'Status';
 }

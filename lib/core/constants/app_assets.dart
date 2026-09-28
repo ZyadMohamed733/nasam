@@ -11,6 +11,11 @@
 abstract final class AppAssets {
   static const String _images = 'assets/images';
 
+  static const String poiFuel = 'assets/icons/poi_fuel.svg';
+  static const String poiFuelMarker = 'assets/icons/poi_fuel_marker.svg';
+  static const String poiHospital = 'assets/icons/poi_hospital.svg';
+  static const String poiLibrary = 'assets/icons/poi_library.svg';
+  static const String poiPin = 'assets/icons/poi_pin.svg';
   static const String mapArrow = 'assets/icons/map_arrow.svg';
   static const String mapArrowLeft = 'assets/icons/map_ arrow_ left.svg';
   static const String trackingMenu = 'assets/icons/tracking_menu.svg';
@@ -49,6 +54,11 @@ abstract final class AppAssets {
   /// check the list did not fall behind the constants.
   static const List<String> all = <String>[
     drawerBottomBackground,
+    poiPin,
+    poiFuel,
+    poiFuelMarker,
+    poiHospital,
+    poiLibrary,
     mapArrow,
     mapArrowLeft,
     trackingMenu,

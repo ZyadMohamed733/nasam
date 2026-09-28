@@ -1,0 +1,32 @@
+{
+  "data": [
+    {
+      "id": "poi-1",
+      "name": "Traffic Sign",
+      "latitude": 21.48657,
+      "longitude": 39.18464,
+      "icon": "fuel"
+    },
+    {
+      "id": "poi-2",
+      "name": "Manhole",
+      "latitude": 21.48493,
+      "longitude": 39.18587,
+      "icon": "fuel"
+    },
+    {
+      "id": "poi-3",
+      "name": "المستودع الرئيسي",
+      "latitude": 21.48162,
+      "longitude": 39.18143,
+      "icon": "fuel"
+    },
+    {
+      "id": "poi-4",
+      "name": "Traffic Sign 2",
+      "latitude": 21.48024,
+      "longitude": 39.19042,
+      "icon": "fuel"
+    }
+  ]
+}

@@ -1207,6 +1207,408 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'مسح البحث'**
   String get drawerClearSearch;
+
+  /// No description provided for @poiAdd.
+  ///
+  /// In ar, this message translates to:
+  /// **'إضافة نقاط اهتمام'**
+  String get poiAdd;
+
+  /// No description provided for @poiUpload.
+  ///
+  /// In ar, this message translates to:
+  /// **'رفع'**
+  String get poiUpload;
+
+  /// No description provided for @poiDownload.
+  ///
+  /// In ar, this message translates to:
+  /// **'تنزيل'**
+  String get poiDownload;
+
+  /// No description provided for @poiNoResults.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد نقاط اهتمام مطابقة للبحث'**
+  String get poiNoResults;
+
+  /// No description provided for @poiEmpty.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد نقاط اهتمام حتى الآن'**
+  String get poiEmpty;
+
+  /// No description provided for @poiHide.
+  ///
+  /// In ar, this message translates to:
+  /// **'إخفاء'**
+  String get poiHide;
+
+  /// No description provided for @poiLatitude.
+  ///
+  /// In ar, this message translates to:
+  /// **'خط العرض'**
+  String get poiLatitude;
+
+  /// No description provided for @poiLongitude.
+  ///
+  /// In ar, this message translates to:
+  /// **'خط الطول'**
+  String get poiLongitude;
+
+  /// No description provided for @poiDetails.
+  ///
+  /// In ar, this message translates to:
+  /// **'تفاصيل نقاط الاهتمام'**
+  String get poiDetails;
+
+  /// No description provided for @poiShowOnMap.
+  ///
+  /// In ar, this message translates to:
+  /// **'عرض على الخريطة'**
+  String get poiShowOnMap;
+
+  /// No description provided for @poiActions.
+  ///
+  /// In ar, this message translates to:
+  /// **'خيارات نقطة الاهتمام'**
+  String get poiActions;
+
+  /// No description provided for @poiEdit.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعديل'**
+  String get poiEdit;
+
+  /// No description provided for @poiDelete.
+  ///
+  /// In ar, this message translates to:
+  /// **'حذف'**
+  String get poiDelete;
+
+  /// No description provided for @poiCreateTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'إنشاء نقطة اهتمام جديدة'**
+  String get poiCreateTitle;
+
+  /// No description provided for @poiSubtitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'أدخل تفاصيل النقطة'**
+  String get poiSubtitle;
+
+  /// No description provided for @poiBasicInfo.
+  ///
+  /// In ar, this message translates to:
+  /// **'المعلومات الأساسية'**
+  String get poiBasicInfo;
+
+  /// No description provided for @poiName.
+  ///
+  /// In ar, this message translates to:
+  /// **'اسم نقطة الاهتمام'**
+  String get poiName;
+
+  /// No description provided for @poiLocation.
+  ///
+  /// In ar, this message translates to:
+  /// **'الموقع'**
+  String get poiLocation;
+
+  /// No description provided for @poiIcon.
+  ///
+  /// In ar, this message translates to:
+  /// **'الأيقونة'**
+  String get poiIcon;
+
+  /// No description provided for @poiNotes.
+  ///
+  /// In ar, this message translates to:
+  /// **'الملاحظات'**
+  String get poiNotes;
+
+  /// No description provided for @poiFuel.
+  ///
+  /// In ar, this message translates to:
+  /// **'محطة وقود'**
+  String get poiFuel;
+
+  /// No description provided for @poiHospital.
+  ///
+  /// In ar, this message translates to:
+  /// **'مستشفى'**
+  String get poiHospital;
+
+  /// No description provided for @poiLibrary.
+  ///
+  /// In ar, this message translates to:
+  /// **'مكتبة'**
+  String get poiLibrary;
+
+  /// No description provided for @poiCreate.
+  ///
+  /// In ar, this message translates to:
+  /// **'إنشاء نقطة اهتمام'**
+  String get poiCreate;
+
+  /// No description provided for @poiSave.
+  ///
+  /// In ar, this message translates to:
+  /// **'حفظ التغييرات'**
+  String get poiSave;
+
+  /// No description provided for @poiCancel.
+  ///
+  /// In ar, this message translates to:
+  /// **'إلغاء'**
+  String get poiCancel;
+
+  /// No description provided for @poiRequired.
+  ///
+  /// In ar, this message translates to:
+  /// **'هذا الحقل مطلوب'**
+  String get poiRequired;
+
+  /// No description provided for @poiInvalidCoordinate.
+  ///
+  /// In ar, this message translates to:
+  /// **'أدخل إحداثيات صحيحة'**
+  String get poiInvalidCoordinate;
+
+  /// No description provided for @poiNameLimit.
+  ///
+  /// In ar, this message translates to:
+  /// **'الحد الأقصى ٢٠٠ حرف'**
+  String get poiNameLimit;
+
+  /// No description provided for @poiNotesLimit.
+  ///
+  /// In ar, this message translates to:
+  /// **'الحد الأقصى ٢٠٠٠ حرف'**
+  String get poiNotesLimit;
+
+  /// No description provided for @poiSelectLocation.
+  ///
+  /// In ar, this message translates to:
+  /// **'حدد الموقع على الخريطة'**
+  String get poiSelectLocation;
+
+  /// No description provided for @poiConfirmLocation.
+  ///
+  /// In ar, this message translates to:
+  /// **'تأكيد الموقع'**
+  String get poiConfirmLocation;
+
+  /// No description provided for @poiDeleteTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'حذف نقطة الاهتمام'**
+  String get poiDeleteTitle;
+
+  /// No description provided for @poiDeleteMessage.
+  ///
+  /// In ar, this message translates to:
+  /// **'هل أنت متأكد أنك تريد حذف نقطة الاهتمام؟'**
+  String get poiDeleteMessage;
+
+  /// No description provided for @poiNotFound.
+  ///
+  /// In ar, this message translates to:
+  /// **'نقطة الاهتمام غير موجودة'**
+  String get poiNotFound;
+
+  /// No description provided for @poiDiscardTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'تجاهل التغييرات؟'**
+  String get poiDiscardTitle;
+
+  /// No description provided for @poiDiscardMessage.
+  ///
+  /// In ar, this message translates to:
+  /// **'لم يتم حفظ التغييرات. هل تريد المغادرة؟'**
+  String get poiDiscardMessage;
+
+  /// No description provided for @poiDiscard.
+  ///
+  /// In ar, this message translates to:
+  /// **'تجاهل'**
+  String get poiDiscard;
+
+  /// No description provided for @poiImportTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'رفع نقاط الاهتمام بالجملة'**
+  String get poiImportTitle;
+
+  /// No description provided for @poiImportSubtitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'قم برفع نقاط اهتمام متعددة باستخدام قالب الإكسل'**
+  String get poiImportSubtitle;
+
+  /// No description provided for @poiUploadStep.
+  ///
+  /// In ar, this message translates to:
+  /// **'رفع الملف'**
+  String get poiUploadStep;
+
+  /// No description provided for @poiValidate.
+  ///
+  /// In ar, this message translates to:
+  /// **'التحقق'**
+  String get poiValidate;
+
+  /// No description provided for @poiPreview.
+  ///
+  /// In ar, this message translates to:
+  /// **'المعاينة'**
+  String get poiPreview;
+
+  /// No description provided for @poiConfirm.
+  ///
+  /// In ar, this message translates to:
+  /// **'تأكيد'**
+  String get poiConfirm;
+
+  /// No description provided for @poiTemplate.
+  ///
+  /// In ar, this message translates to:
+  /// **'تنزيل القالب'**
+  String get poiTemplate;
+
+  /// No description provided for @poiBrowse.
+  ///
+  /// In ar, this message translates to:
+  /// **'استعراض الملفات'**
+  String get poiBrowse;
+
+  /// No description provided for @poiFileHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختر ملف إكسل للاستيراد'**
+  String get poiFileHint;
+
+  /// No description provided for @poiFileLimits.
+  ///
+  /// In ar, this message translates to:
+  /// **'الصيغة المدعومة: .xlsx\nالحد الأقصى لحجم الملف: 20MB\nالحد الأقصى للسجلات: 5000'**
+  String get poiFileLimits;
+
+  /// No description provided for @poiValidationTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'نتائج التحقق'**
+  String get poiValidationTitle;
+
+  /// No description provided for @poiPreviewTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'معاينة نقاط الاهتمام'**
+  String get poiPreviewTitle;
+
+  /// No description provided for @poiValid.
+  ///
+  /// In ar, this message translates to:
+  /// **'صحيح'**
+  String get poiValid;
+
+  /// No description provided for @poiInvalid.
+  ///
+  /// In ar, this message translates to:
+  /// **'غير صحيح'**
+  String get poiInvalid;
+
+  /// No description provided for @poiDuplicate.
+  ///
+  /// In ar, this message translates to:
+  /// **'مكرر'**
+  String get poiDuplicate;
+
+  /// No description provided for @poiAll.
+  ///
+  /// In ar, this message translates to:
+  /// **'الكل'**
+  String get poiAll;
+
+  /// No description provided for @poiPrevious.
+  ///
+  /// In ar, this message translates to:
+  /// **'السابق'**
+  String get poiPrevious;
+
+  /// No description provided for @poiValidOnly.
+  ///
+  /// In ar, this message translates to:
+  /// **'سيتم استيراد السجلات الصحيحة فقط. لن يتم إنشاء السجلات غير الصحيحة أو المكررة.'**
+  String get poiValidOnly;
+
+  /// No description provided for @poiImportComplete.
+  ///
+  /// In ar, this message translates to:
+  /// **'اكتمل استيراد نقاط الاهتمام'**
+  String get poiImportComplete;
+
+  /// No description provided for @poiTotal.
+  ///
+  /// In ar, this message translates to:
+  /// **'إجمالي السجلات'**
+  String get poiTotal;
+
+  /// No description provided for @poiImported.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم الاستيراد'**
+  String get poiImported;
+
+  /// No description provided for @poiSkipped.
+  ///
+  /// In ar, this message translates to:
+  /// **'لم يتم الاستيراد'**
+  String get poiSkipped;
+
+  /// No description provided for @poiShowPoints.
+  ///
+  /// In ar, this message translates to:
+  /// **'عرض النقاط على الخريطة'**
+  String get poiShowPoints;
+
+  /// No description provided for @poiInvalidFile.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذر قراءة الملف. استخدم قالب XLSX، بحد أقصى 20MB و5000 سجل.'**
+  String get poiInvalidFile;
+
+  /// No description provided for @poiFileSaved.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم حفظ الملف'**
+  String get poiFileSaved;
+
+  /// No description provided for @poiFileError.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذر حفظ الملف. حاول مرة أخرى.'**
+  String get poiFileError;
+
+  /// No description provided for @poiReason.
+  ///
+  /// In ar, this message translates to:
+  /// **'السبب'**
+  String get poiReason;
+
+  /// No description provided for @poiInvalidRow.
+  ///
+  /// In ar, this message translates to:
+  /// **'تحقق من الاسم والإحداثيات والأيقونة وطول الملاحظات'**
+  String get poiInvalidRow;
+
+  /// No description provided for @poiStatus.
+  ///
+  /// In ar, this message translates to:
+  /// **'الحالة'**
+  String get poiStatus;
 }
 
 class _AppLocalizationsDelegate

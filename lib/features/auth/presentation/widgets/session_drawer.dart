@@ -21,6 +21,7 @@ class SessionDrawer extends StatelessWidget {
     this.showBackground = true,
     this.selected,
     this.onSelect,
+    this.available = const {DrawerDestination.trackingDashboard},
     this.cubit,
     this.currentUserCubit,
   });
@@ -31,6 +32,7 @@ class SessionDrawer extends StatelessWidget {
   /// [AppDrawer.selected] and [AppDrawer.onSelect].
   final DrawerDestination? selected;
   final ValueChanged<DrawerDestination>? onSelect;
+  final Set<DrawerDestination> available;
 
   /// Injected in tests; resolved from the container otherwise.
   final LogoutCubit? cubit;
@@ -59,6 +61,7 @@ class SessionDrawer extends StatelessWidget {
             onLogout: context.read<LogoutCubit>().logout,
             selected: selected,
             onSelect: onSelect,
+            available: available,
             profileName: user == null ? null : _displayName(context, user),
             profileRole: user == null ? null : _role(context, user.type),
           );

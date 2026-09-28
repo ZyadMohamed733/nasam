@@ -56,6 +56,19 @@ import '../../features/play_back/domain/usecases/get_playback_segments_usecase.d
     as _i948;
 import '../../features/play_back/presentation/cubit/playback_cubit.dart'
     as _i943;
+import '../../features/poi/data/datasources/poi_datasource.dart' as _i535;
+import '../../features/poi/data/datasources/poi_fixture_datasource.dart'
+    as _i519;
+import '../../features/poi/data/repositories/poi_repository_impl.dart' as _i486;
+import '../../features/poi/data/services/poi_file_service.dart' as _i215;
+import '../../features/poi/domain/repositories/poi_files.dart' as _i81;
+import '../../features/poi/domain/repositories/poi_repository.dart' as _i828;
+import '../../features/poi/domain/usecases/get_points_of_interest_usecase.dart'
+    as _i116;
+import '../../features/poi/domain/usecases/poi_operations.dart' as _i628;
+import '../../features/poi/presentation/cubit/poi_cubit.dart' as _i98;
+import '../../features/poi/presentation/cubit/poi_editor_cubit.dart' as _i61;
+import '../../features/poi/presentation/cubit/poi_import_cubit.dart' as _i507;
 import '../../features/tracking/data/datasources/tracking_datasource.dart'
     as _i765;
 import '../../features/tracking/data/datasources/tracking_fixture_datasource.dart'
@@ -115,6 +128,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => storageModule.secureStorage,
     );
     gh.lazySingleton<_i720.ErrorReporter>(() => _i720.ErrorReporter());
+    gh.lazySingleton<_i535.PoiDataSource>(() => _i519.PoiFixtureDataSource());
     await gh.singletonAsync<_i535.SecureStorageService>(
       () => storageModule.secureStorageService(
         gh<_i558.FlutterSecureStorage>(),
@@ -125,6 +139,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i765.TrackingDataSource>(
       () => _i439.TrackingFixtureDataSource(),
     );
+    gh.lazySingleton<_i81.PoiFiles>(() => _i215.PoiFileService());
     gh.lazySingleton<_i550.PlaybackDataSource>(
       () => _i1044.PlaybackFixtureDataSource(),
     );
@@ -158,6 +173,10 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i832.PlaybackRepository>(
       () => _i604.PlaybackRepositoryImpl(gh<_i550.PlaybackDataSource>()),
+    );
+    gh.lazySingleton<_i828.PoiRepository>(
+      () => _i486.PoiRepositoryImpl(gh<_i535.PoiDataSource>()),
+      dispose: (i) => i.dispose(),
     );
     gh.factory<_i807.OnboardingCubit>(
       () => _i807.OnboardingCubit(gh<_i306.StorageService>()),
@@ -193,6 +212,24 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i361.Dio>(instanceName: 'bareDio'),
       ),
     );
+    gh.lazySingleton<_i116.GetPointsOfInterestUseCase>(
+      () => _i116.GetPointsOfInterestUseCase(gh<_i828.PoiRepository>()),
+    );
+    gh.lazySingleton<_i628.GetPointOfInterestUseCase>(
+      () => _i628.GetPointOfInterestUseCase(gh<_i828.PoiRepository>()),
+    );
+    gh.lazySingleton<_i628.SavePointOfInterestUseCase>(
+      () => _i628.SavePointOfInterestUseCase(gh<_i828.PoiRepository>()),
+    );
+    gh.lazySingleton<_i628.DeletePointOfInterestUseCase>(
+      () => _i628.DeletePointOfInterestUseCase(gh<_i828.PoiRepository>()),
+    );
+    gh.lazySingleton<_i628.ImportPointsOfInterestUseCase>(
+      () => _i628.ImportPointsOfInterestUseCase(gh<_i828.PoiRepository>()),
+    );
+    gh.lazySingleton<_i628.WatchPoiChangesUseCase>(
+      () => _i628.WatchPoiChangesUseCase(gh<_i828.PoiRepository>()),
+    );
     gh.lazySingleton<_i465.LanguageInterceptor>(
       () => _i465.LanguageInterceptor(gh<_i461.AppSettingsController>()),
     );
@@ -219,6 +256,28 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i1062.TrackedAssetCubit>(
       () => _i1062.TrackedAssetCubit(gh<_i127.GetTrackedAssetUseCase>()),
+    );
+    gh.factory<_i507.PoiImportCubit>(
+      () => _i507.PoiImportCubit(
+        gh<_i81.PoiFiles>(),
+        gh<_i116.GetPointsOfInterestUseCase>(),
+        gh<_i628.ImportPointsOfInterestUseCase>(),
+      ),
+    );
+    gh.factory<_i61.PoiEditorCubit>(
+      () => _i61.PoiEditorCubit(
+        gh<_i628.GetPointOfInterestUseCase>(),
+        gh<_i628.SavePointOfInterestUseCase>(),
+        gh<_i628.DeletePointOfInterestUseCase>(),
+      ),
+    );
+    gh.factory<_i98.PoiCubit>(
+      () => _i98.PoiCubit(
+        gh<_i116.GetPointsOfInterestUseCase>(),
+        gh<_i81.PoiFiles>(),
+        gh<_i628.DeletePointOfInterestUseCase>(),
+        gh<_i628.WatchPoiChangesUseCase>(),
+      ),
     );
     gh.lazySingleton<_i361.Dio>(
       () => networkModule.dio(

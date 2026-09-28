@@ -20,6 +20,19 @@ class AppRoutes {
   static const String passwordResetSuccess = '/password-reset-success';
 
   static const String home = '/';
+
+  /// A Home destination; query state preserves the existing asset route stack.
+  static const String homeViewParam = 'view';
+  static const String poiView = 'poi';
+  static const String poi = '/?view=poi';
+  static const String poiCreate = '/poi/create?view=poi';
+  static const String poiImport = '/poi/import?view=poi';
+  static const String poiIdParam = 'poiId';
+  static const String poiDetailsPattern = 'poi/:$poiIdParam';
+  static String poiDetails(String id) =>
+      '/poi/${Uri.encodeComponent(id)}?view=poi';
+  static String poiEdit(String id) =>
+      '/poi/${Uri.encodeComponent(id)}/edit?view=poi';
   static const String error = '/error';
 
   /// Route patterns for the tracking screens, nested under [home] so opening one

@@ -660,4 +660,210 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get drawerClearSearch => 'مسح البحث';
+
+  @override
+  String get poiAdd => 'إضافة نقاط اهتمام';
+
+  @override
+  String get poiUpload => 'رفع';
+
+  @override
+  String get poiDownload => 'تنزيل';
+
+  @override
+  String get poiNoResults => 'لا توجد نقاط اهتمام مطابقة للبحث';
+
+  @override
+  String get poiEmpty => 'لا توجد نقاط اهتمام حتى الآن';
+
+  @override
+  String get poiHide => 'إخفاء';
+
+  @override
+  String get poiLatitude => 'خط العرض';
+
+  @override
+  String get poiLongitude => 'خط الطول';
+
+  @override
+  String get poiDetails => 'تفاصيل نقاط الاهتمام';
+
+  @override
+  String get poiShowOnMap => 'عرض على الخريطة';
+
+  @override
+  String get poiActions => 'خيارات نقطة الاهتمام';
+
+  @override
+  String get poiEdit => 'تعديل';
+
+  @override
+  String get poiDelete => 'حذف';
+
+  @override
+  String get poiCreateTitle => 'إنشاء نقطة اهتمام جديدة';
+
+  @override
+  String get poiSubtitle => 'أدخل تفاصيل النقطة';
+
+  @override
+  String get poiBasicInfo => 'المعلومات الأساسية';
+
+  @override
+  String get poiName => 'اسم نقطة الاهتمام';
+
+  @override
+  String get poiLocation => 'الموقع';
+
+  @override
+  String get poiIcon => 'الأيقونة';
+
+  @override
+  String get poiNotes => 'الملاحظات';
+
+  @override
+  String get poiFuel => 'محطة وقود';
+
+  @override
+  String get poiHospital => 'مستشفى';
+
+  @override
+  String get poiLibrary => 'مكتبة';
+
+  @override
+  String get poiCreate => 'إنشاء نقطة اهتمام';
+
+  @override
+  String get poiSave => 'حفظ التغييرات';
+
+  @override
+  String get poiCancel => 'إلغاء';
+
+  @override
+  String get poiRequired => 'هذا الحقل مطلوب';
+
+  @override
+  String get poiInvalidCoordinate => 'أدخل إحداثيات صحيحة';
+
+  @override
+  String get poiNameLimit => 'الحد الأقصى ٢٠٠ حرف';
+
+  @override
+  String get poiNotesLimit => 'الحد الأقصى ٢٠٠٠ حرف';
+
+  @override
+  String get poiSelectLocation => 'حدد الموقع على الخريطة';
+
+  @override
+  String get poiConfirmLocation => 'تأكيد الموقع';
+
+  @override
+  String get poiDeleteTitle => 'حذف نقطة الاهتمام';
+
+  @override
+  String get poiDeleteMessage => 'هل أنت متأكد أنك تريد حذف نقطة الاهتمام؟';
+
+  @override
+  String get poiNotFound => 'نقطة الاهتمام غير موجودة';
+
+  @override
+  String get poiDiscardTitle => 'تجاهل التغييرات؟';
+
+  @override
+  String get poiDiscardMessage => 'لم يتم حفظ التغييرات. هل تريد المغادرة؟';
+
+  @override
+  String get poiDiscard => 'تجاهل';
+
+  @override
+  String get poiImportTitle => 'رفع نقاط الاهتمام بالجملة';
+
+  @override
+  String get poiImportSubtitle =>
+      'قم برفع نقاط اهتمام متعددة باستخدام قالب الإكسل';
+
+  @override
+  String get poiUploadStep => 'رفع الملف';
+
+  @override
+  String get poiValidate => 'التحقق';
+
+  @override
+  String get poiPreview => 'المعاينة';
+
+  @override
+  String get poiConfirm => 'تأكيد';
+
+  @override
+  String get poiTemplate => 'تنزيل القالب';
+
+  @override
+  String get poiBrowse => 'استعراض الملفات';
+
+  @override
+  String get poiFileHint => 'اختر ملف إكسل للاستيراد';
+
+  @override
+  String get poiFileLimits =>
+      'الصيغة المدعومة: .xlsx\nالحد الأقصى لحجم الملف: 20MB\nالحد الأقصى للسجلات: 5000';
+
+  @override
+  String get poiValidationTitle => 'نتائج التحقق';
+
+  @override
+  String get poiPreviewTitle => 'معاينة نقاط الاهتمام';
+
+  @override
+  String get poiValid => 'صحيح';
+
+  @override
+  String get poiInvalid => 'غير صحيح';
+
+  @override
+  String get poiDuplicate => 'مكرر';
+
+  @override
+  String get poiAll => 'الكل';
+
+  @override
+  String get poiPrevious => 'السابق';
+
+  @override
+  String get poiValidOnly =>
+      'سيتم استيراد السجلات الصحيحة فقط. لن يتم إنشاء السجلات غير الصحيحة أو المكررة.';
+
+  @override
+  String get poiImportComplete => 'اكتمل استيراد نقاط الاهتمام';
+
+  @override
+  String get poiTotal => 'إجمالي السجلات';
+
+  @override
+  String get poiImported => 'تم الاستيراد';
+
+  @override
+  String get poiSkipped => 'لم يتم الاستيراد';
+
+  @override
+  String get poiShowPoints => 'عرض النقاط على الخريطة';
+
+  @override
+  String get poiInvalidFile =>
+      'تعذر قراءة الملف. استخدم قالب XLSX، بحد أقصى 20MB و5000 سجل.';
+
+  @override
+  String get poiFileSaved => 'تم حفظ الملف';
+
+  @override
+  String get poiFileError => 'تعذر حفظ الملف. حاول مرة أخرى.';
+
+  @override
+  String get poiReason => 'السبب';
+
+  @override
+  String get poiInvalidRow =>
+      'تحقق من الاسم والإحداثيات والأيقونة وطول الملاحظات';
+
+  @override
+  String get poiStatus => 'الحالة';
 }

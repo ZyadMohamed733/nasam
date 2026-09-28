@@ -15,11 +15,17 @@ import '../../features/onboarding/presentation/pages/onboarding_page.dart';
 import '../../features/play_back/presentation/cubit/playback_cubit.dart';
 import '../../features/play_back/presentation/pages/playback_page.dart';
 import '../../features/play_back/presentation/utils/playback_range.dart';
+import '../../features/poi/presentation/cubit/poi_editor_cubit.dart';
+import '../../features/poi/presentation/cubit/poi_import_cubit.dart';
+import '../../features/poi/presentation/pages/poi_details_page.dart';
+import '../../features/poi/presentation/pages/poi_editor_page.dart';
+import '../../features/poi/presentation/pages/poi_import_page.dart';
 import '../../features/splash/presentation/pages/splash_page.dart';
 import '../../features/tracking/presentation/cubit/asset_details_cubit.dart';
 import '../../features/tracking/presentation/cubit/tracked_asset_cubit.dart';
 import '../../features/tracking/presentation/cubit/tracking_cubit.dart';
 import '../../features/tracking/presentation/pages/tracking_asset_details_page.dart';
+import '../../shared/widgets/app_drawer.dart';
 import '../auth/auth_session_notifier.dart';
 import '../di/injection_container.dart';
 import 'app_error_page.dart';
@@ -163,7 +169,14 @@ class AppRouter {
           // the screens never build their own.
           child: BlocProvider(
             create: (_) => getIt<TrackingCubit>()..load(),
-            child: const HomePage(),
+            child: HomePage(
+              destination:
+                  state.uri.path.startsWith('/poi/') ||
+                      state.uri.queryParameters[AppRoutes.homeViewParam] ==
+                          AppRoutes.poiView
+                  ? DrawerDestination.pointsOfInterest
+                  : DrawerDestination.trackingDashboard,
+            ),
           ),
         ),
         // Nested, so a cold deep link to an asset builds home beneath it and
@@ -171,6 +184,62 @@ class AppRouter {
         // id and nothing else, and resolves its own asset: a link carries no
         // object, and an unknown id shows not-found rather than redirecting.
         routes: [
+          GoRoute(
+            path: 'poi/create',
+            pageBuilder: (context, state) => appTransitionPage(
+              context: context,
+              state: state,
+              slide: true,
+              child: BlocProvider(
+                create: (_) => getIt<PoiEditorCubit>(),
+                child: const PoiEditorPage(),
+              ),
+            ),
+          ),
+          GoRoute(
+            path: 'poi/import',
+            pageBuilder: (context, state) => appTransitionPage(
+              context: context,
+              state: state,
+              slide: true,
+              child: BlocProvider(
+                create: (_) => getIt<PoiImportCubit>(),
+                child: const PoiImportPage(),
+              ),
+            ),
+          ),
+          GoRoute(
+            path: AppRoutes.poiDetailsPattern,
+            pageBuilder: (context, state) {
+              final id = state.pathParameters[AppRoutes.poiIdParam]!;
+              return appTransitionPage(
+                context: context,
+                state: state,
+                slide: true,
+                child: BlocProvider(
+                  create: (_) => getIt<PoiEditorCubit>()..load(id),
+                  child: PoiDetailsPage(pointId: id),
+                ),
+              );
+            },
+            routes: [
+              GoRoute(
+                path: 'edit',
+                pageBuilder: (context, state) {
+                  final id = state.pathParameters[AppRoutes.poiIdParam]!;
+                  return appTransitionPage(
+                    context: context,
+                    state: state,
+                    slide: true,
+                    child: BlocProvider(
+                      create: (_) => getIt<PoiEditorCubit>()..load(id),
+                      child: PoiEditorPage(pointId: id),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
           GoRoute(
             path: AppRoutes.assetDetailsPattern,
             pageBuilder: (context, state) {

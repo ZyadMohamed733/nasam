@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -7,6 +6,7 @@ import '../../../../core/constants/app_assets.dart';
 import '../../../../core/constants/app_icons.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 import '../../../../core/theme/tracking_colors.dart';
+import '../../../../shared/widgets/measure_size.dart';
 import '../../domain/entities/tracking_vehicle.dart';
 import '../cubit/tracking_cubit.dart';
 import '../utils/tracking_style.dart';
@@ -62,7 +62,7 @@ class TrackingSummary extends StatelessWidget {
         controller: scrollController,
         slivers: [
           SliverToBoxAdapter(
-            child: _MeasureSize(
+            child: MeasureSize(
               onChange: onHeaderSize,
               child: _Header(
                 expanded: expanded,
@@ -287,40 +287,5 @@ class _StatusChip extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-/// Reports its child's laid-out size after each layout that changes it.
-class _MeasureSize extends SingleChildRenderObjectWidget {
-  const _MeasureSize({required this.onChange, super.child});
-
-  final ValueChanged<Size> onChange;
-
-  @override
-  RenderObject createRenderObject(BuildContext context) =>
-      _RenderMeasureSize(onChange);
-
-  @override
-  void updateRenderObject(
-    BuildContext context,
-    covariant _RenderMeasureSize renderObject,
-  ) => renderObject.onChange = onChange;
-}
-
-class _RenderMeasureSize extends RenderProxyBox {
-  _RenderMeasureSize(this.onChange);
-
-  ValueChanged<Size> onChange;
-  Size? _reported;
-
-  @override
-  void performLayout() {
-    super.performLayout();
-    final size = this.size;
-    if (size == _reported) return;
-    _reported = size;
-    // Reported after the frame: the listener rebuilds, which cannot happen
-    // during layout.
-    WidgetsBinding.instance.addPostFrameCallback((_) => onChange(size));
   }
 }

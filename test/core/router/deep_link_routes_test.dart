@@ -1,5 +1,8 @@
+import 'dart:async';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
@@ -16,17 +19,30 @@ import 'package:nasam/features/auth/presentation/pages/login_page.dart';
 import 'package:nasam/features/home/presentation/pages/home_page.dart';
 import 'package:nasam/features/play_back/data/datasources/playback_datasource.dart';
 import 'package:nasam/features/play_back/data/datasources/playback_fixture_datasource.dart';
-import 'package:nasam/features/tracking/data/datasources/tracking_datasource.dart';
-import 'package:nasam/features/tracking/data/datasources/tracking_fixture_datasource.dart';
-import 'package:nasam/features/tracking/presentation/pages/tracking_asset_details_page.dart';
 import 'package:nasam/features/play_back/presentation/pages/playback_page.dart';
 import 'package:nasam/features/play_back/presentation/utils/playback_range.dart';
+import 'package:nasam/features/poi/data/datasources/poi_datasource.dart';
+import 'package:nasam/features/poi/data/datasources/poi_fixture_datasource.dart';
+import 'package:nasam/features/poi/domain/repositories/poi_files.dart';
+import 'package:nasam/features/poi/domain/repositories/poi_repository.dart';
+import 'package:nasam/features/poi/presentation/cubit/poi_cubit.dart';
+import 'package:nasam/features/poi/presentation/pages/poi_details_page.dart';
+import 'package:nasam/features/poi/presentation/pages/poi_editor_page.dart';
+import 'package:nasam/features/poi/presentation/pages/poi_page.dart';
+import 'package:nasam/features/tracking/data/datasources/tracking_datasource.dart';
+import 'package:nasam/features/tracking/data/datasources/tracking_fixture_datasource.dart';
+import 'package:nasam/features/tracking/presentation/cubit/tracking_cubit.dart';
+import 'package:nasam/features/tracking/presentation/pages/tracking_asset_details_page.dart';
+import 'package:nasam/features/tracking/presentation/pages/tracking_page.dart';
 import 'package:nasam/features/tracking/presentation/widgets/tracking_asset_not_found.dart';
+import 'package:nasam/shared/widgets/app_button.dart';
+import 'package:nasam/shared/widgets/app_drawer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../helpers/app_harness.dart';
 import '../../helpers/fake_map_platform.dart';
 import '../../helpers/fixture_bundle.dart';
+import '../../helpers/poi_files.dart';
 
 /// The real [AppRouter] and guard, opened the way the OS opens a link: the
 /// platform's initial route is set before the router exists, so go_router
@@ -81,6 +97,9 @@ void main() {
           latency: Duration.zero,
         ),
       )
+      ..registerSingleton<PoiDataSource>(
+        PoiFixtureDataSource(bundle: DiskAssetBundle()),
+      )
       ..registerSingleton<PlaybackDataSource>(
         PlaybackFixtureDataSource(
           bundle: DiskAssetBundle(),
@@ -105,6 +124,177 @@ void main() {
     await tester.binding.handlePopRoute();
     await tester.pumpAndSettle();
   }
+
+  testWidgets(
+    'Home drawer switches to POI and retains tracking and POI state',
+    (tester) async {
+      final router = await open(tester, AppRoutes.home);
+      router.config.go(AppRoutes.home);
+      await tester.pumpAndSettle();
+      final tracking = tester
+          .element(find.byType(TrackingPage))
+          .read<TrackingCubit>();
+      tracking.onQueryChanged('truck');
+      await tester.pump(const Duration(milliseconds: 350));
+      final drawer = tester
+          .widget<AdvancedDrawer>(find.byType(AdvancedDrawer))
+          .controller!;
+      drawer.showDrawer();
+      await tester.pumpAndSettle();
+      final menu = tester.widget<AppDrawer>(find.byType(AppDrawer));
+      expect(menu.available, contains(DrawerDestination.pointsOfInterest));
+      menu.onSelect!(DrawerDestination.pointsOfInterest);
+      await tester.pumpAndSettle();
+      expect(location(router), AppRoutes.poi);
+      expect(find.byType(PoiPage), findsOneWidget);
+      final poi = tester.element(find.byType(PoiPage)).read<PoiCubit>();
+      poi.search('Manhole');
+      await tester.pumpAndSettle();
+      drawer.showDrawer();
+      await tester.pumpAndSettle();
+      await back(tester); // First closes the drawer, keeping POI selected.
+      expect(location(router), AppRoutes.poi);
+      expect(drawer.value.visible, isFalse);
+      await back(tester); // Then returns to tracking within Home.
+      expect(location(router), AppRoutes.home);
+      expect(
+        tester.element(find.byType(TrackingPage)).read<TrackingCubit>(),
+        same(tracking),
+      );
+      expect(tracking.state.visible!.query, 'truck');
+      router.config.go(AppRoutes.poi);
+      await tester.pumpAndSettle();
+      expect(tester.element(find.byType(PoiPage)).read<PoiCubit>(), same(poi));
+      expect(poi.state.query, 'Manhole');
+    },
+  );
+
+  testWidgets('a cold POI link opens in Home and back returns to tracking', (
+    tester,
+  ) async {
+    final router = await open(tester, AppRoutes.poi);
+    expect(find.byType(HomePage), findsOneWidget);
+    expect(find.byType(PoiPage), findsOneWidget);
+    expect(
+      tester.widget<AppDrawer>(find.byType(AppDrawer)).selected,
+      DrawerDestination.pointsOfInterest,
+    );
+    await back(tester);
+    expect(location(router), AppRoutes.home);
+  });
+
+  testWidgets('POI create, view, edit and confirmed delete refresh Home', (
+    tester,
+  ) async {
+    final router = await open(tester, AppRoutes.poi);
+    await tester.tap(find.text('Add POI'));
+    await tester.pumpAndSettle();
+    expect(find.byType(PoiEditorPage), findsOneWidget);
+    final fields = find.byType(TextField);
+    await tester.enterText(fields.at(0), 'New warehouse');
+    await tester.enterText(fields.at(1), '24.8');
+    await tester.enterText(fields.at(2), '46.4');
+    await tester.tap(find.text('Create POI'));
+    await tester.pumpAndSettle();
+    expect(find.byType(PoiPage), findsOneWidget);
+    final poi = tester.element(find.byType(PoiPage)).read<PoiCubit>();
+    final point = poi.state.points.singleWhere(
+      (p) => p.name == 'New warehouse',
+    );
+    expect(poi.state.points.length, 5);
+    unawaited(router.config.push(AppRoutes.poiDetails(point.id)));
+    await tester.pumpAndSettle();
+    expect(find.byType(PoiDetailsPage), findsOneWidget);
+    await tester.tap(find.byTooltip('Edit'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField).first, 'Updated warehouse');
+    await tester.tap(find.text('Save changes'));
+    await tester.pumpAndSettle();
+    expect(find.text('Updated warehouse'), findsWidgets);
+    await tester.ensureVisible(find.text('Delete'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Delete'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Cancel'));
+    await tester.pumpAndSettle();
+    expect(find.byType(PoiDetailsPage), findsOneWidget);
+    await tester.tap(find.text('Delete'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.widgetWithText(TextButton, 'Delete'));
+    await tester.pumpAndSettle();
+    expect(find.byType(PoiPage), findsOneWidget);
+    expect((await getIt<PoiRepository>().getPoint(point.id)).isLeft(), isTrue);
+    expect(poi.state.points.length, 4);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets(
+    'POI dirty draft stays after cancelled discard and unknown links show not-found',
+    (tester) async {
+      final router = await open(tester, AppRoutes.poiCreate);
+      await tester.enterText(find.byType(TextField).first, 'Draft');
+      await tester.tap(find.text('Cancel'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.widgetWithText(TextButton, 'Cancel'));
+      await tester.pumpAndSettle();
+      expect(find.text('Draft'), findsOneWidget);
+      await tester.tap(find.text('Cancel'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Discard'));
+      await tester.pumpAndSettle();
+      expect(find.byType(PoiPage), findsOneWidget);
+      router.config.go(AppRoutes.poiDetails('missing'));
+      await tester.pumpAndSettle();
+      expect(find.text('Point of interest not found'), findsOneWidget);
+      await back(tester);
+      expect(find.byType(PoiPage), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'POI upload walks validation, preview and confirmation with actual counts',
+    (tester) async {
+      getIt.registerSingleton<PoiFiles>(
+        FakePoiFiles()
+          ..selected = const PickedPoiWorkbook('points.xlsx', [
+            ['name', 'latitude', 'longitude', 'icon', 'notes'],
+            ['New', '24', '46', 'fuel', ''],
+            ['Bad', '999', '46', 'fuel', ''],
+            ['New', '24', '46', 'fuel', ''],
+          ]),
+      );
+      await open(tester, AppRoutes.poi);
+      await tester.tap(find.text('Upload'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Browse files'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.widgetWithText(AppButton, 'Validate'));
+      await tester.pumpAndSettle();
+      expect(find.text('Valid (1)'), findsOneWidget);
+      expect(find.text('Invalid (1)'), findsOneWidget);
+      expect(find.text('Duplicate (1)'), findsOneWidget);
+      await tester.tap(find.widgetWithText(AppButton, 'Preview'));
+      await tester.pumpAndSettle();
+      expect(find.text('Bad'), findsNothing);
+      await tester.tap(find.widgetWithText(AppButton, 'Confirm'));
+      await tester.pumpAndSettle();
+      expect(find.text('POI import complete'), findsOneWidget);
+      await tester.tap(
+        find.widgetWithText(AppButton, 'Show points on the map'),
+      );
+      await tester.pumpAndSettle();
+      expect(
+        tester
+            .element(find.byType(PoiPage))
+            .read<PoiCubit>()
+            .state
+            .points
+            .length,
+        5,
+      );
+      expect(tester.takeException(), isNull);
+    },
+  );
 
   testWidgets('a cold link to details opens it over home; back goes home', (
     tester,
@@ -148,9 +338,7 @@ void main() {
     final from = today.from.subtract(const Duration(days: 3));
     await open(tester, AppRoutes.assetPlayback(_knownId, from: from));
 
-    final page = tester.widget<PlaybackPage>(
-      find.byType(PlaybackPage),
-    );
+    final page = tester.widget<PlaybackPage>(find.byType(PlaybackPage));
     expect(page.initialRange.from, from);
     expect(page.initialRange.to, today.to, reason: 'no to: through today');
   });
@@ -163,9 +351,7 @@ void main() {
       '/assets/$_knownId/playback?from=not-a-date&to=2999-01-01',
     );
 
-    final page = tester.widget<PlaybackPage>(
-      find.byType(PlaybackPage),
-    );
+    final page = tester.widget<PlaybackPage>(find.byType(PlaybackPage));
     expect(page.initialRange, PlaybackRange.today());
     expect(tester.takeException(), isNull);
   });
@@ -224,9 +410,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(location(router), target);
-    final page = tester.widget<PlaybackPage>(
-      find.byType(PlaybackPage),
-    );
+    final page = tester.widget<PlaybackPage>(find.byType(PlaybackPage));
     expect(page.initialRange.from, from, reason: 'dates survive the detour');
     expect(page.initialRange.to, to);
   });

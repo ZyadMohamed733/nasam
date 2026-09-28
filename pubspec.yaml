@@ -30,6 +30,11 @@ dependencies:
   pinput: ^6.0.2
   flutter_svg: ^2.3.0
   characters: ^1.4.1
+  # POI Excel import/export and native document picker.
+  archive: ^4.0.9
+  xml: ^6.6.1
+  file_picker: ^10.3.10
+
   # Networking
   dio: ^5.4.3
   connectivity_plus: ^6.0.3
@@ -105,6 +110,7 @@ flutter:
       # tracking API is delivered. Remove with it.
     - assets/fixtures/tracking/
     - assets/fixtures/play_back/
+    - assets/fixtures/poi/
 
   # Almarai is SIL OFL 1.1; assets/fonts/OFL.txt is the licence, and it ships
   # with the font as that licence requires. The family carries only 400 and
