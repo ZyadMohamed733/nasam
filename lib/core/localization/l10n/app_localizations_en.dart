@@ -346,9 +346,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get trackingGeofences => 'Geofences';
 
   @override
-  String get trackingAssignments => 'Assignments';
-
-  @override
   String get trackingSettings => 'Settings';
 
   @override
@@ -641,4 +638,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get resetStartOver => 'Request a new code';
+
+  @override
+  String get drawerAlertsLog => 'Alerts log';
+
+  @override
+  String get drawerNoResults => 'No matching items';
+
+  @override
+  String get drawerClearSearch => 'Clear search';
 }

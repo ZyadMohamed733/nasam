@@ -4,6 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:nasam/core/localization/l10n/app_localizations.dart';
 import 'package:nasam/features/tracking/presentation/widgets/tracking_controls.dart';
 import 'package:nasam/features/tracking/presentation/widgets/tracking_map.dart';
+import 'package:nasam/features/tracking/presentation/widgets/tracking_summary.dart';
 
 import '../../../helpers/tracking_screen.dart';
 
@@ -50,7 +51,12 @@ void main() {
           find.text(lookupAppLocalizations(locale).trackingShow),
         );
         await tester.pumpAndSettle();
-        final field = tester.widget<TextField>(find.byType(TextField));
+        final field = tester.widget<TextField>(
+          find.descendant(
+            of: find.byType(TrackingSummary),
+            matching: find.byType(TextField),
+          ),
+        );
         expect(field.textAlign, TextAlign.start);
       });
     });

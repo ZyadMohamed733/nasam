@@ -6,8 +6,15 @@ import 'package:nasam/core/localization/l10n/app_localizations.dart';
 import 'package:nasam/features/tracking/presentation/widgets/tracking_asset_card.dart';
 import 'package:nasam/features/tracking/presentation/widgets/tracking_map.dart';
 import 'package:nasam/features/tracking/presentation/widgets/tracking_summary.dart';
+import 'package:nasam/shared/widgets/app_drawer.dart';
 
 import '../../../helpers/tracking_screen.dart';
+
+/// The sheet's asset search field; the drawer has its own.
+Finder sheetSearch() => find.descendant(
+  of: find.byType(TrackingSummary),
+  matching: find.byType(TextField),
+);
 
 /// [text] inside the fleet sheet; the drawer repeats some of the labels.
 Finder inSheet(String text) => find.descendant(
@@ -98,7 +105,7 @@ void main() {
     final cards = tester.widgetList(find.byType(TrackingAssetCard)).length;
     expect(cards, greaterThan(0));
 
-    await tester.enterText(find.byType(TextField), 'no-such-asset-xyz');
+    await tester.enterText(sheetSearch(), 'no-such-asset-xyz');
     await tester.pumpAndSettle(const Duration(milliseconds: 400));
 
     expect(find.byType(TrackingAssetCard), findsNothing);
@@ -110,26 +117,31 @@ void main() {
     expect(find.text('No assets match your search.'), findsNothing);
     expect(tester.widgetList(find.byType(TrackingAssetCard)).length, cards);
     expect(
-      tester.widget<TextField>(find.byType(TextField)).controller!.text,
+      tester.widget<TextField>(sheetSearch()).controller!.text,
       isEmpty,
       reason: 'the typed text goes too',
     );
   });
 
-  testWidgets("the drawer's search opens the sheet with the field focused", (
+  testWidgets("the drawer's Tracking dashboard entry closes the drawer", (
     tester,
   ) async {
-    await pumpTrackingScreen(tester);
+    await pumpTrackingScreen(tester, size: const Size(402, 874));
     final drawer = tester.widget<AdvancedDrawer>(find.byType(AdvancedDrawer));
     drawer.controller!.showDrawer();
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Search').hitTestable());
+    // This screen is the tracking dashboard: the entry is selected, and
+    // tapping it takes the user back to it.
+    final entry = find
+        .descendant(
+          of: find.byType(AppDrawer),
+          matching: find.text('Tracking dashboard'),
+        )
+        .hitTestable();
+    await tester.tap(entry);
     await tester.pumpAndSettle();
 
-    expect(drawer.controller!.value.visible, isFalse, reason: 'closed');
-    expect(inSheet('Show'), findsNothing, reason: 'the sheet is open');
-    final field = tester.widget<TextField>(find.byType(TextField));
-    expect(field.focusNode!.hasFocus, isTrue);
+    expect(drawer.controller!.value.visible, isFalse);
   });
 }

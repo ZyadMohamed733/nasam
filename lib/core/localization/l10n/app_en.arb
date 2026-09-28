@@ -91,7 +91,6 @@
   "trackingFleet": "Fleet",
   "trackingPoi": "Points of interest",
   "trackingGeofences": "Geofences",
-  "trackingAssignments": "Assignments",
   "trackingSettings": "Settings",
   "trackingAsset": "Asset",
   "trackingNotifications": "Notifications",
@@ -261,5 +260,8 @@
     }
   },
   "resetCodeResent": "A new code has been sent.",
-  "resetStartOver": "Request a new code"
+  "resetStartOver": "Request a new code",
+  "drawerAlertsLog": "Alerts log",
+  "drawerNoResults": "No matching items",
+  "drawerClearSearch": "Clear search"
 }

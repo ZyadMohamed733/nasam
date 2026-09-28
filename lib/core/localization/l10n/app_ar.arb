@@ -281,7 +281,6 @@
   "trackingFleet": "الاسطول",
   "trackingPoi": "نقاط الاهتمام",
   "trackingGeofences": "مناطق جغرافية",
-  "trackingAssignments": "إدارة التعيينات",
   "trackingSettings": "الإعدادات",
   "trackingAsset": "الأصل",
   "trackingNotifications": "الإشعارات",
@@ -514,6 +513,18 @@
   },
   "resetStartOver": "طلب رمز جديد",
   "@resetStartOver": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
+  "drawerAlertsLog": "سجل التنبيهات",
+  "@drawerAlertsLog": {
+    "description": "Design copy: the drawer reference labels the alerts log this way."
+  },
+  "drawerNoResults": "لا توجد نتائج مطابقة",
+  "@drawerNoResults": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
+  "drawerClearSearch": "مسح البحث",
+  "@drawerClearSearch": {
     "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
   }
 }

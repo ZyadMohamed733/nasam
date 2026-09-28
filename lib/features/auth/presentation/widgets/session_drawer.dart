@@ -19,15 +19,18 @@ class SessionDrawer extends StatelessWidget {
   const SessionDrawer({
     super.key,
     this.showBackground = true,
-    this.onSearch,
+    this.selected,
+    this.onSelect,
     this.cubit,
     this.currentUserCubit,
   });
 
   final bool showBackground;
 
-  /// The host's search, if it has one; see [AppDrawer.onSearch].
-  final VoidCallback? onSearch;
+  /// Where the user is now, and what to do when an entry is tapped; see
+  /// [AppDrawer.selected] and [AppDrawer.onSelect].
+  final DrawerDestination? selected;
+  final ValueChanged<DrawerDestination>? onSelect;
 
   /// Injected in tests; resolved from the container otherwise.
   final LogoutCubit? cubit;
@@ -54,7 +57,8 @@ class SessionDrawer extends StatelessWidget {
             showBackground: showBackground,
             loggingOut: logout is! LogoutIdle,
             onLogout: context.read<LogoutCubit>().logout,
-            onSearch: onSearch,
+            selected: selected,
+            onSelect: onSelect,
             profileName: user == null ? null : _displayName(context, user),
             profileRole: user == null ? null : _role(context, user.type),
           );

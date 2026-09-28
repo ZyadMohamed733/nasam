@@ -6,6 +6,9 @@ import '../../core/constants/app_sizes.dart';
 import '../../core/localization/l10n/app_localizations.dart';
 import '../../core/theme/app_drawer_theme.dart';
 import 'app_logo.dart';
+import 'drawer_menu.dart';
+
+export 'drawer_menu.dart' show DrawerDestination;
 
 /// Full-bleed decoration shared by the standard and animated drawer shells.
 class AppDrawerBackground extends StatelessWidget {
@@ -34,7 +37,12 @@ class AppDrawerBackground extends StatelessWidget {
 }
 
 /// The app's single drawer content. Hosts supply account data and actions.
-class AppDrawer extends StatelessWidget {
+///
+/// The menu is [appDrawerMenu]: sections of collapsible groups, filtered by
+/// the search field at the top. An entry is live only when the host handles
+/// [onSelect] and its destination is in [available]; the rest are shown,
+/// disabled, and announced as coming soon.
+class AppDrawer extends StatefulWidget {
   const AppDrawer({
     super.key,
     required this.onLogout,
@@ -42,7 +50,9 @@ class AppDrawer extends StatelessWidget {
     this.profileRole,
     this.showBackground = true,
     this.loggingOut = false,
-    this.onSearch,
+    this.selected,
+    this.onSelect,
+    this.available = const {DrawerDestination.trackingDashboard},
   });
 
   final VoidCallback onLogout;
@@ -54,21 +64,62 @@ class AppDrawer extends StatelessWidget {
   /// placeholder that reads as someone's name.
   final String? profileName;
   final String? profileRole;
-
-  /// Opens the host's search. Without one the search button is not shown:
-  /// a search box that goes nowhere is a dead control.
-  final VoidCallback? onSearch;
   final bool showBackground;
+
+  /// Where the user is now; highlighted.
+  final DrawerDestination? selected;
+
+  /// Called when a live entry is tapped. The host navigates, or closes the
+  /// drawer when the entry is where the user already is.
+  final ValueChanged<DrawerDestination>? onSelect;
+
+  /// Destinations that exist in the app so far.
+  final Set<DrawerDestination> available;
+
+  @override
+  State<AppDrawer> createState() => _AppDrawerState();
+}
+
+class _AppDrawerState extends State<AppDrawer> {
+  final _search = TextEditingController();
+  String _query = '';
+
+  /// Groups the user has open. All start open, as the design shows them.
+  final Set<String> _open = {'fleet'};
+
+  @override
+  void dispose() {
+    _search.dispose();
+    super.dispose();
+  }
+
+  void _toggle(String id) => setState(() {
+    if (!_open.remove(id)) _open.add(id);
+  });
+
+  Widget _entry(DrawerMenuEntry entry, {bool indented = true}) {
+    final live =
+        widget.onSelect != null && widget.available.contains(entry.destination);
+    return _Entry(
+      label: entry.label,
+      icon: entry.icon,
+      indented: indented,
+      selected: entry.destination == widget.selected,
+      onTap: live ? () => widget.onSelect!(entry.destination) : null,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     final palette = AppDrawerTheme.of(context);
     final text = Theme.of(context).textTheme;
+    final searching = foldForSearch(_query).isNotEmpty;
+    final sections = filterDrawerMenu(appDrawerMenu(l), _query);
     return Stack(
       fit: StackFit.expand,
       children: [
-        if (showBackground) const AppDrawerBackground(),
+        if (widget.showBackground) const AppDrawerBackground(),
         SafeArea(
           child: Padding(
             padding: const EdgeInsetsDirectional.only(
@@ -101,48 +152,49 @@ class AppDrawer extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: AppSizes.p24),
-                      if (onSearch case final onSearch?) ...[
-                        _SearchButton(onTap: onSearch),
-                        const SizedBox(height: AppSizes.p12),
-                      ],
-                      _Section(label: l.trackingSystems),
-                      _Entry(
-                        label: l.trackingFleet,
-                        icon: Icons.settings_input_component_outlined,
-                        expanded: true,
-                      ),
-                      _Entry(
-                        label: l.trackingTitle,
-                        icon: Icons.location_on_outlined,
-                        selected: true,
-                      ),
-                      _Entry(
-                        label: l.trackingPoi,
-                        icon: Icons.pin_drop_outlined,
-                      ),
-                      _Entry(
-                        label: l.trackingGeofences,
-                        icon: Icons.straighten_outlined,
-                      ),
-                      _Entry(
-                        label: l.trackingAssignments,
-                        icon: Icons.link,
-                        expanded: false,
+                      DrawerMenuSearchField(
+                        controller: _search,
+                        onChanged: (value) => setState(() => _query = value),
                       ),
                       const SizedBox(height: AppSizes.p8),
-                      _Section(label: l.trackingSettings),
-                      _Entry(
-                        label: l.trackingSettings,
-                        icon: Icons.settings_outlined,
-                        expanded: true,
-                      ),
+                      for (final section in sections) ...[
+                        DrawerMenuSectionLabel(label: section.label),
+                        for (final item in section.items)
+                          switch (item) {
+                            DrawerMenuGroup() => DrawerMenuGroupTile(
+                              key: ValueKey(item.id),
+                              group: item,
+                              // A search holds every group with a match open.
+                              expanded: searching || _open.contains(item.id),
+                              onToggle: searching
+                                  ? null
+                                  : () => _toggle(item.id),
+                              entryBuilder: _entry,
+                            ),
+                            DrawerMenuEntry() => _entry(item, indented: false),
+                          },
+                      ],
+                      if (sections.isEmpty)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: AppSizes.p16,
+                          ),
+                          child: Text(
+                            l.drawerNoResults,
+                            textAlign: TextAlign.center,
+                            style: text.labelMedium?.copyWith(
+                              color: palette.muted,
+                            ),
+                          ),
+                        ),
                       const Spacer(),
                       const SizedBox(height: AppSizes.p16),
+                      Divider(color: palette.muted.withValues(alpha: .4)),
                       _Entry(
                         label: l.trackingLogout,
                         icon: Icons.logout_rounded,
-                        busy: loggingOut,
-                        onTap: loggingOut ? null : onLogout,
+                        busy: widget.loggingOut,
+                        onTap: widget.loggingOut ? null : widget.onLogout,
                       ),
                       ConstrainedBox(
                         constraints: const BoxConstraints(
@@ -166,7 +218,7 @@ class AppDrawer extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    if (profileName case final name?)
+                                    if (widget.profileName case final name?)
                                       Text(
                                         name,
                                         maxLines: 1,
@@ -176,7 +228,8 @@ class AppDrawer extends StatelessWidget {
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                    if (profileRole case final role?) ...[
+                                    if (widget.profileRole
+                                        case final role?) ...[
                                       const SizedBox(height: AppSizes.p4),
                                       Text(
                                         role,
@@ -204,89 +257,20 @@ class AppDrawer extends StatelessWidget {
   }
 }
 
-/// Opens the host's search: styled as the design's search box, but a
-/// button, since the drawer has no list of its own to search.
-class _SearchButton extends StatelessWidget {
-  const _SearchButton({required this.onTap});
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final l = AppLocalizations.of(context)!;
-    final palette = AppDrawerTheme.of(context);
-    final radius = BorderRadius.circular(AppSizes.r8);
-    return Semantics(
-      button: true,
-      label: l.trackingSearch,
-      onTap: onTap,
-      excludeSemantics: true,
-      child: Material(
-        type: MaterialType.transparency,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: radius,
-          child: Ink(
-            decoration: BoxDecoration(
-              border: Border.all(color: palette.muted),
-              borderRadius: radius,
-            ),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(
-                minHeight: kMinInteractiveDimension,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppSizes.p12),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.search,
-                      size: AppSizes.iconSm,
-                      color: palette.muted,
-                    ),
-                    const SizedBox(width: AppSizes.p8),
-                    Flexible(
-                      child: Text(
-                        l.trackingSearch,
-                        style: Theme.of(
-                          context,
-                        ).textTheme.labelMedium?.copyWith(color: palette.muted),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _Section extends StatelessWidget {
-  const _Section({required this.label});
-  final String label;
-  @override
-  Widget build(BuildContext context) => Text(
-    label,
-    style: Theme.of(
-      context,
-    ).textTheme.labelSmall?.copyWith(color: AppDrawerTheme.of(context).section),
-  );
-}
-
 class _Entry extends StatelessWidget {
   const _Entry({
     required this.label,
     required this.icon,
-    this.expanded,
+    this.indented = false,
     this.selected = false,
     this.busy = false,
     this.onTap,
   });
   final String label;
   final IconData icon;
-  final bool? expanded;
+
+  /// A group's entry, drawn smaller-weighted under its header.
+  final bool indented;
   final bool selected;
   final bool busy;
   final VoidCallback? onTap;
@@ -311,44 +295,47 @@ class _Entry extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           borderRadius: BorderRadius.circular(AppSizes.r8),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: AppSizes.p8,
-              horizontal: AppSizes.p4,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              minHeight: kMinInteractiveDimension,
             ),
-            child: Row(
-              children: [
-                if (busy)
-                  SizedBox.square(
-                    dimension: AppSizes.drawerIconSize,
-                    child: Padding(
-                      padding: const EdgeInsets.all(AppSizes.p2),
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: color,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: AppSizes.p8,
+                horizontal: AppSizes.p8,
+              ),
+              child: Row(
+                children: [
+                  if (busy)
+                    SizedBox.square(
+                      dimension: AppSizes.drawerIconSize,
+                      child: Padding(
+                        padding: const EdgeInsets.all(AppSizes.p2),
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: color,
+                        ),
                       ),
+                    )
+                  else
+                    Icon(
+                      icon,
+                      size: indented
+                          ? AppSizes.iconSm
+                          : AppSizes.drawerIconSize,
+                      color: color,
                     ),
-                  )
-                else
-                  Icon(icon, size: AppSizes.drawerIconSize, color: color),
-                const SizedBox(width: AppSizes.p12),
-                Expanded(
-                  child: Text(
-                    label,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.bodySmall?.copyWith(color: color),
+                  const SizedBox(width: AppSizes.p12),
+                  Expanded(
+                    child: Text(
+                      label,
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodySmall?.copyWith(color: color),
+                    ),
                   ),
-                ),
-                if (expanded != null)
-                  Icon(
-                    expanded!
-                        ? Icons.keyboard_arrow_up
-                        : Icons.keyboard_arrow_down,
-                    size: AppSizes.iconSm,
-                    color: color,
-                  ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

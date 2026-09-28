@@ -8,6 +8,7 @@ import '../../core/router/app_routes.dart';
 import '../../core/services/websocket_service.dart';
 import '../../features/auth/presentation/widgets/session_drawer.dart';
 import 'app_bar_widget.dart';
+import 'app_drawer.dart';
 
 /// A navigation destination shown in the drawer on phones and the rail on
 /// wider screens, so the two cannot drift apart.
@@ -82,7 +83,17 @@ class AppScaffold extends StatelessWidget {
       appBar: showAppBar
           ? NasamAppBar(title: title, wsService: ws, showLeading: showDrawer)
           : null,
-      drawer: showDrawer ? const Drawer(child: SessionDrawer()) : null,
+      drawer: showDrawer
+          ? Drawer(
+              child: SessionDrawer(
+                onSelect: (destination) {
+                  if (destination == DrawerDestination.trackingDashboard) {
+                    context.go(AppRoutes.home);
+                  }
+                },
+              ),
+            )
+          : null,
       body: _wrappedBody(),
       floatingActionButton: floatingActionButton,
       bottomNavigationBar: bottomNavigationBar,

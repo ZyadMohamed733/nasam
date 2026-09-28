@@ -644,12 +644,6 @@ abstract class AppLocalizations {
   /// **'مناطق جغرافية'**
   String get trackingGeofences;
 
-  /// No description provided for @trackingAssignments.
-  ///
-  /// In ar, this message translates to:
-  /// **'إدارة التعيينات'**
-  String get trackingAssignments;
-
   /// No description provided for @trackingSettings.
   ///
   /// In ar, this message translates to:
@@ -1195,6 +1189,24 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'طلب رمز جديد'**
   String get resetStartOver;
+
+  /// Design copy: the drawer reference labels the alerts log this way.
+  ///
+  /// In ar, this message translates to:
+  /// **'سجل التنبيهات'**
+  String get drawerAlertsLog;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد نتائج مطابقة'**
+  String get drawerNoResults;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'مسح البحث'**
+  String get drawerClearSearch;
 }
 
 class _AppLocalizationsDelegate

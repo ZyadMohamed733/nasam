@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui' show Tristate;
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ import 'package:nasam/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:nasam/features/auth/presentation/cubit/current_user_cubit.dart';
 import 'package:nasam/features/auth/presentation/cubit/logout_cubit.dart';
 import 'package:nasam/features/auth/presentation/widgets/session_drawer.dart';
+import 'package:nasam/shared/widgets/app_drawer.dart';
 
 import '../../../../helpers/widget_harness.dart';
 
@@ -44,14 +46,16 @@ void main() {
   Future<void> pumpDrawer(
     WidgetTester tester, {
     Locale locale = const Locale('en'),
-    VoidCallback? onSearch,
+    DrawerDestination? selected,
+    ValueChanged<DrawerDestination>? onSelect,
   }) async {
     await pumpInApp(
       tester,
       SessionDrawer(
         cubit: LogoutCubit(logout),
         currentUserCubit: CurrentUserCubit(currentUser),
-        onSearch: onSearch,
+        selected: selected,
+        onSelect: onSelect,
       ),
       locale: locale,
     );
@@ -103,17 +107,44 @@ void main() {
     });
   });
 
-  group('search', () {
-    testWidgets('is not offered without a search to open', (tester) async {
-      await pumpDrawer(tester);
-      expect(find.text('Search'), findsNothing);
+  group('menu entries', () {
+    testWidgets('the current screen is marked, and tapping it is passed on', (
+      tester,
+    ) async {
+      final selected = <DrawerDestination>[];
+      await pumpDrawer(
+        tester,
+        selected: DrawerDestination.trackingDashboard,
+        onSelect: selected.add,
+      );
+
+      final semantics = tester.getSemantics(find.text('Tracking dashboard'));
+      expect(semantics.flagsCollection.isSelected, Tristate.isTrue);
+
+      await tester.tap(find.text('Tracking dashboard'));
+      expect(selected, [DrawerDestination.trackingDashboard]);
     });
 
-    testWidgets('is a button that opens the host search', (tester) async {
-      var opened = 0;
-      await pumpDrawer(tester, onSearch: () => opened++);
-      await tester.tap(find.text('Search'));
-      expect(opened, 1);
+    // Screens that do not exist yet are shown but cannot be tapped.
+    testWidgets('entries without a screen are disabled, coming soon', (
+      tester,
+    ) async {
+      final selected = <DrawerDestination>[];
+      await pumpDrawer(tester, onSelect: selected.add);
+
+      for (final label in ['Points of interest', 'Geofences', 'Alerts log']) {
+        final node = tester.getSemantics(find.text(label));
+        expect(node.flagsCollection.isEnabled, Tristate.isFalse, reason: label);
+        expect(node.hint, 'Coming soon', reason: label);
+        await tester.tap(find.text(label), warnIfMissed: false);
+      }
+      expect(selected, isEmpty);
+    });
+
+    testWidgets('without a handler no entry is live', (tester) async {
+      await pumpDrawer(tester);
+      final node = tester.getSemantics(find.text('Tracking dashboard'));
+      expect(node.flagsCollection.isEnabled, Tristate.isFalse);
     });
   });
 

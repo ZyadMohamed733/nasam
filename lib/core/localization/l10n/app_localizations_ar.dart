@@ -360,9 +360,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get trackingGeofences => 'مناطق جغرافية';
 
   @override
-  String get trackingAssignments => 'إدارة التعيينات';
-
-  @override
   String get trackingSettings => 'الإعدادات';
 
   @override
@@ -654,4 +651,13 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get resetStartOver => 'طلب رمز جديد';
+
+  @override
+  String get drawerAlertsLog => 'سجل التنبيهات';
+
+  @override
+  String get drawerNoResults => 'لا توجد نتائج مطابقة';
+
+  @override
+  String get drawerClearSearch => 'مسح البحث';
 }

@@ -15,7 +15,6 @@ import '../widgets/tracking_controls.dart';
 import '../widgets/tracking_map.dart';
 import '../widgets/tracking_summary.dart';
 
-
 /// The map, the drawer and the fleet sheet.
 ///
 /// Expects a [TrackingCubit] above it. The route creates that cubit through
@@ -134,18 +133,13 @@ class _TrackingViewState extends State<_TrackingView>
     );
   }
 
-  /// The drawer's search: close the drawer, open the sheet, and put the
-  /// cursor in the search field.
-  Future<void> _openSearch() async {
-    _drawer.hideDrawer();
-    if (_summaryController.isAttached) {
-      await _summaryController.animateTo(
-        _sheetSizes.max,
-        duration: const Duration(milliseconds: 180),
-        curve: Curves.easeOutCubic,
-      );
+  /// A drawer entry was tapped. This screen is the tracking dashboard, so
+  /// that entry just closes the drawer; others will navigate once their
+  /// screens exist.
+  void _onDrawerSelect(DrawerDestination destination) {
+    if (destination == DrawerDestination.trackingDashboard) {
+      _drawer.hideDrawer();
     }
-    if (mounted) _searchFocus.requestFocus();
   }
 
   void _clearFilters() {
@@ -177,8 +171,8 @@ class _TrackingViewState extends State<_TrackingView>
           rtlOpening: Directionality.of(context) == TextDirection.rtl,
           disabledGestures: true, // Map drags must not open the drawer.
           openRatio:
-          (AppSizes.drawerMaxWidth / MediaQuery.sizeOf(context).width)
-              .clamp(0.0, AppSizes.drawerOpenRatio),
+              (AppSizes.drawerMaxWidth / MediaQuery.sizeOf(context).width)
+                  .clamp(0.0, AppSizes.drawerOpenRatio),
           openScale: AppSizes.drawerOpenScale,
           initialDrawerScale: AppSizes.drawerInitialScale,
           backdrop: const AppDrawerBackground(),
@@ -187,14 +181,18 @@ class _TrackingViewState extends State<_TrackingView>
           ),
           drawer: FadeTransition(
             opacity: _drawerFade,
-            child: SessionDrawer(showBackground: false, onSearch: _openSearch),
+            child: SessionDrawer(
+              showBackground: false,
+              selected: DrawerDestination.trackingDashboard,
+              onSelect: _onDrawerSelect,
+            ),
           ),
           child: Scaffold(
             body: BlocConsumer<TrackingCubit, TrackingState>(
               // A failed refresh keeps the last fleet on screen and says so
               // here, rather than replacing the map with an error page.
               listenWhen: (_, state) =>
-              state is TrackingFailure && state.previous != null,
+                  state is TrackingFailure && state.previous != null,
               listener: (context, _) {
                 ScaffoldMessenger.of(context)
                   ..hideCurrentSnackBar()
