@@ -48,6 +48,39 @@ void main() {
       await unmount(tester);
     });
 
+    // A code reads and fills left to right in both languages; only the text
+    // around the boxes follows the locale.
+    for (final locale in const [Locale('en'), Locale('ar')]) {
+      testWidgets('boxes run left to right (${locale.languageCode})', (
+        tester,
+      ) async {
+        await pumpInApp(tester, const AppOtpInput(length: 4), locale: locale);
+
+        await tester.enterText(editable(), '1234');
+        await tester.pump();
+
+        final xs = [
+          for (final digit in ['1', '2', '3', '4'])
+            tester.getCenter(find.text(digit)).dx,
+        ];
+        expect(xs, orderedEquals([...xs]..sort()), reason: '1 is leftmost');
+        final row = find.ancestor(
+          of: find.byType(Pinput),
+          matching: find.byType(Directionality),
+        );
+        expect(
+          tester.widget<Directionality>(row.first).textDirection,
+          TextDirection.ltr,
+        );
+        // The rest of the block keeps the page's direction.
+        expect(
+          Directionality.of(tester.element(find.byType(AppOtpInput))),
+          locale.languageCode == 'ar' ? TextDirection.rtl : TextDirection.ltr,
+        );
+        await unmount(tester);
+      });
+    }
+
     // Pinput ships with no input formatters, so without ours a paste or a
     // hardware keyboard puts letters in a numeric code.
     testWidgets('rejects non-digits', (tester) async {

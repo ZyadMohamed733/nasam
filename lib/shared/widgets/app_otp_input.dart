@@ -18,9 +18,11 @@ import '../../core/extensions/context_extensions.dart';
 /// What is kept here is what the design specifies: the sizes, the per-state
 /// colours, and the order of the three things under the boxes.
 ///
-/// The row follows the ambient [Directionality]. Under Arabic that means the
-/// first box is the rightmost and the code fills right to left, which is how
-/// the design draws a partly-entered code.
+/// The boxes are always left to right, in both languages: a code is a
+/// string of digits read and typed in that order, like the SMS or email it
+/// is copied from, so filling right to left under Arabic put a pasted or
+/// autofilled code in the boxes backwards to the eye. The text around the
+/// boxes — countdown, error, resend — still follows the ambient direction.
 class AppOtpInput extends StatefulWidget {
   const AppOtpInput({
     super.key,
@@ -130,36 +132,39 @@ class _AppOtpInputState extends State<AppOtpInput> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Pinput(
-          length: widget.length,
-          controller: _controller,
-          // spaceBetween rather than a separator: the boxes are a fixed 52 and
-          // the card width varies, so the slack belongs in the gaps.
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          defaultPinTheme: empty,
-          followingPinTheme: empty,
-          focusedPinTheme: _theme(
-            context,
-            border: hasError ? semantic.failText : semantic.primary,
+        Directionality(
+          textDirection: TextDirection.ltr,
+          child: Pinput(
+            length: widget.length,
+            controller: _controller,
+            // spaceBetween rather than a separator: the boxes are a fixed 52 and
+            // the card width varies, so the slack belongs in the gaps.
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            defaultPinTheme: empty,
+            followingPinTheme: empty,
+            focusedPinTheme: _theme(
+              context,
+              border: hasError ? semantic.failText : semantic.primary,
+            ),
+            // A filled box carries the brand colour, which is what separates it
+            // from an empty one at a glance.
+            submittedPinTheme: _theme(context, border: semantic.primary),
+            errorPinTheme: _theme(
+              context,
+              border: semantic.failText,
+              text: semantic.failText,
+            ),
+            // Pinput defaults to no formatters, so a numeric keyboard is the
+            // only thing keeping letters out — and that is a suggestion, not a
+            // guarantee: a paste or a hardware keyboard walks straight past it.
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            forceErrorState: hasError,
+            // The error is drawn below with the rest of the block's copy, so
+            // Pinput must not draw its own underneath the boxes as well.
+            errorBuilder: (_, _) => const SizedBox.shrink(),
+            onChanged: widget.onChanged,
+            onCompleted: widget.onCompleted,
           ),
-          // A filled box carries the brand colour, which is what separates it
-          // from an empty one at a glance.
-          submittedPinTheme: _theme(context, border: semantic.primary),
-          errorPinTheme: _theme(
-            context,
-            border: semantic.failText,
-            text: semantic.failText,
-          ),
-          // Pinput defaults to no formatters, so a numeric keyboard is the
-          // only thing keeping letters out — and that is a suggestion, not a
-          // guarantee: a paste or a hardware keyboard walks straight past it.
-          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          forceErrorState: hasError,
-          // The error is drawn below with the rest of the block's copy, so
-          // Pinput must not draw its own underneath the boxes as well.
-          errorBuilder: (_, _) => const SizedBox.shrink(),
-          onChanged: widget.onChanged,
-          onCompleted: widget.onCompleted,
         ),
         const SizedBox(height: AppSizes.p16),
         _Countdown(remaining: _remaining, expired: _expired, format: _format),
