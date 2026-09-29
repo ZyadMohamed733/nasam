@@ -968,6 +968,78 @@ abstract class AppLocalizations {
   /// **'معلومات المسار'**
   String get playbackInfo;
 
+  /// No description provided for @playbackInfoAssetInformation.
+  ///
+  /// In ar, this message translates to:
+  /// **'معلومات الأصل'**
+  String get playbackInfoAssetInformation;
+
+  /// No description provided for @playbackInfoDate.
+  ///
+  /// In ar, this message translates to:
+  /// **'اليوم'**
+  String get playbackInfoDate;
+
+  /// No description provided for @playbackInfoStatus.
+  ///
+  /// In ar, this message translates to:
+  /// **'الحالة'**
+  String get playbackInfoStatus;
+
+  /// No description provided for @playbackInfoIgnition.
+  ///
+  /// In ar, this message translates to:
+  /// **'الإشعال'**
+  String get playbackInfoIgnition;
+
+  /// No description provided for @playbackInfoOdometer.
+  ///
+  /// In ar, this message translates to:
+  /// **'عداد المسافة'**
+  String get playbackInfoOdometer;
+
+  /// No description provided for @playbackInfoLocation.
+  ///
+  /// In ar, this message translates to:
+  /// **'الموقع'**
+  String get playbackInfoLocation;
+
+  /// No description provided for @playbackInfoSensors.
+  ///
+  /// In ar, this message translates to:
+  /// **'الحساسات'**
+  String get playbackInfoSensors;
+
+  /// No description provided for @playbackInfoFuelLevel.
+  ///
+  /// In ar, this message translates to:
+  /// **'مستوى الوقود'**
+  String get playbackInfoFuelLevel;
+
+  /// No description provided for @playbackInfoHumidity.
+  ///
+  /// In ar, this message translates to:
+  /// **'الرطوبة'**
+  String get playbackInfoHumidity;
+
+  /// No description provided for @playbackInfoMoving.
+  ///
+  /// In ar, this message translates to:
+  /// **'متحرك'**
+  String get playbackInfoMoving;
+
+  /// No description provided for @playbackInfoIgnitionOn.
+  ///
+  /// In ar, this message translates to:
+  /// **'تشغيل'**
+  String get playbackInfoIgnitionOn;
+
+  /// No description provided for @playbackInfoIgnitionOff.
+  ///
+  /// In ar, this message translates to:
+  /// **'إيقاف'**
+  String get playbackInfoIgnitionOff;
+
   /// AWAITING DESIGN COPY
   ///
   /// In ar, this message translates to:

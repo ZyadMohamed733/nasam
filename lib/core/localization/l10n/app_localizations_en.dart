@@ -508,6 +508,42 @@ class AppLocalizationsEn extends AppLocalizations {
   String get playbackInfo => 'Route information';
 
   @override
+  String get playbackInfoAssetInformation => 'Asset information';
+
+  @override
+  String get playbackInfoDate => 'Date';
+
+  @override
+  String get playbackInfoStatus => 'Status';
+
+  @override
+  String get playbackInfoIgnition => 'Ignition';
+
+  @override
+  String get playbackInfoOdometer => 'Odometer';
+
+  @override
+  String get playbackInfoLocation => 'Location';
+
+  @override
+  String get playbackInfoSensors => 'Sensors';
+
+  @override
+  String get playbackInfoFuelLevel => 'Fuel level';
+
+  @override
+  String get playbackInfoHumidity => 'Humidity';
+
+  @override
+  String get playbackInfoMoving => 'Moving';
+
+  @override
+  String get playbackInfoIgnitionOn => 'On';
+
+  @override
+  String get playbackInfoIgnitionOff => 'Off';
+
+  @override
   String get playbackBack => 'Back';
 
   @override

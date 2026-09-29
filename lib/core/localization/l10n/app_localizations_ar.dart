@@ -522,6 +522,42 @@ class AppLocalizationsAr extends AppLocalizations {
   String get playbackInfo => 'معلومات المسار';
 
   @override
+  String get playbackInfoAssetInformation => 'معلومات الأصل';
+
+  @override
+  String get playbackInfoDate => 'اليوم';
+
+  @override
+  String get playbackInfoStatus => 'الحالة';
+
+  @override
+  String get playbackInfoIgnition => 'الإشعال';
+
+  @override
+  String get playbackInfoOdometer => 'عداد المسافة';
+
+  @override
+  String get playbackInfoLocation => 'الموقع';
+
+  @override
+  String get playbackInfoSensors => 'الحساسات';
+
+  @override
+  String get playbackInfoFuelLevel => 'مستوى الوقود';
+
+  @override
+  String get playbackInfoHumidity => 'الرطوبة';
+
+  @override
+  String get playbackInfoMoving => 'متحرك';
+
+  @override
+  String get playbackInfoIgnitionOn => 'تشغيل';
+
+  @override
+  String get playbackInfoIgnitionOff => 'إيقاف';
+
+  @override
   String get playbackBack => 'رجوع';
 
   @override

@@ -23,6 +23,7 @@ import '../../domain/entities/playback_point.dart';
 import '../cubit/playback_map_cubit.dart';
 import '../utils/playback_range.dart';
 import '../widgets/playback_date_picker_sheet.dart';
+import '../widgets/playback_info_bottom_sheet.dart';
 
 class PlaybackMapPage extends StatelessWidget {
   const PlaybackMapPage({
@@ -203,6 +204,7 @@ class _PlaybackMapViewState extends State<_PlaybackMapView> {
                       asset: AppAssets.infoCircle,
                       label: l.playbackInfo,
                       materialIcon: Icons.info_outline,
+                      onTap: _showPlaybackInfo,
                     ),
                   ],
                 ),
@@ -211,6 +213,26 @@ class _PlaybackMapViewState extends State<_PlaybackMapView> {
           ),
           Align(alignment: Alignment.bottomCenter, child: _panel(context)),
         ],
+      ),
+    );
+  }
+
+  void _showPlaybackInfo() {
+    final playbackCubit = context.read<PlaybackMapCubit>();
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(AppSizes.r24)),
+      ),
+      builder: (_) => BlocProvider.value(
+        value: playbackCubit,
+        child: FractionallySizedBox(
+          heightFactor: .9,
+          child: PlaybackInfoBottomSheet(asset: widget.asset),
+        ),
       ),
     );
   }
@@ -291,7 +313,7 @@ class _PlaybackMapViewState extends State<_PlaybackMapView> {
             Text(l.assetPlaybackEmpty)
           else if (loaded != null) ...[
             _scrubber(context, loaded),
-             SizedBox(height: AppSizes.p8),
+            SizedBox(height: AppSizes.p8),
             Row(
               textDirection: ui.TextDirection.ltr,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -301,14 +323,14 @@ class _PlaybackMapViewState extends State<_PlaybackMapView> {
                   onPressed: context.read<PlaybackMapCubit>().previous,
                   asset: AppAssets.skipPrevious,
                   size: AppSizes.iconSm,
-                    boxDecoration: BoxDecoration(
-                      color: TrackingColors.of(
-                        context,
-                      ).playbackPrimary.withValues(alpha: .16),
-                      borderRadius: BorderRadius.circular(AppSizes.r8),
-                    ),
+                  boxDecoration: BoxDecoration(
+                    color: TrackingColors.of(
+                      context,
+                    ).playbackPrimary.withValues(alpha: .16),
+                    borderRadius: BorderRadius.circular(AppSizes.r8),
+                  ),
                 ),
-                 SizedBox(width: AppSizes.p16),
+                SizedBox(width: AppSizes.p16),
                 AppAssetsIconWidget(
                   asset: loaded.isPlaying
                       ? AppAssets.pauseIcon

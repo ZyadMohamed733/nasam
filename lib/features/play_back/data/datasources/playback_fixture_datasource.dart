@@ -22,7 +22,8 @@ class PlaybackFixtureDataSource implements PlaybackDataSource {
        _simulateEmpty = _emptyFlag;
 
   static const bool _failureFlag =
-      kDebugMode && bool.fromEnvironment(
+      kDebugMode &&
+      bool.fromEnvironment(
         'PLAYBACK_FIXTURE_FAIL',
         defaultValue: bool.fromEnvironment('TRACKING_FIXTURE_FAIL'),
       );
@@ -91,6 +92,15 @@ class PlaybackFixtureDataSource implements PlaybackDataSource {
             ),
             headingDegrees: point.headingDegrees,
             speedKph: point.speedKph,
+            distanceOdometerKm: point.distanceOdometerKm,
+            isMoving: point.isMoving,
+            engineOn: point.engineOn,
+            locationEn: point.locationEn,
+            locationAr: point.locationAr,
+            fuelLevelPercent: point.fuelLevelPercent,
+            humidityPercent: point.humidityPercent,
+            temperatureCelsius: point.temperatureCelsius,
+            weightKg: point.weightKg,
           ),
         )
         .where((p) => !p.recordedAt.isBefore(from) && p.recordedAt.isBefore(to))

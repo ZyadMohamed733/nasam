@@ -10,6 +10,15 @@ abstract final class PlaybackMapper {
     recordedAt: model.recordedAt,
     headingDegrees: model.headingDegrees,
     speedKph: model.speedKph,
+    distanceOdometerKm: model.distanceOdometerKm,
+    isMoving: model.isMoving,
+    engineOn: model.engineOn,
+    locationEn: model.locationEn,
+    locationAr: model.locationAr,
+    fuelLevelPercent: model.fuelLevelPercent,
+    humidityPercent: model.humidityPercent,
+    temperatureCelsius: model.temperatureCelsius,
+    weightKg: model.weightKg,
   );
   static PlaybackSegment segment(PlaybackSegmentModel model) => PlaybackSegment(
     startedAt: model.startedAt,
