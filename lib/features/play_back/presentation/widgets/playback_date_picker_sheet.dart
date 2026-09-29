@@ -46,6 +46,24 @@ class _PlaybackDatePickerSheetState extends State<PlaybackDatePickerSheet> {
   late final TextEditingController _minuteController = TextEditingController(
     text: widget.initialDate.minute.toString().padLeft(2, '0'),
   );
+  bool _arabicNumerals = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final useArabicNumerals =
+        Localizations.localeOf(context).languageCode == 'ar';
+    if (useArabicNumerals == _arabicNumerals) return;
+    _arabicNumerals = useArabicNumerals;
+    _hourController.text = _localizeNumerals(
+      _hourController.text,
+      useArabicNumerals,
+    );
+    _minuteController.text = _localizeNumerals(
+      _minuteController.text,
+      useArabicNumerals,
+    );
+  }
 
   @override
   void dispose() {
@@ -84,7 +102,7 @@ class _PlaybackDatePickerSheetState extends State<PlaybackDatePickerSheet> {
           final year = years[index];
           return ListTile(
             selected: year == _visibleMonth.year,
-            title: Text(year.toString().toArabicNumerals()),
+            title: Text(_localizeNumerals(year.toString(), _arabicNumerals)),
             onTap: () => Navigator.of(context).pop(year),
           );
         },
@@ -193,7 +211,10 @@ class _PlaybackDatePickerSheetState extends State<PlaybackDatePickerSheet> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          _visibleMonth.year.toString().toArabicNumerals(),
+                          _localizeNumerals(
+                            _visibleMonth.year.toString(),
+                            _arabicNumerals,
+                          ),
                           style: theme.textTheme.bodyMedium?.copyWith(
                             color: muted,
                           ),
@@ -283,6 +304,7 @@ class _PlaybackDatePickerSheetState extends State<PlaybackDatePickerSheet> {
                                 date: calendarDays[week * 7 + weekday],
                                 muted: muted,
                                 accent: accent,
+                                arabicNumerals: _arabicNumerals,
                               ),
                             ),
                         ],
@@ -335,6 +357,7 @@ class _PlaybackDatePickerSheetState extends State<PlaybackDatePickerSheet> {
     required DateTime date,
     required Color muted,
     required Color accent,
+    required bool arabicNumerals,
   }) {
     final theme = Theme.of(context);
     final inMonth = date.month == _visibleMonth.month;
@@ -367,7 +390,7 @@ class _PlaybackDatePickerSheetState extends State<PlaybackDatePickerSheet> {
                 : null,
             child: Center(
               child: Text(
-                date.day.toString().toArabicNumerals(),
+                _localizeNumerals(date.day.toString(), arabicNumerals),
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: foreground,
                   fontWeight: selected ? FontWeight.bold : null,
@@ -379,7 +402,8 @@ class _PlaybackDatePickerSheetState extends State<PlaybackDatePickerSheet> {
       ),
     );
   }
-// time
+
+  // time
   Widget _buildTimeInput(BuildContext context, AppLocalizations l) {
     final theme = Theme.of(context);
     final timeInputTheme = theme.copyWith(
@@ -437,7 +461,8 @@ class _PlaybackDatePickerSheetState extends State<PlaybackDatePickerSheet> {
       ),
     );
   }
-//_periodOption
+
+  //_periodOption
   Widget _periodOption(
     BuildContext context, {
     required String label,
@@ -491,7 +516,7 @@ class _PlaybackDatePickerSheetState extends State<PlaybackDatePickerSheet> {
         ),
         style: theme.textTheme.bodyMedium,
         onChanged: (value) {
-          final digits = value.toArabicNumerals();
+          final digits = _localizeNumerals(value, _arabicNumerals);
           if (digits != value) {
             controller.value = controller.value.copyWith(
               text: digits,
@@ -505,6 +530,9 @@ class _PlaybackDatePickerSheetState extends State<PlaybackDatePickerSheet> {
 
   static String _displayHour(int hour) =>
       (hour % 12 == 0 ? 12 : hour % 12).toString().padLeft(2, '0');
+
+  static String _localizeNumerals(String value, bool arabic) =>
+      arabic ? value.toArabicNumerals() : _toWesternNumerals(value);
 
   static String _toWesternNumerals(String value) {
     const eastern = '٠١٢٣٤٥٦٧٨٩';

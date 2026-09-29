@@ -40,6 +40,7 @@ class _PlaybackSegmentCardState extends State<PlaybackSegmentCard> {
     final l = AppLocalizations.of(context)!;
     final scheme = Theme.of(context).colorScheme;
     final timeFormat = DateFormat.jm(widget.locale);
+    final dateFormat = DateFormat.yMMMd(widget.locale);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 7.h),
       decoration: BoxDecoration(
@@ -63,9 +64,7 @@ class _PlaybackSegmentCardState extends State<PlaybackSegmentCard> {
               Expanded(
                 child: _TimeLabel(
                   time: timeFormat.format(widget.segment.startedAt),
-                  date: DateFormat.yMd(
-                    widget.locale,
-                  ).format(widget.segment.startedAt),
+                  date: dateFormat.format(widget.segment.startedAt),
                   leading: false,
                 ),
               ),
@@ -73,9 +72,7 @@ class _PlaybackSegmentCardState extends State<PlaybackSegmentCard> {
               Expanded(
                 child: _TimeLabel(
                   time: timeFormat.format(widget.segment.endedAt),
-                  date: DateFormat.yMd(
-                    widget.locale,
-                  ).format(widget.segment.endedAt),
+                  date: dateFormat.format(widget.segment.endedAt),
                   leading: true,
                 ),
               ),
@@ -134,55 +131,25 @@ class _PlaybackSegmentCardState extends State<PlaybackSegmentCard> {
           Padding(
             padding: EdgeInsetsDirectional.only(start: 3.w, top: 2.h),
             child: Row(
-              textDirection: ui.TextDirection.ltr,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: Row(
-                    textDirection: ui.TextDirection.ltr,
-                    children: [
-                      Icon(
-                        Icons.location_on_outlined,
-                        size: AppIconSize.extraSmall.value.r,
-                        color: scheme.onSurfaceVariant,
-                      ),
-                      SizedBox(width: 3.w),
-                      Flexible(
-                        child: Text(
-                          widget.segment.startPlace,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(
-                            context,
-                          ).textTheme.labelSmall?.copyWith(fontSize: 9.sp),
-                        ),
-                      ),
-                    ],
+                ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: 130.w),
+                  child: _LocationLabel(
+                    place: widget.segment.startPlace,
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(fontSize: 10.sp),
+                    iconColor: scheme.onSurfaceVariant,
+                    iconSize: AppIconSize.extraSmall.value.r,
                   ),
                 ),
                 SizedBox(width: 8.w),
                 Expanded(
-                  child: Row(
-                    textDirection: ui.TextDirection.rtl,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Icon(
-                        Icons.location_on_outlined,
-                        size: AppIconSize.extraSmall.value.r,
-                        color: scheme.onSurfaceVariant,
-                      ),
-                      SizedBox(width: 3.w),
-                      Flexible(
-                        child: Text(
-                          widget.segment.endPlace,
-                          textAlign: TextAlign.end,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(
-                            context,
-                          ).textTheme.labelSmall?.copyWith(fontSize: 9.sp),
-                        ),
-                      ),
-                    ],
+                  child: _LocationLabel(
+                    place: widget.segment.endPlace,
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(fontSize: 10.sp),
+                    iconColor: scheme.onSurfaceVariant,
+                    iconSize: AppIconSize.extraSmall.value.r,
+                    alignEnd: true,
                   ),
                 ),
               ],
@@ -234,7 +201,7 @@ class _PlaybackSegmentCardState extends State<PlaybackSegmentCard> {
   }
 }
 
-/// Displays one segment timestamp, with its clock icon on the outer edge.
+//// Displays one segment timestamp, with its clock icon on the outer edge.
 class _TimeLabel extends StatelessWidget {
   const _TimeLabel({
     required this.time,
@@ -335,6 +302,40 @@ class _SegmentMetric extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+class _LocationLabel extends StatelessWidget {
+  const _LocationLabel({
+    required this.place,
+    required this.style,
+    required this.iconColor,
+    required this.iconSize,
+    this.alignEnd = false,
+  });
+
+  final String place;
+  final TextStyle? style;
+  final Color iconColor;
+  final double iconSize;
+  final bool alignEnd;
+
+  @override
+  Widget build(BuildContext context) {
+    final icon = WidgetSpan(
+      alignment: PlaceholderAlignment.middle,
+      child: Icon(Icons.location_on_outlined, size: iconSize, color: iconColor),
+    );
+    final gap = WidgetSpan(child: SizedBox(width: 3));
+    final text = TextSpan(text: place, style: style);
+
+    return Text.rich(
+      TextSpan(
+        children: alignEnd ? [text, gap, icon] : [icon, gap, text],
+      ),
+      textAlign: alignEnd ? TextAlign.end : TextAlign.start,
+      maxLines: 2,
+      overflow: TextOverflow.ellipsis,
     );
   }
 }
