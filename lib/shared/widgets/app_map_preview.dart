@@ -32,7 +32,10 @@ class AppMapPreview extends StatelessWidget {
   static const double buttonSize = 40;
   static const double buttonTop = 12;
   static const double buttonEnd = 7;
-  static const double buttonIcon = 16;
+
+  /// Material's full-screen glyph fills about 14 of a 24 box: the design's
+  /// bracket is about 15.
+  static const double buttonIcon = 24;
 
   static const fullscreenKey = ValueKey('app-map-preview-fullscreen');
 
@@ -82,7 +85,7 @@ class AppMapPin extends StatelessWidget {
   /// The box the pin is centred in; its centre is the pin's tip.
   static const double size = 76;
   static const double pin = 36;
-  static const double haloOuter = 22;
+  static const double haloOuter = 20;
   static const double haloInner = 12;
 
   @override
@@ -91,16 +94,22 @@ class AppMapPin extends StatelessWidget {
     painter: AppMapPinPainter(
       color: context.semanticColors.actionIcon,
       dot: context.semanticColors.containerBackground,
+      halo: context.semanticColors.mapPinHalo,
     ),
   );
 }
 
 /// Paints [AppMapPin] on a canvas: in a widget, or into a map marker bitmap.
 class AppMapPinPainter extends CustomPainter {
-  const AppMapPinPainter({required this.color, required this.dot});
+  const AppMapPinPainter({
+    required this.color,
+    required this.dot,
+    required this.halo,
+  });
 
   final Color color;
   final Color dot;
+  final Color halo;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -109,12 +118,12 @@ class AppMapPinPainter extends CustomPainter {
       ..drawCircle(
         tip,
         AppMapPin.haloOuter,
-        Paint()..color = color.withValues(alpha: .12),
+        Paint()..color = halo.withValues(alpha: .2),
       )
       ..drawCircle(
         tip,
         AppMapPin.haloInner,
-        Paint()..color = color.withValues(alpha: .16),
+        Paint()..color = halo.withValues(alpha: .25),
       );
     // location_on is drawn in a 24 box: body x 5–19, tip at y 22, hole
     // centred at (12, 9) with radius 2.5.
@@ -144,5 +153,5 @@ class AppMapPinPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(AppMapPinPainter old) =>
-      old.color != color || old.dot != dot;
+      old.color != color || old.dot != dot || old.halo != halo;
 }

@@ -125,6 +125,7 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
     required this.infoValueSurface,
     required this.cardShadow,
     required this.actionIcon,
+    required this.mapPinHalo,
   });
 
   final Color primary;
@@ -178,6 +179,9 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
   /// The glyph on an outlined icon action — edit, full screen.
   final Color actionIcon;
 
+  /// The soft rings around a map pin (`AppMapPin`), drawn at low opacity.
+  final Color mapPinHalo;
+
   static const AppSemanticColors light = AppSemanticColors(
     primary: AppColors.bluePurple500,
     secondary: AppColors.purple500,
@@ -208,6 +212,7 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
     infoValueSurface: AppColors.gray25,
     cardShadow: AppColors.bluePurple50,
     actionIcon: AppColors.bluePurple700,
+    mapPinHalo: AppColors.violet500,
   );
 
   static const AppSemanticColors dark = AppSemanticColors(
@@ -240,6 +245,7 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
     infoValueSurface: AppColors.neutral900, // AWAITING DESIGN
     cardShadow: AppColors.transparentBlack20, // AWAITING DESIGN
     actionIcon: AppColors.bluePurple200, // AWAITING DESIGN
+    mapPinHalo: AppColors.violet500, // AWAITING DESIGN
   );
 
   @override
@@ -273,6 +279,7 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
     Color? infoValueSurface,
     Color? cardShadow,
     Color? actionIcon,
+    Color? mapPinHalo,
   }) {
     return AppSemanticColors(
       primary: primary ?? this.primary,
@@ -308,6 +315,7 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
       infoValueSurface: infoValueSurface ?? this.infoValueSurface,
       cardShadow: cardShadow ?? this.cardShadow,
       actionIcon: actionIcon ?? this.actionIcon,
+      mapPinHalo: mapPinHalo ?? this.mapPinHalo,
     );
   }
 
@@ -360,6 +368,7 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
       infoValueSurface: mix(infoValueSurface, other.infoValueSurface),
       cardShadow: mix(cardShadow, other.cardShadow),
       actionIcon: mix(actionIcon, other.actionIcon),
+      mapPinHalo: mix(mapPinHalo, other.mapPinHalo),
     );
   }
 }

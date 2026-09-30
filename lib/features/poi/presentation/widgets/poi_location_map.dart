@@ -30,7 +30,7 @@ class PoiLocationMap extends StatefulWidget {
 class _PoiLocationMapState extends State<PoiLocationMap> {
   GoogleMapController? _map;
   BitmapDescriptor? _icon;
-  Color? _color, _dot;
+  Color? _color, _dot, _halo;
   double? _ratio;
   int _generation = 0;
   @override
@@ -39,6 +39,7 @@ class _PoiLocationMapState extends State<PoiLocationMap> {
     final color = context.semanticColors.actionIcon;
     final ratio = MediaQuery.devicePixelRatioOf(context);
     _dot = context.semanticColors.containerBackground;
+    _halo = context.semanticColors.mapPinHalo;
     if (_color != color || _ratio != ratio) {
       _color = color;
       _ratio = ratio;
@@ -54,6 +55,7 @@ class _PoiLocationMapState extends State<PoiLocationMap> {
       AppMapPinPainter(
         color: color,
         dot: _dot ?? Colors.white,
+        halo: _halo ?? color,
       ).paint(canvas, const Size.square(AppMapPin.size));
       final output = recorder.endRecording();
       final image = await output.toImage(
