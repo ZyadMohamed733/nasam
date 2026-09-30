@@ -1,8 +1,10 @@
 import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import '../../../../core/extensions/context_extensions.dart';
+
 import '../../../../core/errors/error_reporter.dart';
+import '../../../../core/extensions/context_extensions.dart';
 import '../../../../shared/widgets/app_map_preview.dart';
 
 /// The map behind the location preview and the full-screen picker. Its
