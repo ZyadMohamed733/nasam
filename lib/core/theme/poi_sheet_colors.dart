@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../constants/app_colors.dart';
 
-/// The POI sheet's colours, per brightness (Figma `647:8266` and the row
-/// `507:16775`).
+/// The POI screens' own colours, per brightness: the sheet (`647:8266`), its
+/// row (`507:16775`) and the form's location caption (`539:13763`).
 ///
 /// The light values are the design's. The design has no dark POI sheet, so
 /// every dark value is marked AWAITING DESIGN: each is picked from the
@@ -25,6 +25,7 @@ class PoiSheetColors extends ThemeExtension<PoiSheetColors> {
     required this.rowText,
     required this.iconBoxFill,
     required this.iconBoxIcon,
+    required this.locationCaption,
   });
 
   /// The drag handle's bar.
@@ -52,6 +53,9 @@ class PoiSheetColors extends ThemeExtension<PoiSheetColors> {
   final Color iconBoxFill;
   final Color iconBoxIcon;
 
+  /// The POI form's "selected location coordinates" caption (`539:13763`).
+  final Color locationCaption;
+
   static final light = PoiSheetColors(
     handle: AppColors.neutral150Handle,
     link: AppColors.bluePurple700,
@@ -66,6 +70,7 @@ class PoiSheetColors extends ThemeExtension<PoiSheetColors> {
     rowText: AppColors.neutral950,
     iconBoxFill: AppColors.bluePurple25,
     iconBoxIcon: AppColors.violet500,
+    locationCaption: AppColors.neutral800,
   );
 
   /// AWAITING DESIGN — every value. Placed on the dark container colour
@@ -86,6 +91,7 @@ class PoiSheetColors extends ThemeExtension<PoiSheetColors> {
     rowText: AppColors.neutral50, // AWAITING DESIGN
     iconBoxFill: AppColors.bluePurple700, // AWAITING DESIGN
     iconBoxIcon: AppColors.bluePurple200, // AWAITING DESIGN
+    locationCaption: AppColors.neutral200, // AWAITING DESIGN
   );
 
   /// The theme's, or the default for its brightness if a theme was built
@@ -111,6 +117,7 @@ class PoiSheetColors extends ThemeExtension<PoiSheetColors> {
     Color? rowText,
     Color? iconBoxFill,
     Color? iconBoxIcon,
+    Color? locationCaption,
   }) => PoiSheetColors(
     handle: handle ?? this.handle,
     link: link ?? this.link,
@@ -125,6 +132,7 @@ class PoiSheetColors extends ThemeExtension<PoiSheetColors> {
     rowText: rowText ?? this.rowText,
     iconBoxFill: iconBoxFill ?? this.iconBoxFill,
     iconBoxIcon: iconBoxIcon ?? this.iconBoxIcon,
+    locationCaption: locationCaption ?? this.locationCaption,
   );
 
   @override
@@ -145,6 +153,7 @@ class PoiSheetColors extends ThemeExtension<PoiSheetColors> {
       rowText: mix(rowText, other.rowText),
       iconBoxFill: mix(iconBoxFill, other.iconBoxFill),
       iconBoxIcon: mix(iconBoxIcon, other.iconBoxIcon),
+      locationCaption: mix(locationCaption, other.locationCaption),
     );
   }
 }

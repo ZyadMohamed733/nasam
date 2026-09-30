@@ -140,6 +140,13 @@ class _AppFormFieldState extends State<AppFormField> {
               minLines: widget.minLines,
               maxLines: widget.maxLines,
               textDirection: direction,
+              // Pinned-LTR text still lines up with the ambient start: right
+              // in Arabic, as the design draws coordinates.
+              textAlign: widget.forceLtr
+                  ? (Directionality.of(context) == TextDirection.rtl
+                        ? TextAlign.right
+                        : TextAlign.left)
+                  : TextAlign.start,
               style: style?.copyWith(
                 color: widget.enabled ? style.color : s.textPlaceholder,
               ),
