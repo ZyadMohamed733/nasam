@@ -40,6 +40,7 @@ class AppRoutes {
   /// go_router requires for child routes.
   static const String assetDetailsPattern = 'assets/:$assetIdParam';
   static const String assetPlaybackPattern = 'playback';
+  static const String assetPlaybackMapPattern = 'map';
   static const String assetIdParam = 'assetId';
 
   /// The playback range, as ISO dates.
@@ -66,6 +67,16 @@ class AppRoutes {
       path: '${assetDetails(assetId)}/playback',
       queryParameters: query.isEmpty ? null : query,
     ).toString();
+  }
+
+  /// `/assets/<id>/playback/map`, the map view launched from the legacy summary.
+  static String assetPlaybackMap(
+    String assetId, {
+    DateTime? from,
+    DateTime? to,
+  }) {
+    final uri = Uri.parse(assetPlayback(assetId, from: from, to: to));
+    return uri.replace(path: '${uri.path}/$assetPlaybackMapPattern').toString();
   }
 
   /// `/login?returnTo=<target>`: sign in, then carry on to [target].

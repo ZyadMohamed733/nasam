@@ -29,6 +29,9 @@ import 'package:nasam/features/poi/presentation/cubit/poi_cubit.dart';
 import 'package:nasam/features/poi/presentation/pages/poi_details_page.dart';
 import 'package:nasam/features/poi/presentation/pages/poi_editor_page.dart';
 import 'package:nasam/features/poi/presentation/pages/poi_page.dart';
+import 'package:nasam/features/play_back/presentation/pages/playback_page.dart';
+import 'package:nasam/features/play_back/presentation/pages/playback_map_page.dart';
+import 'package:nasam/features/play_back/presentation/utils/playback_range.dart';
 import 'package:nasam/features/tracking/data/datasources/tracking_datasource.dart';
 import 'package:nasam/features/tracking/data/datasources/tracking_fixture_datasource.dart';
 import 'package:nasam/features/tracking/presentation/cubit/tracking_cubit.dart';
@@ -331,6 +334,17 @@ void main() {
     await back(tester);
     expect(location(router), AppRoutes.home);
     expect(find.byType(HomePage), findsOneWidget);
+  });
+
+  testWidgets('the start playback button opens the map playback child route', (
+    tester,
+  ) async {
+    final router = await open(tester, AppRoutes.assetPlayback(_knownId));
+    await tester.tap(find.text('Start playback'));
+    await tester.pumpAndSettle();
+    expect(location(router), startsWith(AppRoutes.assetPlaybackMap(_knownId)));
+    expect(find.byType(PlaybackMapPage), findsOneWidget);
+    expect(tester.takeException(), isNull);
   });
 
   testWidgets('a valid range in the link reaches the page', (tester) async {

@@ -12,8 +12,10 @@ import '../../features/auth/presentation/pages/password_reset_success_page.dart'
 import '../../features/auth/presentation/pages/reset_code_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/onboarding/presentation/pages/onboarding_page.dart';
-import '../../features/play_back/presentation/cubit/playback_cubit.dart';
+import '../../features/play_back/presentation/cubit/playback_map_cubit.dart';
+import '../../features/play_back/presentation/pages/playback_map_page.dart';
 import '../../features/play_back/presentation/pages/playback_page.dart';
+import '../../features/play_back/presentation/cubit/playback_cubit.dart';
 import '../../features/play_back/presentation/utils/playback_range.dart';
 import '../../features/poi/presentation/cubit/poi_editor_cubit.dart';
 import '../../features/poi/presentation/cubit/poi_import_cubit.dart';
@@ -289,6 +291,39 @@ class AppRouter {
                     ),
                   );
                 },
+                routes: [
+                  GoRoute(
+                    path: AppRoutes.assetPlaybackMapPattern,
+                    pageBuilder: (context, state) => appTransitionPage(
+                      context: context,
+                      state: state,
+                      slide: true,
+                      child: MultiBlocProvider(
+                        providers: [
+                          BlocProvider(
+                            create: (_) =>
+                                getIt<TrackedAssetCubit>()
+                                  ..load(_assetId(state)),
+                          ),
+                          BlocProvider(
+                            create: (_) => getIt<PlaybackMapCubit>(),
+                          ),
+                        ],
+                        child: PlaybackMapPage(
+                          assetId: _assetId(state),
+                          initialRange: PlaybackRange.fromQuery(
+                            from: state
+                                .uri
+                                .queryParameters[AppRoutes.fromDateParam],
+                            to: state
+                                .uri
+                                .queryParameters[AppRoutes.toDateParam],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

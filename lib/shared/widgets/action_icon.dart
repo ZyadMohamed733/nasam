@@ -1,33 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../core/constants/app_icons.dart';
+import '../../core/constants/app_sizes.dart';
 
 /// A compact icon action inside a padded touch target.
-///
+////
 /// Pass [disabledHint] when a disabled action needs an explanation.
-class ActionIcon extends StatelessWidget {
-  const ActionIcon({
+class AppAssetsIconWidget extends StatelessWidget {
+  const AppAssetsIconWidget({
     super.key,
     this.icon,
     this.asset,
     required this.label,
     this.onPressed,
     this.disabledHint,
+    this.boxDecoration,
+    this.size,
+    this.containerSize,
+    this.borderRadius,
+    this.iconColor,
   }) : assert(icon != null || asset != null);
 
   final IconData? icon;
   final String? asset;
+  final double? size;
+  final double? containerSize;
   final String label;
   final VoidCallback? onPressed;
   final String? disabledHint;
-
+  final BoxDecoration? boxDecoration;
+  final BorderRadius? borderRadius;
+  final Color? iconColor;
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final enabled = onPressed != null;
-    final radius = BorderRadius.circular(4.r);
+    final radius = borderRadius ?? BorderRadius.circular(AppSizes.r4);
     final tooltip = !enabled && disabledHint != null
         ? '$label · $disabledHint'
         : label;
@@ -46,36 +54,31 @@ class ActionIcon extends StatelessWidget {
           customBorder: RoundedRectangleBorder(borderRadius: radius),
           child: ConstrainedBox(
             constraints: BoxConstraints(
-              minWidth: kMinInteractiveDimension.w,
-              minHeight: kMinInteractiveDimension.h,
+              minWidth: kMinInteractiveDimension,
+              minHeight: kMinInteractiveDimension,
             ),
             child: Center(
               child: Container(
-                width: 28.r,
-                height: 28.r,
-                decoration: BoxDecoration(
-                  borderRadius: radius,
-                  border: Border.all(color: scheme.outlineVariant),
-                ),
+                width: containerSize ?? AppSizes.iconButtonSmall,
+                height: containerSize ?? AppSizes.iconButtonSmall,
+                alignment: Alignment.center,
+                decoration: boxDecoration,
                 child: asset != null
                     ? SvgPicture.asset(
                         asset!,
-                        width: AppIconSize.small.value.r,
-                        height: AppIconSize.small.value.r,
-                        colorFilter: ColorFilter.mode(
-                          enabled
-                              ? scheme.primary
-                              : scheme.onSurface.withValues(alpha: .38),
-                          BlendMode.srcIn,
-                        ),
+                        width: size ?? AppSizes.iconSm,
+                        height: size ?? AppSizes.iconSm,
+
                         excludeFromSemantics: true,
                       )
                     : Icon(
                         icon,
-                        size: AppIconSize.small.value.r,
-                        color: enabled
-                            ? scheme.primary
-                            : scheme.onSurface.withValues(alpha: .38),
+                        size: size ?? AppSizes.iconSm,
+                        color:
+                            iconColor ??
+                            (enabled
+                                ? scheme.primary
+                                : scheme.onSurface.withValues(alpha: .38)),
                       ),
               ),
             ),

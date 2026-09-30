@@ -8,6 +8,8 @@ import 'package:intl/intl.dart';
 import '../../../../core/constants/app_assets.dart';
 import '../../../../core/constants/app_icons.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
+import '../../../../core/theme/tracking_colors.dart';
+import '../../../../shared/widgets/action_icon.dart';
 import '../../domain/entities/playback_segment.dart';
 
 const _playbackTimelineColor = Color(0xFF8A8AA3);
@@ -38,6 +40,7 @@ class _PlaybackSegmentCardState extends State<PlaybackSegmentCard> {
     final l = AppLocalizations.of(context)!;
     final scheme = Theme.of(context).colorScheme;
     final timeFormat = DateFormat.jm(widget.locale);
+    final dateFormat = DateFormat.yMMMd(widget.locale);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 7.h),
       decoration: BoxDecoration(
@@ -54,15 +57,14 @@ class _PlaybackSegmentCardState extends State<PlaybackSegmentCard> {
       ),
       child: Column(
         children: [
+          /// Segment start and end timestamps.
           Row(
             textDirection: ui.TextDirection.ltr,
             children: [
               Expanded(
                 child: _TimeLabel(
                   time: timeFormat.format(widget.segment.startedAt),
-                  date: DateFormat.yMd(
-                    widget.locale,
-                  ).format(widget.segment.startedAt),
+                  date: dateFormat.format(widget.segment.startedAt),
                   leading: false,
                 ),
               ),
@@ -70,15 +72,14 @@ class _PlaybackSegmentCardState extends State<PlaybackSegmentCard> {
               Expanded(
                 child: _TimeLabel(
                   time: timeFormat.format(widget.segment.endedAt),
-                  date: DateFormat.yMd(
-                    widget.locale,
-                  ).format(widget.segment.endedAt),
+                  date: dateFormat.format(widget.segment.endedAt),
                   leading: true,
                 ),
               ),
             ],
           ),
           SizedBox(height: 3.h),
+          /// Playback timeline with its leading direction icon.
           Row(
             textDirection: ui.TextDirection.ltr,
             children: [
@@ -126,87 +127,51 @@ class _PlaybackSegmentCardState extends State<PlaybackSegmentCard> {
               ),
             ],
           ),
+          /// Start and end location labels below the timeline.
           Padding(
             padding: EdgeInsetsDirectional.only(start: 3.w, top: 2.h),
             child: Row(
-              textDirection: ui.TextDirection.ltr,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: Row(
-                    textDirection: ui.TextDirection.ltr,
-                    children: [
-                      Icon(
-                        Icons.location_on_outlined,
-                        size: AppIconSize.extraSmall.value.r,
-                        color: scheme.onSurfaceVariant,
-                      ),
-                      SizedBox(width: 3.w),
-                      Flexible(
-                        child: Text(
-                          widget.segment.startPlace,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(
-                            context,
-                          ).textTheme.labelSmall?.copyWith(fontSize: 9.sp),
-                        ),
-                      ),
-                    ],
+                ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: 130.w),
+                  child: _LocationLabel(
+                    place: widget.segment.startPlace,
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(fontSize: 10.sp),
+                    iconColor: scheme.onSurfaceVariant,
+                    iconSize: AppIconSize.extraSmall.value.r,
                   ),
                 ),
                 SizedBox(width: 8.w),
                 Expanded(
-                  child: Row(
-                    textDirection: ui.TextDirection.rtl,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Icon(
-                        Icons.location_on_outlined,
-                        size: AppIconSize.extraSmall.value.r,
-                        color: scheme.onSurfaceVariant,
-                      ),
-                      SizedBox(width: 3.w),
-                      Flexible(
-                        child: Text(
-                          widget.segment.endPlace,
-                          textAlign: TextAlign.end,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(
-                            context,
-                          ).textTheme.labelSmall?.copyWith(fontSize: 9.sp),
-                        ),
-                      ),
-                    ],
+                  child: _LocationLabel(
+                    place: widget.segment.endPlace,
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(fontSize: 10.sp),
+                    iconColor: scheme.onSurfaceVariant,
+                    iconSize: AppIconSize.extraSmall.value.r,
+                    alignEnd: true,
                   ),
                 ),
               ],
             ),
           ),
           SizedBox(height: 4.h),
+          /// Play or pause action alongside segment duration and status.
           Row(
             textDirection: ui.TextDirection.ltr,
             children: [
-              // The design's 34x32 button, inside a padded 48dp target.
-              IconButton.filled(
-                tooltip: widget.playing
+              AppAssetsIconWidget(
+                label: widget.playing
                     ? l.assetPlaybackPause
                     : l.assetPlaybackPlay,
-                padding: EdgeInsets.zero,
                 onPressed: widget.onPlayPressed,
-                icon: SvgPicture.asset(
-                  widget.playing ? AppAssets.pauseIcon : AppAssets.playIcon,
-                  width: AppIconSize.small.value.r,
-                  height: AppIconSize.small.value.r,
-                  excludeFromSemantics: true,
-                ),
-                style: IconButton.styleFrom(
-                  fixedSize: Size(AppIconSize.medium.value, AppIconSize.medium.value),
-                  minimumSize:  Size(AppIconSize.medium.value, AppIconSize.medium.value),
-                  tapTargetSize: MaterialTapTargetSize.padded,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(7.r),
-                  ),
+                asset: widget.playing
+                    ? AppAssets.pauseIcon
+                    : AppAssets.playIcon,
+                size: AppIconSize.small.value.r,
+                boxDecoration: BoxDecoration(
+                  color: TrackingColors.of(context).playbackPrimary,
+                  borderRadius: BorderRadius.circular(7.r),
                 ),
               ),
               Spacer(),
@@ -215,7 +180,7 @@ class _PlaybackSegmentCardState extends State<PlaybackSegmentCard> {
                   _SegmentMetric(
                     icon: Icons.access_time,
                     label:
-                    '${widget.segment.durationMinutes} ${l.assetPlaybackMinutes}',
+                        '${widget.segment.durationMinutes} ${l.assetPlaybackMinutes}',
                     semanticsLabel: l.assetPlaybackDuration,
                     outlined: false,
                     emphasize: true,
@@ -236,6 +201,7 @@ class _PlaybackSegmentCardState extends State<PlaybackSegmentCard> {
   }
 }
 
+//// Displays one segment timestamp, with its clock icon on the outer edge.
 class _TimeLabel extends StatelessWidget {
   const _TimeLabel({
     required this.time,
@@ -284,6 +250,7 @@ class _TimeLabel extends StatelessWidget {
   }
 }
 
+/// Displays a compact duration or status value for the segment.
 class _SegmentMetric extends StatelessWidget {
   const _SegmentMetric({
     required this.icon,
@@ -338,4 +305,37 @@ class _SegmentMetric extends StatelessWidget {
     );
   }
 }
-//test
+class _LocationLabel extends StatelessWidget {
+  const _LocationLabel({
+    required this.place,
+    required this.style,
+    required this.iconColor,
+    required this.iconSize,
+    this.alignEnd = false,
+  });
+
+  final String place;
+  final TextStyle? style;
+  final Color iconColor;
+  final double iconSize;
+  final bool alignEnd;
+
+  @override
+  Widget build(BuildContext context) {
+    final icon = WidgetSpan(
+      alignment: PlaceholderAlignment.middle,
+      child: Icon(Icons.location_on_outlined, size: iconSize, color: iconColor),
+    );
+    final gap = WidgetSpan(child: SizedBox(width: 3));
+    final text = TextSpan(text: place, style: style);
+
+    return Text.rich(
+      TextSpan(
+        children: alignEnd ? [text, gap, icon] : [icon, gap, text],
+      ),
+      textAlign: alignEnd ? TextAlign.end : TextAlign.start,
+      maxLines: 2,
+      overflow: TextOverflow.ellipsis,
+    );
+  }
+}

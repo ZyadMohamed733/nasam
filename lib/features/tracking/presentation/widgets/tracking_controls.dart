@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/constants/app_assets.dart';
+import '../../../../core/constants/app_icons.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
-import '../../../../shared/widgets/map_icon_button.dart';
 
 /// Where the map's controls sit. Raw dp, like the buttons themselves: they
 /// are touch targets, and 48dp is a floor that must not scale down.
@@ -31,8 +32,75 @@ abstract final class TrackingControlsLayout {
   static const double radius = 8;
 }
 
-/// Compatibility name for existing tracking call sites.
-typedef TrackingIconButton = MapIconButton;
+class TrackingIconButton extends StatelessWidget {
+  const TrackingIconButton({
+    super.key,
+    required this.asset,
+    required this.label,
+    this.onTap,
+    this.menu = false,
+    this.materialIcon,
+  });
+  final String asset;
+  final String label;
+  final VoidCallback? onTap;
+  final bool menu;
+  final IconData? materialIcon;
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Semantics(
+      label: label,
+      button: true,
+      enabled: onTap != null,
+      // Not wired up yet: shown, but disabled and announced as such.
+      hint: onTap == null ? AppLocalizations.of(context)!.comingSoon : null,
+      child: SizedBox.square(
+        dimension: TrackingControlsLayout.hitTarget,
+        child: Center(
+          child: Material(
+            color: menu
+                ? scheme.surface
+                : scheme.outline.withValues(alpha: .82),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+                TrackingControlsLayout.radius,
+              ),
+              side: menu ? BorderSide(color: scheme.outline) : BorderSide.none,
+            ),
+            child: InkWell(
+              onTap: onTap,
+              borderRadius: BorderRadius.circular(
+                TrackingControlsLayout.radius,
+              ),
+              child: SizedBox.square(
+                dimension: TrackingControlsLayout.visual,
+                child: Center(
+                  child: materialIcon == null
+                      ? SvgPicture.asset(
+                          asset,
+                          width: AppIconSize.medium.value,
+                          height: AppIconSize.medium.value,
+                          excludeFromSemantics: true,
+                          colorFilter: ColorFilter.mode(
+                            menu ? scheme.onSurface : scheme.primary,
+                            BlendMode.srcIn,
+                          ),
+                        )
+                      : Icon(
+                          materialIcon,
+                          size: AppIconSize.medium.value,
+                          color: menu ? scheme.onSurface : scheme.primary,
+                        ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 class TrackingControls extends StatelessWidget {
   const TrackingControls({

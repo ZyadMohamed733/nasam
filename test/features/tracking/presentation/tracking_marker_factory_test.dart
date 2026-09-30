@@ -162,4 +162,15 @@ void main() {
     expect(at2x.width, TrackingMarkerFactory.vehicleSize.width * 2);
     expect(at3x.height, TrackingMarkerFactory.vehicleSize.height * 3);
   });
+
+  test(
+    'the playback navigation artwork is rasterised for a map marker',
+    () async {
+      final f = TrackingMarkerFactory(pixelRatio: 1);
+      final icon = await f.playbackCurrent();
+      expect(icon, isA<BytesMapBitmap>());
+      expect(f.cacheSize, 1);
+      f.dispose();
+    },
+  );
 }

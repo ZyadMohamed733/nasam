@@ -2,9 +2,9 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
-
-import '../../../../core/constants/app_icons.dart';
+import 'package:nasam/core/constants/app_assets.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 
 class PlaybackDateRangeSelector extends StatelessWidget {
@@ -105,11 +105,7 @@ class _PlaybackDateField extends StatelessWidget {
               child: Row(
                 textDirection: ui.TextDirection.ltr,
                 children: [
-                  Icon(
-                    Icons.calendar_month,
-                    size: AppIconSize.small.value.r,
-                    color: scheme.onSurfaceVariant,
-                  ),
+                  SvgPicture.asset(AppAssets.calender, width: 16.r, height: 16.r),
                   SizedBox(width: 8.w),
                   Expanded(
                     child: Text(
