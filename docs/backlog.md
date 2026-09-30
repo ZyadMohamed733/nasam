@@ -38,6 +38,10 @@ design. Three things in the app have no design source:
   (`507:16775`) has no selected variant.
 - **Close icon.** The design's header link reads "عرض" (show). The open sheet
   shows a close icon in the same 33×20 box instead, so there is a way back.
+- **Icon picker selection and row height.** The picker (`647:8257`) has no
+  selected row. The current icon takes the same provisional fill
+  (`rowSelectedFill`) and is announced as selected. Its rows are 48 apart,
+  the touch minimum, where the design spaces them 43.75.
 - **Dark mode.** Every `PoiSheetColors.dark` value
   (`lib/core/theme/poi_sheet_colors.dart`) is marked `AWAITING DESIGN`.
 

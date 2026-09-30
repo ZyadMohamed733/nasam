@@ -12,7 +12,7 @@ abstract final class PoiIconStyle {
     PoiIcon.library => AppAssets.poiLibrary,
   };
   static String label(PoiIcon icon, AppLocalizations l) => switch (icon) {
-    PoiIcon.location => l.poiLocation,
+    PoiIcon.location => l.poiIconLocation,
     PoiIcon.fuel => l.poiFuel,
     PoiIcon.hospital => l.poiHospital,
     PoiIcon.library => l.poiLibrary,

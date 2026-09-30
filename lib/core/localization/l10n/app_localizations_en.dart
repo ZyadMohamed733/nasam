@@ -754,6 +754,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get poiIcon => 'Icon';
 
   @override
+  String get poiLatitudeField => 'Latitude';
+
+  @override
+  String get poiLongitudeField => 'Longitude';
+
+  @override
+  String get poiSelectedCoordinates => 'Selected location coordinates';
+
+  @override
+  String get poiNameHint => 'Example: POI';
+
+  @override
+  String get poiIconHint => 'Choose an icon';
+
+  @override
+  String get poiIconLocation => 'Location';
+
+  @override
   String get poiNotes => 'Notes';
 
   @override

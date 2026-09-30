@@ -1418,6 +1418,42 @@ abstract class AppLocalizations {
   /// **'الأيقونة'**
   String get poiIcon;
 
+  /// No description provided for @poiLatitudeField.
+  ///
+  /// In ar, this message translates to:
+  /// **'خط العرض (Latitude)'**
+  String get poiLatitudeField;
+
+  /// No description provided for @poiLongitudeField.
+  ///
+  /// In ar, this message translates to:
+  /// **'خط الطول (Longitude)'**
+  String get poiLongitudeField;
+
+  /// No description provided for @poiSelectedCoordinates.
+  ///
+  /// In ar, this message translates to:
+  /// **'إحداثيات الموقع المحدد'**
+  String get poiSelectedCoordinates;
+
+  /// No description provided for @poiNameHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'مثال : poi'**
+  String get poiNameHint;
+
+  /// No description provided for @poiIconHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختيار الأيقونة'**
+  String get poiIconHint;
+
+  /// No description provided for @poiIconLocation.
+  ///
+  /// In ar, this message translates to:
+  /// **'موقع'**
+  String get poiIconLocation;
+
   /// No description provided for @poiNotes.
   ///
   /// In ar, this message translates to:

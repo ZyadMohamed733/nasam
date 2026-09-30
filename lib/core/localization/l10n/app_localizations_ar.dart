@@ -767,6 +767,24 @@ class AppLocalizationsAr extends AppLocalizations {
   String get poiIcon => 'الأيقونة';
 
   @override
+  String get poiLatitudeField => 'خط العرض (Latitude)';
+
+  @override
+  String get poiLongitudeField => 'خط الطول (Longitude)';
+
+  @override
+  String get poiSelectedCoordinates => 'إحداثيات الموقع المحدد';
+
+  @override
+  String get poiNameHint => 'مثال : poi';
+
+  @override
+  String get poiIconHint => 'اختيار الأيقونة';
+
+  @override
+  String get poiIconLocation => 'موقع';
+
+  @override
   String get poiNotes => 'الملاحظات';
 
   @override
