@@ -193,10 +193,18 @@ void main() {
     await tester.tap(find.text('Add POI'));
     await tester.pumpAndSettle();
     expect(find.byType(PoiEditorPage), findsOneWidget);
-    final fields = find.byType(TextField);
-    await tester.enterText(fields.at(0), 'New warehouse');
-    await tester.enterText(fields.at(1), '24.8');
-    await tester.enterText(fields.at(2), '46.4');
+    Finder input(Key key) => find.descendant(
+      of: find.byKey(key),
+      matching: find.byType(EditableText),
+    );
+    await tester.enterText(input(PoiFormLayout.nameKey), 'New warehouse');
+    await tester.enterText(input(PoiFormLayout.latitudeKey), '24.8');
+    await tester.enterText(input(PoiFormLayout.longitudeKey), '46.4');
+    await tester.ensureVisible(find.byKey(PoiFormLayout.iconKey));
+    await tester.tap(find.byKey(PoiFormLayout.iconKey));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Fuel station'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Create POI'));
     await tester.pumpAndSettle();
     expect(find.byType(PoiPage), findsOneWidget);
@@ -210,20 +218,38 @@ void main() {
     expect(find.byType(PoiDetailsPage), findsOneWidget);
     await tester.tap(find.byTooltip('Edit'));
     await tester.pumpAndSettle();
-    await tester.enterText(find.byType(TextField).first, 'Updated warehouse');
+    await tester.enterText(input(PoiFormLayout.nameKey), 'Updated warehouse');
+    // Save enables on the next frame, once the name differs.
+    await tester.pump();
     await tester.tap(find.text('Save changes'));
     await tester.pumpAndSettle();
-    expect(find.text('Updated warehouse'), findsWidgets);
-    await tester.ensureVisible(find.text('Delete'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Delete'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Cancel'));
-    await tester.pumpAndSettle();
     expect(find.byType(PoiDetailsPage), findsOneWidget);
-    await tester.tap(find.text('Delete'));
+    expect(find.text('Updated warehouse'), findsWidgets);
+
+    // Deleting is on the list's actions sheet; View has no delete.
+    await back(tester);
+    expect(find.byType(PoiPage), findsOneWidget);
+    await tester.tap(find.text('Show'));
     await tester.pumpAndSettle();
-    await tester.tap(find.widgetWithText(TextButton, 'Delete'));
+    final actions = find.descendant(
+      of: find.byKey(ValueKey('poi-row-${point.id}')),
+      matching: find.byTooltip('Point of interest actions'),
+    );
+    Future<void> openDelete() async {
+      await tester.ensureVisible(actions);
+      await tester.pumpAndSettle();
+      await tester.tap(actions);
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Delete'));
+      await tester.pumpAndSettle();
+    }
+
+    await openDelete();
+    await tester.tap(find.widgetWithText(AppButton, 'Cancel'));
+    await tester.pumpAndSettle();
+    expect(poi.state.points.length, 5);
+    await openDelete();
+    await tester.tap(find.widgetWithText(AppButton, 'Delete'));
     await tester.pumpAndSettle();
     expect(find.byType(PoiPage), findsOneWidget);
     expect((await getIt<PoiRepository>().getPoint(point.id)).isLeft(), isTrue);

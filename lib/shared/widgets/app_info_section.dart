@@ -135,7 +135,11 @@ class AppInfoValue extends StatelessWidget {
                   Text(
                     value!,
                     textDirection: valueDirection,
-                    textAlign: TextAlign.start,
+                    // A pinned direction still lines up with the ambient
+                    // start, as the design draws coordinates in Arabic.
+                    textAlign: Directionality.of(context) == TextDirection.rtl
+                        ? TextAlign.right
+                        : TextAlign.left,
                     style: valueStyle(context),
                   ),
             ],
