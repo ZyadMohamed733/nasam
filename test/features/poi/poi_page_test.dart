@@ -1,63 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
-import 'package:nasam/features/poi/data/datasources/poi_fixture_datasource.dart';
-import 'package:nasam/features/poi/data/repositories/poi_repository_impl.dart';
-import 'package:nasam/features/poi/domain/usecases/get_points_of_interest_usecase.dart';
-import 'package:nasam/features/poi/domain/usecases/poi_operations.dart';
-import 'package:nasam/features/poi/presentation/cubit/poi_cubit.dart';
 import 'package:nasam/features/poi/presentation/pages/poi_page.dart';
 
-import '../../helpers/fake_map_platform.dart';
-import '../../helpers/fixture_bundle.dart';
-import '../../helpers/poi_files.dart';
-import '../../helpers/widget_harness.dart';
+import '../../helpers/poi_screen.dart';
 
 void main() {
-  Future<PoiCubit> pump(
-    WidgetTester tester, {
-    Size size = const Size(402, 874),
-    bool dark = false,
-    String language = 'en',
-    double scale = 1,
-  }) async {
-    GoogleMapsFlutterPlatform.instance = FakeMapPlatform(createsMap: true);
-    final repository = PoiRepositoryImpl(
-      PoiFixtureDataSource(bundle: DiskAssetBundle()),
-    );
-    final cubit = PoiCubit(
-      GetPointsOfInterestUseCase(repository),
-      FakePoiFiles(),
-      DeletePointOfInterestUseCase(repository),
-      WatchPoiChangesUseCase(repository),
-    );
-    await cubit.load();
-    addTearDown(cubit.close);
-    await pumpInApp(
-      tester,
-      BlocProvider.value(
-        value: cubit,
-        child: Builder(
-          builder: (context) => MediaQuery(
-            data: MediaQuery.of(
-              context,
-            ).copyWith(textScaler: TextScaler.linear(scale)),
-            child: PoiPage(openDrawer: () {}),
-          ),
-        ),
-      ),
-      dark: dark,
-      locale: Locale(language),
-    );
-    tester.view.physicalSize = size;
-    await tester.pumpAndSettle();
-    return cubit;
-  }
+  const pump = pumpPoiPage;
 
   testWidgets(
-    'Show expands, search filters markers and list, details focus the map',
+    'Show expands, search filters, action sheets cancel and confirm deletion',
     (tester) async {
       final cubit = await pump(tester);
       expect(
@@ -66,7 +18,7 @@ void main() {
       );
       await tester.tap(find.text('Show'));
       await tester.pumpAndSettle();
-      expect(find.text('Hide'), findsOneWidget);
+      expect(find.byTooltip('Hide'), findsOneWidget);
       await tester.enterText(find.byType(TextField), 'Manhole');
       await tester.pumpAndSettle();
       expect(cubit.state.visiblePoints.single.name, 'Manhole');
@@ -76,9 +28,20 @@ void main() {
       );
       await tester.tap(find.byTooltip('Point of interest actions'));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Show on map'));
+      expect(find.text('Edit'), findsOneWidget);
+      await tester.tap(find.text('Delete'));
       await tester.pumpAndSettle();
-      expect(cubit.state.selectedId, 'poi-2');
+      expect(find.byType(AlertDialog), findsNothing);
+      await tester.tap(find.text('Cancel'));
+      await tester.pumpAndSettle();
+      expect(cubit.state.visiblePoints.single.name, 'Manhole');
+      await tester.tap(find.byTooltip('Point of interest actions'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Delete'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Delete'));
+      await tester.pumpAndSettle();
+      expect(cubit.state.visiblePoints, isEmpty);
       await tester.tap(find.bySemanticsLabel('Layers'));
       await tester.pumpAndSettle();
       expect(
@@ -88,19 +51,28 @@ void main() {
       expect(tester.takeException(), isNull);
     },
   );
-  testWidgets('POI Arabic landing visual baseline', (tester) async {
-    await pump(tester, language: 'ar');
-    await expectLater(
-      find.byType(PoiPage),
-      matchesGoldenFile('goldens/poi_landing_ar.png'),
-    );
-    await tester.tap(find.text('عرض'));
-    await tester.pumpAndSettle();
-    await expectLater(
-      find.byType(PoiPage),
-      matchesGoldenFile('goldens/poi_expanded_ar.png'),
-    );
-  });
+  // The design frame, 402×874, collapsed (the design's own state: its
+  // header link reads "عرض") and open.
+  for (final (name, language, dark, scale) in const [
+    ('ar', 'ar', false, 1.0),
+    ('en', 'en', false, 1.0),
+    ('ar_dark', 'ar', true, 1.0),
+    ('ar_1.5', 'ar', false, 1.5),
+  ]) {
+    testWidgets('POI visual baseline $name', (tester) async {
+      await pump(tester, language: language, dark: dark, scale: scale);
+      await expectLater(
+        find.byType(PoiPage),
+        matchesGoldenFile('goldens/poi_landing_$name.png'),
+      );
+      await tester.tap(find.text(language == 'ar' ? 'عرض' : 'Show'));
+      await tester.pumpAndSettle();
+      await expectLater(
+        find.byType(PoiPage),
+        matchesGoldenFile('goldens/poi_expanded_$name.png'),
+      );
+    });
+  }
   for (final size in [
     const Size(320, 568),
     const Size(402, 874),

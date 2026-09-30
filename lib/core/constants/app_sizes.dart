@@ -69,6 +69,15 @@ class AppSizes {
   /// The onboarding call-to-action button, narrower than its content column.
   static const double onboardingButtonWidth = 297.0;
 
+  /// The design's search component (`647:8276`): a 40 box with a 10 radius,
+  /// 12 in from the sides and 6 from the top and bottom, a 13 search icon and
+  /// 8 between it and the text. `AppTextField.search` draws it.
+  static const double searchFieldHeight = 40.0;
+  static const double searchFieldRadius = 10.0;
+  static const double searchFieldPaddingH = 12.0;
+  static const double searchFieldIcon = 13.0;
+  static const double searchFieldIconGap = 8.0;
+
   static const double iconButtonMedium = 40.0;
   static const double iconButtonSmall = 32.0;
 

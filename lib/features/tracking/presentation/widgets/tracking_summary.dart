@@ -6,6 +6,7 @@ import '../../../../core/constants/app_assets.dart';
 import '../../../../core/constants/app_icons.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 import '../../../../core/theme/tracking_colors.dart';
+import '../../../../shared/widgets/map_sheet_header.dart';
 import '../../../../shared/widgets/measure_size.dart';
 import '../../domain/entities/tracking_vehicle.dart';
 import '../cubit/tracking_cubit.dart';
@@ -127,64 +128,41 @@ class _Header extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     final scheme = Theme.of(context).colorScheme;
-    return Padding(
-      padding: const EdgeInsets.only(top: 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          // The drag handle. Decorative: the whole sheet drags, and the
-          // toggle below is the accessible way to open and close it.
-          Center(
-            child: Container(
-              width: 56,
-              height: 3,
-              decoration: BoxDecoration(
-                color: scheme.outline,
-                borderRadius: BorderRadius.circular(3),
-              ),
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        MapSheetHeader(
+          // 12 above the bar and 16 below it, as tracking has always drawn it.
+          handle: MapSheetHandle(color: scheme.outline, height: 12 + 3 + 16),
+          title: l.trackingTitle,
+          titleStyle: Theme.of(context).textTheme.titleMedium,
+          padding: const EdgeInsets.symmetric(
+            horizontal: TrackingSummary.gutter,
           ),
-          const SizedBox(height: 16),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: TrackingSummary.gutter,
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    l.trackingTitle,
-                    style: Theme.of(context).textTheme.titleMedium,
+          action: expanded
+              ? IconButton(
+                  onPressed: onToggle,
+                  tooltip: l.trackingCollapse,
+                  icon: Icon(Icons.close, size: AppIconSize.medium.value),
+                )
+              : TextButton(
+                  onPressed: onToggle,
+                  style: TextButton.styleFrom(
+                    minimumSize: const Size(48, 48),
+                    foregroundColor: TrackingColors.of(context).accent,
                   ),
+                  child: Text(l.trackingShow),
                 ),
-                if (expanded)
-                  IconButton(
-                    onPressed: onToggle,
-                    tooltip: l.trackingCollapse,
-                    icon: Icon(Icons.close, size: AppIconSize.medium.value),
-                  )
-                else
-                  TextButton(
-                    onPressed: onToggle,
-                    style: TextButton.styleFrom(
-                      minimumSize: const Size(48, 48),
-                      foregroundColor: TrackingColors.of(context).accent,
-                    ),
-                    child: Text(l.trackingShow),
-                  ),
-              ],
-            ),
+        ),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.symmetric(
+            horizontal: TrackingSummary.gutter,
           ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(
-              horizontal: TrackingSummary.gutter,
-            ),
-            child: Row(children: chips),
-          ),
-          const SizedBox(height: 8),
-        ],
-      ),
+          child: Row(children: chips),
+        ),
+        const SizedBox(height: 8),
+      ],
     );
   }
 }

@@ -30,6 +30,32 @@ chip tint.
 still pass the contrast tests in
 `test/features/tracking/presentation/tracking_accessibility_test.dart`.
 
+### POI sheet states the design does not draw
+The POI sheet follows "POI – open" (`647:8266`), the only sheet state in the
+design. Three things in the app have no design source:
+- **Selected row.** A row whose point is selected on the map fills with
+  `bluePurple25` at 50% (`PoiSheetColors.rowSelectedFill`). The row component
+  (`507:16775`) has no selected variant.
+- **Close icon.** The design's header link reads "عرض" (show). The open sheet
+  shows a close icon in the same 33×20 box instead, so there is a way back.
+- **Dark mode.** Every `PoiSheetColors.dark` value
+  (`lib/core/theme/poi_sheet_colors.dart`) is marked `AWAITING DESIGN`.
+
+**To close:** design supplies the selected row, the open-state header action
+and the dark sheet, then update `PoiSheetColors` and regenerate
+`test/features/poi/goldens/`.
+
+### Dark secondary buttons on a container
+In dark mode `AppButton`'s secondary variant draws `secondaryButtonText`
+(`neutral400`) on `secondaryButtonBackground` (10% white). On the page
+background that is 5.8:1; on `containerBackground` (`neutral800`), where the
+POI sheet's upload and download buttons sit, it is 3.6:1, under AA for their
+12sp labels. `test/features/poi/poi_accessibility_test.dart` checks text
+contrast in light only because of this.
+**To close:** design picks dark secondary-button tokens that pass on a
+container, or a container variant; then add dark to that test's contrast
+check.
+
 ### Arabic copy awaiting design
 36 strings in `lib/core/localization/l10n/app_ar.arb` are marked
 `AWAITING DESIGN COPY`. Their Arabic is a back-translation of invented English,

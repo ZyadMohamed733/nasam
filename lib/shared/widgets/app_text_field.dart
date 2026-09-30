@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../core/constants/app_assets.dart';
 import '../../core/constants/app_colors.dart';
+import '../../core/constants/app_icons.dart';
 import '../../core/constants/app_sizes.dart';
 import '../../core/extensions/context_extensions.dart';
+import 'hit_target.dart';
 
 /// The design's text input, built as the fixed-height block the design draws.
 ///
@@ -52,7 +56,59 @@ class AppTextField extends StatefulWidget {
     this.textInputAction,
     this.autofillHints,
     this.inputFormatters,
-  });
+  }) : _search = false,
+       searchColors = null,
+       clearTooltip = null,
+       searchIcon = null;
+
+  /// The design's search component (`647:8276`): a 40-tall filled box with a
+  /// search icon at the start and, once there is a query, a clear button at
+  /// the end that empties [controller] and reports `''` to [onChanged].
+  ///
+  /// No label, helper or validation. The box is drawn 40 tall inside a 48
+  /// touch target, so place it with 4 less space above and below than the
+  /// design shows. The spare 4 on each side is the field's, not a gap.
+  const AppTextField.search({
+    super.key,
+    required TextEditingController this.controller,
+    this.hint,
+    this.onChanged,
+    this.focusNode,
+    this.clearTooltip,
+    this.searchColors,
+    this.searchIcon,
+    this.textInputAction = TextInputAction.search,
+  }) : _search = true,
+       label = null,
+       isRequired = false,
+       helperText = null,
+       validator = null,
+       keyboardType = TextInputType.text,
+       obscureText = false,
+       prefixIcon = null,
+       suffixIcon = null,
+       errorText = null,
+       readOnly = false,
+       enabled = true,
+       maxLines = 1,
+       forceLtr = false,
+       autofillHints = null,
+       inputFormatters = null;
+
+  final bool _search;
+
+  /// The search variant's colours. Defaults to the semantic tokens.
+  final AppSearchFieldColors? searchColors;
+
+  /// The search variant's clear button.
+  final String? clearTooltip;
+
+  /// The search variant's leading icon, an SVG asset. Defaults to the
+  /// design's magnifier.
+  final String? searchIcon;
+
+  /// The drawn box of the search variant, for tests that measure it.
+  static const searchBoxKey = ValueKey('app-text-field-search-box');
 
   final String? label;
 
@@ -96,8 +152,36 @@ class AppTextField extends StatefulWidget {
   State<AppTextField> createState() => _AppTextFieldState();
 }
 
+/// The colours of [AppTextField.search].
+@immutable
+class AppSearchFieldColors {
+  const AppSearchFieldColors({
+    required this.fill,
+    required this.border,
+    required this.icon,
+    required this.text,
+  });
+
+  AppSearchFieldColors.fallback(AppSemanticColors s)
+    : fill = s.containerBackground,
+      border = s.containerBorder,
+      icon = s.iconSecondary,
+      text = s.textColor;
+
+  final Color fill;
+  final Color border;
+  final Color icon;
+
+  /// Typed text. The hint is this at half opacity, as the design draws it.
+  final Color text;
+}
+
 class _AppTextFieldState extends State<AppTextField> {
   late bool _obscureText;
+  FocusNode? _ownFocusNode;
+
+  FocusNode get _focusNode =>
+      widget.focusNode ?? (_ownFocusNode ??= FocusNode());
 
   @override
   void initState() {
@@ -106,7 +190,14 @@ class _AppTextFieldState extends State<AppTextField> {
   }
 
   @override
+  void dispose() {
+    _ownFocusNode?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (widget._search) return _searchField(context);
     return FormField<String>(
       initialValue: widget.controller?.text ?? '',
       validator: widget.validator,
@@ -267,6 +358,115 @@ class _AppTextFieldState extends State<AppTextField> {
           1.5,
         ),
         disabledBorder: border(semantic.containerBorder),
+      ),
+    );
+  }
+
+  /// The search variant. The [TextField] fills the whole 48-tall touch target,
+  /// so its semantics node and its tap area are both 48; the 40-tall box is
+  /// drawn behind it.
+  Widget _searchField(BuildContext context) {
+    final semantic = context.semanticColors;
+    final colors =
+        widget.searchColors ?? AppSearchFieldColors.fallback(semantic);
+    final controller = widget.controller!;
+    final style = context.textTheme.labelLarge?.copyWith(color: colors.text);
+    final none = InputBorder.none;
+    final iconFilter = ColorFilter.mode(colors.icon, BlendMode.srcIn);
+    return SizedBox(
+      height: kMinInteractiveDimension,
+      child: ListenableBuilder(
+        listenable: Listenable.merge([controller, _focusNode]),
+        builder: (context, _) {
+          final hasQuery = controller.text.isNotEmpty;
+          final focused = _focusNode.hasFocus;
+          return Stack(
+            children: [
+              Positioned.fill(
+                child: Center(
+                  // Keeps a neighbour's extended touch target off the box.
+                  child: HitTargetExtender.obstacle(
+                    child: DecoratedBox(
+                      key: AppTextField.searchBoxKey,
+                      decoration: BoxDecoration(
+                        color: colors.fill,
+                        border: Border.all(
+                          color: focused ? semantic.primary : colors.border,
+                          width: focused ? 1.5 : 1,
+                        ),
+                        borderRadius: BorderRadius.circular(
+                          AppSizes.searchFieldRadius,
+                        ),
+                      ),
+                      child: const SizedBox(
+                        width: double.infinity,
+                        height: AppSizes.searchFieldHeight,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              TextField(
+                controller: controller,
+                focusNode: _focusNode,
+                textInputAction: widget.textInputAction,
+                expands: true,
+                maxLines: null,
+                textAlignVertical: TextAlignVertical.center,
+                style: style,
+                onChanged: widget.onChanged,
+                decoration: InputDecoration(
+                  isDense: true,
+                  filled: false,
+                  border: none,
+                  enabledBorder: none,
+                  focusedBorder: none,
+                  disabledBorder: none,
+                  errorBorder: none,
+                  focusedErrorBorder: none,
+                  contentPadding: EdgeInsetsDirectional.only(
+                    end: hasQuery ? 0 : AppSizes.searchFieldPaddingH,
+                  ),
+                  hintText: widget.hint,
+                  hintStyle: style?.copyWith(
+                    color: colors.text.withValues(alpha: .5),
+                  ),
+                  prefixIcon: Padding(
+                    padding: const EdgeInsetsDirectional.only(
+                      start: AppSizes.searchFieldPaddingH,
+                      end: AppSizes.searchFieldIconGap,
+                    ),
+                    child: SvgPicture.asset(
+                      widget.searchIcon ?? AppAssets.poiSearch,
+                      width: AppSizes.searchFieldIcon,
+                      height: AppSizes.searchFieldIcon,
+                      colorFilter: iconFilter,
+                      excludeFromSemantics: true,
+                    ),
+                  ),
+                  prefixIconConstraints: const BoxConstraints(),
+                  suffixIcon: hasQuery
+                      ? IconButton(
+                          tooltip: widget.clearTooltip,
+                          // Its ink stays inside the 40-tall box.
+                          splashRadius: AppSizes.searchFieldHeight / 2,
+                          onPressed: () {
+                            controller.clear();
+                            widget.onChanged?.call('');
+                          },
+                          icon: SvgPicture.asset(
+                            AppAssets.poiClose,
+                            width: AppIconSize.small.value,
+                            height: AppIconSize.small.value,
+                            colorFilter: iconFilter,
+                          ),
+                        )
+                      : null,
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

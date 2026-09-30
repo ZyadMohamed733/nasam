@@ -740,7 +740,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get poiShowOnMap => 'عرض على الخريطة';
 
   @override
-  String get poiActions => 'خيارات نقطة الاهتمام';
+  String get poiActions => 'إجراءات';
 
   @override
   String get poiEdit => 'تعديل';

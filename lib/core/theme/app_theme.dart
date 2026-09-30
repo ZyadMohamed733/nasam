@@ -4,6 +4,7 @@ import '../constants/app_colors.dart';
 import 'app_drawer_theme.dart';
 import 'app_theme_data.dart';
 import 'app_typography.dart';
+import 'poi_sheet_colors.dart';
 import 'tracking_colors.dart';
 
 class AppTheme {
@@ -102,6 +103,9 @@ class AppTheme {
         brightness == Brightness.dark
             ? TrackingColors.dark
             : TrackingColors.light,
+        brightness == Brightness.dark
+            ? PoiSheetColors.dark
+            : PoiSheetColors.light,
       ],
       scaffoldBackgroundColor: semantic.pageBackground,
       textTheme: textTheme,

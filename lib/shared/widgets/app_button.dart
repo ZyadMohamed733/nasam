@@ -44,10 +44,12 @@ class AppButton extends StatelessWidget {
     this.icon,
     this.assetIcon,
     this.iconSize,
+    this.iconColor,
     this.trailingIcon,
     this.width,
     this.height,
     this.labelStyle,
+    this.padding,
     this.primaryBackgroundColor,
   }) : assert(icon == null || assetIcon == null);
 
@@ -65,6 +67,10 @@ class AppButton extends StatelessWidget {
   /// Optional icon size for actions whose icon is larger than the inline size.
   final double? iconSize;
 
+  /// The leading icon's colour while the button is enabled, where the design
+  /// draws it apart from the label. Defaults to the label's colour.
+  final Color? iconColor;
+
   /// Drawn at 16 after the label — which under RTL puts it on the left, the
   /// way the onboarding and auth buttons carry their onward arrow.
   final IconData? trailingIcon;
@@ -77,6 +83,10 @@ class AppButton extends StatelessWidget {
 
   /// Optional label style for specialized actions.
   final TextStyle? labelStyle;
+
+  /// Horizontal inset of the content. Defaults to 8; the design's small
+  /// buttons use 4.
+  final EdgeInsetsGeometry? padding;
 
   /// Optional screen-specific fill for enabled primary buttons.
   final Color? primaryBackgroundColor;
@@ -127,7 +137,7 @@ class AppButton extends StatelessWidget {
   }) {
     return ButtonStyle(
       shape: const WidgetStatePropertyAll(_shape),
-      padding: const WidgetStatePropertyAll(_padding),
+      padding: WidgetStatePropertyAll(padding ?? _padding),
       elevation: const WidgetStatePropertyAll(0),
       textStyle: WidgetStatePropertyAll(
         labelStyle ?? context.textTheme.labelLarge,
@@ -151,7 +161,7 @@ class AppButton extends StatelessWidget {
   ButtonStyle _secondaryStyle(BuildContext context, AppSemanticColors s) {
     return ButtonStyle(
       shape: const WidgetStatePropertyAll(_shape),
-      padding: const WidgetStatePropertyAll(_padding),
+      padding: WidgetStatePropertyAll(padding ?? _padding),
       textStyle: WidgetStatePropertyAll(
         labelStyle ?? context.textTheme.labelLarge,
       ),
@@ -181,7 +191,7 @@ class AppButton extends StatelessWidget {
   ButtonStyle _tertiaryStyle(BuildContext context, AppSemanticColors s) {
     return ButtonStyle(
       shape: const WidgetStatePropertyAll(_shape),
-      padding: const WidgetStatePropertyAll(_padding),
+      padding: WidgetStatePropertyAll(padding ?? _padding),
       textStyle: WidgetStatePropertyAll(
         labelStyle ?? context.textTheme.labelLarge,
       ),
@@ -224,13 +234,21 @@ class AppButton extends StatelessWidget {
               width: iconSize ?? AppIconSize.small.value,
               height: iconSize ?? AppIconSize.small.value,
               colorFilter: ColorFilter.mode(
-                s.primaryButtonText,
+                variant == AppButtonVariant.primary
+                    ? s.primaryButtonText
+                    : _enabled
+                    ? iconColor ?? s.secondaryButtonText
+                    : s.textPlaceholder,
                 BlendMode.srcIn,
               ),
               excludeFromSemantics: true,
             )
           else
-            Icon(icon, size: iconSize ?? AppIconSize.small.value),
+            Icon(
+              icon,
+              size: iconSize ?? AppIconSize.small.value,
+              color: _enabled ? iconColor : null,
+            ),
           const SizedBox(width: AppSizes.p4),
         ],
         Flexible(

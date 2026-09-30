@@ -1367,7 +1367,7 @@ abstract class AppLocalizations {
   /// No description provided for @poiActions.
   ///
   /// In ar, this message translates to:
-  /// **'خيارات نقطة الاهتمام'**
+  /// **'إجراءات'**
   String get poiActions;
 
   /// No description provided for @poiEdit.

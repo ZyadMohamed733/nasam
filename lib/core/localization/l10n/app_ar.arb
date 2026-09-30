@@ -557,7 +557,7 @@
   "poiLongitude": "خط الطول",
   "poiDetails": "تفاصيل نقاط الاهتمام",
   "poiShowOnMap": "عرض على الخريطة",
-  "poiActions": "خيارات نقطة الاهتمام",
+  "poiActions": "إجراءات",
   "poiEdit": "تعديل",
   "poiDelete": "حذف",
   "poiCreateTitle": "إنشاء نقطة اهتمام جديدة",

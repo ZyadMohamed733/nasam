@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../../core/constants/app_assets.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 import '../../../../core/router/app_routes.dart';
-import '../../../../shared/widgets/app_bottom_sheet.dart';
 import '../../../../shared/widgets/map_icon_button.dart';
 import '../../domain/entities/point_of_interest.dart';
 import '../cubit/poi_cubit.dart';
+import '../widgets/poi_bottom_sheet.dart';
 import '../widgets/poi_delete_dialog.dart';
 import '../widgets/poi_map.dart';
+import '../widgets/poi_sheet_layout.dart';
 import '../widgets/poi_summary.dart';
 
 /// Home POI destination with a searchable, draggable list.
@@ -29,7 +31,7 @@ class _PoiPageState extends State<PoiPage> {
   final _map = PoiMapController();
   final _sheet = DraggableScrollableController();
   final _search = TextEditingController();
-  double _header = 206;
+  double _header = 180;
   MapType _mapType = MapType.normal;
   bool _exporting = false;
   double? _extent;
@@ -72,37 +74,43 @@ class _PoiPageState extends State<PoiPage> {
 
   Future<void> _actions(PointOfInterest point) async {
     final l = AppLocalizations.of(context)!;
-    final action = await AppBottomSheet.show<String>(
+    final scheme = Theme.of(context).colorScheme;
+    final action = await showPoiBottomSheet<String>(
       context: context,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(point.name, style: Theme.of(context).textTheme.titleSmall),
           ListTile(
-            leading: const Icon(Icons.visibility_outlined),
-            title: Text(l.poiDetails),
-            onTap: () => Navigator.pop(context, 'view'),
-          ),
-          ListTile(
-            leading: const Icon(Icons.edit_outlined),
+            dense: true,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+              side: BorderSide(color: scheme.outlineVariant),
+            ),
+            leading: SvgPicture.asset(AppAssets.poiEdit, width: 16, height: 16),
             title: Text(l.poiEdit),
             onTap: () => Navigator.pop(context, 'edit'),
           ),
+          const SizedBox(height: 8),
           ListTile(
-            leading: const Icon(Icons.delete_outline),
+            dense: true,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            tileColor: scheme.error.withValues(alpha: .06),
+            iconColor: scheme.error,
+            textColor: scheme.error,
+            leading: SvgPicture.asset(
+              AppAssets.poiDelete,
+              width: 16,
+              height: 16,
+            ),
             title: Text(l.poiDelete),
             onTap: () => Navigator.pop(context, 'delete'),
-          ),
-          ListTile(
-            leading: const Icon(Icons.place_outlined),
-            title: Text(l.poiShowOnMap),
-            onTap: () => Navigator.pop(context, 'map'),
           ),
         ],
       ),
     );
     if (!mounted) return;
-    if (action == 'view') _details(point);
     if (action == 'edit') {
       await _open(AppRoutes.poiEdit(point.id));
       return;
@@ -114,10 +122,6 @@ class _PoiPageState extends State<PoiPage> {
           context,
         ).showSnackBar(SnackBar(content: Text(l.errorGeneric)));
       }
-    }
-    if (action == 'map') {
-      _select(point);
-      if (_expanded) _toggle();
     }
   }
 
@@ -153,8 +157,12 @@ class _PoiPageState extends State<PoiPage> {
           builder: (context, constraints) {
             final height = constraints.maxHeight;
             if (height <= 0) return const SizedBox.shrink();
-            _min = ((_header + MediaQuery.paddingOf(context).bottom) / height)
-                .clamp(.1, .85);
+            _min =
+                ((_header +
+                            PoiSheetLayout.sheetBottomPadding +
+                            MediaQuery.paddingOf(context).bottom) /
+                        height)
+                    .clamp(.1, .85);
             _max = (_min + .1).clamp(.8, 1.0);
             final bottom = (_extent ?? _min).clamp(_min, _max) * height;
             return Stack(

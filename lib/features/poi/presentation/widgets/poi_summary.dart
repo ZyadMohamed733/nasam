@@ -1,13 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import '../../../../core/constants/app_assets.dart';
 import '../../../../core/constants/app_sizes.dart';
+import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
+import '../../../../core/theme/poi_sheet_colors.dart';
 import '../../../../shared/widgets/app_button.dart';
 import '../../../../shared/widgets/app_text_field.dart';
+import '../../../../shared/widgets/hit_target.dart';
+import '../../../../shared/widgets/map_sheet_header.dart';
 import '../../../../shared/widgets/measure_size.dart';
 import '../../domain/entities/point_of_interest.dart';
 import '../cubit/poi_state.dart';
-import 'poi_icon.dart';
+import 'poi_list_row.dart';
+import 'poi_sheet_layout.dart';
 
+/// The POI sheet (`647:8266`): handle, title with its show/close action,
+/// search, the add/upload/download buttons, then the list — all in the
+/// sheet's one scroll view, so [DraggableScrollableSheet] drags it.
+///
+/// [onHeaderSize] reports everything above the list: what the collapsed
+/// sheet shows above its [PoiSheetLayout.sheetBottomPadding].
 class PoiSummary extends StatelessWidget {
   const PoiSummary({
     super.key,
@@ -38,199 +51,323 @@ class PoiSummary extends StatelessWidget {
   final VoidCallback onAdd, onUpload;
   final VoidCallback? onDownload;
 
+  /// The drawn header action and buttons, for tests that measure them.
+  static const headerActionKey = ValueKey('poi-summary-header-action');
+  static const addKey = ValueKey('poi-summary-add');
+  static const uploadKey = ValueKey('poi-summary-upload');
+  static const downloadKey = ValueKey('poi-summary-download');
+
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     final scheme = Theme.of(context).colorScheme;
+    final colors = PoiSheetColors.of(context);
     final points = state.visiblePoints;
+    final bottom =
+        PoiSheetLayout.sheetBottomPadding +
+        MediaQuery.paddingOf(context).bottom;
     return Material(
       color: scheme.surface,
       clipBehavior: Clip.antiAlias,
       borderRadius: const BorderRadius.vertical(
-        top: Radius.circular(AppSizes.r32),
+        top: Radius.circular(PoiSheetLayout.sheetRadius),
       ),
-      child: CustomScrollView(
-        controller: scrollController,
-        slivers: [
-          SliverToBoxAdapter(
-            child: MeasureSize(
-              onChange: onHeaderSize,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppSizes.p16),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const SizedBox(height: AppSizes.p16),
-                    Container(
-                      width: 56,
-                      height: 3,
-                      decoration: BoxDecoration(
-                        color: scheme.outlineVariant,
-                        borderRadius: BorderRadius.circular(AppSizes.r4),
-                      ),
-                    ),
-                    const SizedBox(height: AppSizes.p8),
-                    Row(
+      child: Stack(
+        children: [
+          CustomScrollView(
+            controller: scrollController,
+            slivers: [
+              SliverToBoxAdapter(
+                child: MeasureSize(
+                  onChange: onHeaderSize,
+                  child: HitTargetScope(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Expanded(
-                          child: Text(
-                            l.trackingPoi,
-                            style: Theme.of(context).textTheme.titleSmall,
+                        MapSheetHeader(
+                          handle: MapSheetHandle(
+                            color: colors.handle,
+                            height: PoiSheetLayout.handleArea,
+                            barTop: PoiSheetLayout.handleBarTop,
+                            barSize: PoiSheetLayout.handleBar,
+                          ),
+                          title: l.trackingPoi,
+                          titleStyle: context.textTheme.headlineMedium
+                              ?.copyWith(
+                                fontWeight: FontWeight.w400,
+                                height: PoiSheetLayout.titleLineHeight,
+                              ),
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                            PoiSheetLayout.gutter,
+                            PoiSheetLayout.contentTop,
+                            PoiSheetLayout.gutter,
+                            0,
+                          ),
+                          minRowHeight: PoiSheetLayout.titleRowHeight,
+                          action: HitTargetExtender(
+                            child: _HeaderAction(
+                              expanded: expanded,
+                              onToggle: onToggle,
+                            ),
                           ),
                         ),
-                        TextButton(
-                          onPressed: onToggle,
-                          child: Text(expanded ? l.poiHide : l.trackingShow),
+                        const SizedBox(
+                          height:
+                              PoiSheetLayout.titleToSearch -
+                              PoiSheetLayout.searchTapInset,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: PoiSheetLayout.gutter,
+                          ),
+                          child: AppTextField.search(
+                            controller: searchController,
+                            hint: l.trackingSearch,
+                            onChanged: onSearch,
+                            clearTooltip: l.drawerClearSearch,
+                            searchColors: AppSearchFieldColors(
+                              fill: colors.searchFill,
+                              border: colors.searchBorder,
+                              icon: colors.searchIcon,
+                              text: colors.searchText,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height:
+                              PoiSheetLayout.searchToButtons -
+                              PoiSheetLayout.searchTapInset,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: PoiSheetLayout.gutter,
+                          ),
+                          child: _Buttons(
+                            onAdd: onAdd,
+                            onUpload: onUpload,
+                            onDownload: onDownload,
+                          ),
                         ),
                       ],
                     ),
-                    AppTextField(
-                      controller: searchController,
-                      hint: l.trackingSearch,
-                      prefixIcon: const Icon(Icons.search),
-                      onChanged: onSearch,
-                      suffixIcon: state.query.isEmpty
-                          ? null
-                          : IconButton(
-                              tooltip: l.drawerClearSearch,
-                              icon: const Icon(Icons.close),
-                              onPressed: () {
-                                searchController.clear();
-                                onSearch('');
-                              },
-                            ),
-                    ),
-                    const SizedBox(height: AppSizes.p8),
-                    LayoutBuilder(
-                      builder: (context, constraints) {
-                        final stacked =
-                            constraints.maxWidth < 340 ||
-                            MediaQuery.textScalerOf(context).scale(1) > 1.2;
-                        final add = AppButton(
-                          onPressed: onAdd,
-                          label: l.poiAdd,
-                          icon: Icons.add,
-                          height: 48,
-                        );
-                        final transfers = Row(
-                          children: [
-                            Expanded(
-                              child: AppButton(
-                                onPressed: onUpload,
-                                label: l.poiUpload,
-                                variant: AppButtonVariant.secondary,
-                                height: 48,
-                              ),
-                            ),
-                            const SizedBox(width: AppSizes.p4),
-                            Expanded(
-                              child: AppButton(
-                                onPressed: onDownload,
-                                label: l.poiDownload,
-                                variant: AppButtonVariant.secondary,
-                                height: 48,
-                              ),
-                            ),
-                          ],
-                        );
-                        return stacked
-                            ? Column(
-                                children: [
-                                  add,
-                                  const SizedBox(height: AppSizes.p8),
-                                  transfers,
-                                ],
-                              )
-                            : Row(
-                                children: [
-                                  Expanded(child: transfers),
-                                  const SizedBox(width: AppSizes.p12),
-                                  Expanded(child: add),
-                                ],
-                              );
-                      },
-                    ),
-                    const SizedBox(height: AppSizes.p16),
-                  ],
+                  ),
                 ),
               ),
-            ),
+              if (state.status == PoiStatus.loading)
+                const SliverToBoxAdapter(child: LinearProgressIndicator()),
+              if (state.status == PoiStatus.failure)
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.all(AppSizes.p16),
+                    child: Column(
+                      children: [
+                        Text(l.errorGeneric),
+                        TextButton(onPressed: onRetry, child: Text(l.retry)),
+                      ],
+                    ),
+                  ),
+                ),
+              if (state.status != PoiStatus.loading &&
+                  state.status != PoiStatus.initial &&
+                  points.isEmpty &&
+                  state.status != PoiStatus.failure)
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.all(AppSizes.p24),
+                    child: Text(
+                      state.query.isEmpty ? l.poiEmpty : l.poiNoResults,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              SliverList.builder(
+                itemCount: points.length,
+                itemBuilder: (context, index) {
+                  final point = points[index];
+                  return PoiListRow(
+                    key: ValueKey('poi-row-${point.id}'),
+                    point: point,
+                    selected: point.id == state.selectedId,
+                    onSelect: () => onSelect(point),
+                    onActions: () => onActions(point),
+                  );
+                },
+              ),
+              SliverToBoxAdapter(child: SizedBox(height: bottom)),
+            ],
           ),
-          if (state.status == PoiStatus.loading)
-            const SliverToBoxAdapter(child: LinearProgressIndicator()),
-          if (state.status == PoiStatus.failure)
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.all(AppSizes.p16),
-                child: Column(
-                  children: [
-                    Text(l.errorGeneric),
-                    TextButton(onPressed: onRetry, child: Text(l.retry)),
-                  ],
-                ),
-              ),
-            ),
-          if (state.status != PoiStatus.loading &&
-              state.status != PoiStatus.initial &&
-              points.isEmpty &&
-              state.status != PoiStatus.failure)
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.all(AppSizes.p24),
-                child: Text(
-                  state.query.isEmpty ? l.poiEmpty : l.poiNoResults,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSizes.p16),
-            sliver: SliverList.builder(
-              itemCount: points.length,
-              itemBuilder: (context, index) {
-                final point = points[index];
-                return ListTile(
-                  key: ValueKey('poi-row-${point.id}'),
-                  contentPadding: EdgeInsets.zero,
-                  selected: point.id == state.selectedId,
-                  selectedTileColor: scheme.primaryContainer.withValues(
-                    alpha: .3,
-                  ),
-                  leading: Container(
-                    width: 36,
-                    height: 36,
-                    decoration: BoxDecoration(
-                      color: scheme.primary,
-                      borderRadius: BorderRadius.circular(AppSizes.r8),
-                    ),
-                    padding: const EdgeInsets.all(AppSizes.p8),
-                    child: PoiIconImage(
-                      icon: point.icon,
-                      color: scheme.onPrimary,
-                      size: 20,
-                    ),
-                  ),
-                  title: Text(
-                    point.name,
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                  trailing: IconButton(
-                    tooltip: l.poiActions,
-                    icon: const Icon(Icons.more_horiz),
-                    onPressed: () => onActions(point),
-                  ),
-                  onTap: () => onSelect(point),
-                );
-              },
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: SizedBox(
-              height: MediaQuery.paddingOf(context).bottom + AppSizes.p16,
-            ),
+          // The sheet's bottom padding. The list scrolls under it, the way
+          // the design's frame clips its list above the padding — so the
+          // collapsed sheet ends in blank space, not in a cut-off row.
+          PositionedDirectional(
+            start: 0,
+            end: 0,
+            bottom: 0,
+            height: bottom,
+            child: ColoredBox(color: scheme.surface),
           ),
         ],
       ),
+    );
+  }
+}
+
+/// "Show" while collapsed, a close icon while open, in the design's 33×20
+/// link-button box at the header's end.
+class _HeaderAction extends StatelessWidget {
+  const _HeaderAction({required this.expanded, required this.onToggle});
+
+  final bool expanded;
+  final VoidCallback onToggle;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+    final colors = PoiSheetColors.of(context);
+    final Widget content = expanded
+        ? SvgPicture.asset(
+            AppAssets.poiClose,
+            width: PoiSheetLayout.headerIcon,
+            height: PoiSheetLayout.headerIcon,
+            colorFilter: ColorFilter.mode(colors.icon, BlendMode.srcIn),
+            excludeFromSemantics: true,
+          )
+        : Text(
+            l.trackingShow,
+            maxLines: 1,
+            style: context.textTheme.labelMedium?.copyWith(
+              color: colors.link,
+              height: PoiSheetLayout.titleLineHeight,
+            ),
+          );
+    final action = Semantics(
+      button: true,
+      child: InkResponse(
+        onTap: onToggle,
+        radius: PoiSheetLayout.tapTarget / 2,
+        child: ConstrainedBox(
+          key: PoiSummary.headerActionKey,
+          constraints: BoxConstraints(
+            minWidth: PoiSheetLayout.headerAction.width,
+            minHeight: PoiSheetLayout.headerAction.height,
+          ),
+          child: Align(
+            alignment: AlignmentDirectional.centerEnd,
+            widthFactor: 1,
+            heightFactor: 1,
+            child: content,
+          ),
+        ),
+      ),
+    );
+    return expanded ? Tooltip(message: l.poiHide, child: action) : action;
+  }
+}
+
+/// The add, upload and download buttons (`647:8283`): the transfer pair on
+/// the start half, add on the end half — or stacked, add first, where a row
+/// would not fit.
+class _Buttons extends StatelessWidget {
+  const _Buttons({
+    required this.onAdd,
+    required this.onUpload,
+    required this.onDownload,
+  });
+
+  final VoidCallback onAdd, onUpload;
+  final VoidCallback? onDownload;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+    final label = context.textTheme.labelMedium?.copyWith(
+      height: PoiSheetLayout.titleLineHeight,
+    );
+    final iconColor = context.semanticColors.iconSecondary;
+
+    Widget button({
+      required Key key,
+      required String text,
+      required VoidCallback? onPressed,
+      AppButtonVariant variant = AppButtonVariant.secondary,
+      String? asset,
+      IconData? icon,
+    }) => HitTargetExtender(
+      child: AppButton(
+        key: key,
+        onPressed: onPressed,
+        label: text,
+        variant: variant,
+        assetIcon: asset,
+        icon: icon,
+        iconSize: PoiSheetLayout.buttonIcon,
+        iconColor: variant == AppButtonVariant.secondary ? iconColor : null,
+        height: PoiSheetLayout.buttonHeight,
+        padding: const EdgeInsets.symmetric(
+          horizontal: PoiSheetLayout.buttonPaddingH,
+        ),
+        labelStyle: label,
+      ),
+    );
+
+    final add = button(
+      key: PoiSummary.addKey,
+      text: l.poiAdd,
+      onPressed: onAdd,
+      variant: AppButtonVariant.primary,
+      icon: Icons.add,
+    );
+    final transfers = Row(
+      children: [
+        Expanded(
+          child: button(
+            key: PoiSummary.uploadKey,
+            text: l.poiUpload,
+            onPressed: onUpload,
+            asset: AppAssets.poiUpload,
+          ),
+        ),
+        const SizedBox(width: PoiSheetLayout.buttonGap),
+        Expanded(
+          child: button(
+            key: PoiSummary.downloadKey,
+            text: l.poiDownload,
+            onPressed: onDownload,
+            asset: AppAssets.poiImport,
+          ),
+        ),
+      ],
+    );
+    Widget band(Widget child) => SizedBox(
+      height: PoiSheetLayout.buttonRowHeight,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: PoiSheetLayout.buttonInset,
+        ),
+        child: Center(child: child),
+      ),
+    );
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final stacked =
+            constraints.maxWidth < PoiSheetLayout.stackBelowWidth ||
+            MediaQuery.textScalerOf(context).scale(1) >
+                PoiSheetLayout.stackAboveTextScale;
+        if (stacked) {
+          return Column(children: [band(add), band(transfers)]);
+        }
+        return band(
+          Row(
+            children: [
+              Expanded(child: transfers),
+              const SizedBox(width: PoiSheetLayout.buttonGap),
+              Expanded(child: add),
+            ],
+          ),
+        );
+      },
     );
   }
 }

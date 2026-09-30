@@ -11,6 +11,15 @@
 abstract final class AppAssets {
   static const String _images = 'assets/images';
 
+  static const String poiMenu = 'assets/icons/poi_menu.svg';
+  static const String poiUpload = 'assets/icons/poi_upload.svg';
+  static const String poiImport = 'assets/icons/poi_import.svg';
+  static const String poiClose = 'assets/icons/poi_close.svg';
+  static const String poiSearch = 'assets/icons/poi_search.svg';
+  static const String poiDanger = 'assets/icons/poi_danger.svg';
+  static const String poiEdit = 'assets/icons/poi_edit.svg';
+  static const String poiDelete = 'assets/icons/poi_delete.svg';
+
   static const String poiFuel = 'assets/icons/poi_fuel.svg';
   static const String poiFuelMarker = 'assets/icons/poi_fuel_marker.svg';
   static const String poiHospital = 'assets/icons/poi_hospital.svg';
@@ -59,6 +68,14 @@ abstract final class AppAssets {
   /// what the test iterates — and the test also re-reads this source file to
   /// check the list did not fall behind the constants.
   static const List<String> all = <String>[
+    poiMenu,
+    poiUpload,
+    poiImport,
+    poiClose,
+    poiSearch,
+    poiDanger,
+    poiEdit,
+    poiDelete,
     drawerBottomBackground,
     poiPin,
     poiFuel,

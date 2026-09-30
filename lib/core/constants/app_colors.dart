@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 /// Values are transcribed from `Nasam _ Mobile.fig`.
 abstract final class AppColors {
   // Blue-purple — the brand ramp.
+  static const Color bluePurple25 = Color(0xFFF4F1FD);
   static const Color bluePurple50 = Color(0xFFEDEBF7);
   static const Color bluePurple200 = Color(0xFFB8AEDF);
   static const Color bluePurple400 = Color(0xFF715DBE);
@@ -27,10 +28,16 @@ abstract final class AppColors {
   static const Color darkPurple700 = Color(0xFF380840);
   static const Color darkPurple800 = Color(0xFF25062A);
 
+  // Violet — the POI icon accent (POI row icon, `507:16788`).
+  static const Color violet500 = Color(0xFF7047EB);
+
   // Neutrals.
   static const Color neutralWhite = Color(0xFFFFFFFF);
   static const Color neutral50 = Color(0xFFF6F6F6);
   static const Color neutral100 = Color(0xFFECECEC);
+
+  /// The sheet drag handle (`175:4142`). Off the ramp: between 100 and 200.
+  static const Color neutral150Handle = Color(0xFFDDDDDD);
   static const Color neutral200 = Color(0xFFD9D9D9);
   static const Color neutral300 = Color(0xFFC7C7C7);
   static const Color neutral400 = Color(0xFFB4B4B4);
@@ -39,7 +46,15 @@ abstract final class AppColors {
   static const Color neutral700 = Color(0xFF616161);
   static const Color neutral800 = Color(0xFF404040);
   static const Color neutral900 = Color(0xFF202020);
+  static const Color neutral950 = Color(0xFF111111);
   static const Color neutralBlack = Color(0xFF000000);
+
+  /// The search field's fill (`647:8276`).
+  static const Color inputFill = Color(0xFFFBFBFB);
+
+  // Gray — the search field's icon and text (`647:8279`, `647:8281`).
+  static const Color gray400 = Color(0xFF9CA3AF);
+  static const Color gray700 = Color(0xFF374151);
 
   // Status.
   static const Color green600 = Color(0xFF15A42B);
