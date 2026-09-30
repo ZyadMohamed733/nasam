@@ -52,9 +52,12 @@ abstract final class AppColors {
   /// The search field's fill (`647:8276`).
   static const Color inputFill = Color(0xFFFBFBFB);
 
-  // Gray — the search field's icon and text (`647:8279`, `647:8281`).
+  // Gray — the search field's icon and text (`647:8279`, `647:8281`), the
+  // page header title (`647:7887`) and the info value box (`553:4392`).
+  static const Color gray25 = Color(0xFFF7F7F8);
   static const Color gray400 = Color(0xFF9CA3AF);
   static const Color gray700 = Color(0xFF374151);
+  static const Color gray900 = Color(0xFF101828);
 
   // Status.
   static const Color green600 = Color(0xFF15A42B);
@@ -118,6 +121,10 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
     required this.failBackground,
     required this.warningText,
     required this.infoText,
+    required this.pageTitle,
+    required this.infoValueSurface,
+    required this.cardShadow,
+    required this.actionIcon,
   });
 
   final Color primary;
@@ -159,6 +166,18 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
   final Color warningText;
   final Color infoText;
 
+  /// A page header's title (`AppPageHeader`).
+  final Color pageTitle;
+
+  /// The box a read-only value sits in (`AppInfoValue`).
+  final Color infoValueSurface;
+
+  /// The soft shadow under form and info cards.
+  final Color cardShadow;
+
+  /// The glyph on an outlined icon action — edit, full screen.
+  final Color actionIcon;
+
   static const AppSemanticColors light = AppSemanticColors(
     primary: AppColors.bluePurple500,
     secondary: AppColors.purple500,
@@ -185,6 +204,10 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
     failBackground: AppColors.red50,
     warningText: AppColors.purple500,
     infoText: AppColors.bluePurple500,
+    pageTitle: AppColors.gray900,
+    infoValueSurface: AppColors.gray25,
+    cardShadow: AppColors.bluePurple50,
+    actionIcon: AppColors.bluePurple700,
   );
 
   static const AppSemanticColors dark = AppSemanticColors(
@@ -213,6 +236,10 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
     failBackground: AppColors.red100,
     warningText: AppColors.darkPurple50,
     infoText: AppColors.bluePurple200,
+    pageTitle: AppColors.neutral50, // AWAITING DESIGN
+    infoValueSurface: AppColors.neutral900, // AWAITING DESIGN
+    cardShadow: AppColors.transparentBlack20, // AWAITING DESIGN
+    actionIcon: AppColors.bluePurple200, // AWAITING DESIGN
   );
 
   @override
@@ -242,6 +269,10 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
     Color? failBackground,
     Color? warningText,
     Color? infoText,
+    Color? pageTitle,
+    Color? infoValueSurface,
+    Color? cardShadow,
+    Color? actionIcon,
   }) {
     return AppSemanticColors(
       primary: primary ?? this.primary,
@@ -273,6 +304,10 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
       failBackground: failBackground ?? this.failBackground,
       warningText: warningText ?? this.warningText,
       infoText: infoText ?? this.infoText,
+      pageTitle: pageTitle ?? this.pageTitle,
+      infoValueSurface: infoValueSurface ?? this.infoValueSurface,
+      cardShadow: cardShadow ?? this.cardShadow,
+      actionIcon: actionIcon ?? this.actionIcon,
     );
   }
 
@@ -321,6 +356,10 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
       failBackground: mix(failBackground, other.failBackground),
       warningText: mix(warningText, other.warningText),
       infoText: mix(infoText, other.infoText),
+      pageTitle: mix(pageTitle, other.pageTitle),
+      infoValueSurface: mix(infoValueSurface, other.infoValueSurface),
+      cardShadow: mix(cardShadow, other.cardShadow),
+      actionIcon: mix(actionIcon, other.actionIcon),
     );
   }
 }

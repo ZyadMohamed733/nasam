@@ -56,6 +56,22 @@ contrast in light only because of this.
 container, or a container variant; then add dark to that test's contrast
 check.
 
+### Secondary grey text under AA
+The design sets secondary text in `#818181` (`neutral600`, the
+`textPlaceholder` token): page and card subtitles at 14, info value labels at
+10, field placeholders. On white that is 3.9:1, under WCAG AA's 4.5:1 for text
+that size. The shared form components (`AppPageHeader`, `AppFormCard`,
+`AppInfoValue`, `AppFormField`) keep the design's colour, so their tests and
+the POI form/view accessibility tests check tap targets but not text contrast.
+**To close:** design darkens the secondary grey (`neutral700`, `#616161`, is
+6.2:1) or confirms the exception; then add `textContrastGuideline` back to
+those tests.
+
+### Form and view tokens awaiting dark design
+`AppSemanticColors.dark` values for `pageTitle`, `infoValueSurface`,
+`cardShadow` and `actionIcon` are marked `AWAITING DESIGN`.
+**To close:** design supplies them.
+
 ### Arabic copy awaiting design
 36 strings in `lib/core/localization/l10n/app_ar.arb` are marked
 `AWAITING DESIGN COPY`. Their Arabic is a back-translation of invented English,
