@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../../../core/constants/app_assets.dart';
 import '../../../../shared/widgets/app_button.dart';
 import '../../../../core/router/app_routes.dart';
@@ -16,7 +15,7 @@ import '../cubit/playback_cubit.dart';
 import '../utils/playback_range.dart';
 import '../widgets/playback_date_range_selector.dart';
 import '../widgets/playback_date_picker_sheet.dart';
-import '../widgets/playback_segment_card.dart';
+import '../widgets/playback_item_card/playback_item_card.dart';
 import '../../../tracking/presentation/widgets/tracked_asset_gate.dart';
 
 /// An asset's journey legs over a date range, opened by id.
@@ -233,7 +232,7 @@ class _PlaybackViewState extends State<_PlaybackView> {
                       itemCount: segments.length,
                       separatorBuilder: (context, index) =>
                           SizedBox(height: 7.h),
-                      itemBuilder: (context, index) => PlaybackSegmentCard(
+                      itemBuilder: (context, index) => PlaybackItemCard(
                         segment: segments[index],
                         locale: locale,
                         playing: _playingAll || _playingSegmentIndex == index,

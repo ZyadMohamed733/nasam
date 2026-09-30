@@ -4,18 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:nasam/features/play_back/presentation/widgets/playback_item_card/time_label.dart';
 
-import '../../../../core/constants/app_assets.dart';
-import '../../../../core/constants/app_icons.dart';
-import '../../../../core/localization/l10n/app_localizations.dart';
-import '../../../../core/theme/tracking_colors.dart';
-import '../../../../shared/widgets/action_icon.dart';
-import '../../domain/entities/playback_segment.dart';
+import '../../../../../core/constants/app_assets.dart';
+import '../../../../../core/constants/app_icons.dart';
+import '../../../../../core/localization/l10n/app_localizations.dart';
+import '../../../../../core/theme/tracking_colors.dart';
+import '../../../../../shared/widgets/action_icon.dart';
+import '../../../domain/entities/playback_segment.dart';
+import 'asset_status_widget.dart';
+import 'location_label.dart';
 
 const _playbackTimelineColor = Color(0xFF8A8AA3);
 
-class PlaybackSegmentCard extends StatefulWidget {
-  const PlaybackSegmentCard({
+class PlaybackItemCard extends StatefulWidget {
+  const PlaybackItemCard({
     super.key,
     required this.segment,
     required this.locale,
@@ -29,10 +32,10 @@ class PlaybackSegmentCard extends StatefulWidget {
   final VoidCallback onPlayPressed;
 
   @override
-  State<PlaybackSegmentCard> createState() => _PlaybackSegmentCardState();
+  State<PlaybackItemCard> createState() => _PlaybackItemCardState();
 }
 
-class _PlaybackSegmentCardState extends State<PlaybackSegmentCard> {
+class _PlaybackItemCardState extends State<PlaybackItemCard> {
   double _progress = .98;
 
   @override
@@ -62,7 +65,7 @@ class _PlaybackSegmentCardState extends State<PlaybackSegmentCard> {
             textDirection: ui.TextDirection.ltr,
             children: [
               Expanded(
-                child: _TimeLabel(
+                child: TimeLabel(
                   time: timeFormat.format(widget.segment.startedAt),
                   date: dateFormat.format(widget.segment.startedAt),
                   leading: false,
@@ -70,7 +73,7 @@ class _PlaybackSegmentCardState extends State<PlaybackSegmentCard> {
               ),
               SizedBox(width: 8.w),
               Expanded(
-                child: _TimeLabel(
+                child: TimeLabel(
                   time: timeFormat.format(widget.segment.endedAt),
                   date: dateFormat.format(widget.segment.endedAt),
                   leading: true,
@@ -135,7 +138,7 @@ class _PlaybackSegmentCardState extends State<PlaybackSegmentCard> {
               children: [
                 ConstrainedBox(
                   constraints: BoxConstraints(maxWidth: 130.w),
-                  child: _LocationLabel(
+                  child: LocationLabel(
                     place: widget.segment.startPlace,
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(fontSize: 10.sp),
                     iconColor: scheme.onSurfaceVariant,
@@ -144,7 +147,7 @@ class _PlaybackSegmentCardState extends State<PlaybackSegmentCard> {
                 ),
                 SizedBox(width: 8.w),
                 Expanded(
-                  child: _LocationLabel(
+                  child: LocationLabel(
                     place: widget.segment.endPlace,
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(fontSize: 10.sp),
                     iconColor: scheme.onSurfaceVariant,
@@ -177,7 +180,7 @@ class _PlaybackSegmentCardState extends State<PlaybackSegmentCard> {
               Spacer(),
               Row(
                 children: [
-                  _SegmentMetric(
+                  AssetStatusWidget(
                     icon: Icons.access_time,
                     label:
                         '${widget.segment.durationMinutes} ${l.assetPlaybackMinutes}',
@@ -186,7 +189,7 @@ class _PlaybackSegmentCardState extends State<PlaybackSegmentCard> {
                     emphasize: true,
                   ),
                   SizedBox(width: 8.w),
-                  _SegmentMetric(
+                  AssetStatusWidget(
                     icon: Icons.local_parking_outlined,
                     label: widget.segment.status,
                     semanticsLabel: widget.segment.endPlace,
@@ -201,141 +204,6 @@ class _PlaybackSegmentCardState extends State<PlaybackSegmentCard> {
   }
 }
 
-//// Displays one segment timestamp, with its clock icon on the outer edge.
-class _TimeLabel extends StatelessWidget {
-  const _TimeLabel({
-    required this.time,
-    required this.date,
-    required this.leading,
-  });
 
-  final String time;
-  final String date;
-  final bool leading;
 
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    return Row(
-      textDirection: leading ? ui.TextDirection.rtl : ui.TextDirection.ltr,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        if (!leading)
-          Icon(
-            Icons.access_time,
-            size: AppIconSize.extraSmall.value.r,
-            color: scheme.onSurfaceVariant,
-          ),
-        if (!leading) SizedBox(width: 3.w),
-        Flexible(
-          child: Text(
-            '$time · $date',
-            textAlign: leading ? TextAlign.right : TextAlign.left,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: Theme.of(
-              context,
-            ).textTheme.labelSmall?.copyWith(fontSize: 9.sp),
-          ),
-        ),
-        if (leading) SizedBox(width: 3.w),
-        if (leading)
-          Icon(
-            Icons.access_time,
-            size: AppIconSize.extraSmall.value.r,
-            color: scheme.onSurfaceVariant,
-          ),
-      ],
-    );
-  }
-}
 
-/// Displays a compact duration or status value for the segment.
-class _SegmentMetric extends StatelessWidget {
-  const _SegmentMetric({
-    required this.icon,
-    required this.label,
-    required this.semanticsLabel,
-    this.outlined = true,
-    this.emphasize = false,
-  });
-
-  final IconData icon;
-  final String label;
-  final String semanticsLabel;
-  final bool outlined;
-  final bool emphasize;
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    return Semantics(
-      label: '$semanticsLabel $label',
-      child: Container(
-        padding: outlined
-            ? EdgeInsets.symmetric(horizontal: 6.w, vertical: 4.h)
-            : EdgeInsets.zero,
-        decoration: outlined
-            ? BoxDecoration(
-                color: scheme.surface,
-                border: Border.all(color: scheme.outlineVariant),
-                borderRadius: BorderRadius.circular(7.r),
-              )
-            : null,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              icon,
-              size: AppIconSize.extraSmall.value.r,
-              color: outlined ? scheme.primary : scheme.onSurfaceVariant,
-            ),
-            SizedBox(width: 3.w),
-            Text(
-              label,
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                fontSize: emphasize ? 10.sp : 9.sp,
-                fontWeight: emphasize ? FontWeight.w700 : null,
-                color: emphasize ? scheme.onSurface : null,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-class _LocationLabel extends StatelessWidget {
-  const _LocationLabel({
-    required this.place,
-    required this.style,
-    required this.iconColor,
-    required this.iconSize,
-    this.alignEnd = false,
-  });
-
-  final String place;
-  final TextStyle? style;
-  final Color iconColor;
-  final double iconSize;
-  final bool alignEnd;
-
-  @override
-  Widget build(BuildContext context) {
-    final icon = WidgetSpan(
-      alignment: PlaceholderAlignment.middle,
-      child: Icon(Icons.location_on_outlined, size: iconSize, color: iconColor),
-    );
-    final gap = WidgetSpan(child: SizedBox(width: 3));
-    final text = TextSpan(text: place, style: style);
-
-    return Text.rich(
-      TextSpan(
-        children: alignEnd ? [text, gap, icon] : [icon, gap, text],
-      ),
-      textAlign: alignEnd ? TextAlign.end : TextAlign.start,
-      maxLines: 2,
-      overflow: TextOverflow.ellipsis,
-    );
-  }
-}
