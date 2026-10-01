@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:nasam/core/constants/app_colors.dart';
 import 'package:nasam/features/poi/presentation/pages/poi_details_page.dart';
 import 'package:nasam/features/poi/presentation/pages/poi_editor_page.dart';
 import 'package:nasam/features/poi/presentation/widgets/poi_icon_picker.dart';
@@ -87,6 +88,26 @@ void main() {
         Rect.fromLTWH(40, map.bottom + 4 + 28, 159, 44),
         'longitude input',
       );
+      // Coordinate values are Figma "Body M B" in textColor, like the name.
+      for (final key in [
+        PoiFormLayout.latitudeKey,
+        PoiFormLayout.longitudeKey,
+      ]) {
+        final style = tester
+            .widget<EditableText>(
+              find.descendant(
+                of: find.byKey(key),
+                matching: find.byType(EditableText),
+              ),
+            )
+            .style;
+        expect(style.fontWeight, FontWeight.w700);
+        expect(style.fontSize, 14);
+        expect(style.height, 20 / 14);
+        expect(style.letterSpacing, 0);
+        expect(style.color, AppColors.neutral900);
+      }
+
       // The full-screen button, 12 down and 7 in from the map's end.
       expectRect(
         rectOf(tester, AppMapPreview.fullscreenKey),
@@ -161,15 +182,17 @@ void main() {
       'name value',
     );
     final location = tester.getRect(sections.at(1));
-    expectRect(
-      rectOf(tester, PoiViewLayout.longitudeKey),
-      Rect.fromLTWH(24 + 182, location.top + 38, 172, 60),
-      'longitude value',
-    );
+    // Latitude first — the start, the right in RTL — as on Create and Edit
+    // (the design's View has them the other way; see docs/backlog.md).
     expectRect(
       rectOf(tester, PoiViewLayout.latitudeKey),
-      Rect.fromLTWH(24, location.top + 38, 172, 60),
+      Rect.fromLTWH(24 + 182, location.top + 38, 172, 60),
       'latitude value',
+    );
+    expectRect(
+      rectOf(tester, PoiViewLayout.longitudeKey),
+      Rect.fromLTWH(24, location.top + 38, 172, 60),
+      'longitude value',
     );
     final notes = tester.getRect(sections.at(3));
     expectRect(

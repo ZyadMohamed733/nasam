@@ -27,9 +27,14 @@ void main() {
     expect(latitude.textDirection, TextDirection.ltr);
     expect(latitude.textAlign, TextAlign.right);
     expect(find.text('حذف'), findsNothing, reason: 'no delete on View');
+    // Latitude first: at the start, the right in RTL.
+    expect(
+      tester.getRect(find.byKey(PoiViewLayout.latitudeKey)).left,
+      greaterThan(tester.getRect(find.byKey(PoiViewLayout.longitudeKey)).left),
+    );
   });
 
-  testWidgets('longitude and latitude stack on a narrow screen', (
+  testWidgets('latitude and longitude stack on a narrow screen', (
     tester,
   ) async {
     await pumpPoiFormScreen(
@@ -39,7 +44,11 @@ void main() {
     );
     final longitude = tester.getRect(find.byKey(PoiViewLayout.longitudeKey));
     final latitude = tester.getRect(find.byKey(PoiViewLayout.latitudeKey));
-    expect(latitude.top, greaterThan(longitude.bottom));
+    expect(
+      longitude.top,
+      greaterThan(latitude.bottom),
+      reason: 'latitude first',
+    );
     expect(tester.takeException(), isNull);
   });
 }

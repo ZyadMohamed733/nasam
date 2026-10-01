@@ -114,6 +114,7 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
     required this.secondaryButtonText,
     required this.secondaryButtonHover,
     required this.iconPrimary,
+    required this.iconPrimaryBlack,
     required this.iconSecondary,
     required this.iconDisabled,
     required this.successText,
@@ -137,7 +138,11 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
   final Color divider;
   final Color hover;
 
+  /// Figma variable `textColor` (#202020 in light): body and value text.
   final Color textColor;
+
+  /// Figma variable `textPlaceholder` (#818181 in light): secondary text —
+  /// subtitles, value labels, placeholders.
   final Color textPlaceholder;
 
   final Color primaryButtonBackground;
@@ -146,11 +151,22 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
   final Color primaryButtonDisabled;
 
   final Color secondaryButtonBackground;
+
+  /// Figma variable `secondaryButtonOutline` (#B4B4B4 in light): the
+  /// secondary button's and outlined icon actions' border.
   final Color secondaryButtonOutline;
+
+  /// Figma variable `secondaryButtonText` (#404040 in light): the secondary
+  /// button's label.
   final Color secondaryButtonText;
   final Color secondaryButtonHover;
 
   final Color iconPrimary;
+
+  /// Figma variable `iconPrimaryBlack` (#202020 in light): content glyphs
+  /// drawn in the text colour — the POI icons in the form, view and picker,
+  /// a page header's back chevron.
+  final Color iconPrimaryBlack;
   final Color iconSecondary;
   final Color iconDisabled;
 
@@ -201,6 +217,7 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
     secondaryButtonText: AppColors.neutral800,
     secondaryButtonHover: AppColors.transparentBlack10,
     iconPrimary: AppColors.neutral900,
+    iconPrimaryBlack: AppColors.neutral900,
     iconSecondary: AppColors.neutral600,
     iconDisabled: AppColors.neutral300,
     successText: AppColors.green600,
@@ -234,6 +251,7 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
     secondaryButtonText: AppColors.neutral400,
     secondaryButtonHover: AppColors.transparentWhite15,
     iconPrimary: AppColors.neutral200,
+    iconPrimaryBlack: AppColors.neutral50, // AWAITING DESIGN (textColor's)
     iconSecondary: AppColors.neutral200,
     iconDisabled: AppColors.neutral800,
     successText: AppColors.green800,
@@ -268,6 +286,7 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
     Color? secondaryButtonText,
     Color? secondaryButtonHover,
     Color? iconPrimary,
+    Color? iconPrimaryBlack,
     Color? iconSecondary,
     Color? iconDisabled,
     Color? successText,
@@ -304,6 +323,7 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
       secondaryButtonText: secondaryButtonText ?? this.secondaryButtonText,
       secondaryButtonHover: secondaryButtonHover ?? this.secondaryButtonHover,
       iconPrimary: iconPrimary ?? this.iconPrimary,
+      iconPrimaryBlack: iconPrimaryBlack ?? this.iconPrimaryBlack,
       iconSecondary: iconSecondary ?? this.iconSecondary,
       iconDisabled: iconDisabled ?? this.iconDisabled,
       successText: successText ?? this.successText,
@@ -357,6 +377,7 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
         other.secondaryButtonHover,
       ),
       iconPrimary: mix(iconPrimary, other.iconPrimary),
+      iconPrimaryBlack: mix(iconPrimaryBlack, other.iconPrimaryBlack),
       iconSecondary: mix(iconSecondary, other.iconSecondary),
       iconDisabled: mix(iconDisabled, other.iconDisabled),
       successText: mix(successText, other.successText),

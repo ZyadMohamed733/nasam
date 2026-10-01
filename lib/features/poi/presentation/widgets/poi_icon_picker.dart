@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/constants/app_sizes.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/theme/poi_sheet_colors.dart';
 import '../../../../shared/widgets/map_sheet_header.dart';
 import '../../domain/entities/poi_draft.dart';
@@ -42,7 +43,6 @@ class PoiIconPicker extends StatelessWidget {
   static const double gutter = 16;
   static const double headingHeight = 32;
   static const double headingInset = 16;
-  static const double headingLineHeight = 1.3;
   static const double rowHeight = kMinInteractiveDimension;
   static const double rowInset = 8;
   static const double icon = 24;
@@ -56,7 +56,6 @@ class PoiIconPicker extends StatelessWidget {
     final l = AppLocalizations.of(context)!;
     final s = context.semanticColors;
     final colors = PoiSheetColors.of(context);
-    final text = context.textTheme;
     return SafeArea(
       top: false,
       child: Column(
@@ -81,8 +80,7 @@ class PoiIconPicker extends StatelessWidget {
                         header: true,
                         child: Text(
                           l.poiIcon,
-                          style: text.labelMedium?.copyWith(
-                            height: headingLineHeight,
+                          style: AppTextStyles.bodySR.copyWith(
                             color: s.textColor,
                           ),
                         ),
@@ -147,14 +145,12 @@ class _Row extends StatelessWidget {
                   PoiIconImage(
                     icon: icon,
                     size: PoiIconPicker.icon,
-                    color: s.textColor,
+                    color: s.iconPrimaryBlack,
                   ),
                   const SizedBox(width: PoiIconPicker.iconGap),
                   Text(
                     PoiIconStyle.label(icon, l),
-                    style: context.textTheme.bodySmall?.copyWith(
-                      color: s.textColor,
-                    ),
+                    style: AppTextStyles.bodyMR.copyWith(color: s.textColor),
                   ),
                 ],
               ),

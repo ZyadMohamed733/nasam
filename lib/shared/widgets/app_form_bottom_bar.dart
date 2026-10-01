@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/extensions/context_extensions.dart';
+import '../../core/theme/app_text_styles.dart';
 import 'app_button.dart';
 import 'hit_target.dart';
 
@@ -38,7 +39,7 @@ class AppFormBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final label = context.textTheme.bodySmall;
+    final label = AppTextStyles.bodyMR;
     return ColoredBox(
       color: context.semanticColors.pageBackground,
       child: SafeArea(

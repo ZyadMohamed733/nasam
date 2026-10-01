@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../../core/constants/app_sizes.dart';
 import '../../core/extensions/context_extensions.dart';
+import '../../core/theme/app_text_styles.dart';
 
 /// A form label (`82:13525`): 14 on a 20 line, with the design's red
 /// asterisk after it when the field is required.
@@ -17,14 +18,14 @@ class AppFormLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final s = context.semanticColors;
-    final style = context.textTheme.bodySmall?.copyWith(color: s.textColor);
+    final style = AppTextStyles.bodyMR.copyWith(color: s.textColor);
     return Row(
       children: [
         Flexible(child: Text(text, style: style)),
         if (isRequired) ...[
           const SizedBox(width: gap),
           ExcludeSemantics(
-            child: Text('*', style: style?.copyWith(color: s.failText)),
+            child: Text('*', style: style.copyWith(color: s.failText)),
           ),
         ],
       ],
@@ -104,8 +105,7 @@ class _AppFormFieldState extends State<AppFormField> {
   Widget build(BuildContext context) {
     final s = context.semanticColors;
     final style =
-        widget.valueStyle ??
-        context.textTheme.bodySmall?.copyWith(color: s.textColor);
+        widget.valueStyle ?? AppTextStyles.bodyMR.copyWith(color: s.textColor);
     OutlineInputBorder border(Color color, [double width = 1]) =>
         OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSizes.r8),
@@ -147,7 +147,7 @@ class _AppFormFieldState extends State<AppFormField> {
                         ? TextAlign.right
                         : TextAlign.left)
                   : TextAlign.start,
-              style: style?.copyWith(
+              style: style.copyWith(
                 color: widget.enabled ? style.color : s.textPlaceholder,
               ),
               decoration: InputDecoration(
@@ -157,7 +157,7 @@ class _AppFormFieldState extends State<AppFormField> {
                 contentPadding: AppFormField.contentPadding,
                 hintText: widget.hint,
                 hintTextDirection: direction,
-                hintStyle: style?.copyWith(
+                hintStyle: style.copyWith(
                   color: s.textPlaceholder,
                   fontWeight: FontWeight.w400,
                 ),
@@ -257,7 +257,7 @@ class AppSelectField extends StatelessWidget {
                         const SizedBox(width: leadingInset),
                         if (leading != null) ...[
                           IconTheme.merge(
-                            data: IconThemeData(color: s.textColor),
+                            data: IconThemeData(color: s.iconPrimaryBlack),
                             child: SizedBox.square(
                               dimension: AppSizes.iconMd,
                               child: leading,
@@ -270,7 +270,7 @@ class AppSelectField extends StatelessWidget {
                             value ?? placeholder,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: text.bodySmall?.copyWith(
+                            style: AppTextStyles.bodyMR.copyWith(
                               color: value == null
                                   ? s.textPlaceholder
                                   : s.textColor,

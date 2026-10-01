@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/constants/app_sizes.dart';
 import '../../core/extensions/context_extensions.dart';
+import '../../core/theme/app_text_styles.dart';
 
 /// A form's card (`539:13749`): white, radius 16, a soft shadow, 16 in from
 /// the sides and 24 from the top and bottom. A Bold 16 title and a 14
@@ -66,7 +67,9 @@ class AppFormCard extends StatelessWidget {
                 if (subtitle != null)
                   Text(
                     subtitle!,
-                    style: text.bodySmall?.copyWith(color: s.textPlaceholder),
+                    style: AppTextStyles.bodyMR.copyWith(
+                      color: s.textPlaceholder,
+                    ),
                   ),
               ],
             ),

@@ -4,6 +4,7 @@ import '../../../../core/constants/app_assets.dart';
 import '../../../../core/constants/app_sizes.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/theme/poi_sheet_colors.dart';
 import '../../../../shared/widgets/app_button.dart';
 import '../../../../shared/widgets/app_text_field.dart';
@@ -236,10 +237,7 @@ class _HeaderAction extends StatelessWidget {
         : Text(
             l.trackingShow,
             maxLines: 1,
-            style: context.textTheme.labelMedium?.copyWith(
-              color: colors.link,
-              height: PoiSheetLayout.titleLineHeight,
-            ),
+            style: AppTextStyles.bodySR.copyWith(color: colors.link),
           );
     final action = Semantics(
       button: true,
@@ -281,9 +279,7 @@ class _Buttons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
-    final label = context.textTheme.labelMedium?.copyWith(
-      height: PoiSheetLayout.titleLineHeight,
-    );
+    final label = AppTextStyles.bodySR;
     final iconColor = context.semanticColors.iconSecondary;
 
     Widget button({

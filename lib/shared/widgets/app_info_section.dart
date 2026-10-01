@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../core/constants/app_sizes.dart';
 import '../../core/extensions/context_extensions.dart';
+import '../../core/theme/app_text_styles.dart';
 
 /// A read-only section (`553:4391`): a white card, radius 8, with a soft
 /// shadow; its title on a 12 row, then 10 below it the values.
@@ -47,7 +47,8 @@ class AppInfoSection extends StatelessWidget {
               header: true,
               child: Text(
                 title,
-                style: context.textTheme.labelSmall?.copyWith(
+                // Caption M, on the design's 12 title row.
+                style: AppTextStyles.captionM.copyWith(
                   color: s.textColor,
                   height: titleRow / titleSize,
                 ),
@@ -93,11 +94,8 @@ class AppInfoValue extends StatelessWidget {
   static const double labelSize = 10;
   static const double labelRow = 11;
 
-  static TextStyle? valueStyle(BuildContext context) =>
-      context.textTheme.bodySmall?.copyWith(
-        fontWeight: FontWeight.w700,
-        color: context.semanticColors.textColor,
-      );
+  static TextStyle valueStyle(BuildContext context) =>
+      AppTextStyles.bodyMB.copyWith(color: context.semanticColors.textColor);
 
   @override
   Widget build(BuildContext context) {
@@ -123,8 +121,8 @@ class AppInfoValue extends StatelessWidget {
               if (label != null) ...[
                 Text(
                   label,
-                  style: context.textTheme.labelSmall?.copyWith(
-                    fontSize: labelSize.sp,
+                  // Caption S, on the design's 11 label row.
+                  style: AppTextStyles.captionS.copyWith(
                     height: labelRow / labelSize,
                     color: s.textPlaceholder,
                   ),

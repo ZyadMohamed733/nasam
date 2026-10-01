@@ -49,6 +49,13 @@ design. Three things in the app have no design source:
 and the dark sheet, then update `PoiSheetColors` and regenerate
 `test/features/poi/goldens/`.
 
+### Latitude and longitude order
+The design contradicts itself: Create and Edit (`539:13754`) put latitude at
+the start (the right in RTL), View (`553:4510`) puts longitude there. The app
+puts latitude first on all three, for one reading order across the flow.
+**To close:** design confirms latitude first, and updates View's frame to
+match.
+
 ### Dark secondary buttons on a container
 In dark mode `AppButton`'s secondary variant draws `secondaryButtonText`
 (`neutral400`) on `secondaryButtonBackground` (10% white). On the page

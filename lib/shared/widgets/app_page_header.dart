@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/extensions/context_extensions.dart';
+import '../../core/theme/app_text_styles.dart';
 import 'hit_target.dart';
 
 /// A page's header (`647:7882`): a back chevron at the start, the title with
@@ -67,7 +68,7 @@ class AppPageHeader extends StatelessWidget {
                     child: Icon(
                       Icons.chevron_left,
                       size: chevron,
-                      color: s.textColor,
+                      color: s.iconPrimaryBlack,
                     ),
                   ),
                 ),
@@ -92,7 +93,7 @@ class AppPageHeader extends StatelessWidget {
                       const SizedBox(height: gap),
                       Text(
                         subtitle!,
-                        style: text.bodySmall?.copyWith(
+                        style: AppTextStyles.bodyMR.copyWith(
                           color: s.textPlaceholder,
                         ),
                       ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -10,6 +9,7 @@ import '../../../../core/constants/app_assets.dart';
 import '../../../../core/constants/app_sizes.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/theme/poi_sheet_colors.dart';
 import '../../../../shared/widgets/app_dashed_box.dart';
 import '../../../../shared/widgets/app_form_bottom_bar.dart';
@@ -236,12 +236,8 @@ class _PoiEditorPageState extends State<PoiEditorPage> {
   Widget _body(BuildContext context, PoiEditorState state) {
     final l = AppLocalizations.of(context)!;
     final s = context.semanticColors;
-    final text = context.textTheme;
     final enabled = !state.busy;
-    final bold = text.bodySmall?.copyWith(
-      fontWeight: FontWeight.w700,
-      color: s.textColor,
-    );
+    final bold = AppTextStyles.bodyMB.copyWith(color: s.textColor);
     final icon = _icon;
     return Align(
       alignment: Alignment.topCenter,
@@ -266,7 +262,7 @@ class _PoiEditorPageState extends State<PoiEditorPage> {
                 if (state.status == PoiEditorStatus.failure)
                   Text(
                     l.errorGeneric,
-                    style: text.bodySmall?.copyWith(color: s.failText),
+                    style: AppTextStyles.bodyMR.copyWith(color: s.failText),
                   ),
                 AppFormField(
                   inputKey: PoiFormLayout.nameKey,
@@ -303,7 +299,7 @@ class _PoiEditorPageState extends State<PoiEditorPage> {
                       : PoiIconImage(
                           icon: icon,
                           size: AppSizes.iconMd,
-                          color: s.textColor,
+                          color: s.iconPrimaryBlack,
                         ),
                   errorText: _submitted && icon == null ? l.poiRequired : null,
                   onTap: enabled ? _chooseIcon : null,
@@ -339,7 +335,6 @@ abstract final class PoiFormLayout {
   static const double captionRow = 20;
   static const double captionIcon = 12;
   static const double captionGap = 4;
-  static const double captionSize = 10;
   static const double captionToMap = 8;
   static const double mapToCoordinates = 4;
   static const double coordinateGap = 4;
@@ -389,7 +384,6 @@ class _LocationField extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     final s = context.semanticColors;
-    final text = context.textTheme;
     final caption = PoiSheetColors.of(context).locationCaption;
     final media = MediaQuery.of(context);
     final stacked =
@@ -403,7 +397,8 @@ class _LocationField extends StatelessWidget {
       label: isLatitude ? l.poiLatitudeField : l.poiLongitudeField,
       isRequired: true,
       controller: isLatitude ? latitude : longitude,
-      valueStyle: text.labelMedium?.copyWith(color: s.textColor),
+      // Body M B, like the name: verified in Figma's Inspect panel.
+      valueStyle: AppTextStyles.bodyMB.copyWith(color: s.textColor),
       forceLtr: true,
       enabled: enabled,
       keyboardType: const TextInputType.numberWithOptions(
@@ -452,8 +447,9 @@ class _LocationField extends StatelessWidget {
                     Flexible(
                       child: Text(
                         l.poiSelectedCoordinates,
-                        style: text.labelSmall?.copyWith(
-                          fontSize: PoiFormLayout.captionSize.sp,
+                        // Caption S, at the caption row's 1.0 line.
+                        style: AppTextStyles.captionS.copyWith(
+                          height: 1,
                           color: caption,
                         ),
                       ),

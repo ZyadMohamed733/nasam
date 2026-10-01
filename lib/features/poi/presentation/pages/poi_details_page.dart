@@ -9,6 +9,7 @@ import '../../../../core/constants/app_sizes.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 import '../../../../core/router/app_routes.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_info_section.dart';
 import '../../../../shared/widgets/app_map_preview.dart';
 import '../../../../shared/widgets/app_outline_icon_button.dart';
@@ -192,16 +193,16 @@ class _Details extends StatelessWidget {
               child: stacked
                   ? Column(
                       children: [
-                        longitude,
-                        const SizedBox(height: PoiViewLayout.valueGap),
                         latitude,
+                        const SizedBox(height: PoiViewLayout.valueGap),
+                        longitude,
                       ],
                     )
                   : Row(
                       children: [
-                        Expanded(child: longitude),
-                        const SizedBox(width: PoiViewLayout.valueGap),
                         Expanded(child: latitude),
+                        const SizedBox(width: PoiViewLayout.valueGap),
+                        Expanded(child: longitude),
                       ],
                     ),
             ),
@@ -220,13 +221,13 @@ class _Details extends StatelessWidget {
                       PoiIconImage(
                         icon: point.icon,
                         size: AppSizes.iconMd,
-                        color: s.textColor,
+                        color: s.iconPrimaryBlack,
                       ),
                       const SizedBox(width: PoiViewLayout.iconGap),
                       Flexible(
                         child: Text(
                           PoiIconStyle.label(point.icon, l),
-                          style: context.textTheme.bodySmall?.copyWith(
+                          style: AppTextStyles.bodyMR.copyWith(
                             color: s.textColor,
                           ),
                         ),
