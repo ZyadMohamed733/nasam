@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/extensions/context_extensions.dart';
+import '../../core/theme/app_component_colors.dart';
 import '../../core/theme/app_text_styles.dart';
 import 'hit_target.dart';
 
@@ -17,6 +18,7 @@ class AppPageHeader extends StatelessWidget {
     this.subtitle,
     this.onBack,
     this.trailing,
+    this.showDivider = false,
   });
 
   final String title;
@@ -29,6 +31,10 @@ class AppPageHeader extends StatelessWidget {
   /// Wrap one drawn below 48 in a `HitTargetExtender`; this header is its
   /// `HitTargetScope`.
   final Widget? trailing;
+
+  /// A 1px line under the header, as the bulk-upload screens draw it
+  /// (`647:7951`). Create, Edit and View have none.
+  final bool showDivider;
 
   static const double height = 71;
   static const double paddingH = 16;
@@ -43,7 +49,7 @@ class AppPageHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final s = context.semanticColors;
     final text = context.textTheme;
-    return HitTargetScope(
+    final header = HitTargetScope(
       child: ConstrainedBox(
         constraints: const BoxConstraints(minHeight: height),
         child: Padding(
@@ -106,6 +112,17 @@ class AppPageHeader extends StatelessWidget {
           ),
         ),
       ),
+    );
+    if (!showDivider) return header;
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: AppComponentColors.of(context).headerDivider,
+          ),
+        ),
+      ),
+      child: header,
     );
   }
 }

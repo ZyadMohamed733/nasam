@@ -19,6 +19,7 @@ class AppFormBottomBar extends StatelessWidget {
     required this.cancelLabel,
     required this.onCancel,
     this.loading = false,
+    this.cancelVariant = AppButtonVariant.secondary,
   });
 
   final String primaryLabel;
@@ -26,6 +27,10 @@ class AppFormBottomBar extends StatelessWidget {
   final String cancelLabel;
   final VoidCallback? onCancel;
   final bool loading;
+
+  /// The end action's look: an outline cancel (Upload, Create, Edit) or a
+  /// text "previous" (`14:368`, Validation and Preview).
+  final AppButtonVariant cancelVariant;
 
   static const double height = 60;
   static const double paddingH = 16;
@@ -72,7 +77,7 @@ class AppFormBottomBar extends StatelessWidget {
                       key: cancelKey,
                       label: cancelLabel,
                       onPressed: onCancel,
-                      variant: AppButtonVariant.secondary,
+                      variant: cancelVariant,
                       width: cancelWidth,
                       height: buttonHeight,
                       labelStyle: label,
