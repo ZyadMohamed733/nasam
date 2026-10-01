@@ -12,6 +12,7 @@ import '../../../../shared/widgets/app_stepper.dart';
 import '../cubit/poi_import_cubit.dart';
 import '../widgets/import/poi_import_layout.dart';
 import '../widgets/import/poi_import_legacy_steps.dart';
+import '../widgets/import/poi_import_preview_view.dart';
 import '../widgets/import/poi_import_upload_view.dart';
 import '../widgets/import/poi_import_validation_view.dart';
 
@@ -77,6 +78,9 @@ class PoiImportPage extends StatelessWidget {
                               ),
                               PoiImportValidationStep() =>
                                 PoiImportValidationView(state: state),
+                              PoiImportPreviewStep() => PoiImportPreviewView(
+                                state: state,
+                              ),
                               _ => PoiImportLegacySteps(state: state),
                             },
                           ],

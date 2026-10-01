@@ -4,9 +4,8 @@ import 'package:go_router/go_router.dart';
 import '../../../../../core/localization/l10n/app_localizations.dart';
 import '../../../../../shared/widgets/app_button.dart';
 import '../../cubit/poi_import_cubit.dart';
-import 'poi_import_status.dart';
 
-/// TEMPORARY: the pre-redesign Preview and Confirm bodies, kept
+/// TEMPORARY: the pre-redesign Confirm body, kept
 /// working on the new state until each step is rebuilt. Deleted once
 /// Confirm is.
 class PoiImportLegacySteps extends StatelessWidget {
@@ -35,31 +34,6 @@ class PoiImportLegacySteps extends StatelessWidget {
         ],
       );
     }
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Text(l.poiPreviewTitle),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: DataTable(
-            columns: [
-              for (final title in [l.poiName, l.poiLatitude, l.poiStatus])
-                DataColumn(label: Text(title)),
-            ],
-            rows: [
-              for (final row in state.pageRows)
-                DataRow(
-                  cells: [
-                    DataCell(Text(row.name)),
-                    DataCell(Text(row.latitude)),
-                    DataCell(Text(PoiImportStatus.label(row.status, l))),
-                  ],
-                ),
-            ],
-          ),
-        ),
-        Text('${state.page + 1} / ${state.pageCount}'),
-      ],
-    );
+    return const SizedBox.shrink();
   }
 }
