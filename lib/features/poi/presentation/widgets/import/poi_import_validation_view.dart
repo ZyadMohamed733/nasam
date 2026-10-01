@@ -36,6 +36,7 @@ class PoiImportValidationView extends StatelessWidget {
               '\u2066${state.file?.name ?? ''}\u2069',
             ),
           ),
+          const SizedBox(height: PoiImportLayout.titleGap),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(

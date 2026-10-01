@@ -65,7 +65,18 @@ match.
   25 ميجابايت لكل ملف" (`561:5451`), which is wrong for this flow. The app
   states `.xlsx` and 20 MB from `PoiLimits`.
 
-**To close:** design draws the chosen-file state and corrects the hint.
+- **Inconsistent frames.** Validation's table puts longitude before
+  latitude (`561:13807`); Preview and the app put latitude first. Confirm
+  reuses the step-3 stepper (`561:16839`), so step 4 shows active, not
+  done; the app shows all done. The stepper's label colours vary across
+  variants (#391399, #6142AD, #818181; current step bold 14 in one, regular
+  12 in another); the app uses one rule. Upload's card (`561:12170`) is a
+  fixed 354 that clips its own 274-tall drop area; the app shows it whole.
+  The Validation/Preview bars place 112 + 263 from x 9.5, past the 16
+  padding; the app keeps the 16 gutters.
+
+**To close:** design draws the chosen-file state, corrects the hint and
+settles the frames above.
 
 ### Dark secondary buttons on a container
 In dark mode `AppButton`'s secondary variant draws `secondaryButtonText`

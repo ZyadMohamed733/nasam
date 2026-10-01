@@ -52,8 +52,10 @@ class AppSummaryTile extends StatelessWidget {
             Text(
               label,
               textAlign: TextAlign.center,
-              // One line, running past the padding as the design lets it.
-              softWrap: false,
+              // One line at the design's scale, running past the padding as
+              // the design lets it; wrapped once text is enlarged, so
+              // neighbouring tiles' labels never collide.
+              softWrap: MediaQuery.textScalerOf(context).scale(1) > 1,
               overflow: TextOverflow.visible,
               style: AppTextStyles.captionS.copyWith(
                 color: context.semanticColors.textPlaceholder,

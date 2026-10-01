@@ -5,6 +5,7 @@ import '../../core/theme/app_component_colors.dart';
 import '../../core/theme/app_text_styles.dart';
 import 'app_button.dart';
 import 'app_dashed_box.dart';
+import 'hit_target.dart';
 
 /// The file picker's target (`561:5443`): a white card holding a dashed
 /// zone with the instruction, the format hint and a browse button. The whole
@@ -26,14 +27,19 @@ class AppFileDropZone extends StatelessWidget {
   final bool loading;
 
   static const double radius = 14;
+  // The design's instance (`561:12184`) carries fractional insets: 20 and 16
+  // plus 0.8, and 32 and 26 plus 1.6, around its strokes.
   static const EdgeInsets cardPadding = EdgeInsets.symmetric(
-    horizontal: 20,
-    vertical: 16,
+    horizontal: 20.8,
+    vertical: 16.8,
   );
   static const EdgeInsets zonePadding = EdgeInsets.symmetric(
-    horizontal: 32,
-    vertical: 26,
+    horizontal: 33.6,
+    vertical: 27.6,
   );
+
+  /// The hint's line (`561:5451`): 12 on 16.
+  static const double hintLine = 16;
   static const double contentPadding = 8;
   static const double titleTop = 8;
   static const double hintTop = 4;
@@ -74,45 +80,51 @@ class AppFileDropZone extends StatelessWidget {
             onTap: onBrowse,
             borderRadius: shape,
             excludeFromSemantics: true,
-            child: AppDashedBox(
-              color: colors.dropZoneBorder,
-              fill: colors.dropZoneFill,
-              dash: dash,
-              gap: dashGap,
-              radius: radius,
-              padding: zonePadding,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: contentPadding),
-                child: Column(
-                  children: [
-                    const SizedBox(height: titleTop),
-                    Text(
-                      title,
-                      textAlign: TextAlign.center,
-                      style: AppTextStyles.bodyMM.copyWith(
-                        color: colors.dropZoneTitle,
+            // The browse button's 48 target fits in the zone's inset.
+            child: HitTargetScope(
+              child: AppDashedBox(
+                color: colors.dropZoneBorder,
+                fill: colors.dropZoneFill,
+                dash: dash,
+                gap: dashGap,
+                radius: radius,
+                padding: zonePadding,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: contentPadding),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: titleTop),
+                      Text(
+                        title,
+                        textAlign: TextAlign.center,
+                        style: AppTextStyles.bodyMM.copyWith(
+                          color: colors.dropZoneTitle,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: hintTop),
-                    Text(
-                      hint,
-                      textAlign: TextAlign.center,
-                      style: AppTextStyles.bodySR.copyWith(
-                        color: colors.dropZoneHint,
+                      const SizedBox(height: hintTop),
+                      Text(
+                        hint,
+                        textAlign: TextAlign.center,
+                        style: AppTextStyles.bodySR.copyWith(
+                          height: hintLine / AppTextStyles.bodySR.fontSize!,
+                          color: colors.dropZoneHint,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: gap),
-                    AppButton(
-                      label: browseLabel,
-                      icon: Icons.add,
-                      variant: AppButtonVariant.secondary,
-                      width: button.width,
-                      height: button.height,
-                      isLoading: loading,
-                      labelStyle: AppTextStyles.bodySR20,
-                      onPressed: onBrowse,
-                    ),
-                  ],
+                      const SizedBox(height: gap),
+                      HitTargetExtender(
+                        child: AppButton(
+                          label: browseLabel,
+                          icon: Icons.add,
+                          variant: AppButtonVariant.secondary,
+                          width: button.width,
+                          height: button.height,
+                          isLoading: loading,
+                          labelStyle: AppTextStyles.bodySR20,
+                          onPressed: onBrowse,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

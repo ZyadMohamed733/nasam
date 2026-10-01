@@ -31,7 +31,10 @@ abstract final class PoiImportLayout {
 
   // Validation and Preview (561:13774, 561:15177).
   static const double titleGap = 8;
-  static const double chipRowPadding = 12;
+
+  /// The filter row (`561:13777`) is a fixed 54: 11 above and below the 32
+  /// chips, its 12 padding overridden.
+  static const double chipRowPadding = 11;
   static const double chipGap = 4;
   static const double previewTableGap = 8;
 
