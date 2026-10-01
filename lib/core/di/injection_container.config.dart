@@ -42,6 +42,20 @@ import '../../features/auth/presentation/cubit/new_password_cubit.dart'
 import '../../features/auth/presentation/cubit/otp_cubit.dart' as _i1033;
 import '../../features/auth/presentation/cubit/password_recovery_cubit.dart'
     as _i648;
+import '../../features/history_alert/data/datasources/fake_history_datasource.dart'
+    as _i986;
+import '../../features/history_alert/data/datasources/history_alert_datasource.dart'
+    as _i25;
+import '../../features/history_alert/data/repositories/history_repo_impl.dart'
+    as _i416;
+import '../../features/history_alert/domain/repositories/history_alert_repository.dart'
+    as _i766;
+import '../../features/history_alert/domain/usecase/get_history_details_usecase.dart'
+    as _i594;
+import '../../features/history_alert/domain/usecase/get_history_usecase.dart'
+    as _i363;
+import '../../features/history_alert/presentation/cubit/histroy_alert_cubit.dart'
+    as _i1004;
 import '../../features/onboarding/presentation/cubit/onboarding_cubit.dart'
     as _i807;
 import '../../features/play_back/data/datasources/playback_datasource.dart'
@@ -119,6 +133,9 @@ extension GetItInjectableX on _i174.GetIt {
       () => storageModule.secureStorage,
     );
     gh.lazySingleton<_i720.ErrorReporter>(() => _i720.ErrorReporter());
+    gh.lazySingleton<_i25.HistoryAlertDataSource>(
+      () => _i986.FakeHistoryDatasource(),
+    );
     await gh.singletonAsync<_i535.SecureStorageService>(
       () => storageModule.secureStorageService(
         gh<_i558.FlutterSecureStorage>(),
@@ -148,6 +165,10 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i745.AuthService>(
       () => _i745.AuthServiceImpl(gh<_i535.SecureStorageService>()),
+    );
+    gh.lazySingleton<_i766.HistoryAlertRepository>(
+      () =>
+          _i416.HistoryRepoImpl(dataSource: gh<_i25.HistoryAlertDataSource>()),
     );
     gh.lazySingleton<_i745.AuthSessionNotifier>(
       () => _i745.AuthSessionNotifier(gh<_i535.SecureStorageService>()),
@@ -184,6 +205,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i948.GetPlaybackSegmentsUseCase>(
       () => _i948.GetPlaybackSegmentsUseCase(gh<_i832.PlaybackRepository>()),
     );
+    gh.lazySingleton<_i594.GetHistoryDetailsUseCase>(
+      () => _i594.GetHistoryDetailsUseCase(gh<_i766.HistoryAlertRepository>()),
+    );
+    gh.lazySingleton<_i363.GetHistoryUseCase>(
+      () => _i363.GetHistoryUseCase(gh<_i766.HistoryAlertRepository>()),
+    );
     gh.factory<_i943.PlaybackCubit>(
       () => _i943.PlaybackCubit(gh<_i948.GetPlaybackSegmentsUseCase>()),
     );
@@ -198,6 +225,12 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i535.SecureStorageService>(),
         gh<_i599.TokenRefresher>(),
         gh<_i361.Dio>(instanceName: 'bareDio'),
+      ),
+    );
+    gh.factory<_i1004.HistoryAlertCubit>(
+      () => _i1004.HistoryAlertCubit(
+        gh<_i363.GetHistoryUseCase>(),
+        gh<_i594.GetHistoryDetailsUseCase>(),
       ),
     );
     gh.lazySingleton<_i465.LanguageInterceptor>(

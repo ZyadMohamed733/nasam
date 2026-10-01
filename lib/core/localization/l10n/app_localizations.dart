@@ -722,6 +722,12 @@ abstract class AppLocalizations {
   /// **'التنبيهات'**
   String get assetDetailsNotifications;
 
+  /// No description provided for @manageAlerts.
+  ///
+  /// In ar, this message translates to:
+  /// **'إدارة التنبيهات'**
+  String get manageAlerts;
+
   /// No description provided for @assetDetailsName.
   ///
   /// In ar, this message translates to:
@@ -890,6 +896,72 @@ abstract class AppLocalizations {
   /// **'الموقع'**
   String get assetDetailsAlertLocation;
 
+  /// No description provided for @alertAsset.
+  ///
+  /// In ar, this message translates to:
+  /// **'الأصل'**
+  String get alertAsset;
+
+  /// No description provided for @alertType.
+  ///
+  /// In ar, this message translates to:
+  /// **'النوع'**
+  String get alertType;
+
+  /// No description provided for @alertValue.
+  ///
+  /// In ar, this message translates to:
+  /// **'القيمة'**
+  String get alertValue;
+
+  /// No description provided for @alertTime.
+  ///
+  /// In ar, this message translates to:
+  /// **'الوقت'**
+  String get alertTime;
+
+  /// No description provided for @alertLocation.
+  ///
+  /// In ar, this message translates to:
+  /// **'الموقع'**
+  String get alertLocation;
+
+  /// No description provided for @alertDetailsSpeedInfo.
+  ///
+  /// In ar, this message translates to:
+  /// **'تفاصيل السرعة'**
+  String get alertDetailsSpeedInfo;
+
+  /// No description provided for @alertDetailsRecordedSpeed.
+  ///
+  /// In ar, this message translates to:
+  /// **'السرعة المسجلة'**
+  String get alertDetailsRecordedSpeed;
+
+  /// No description provided for @alertDetailsSpeedLimit.
+  ///
+  /// In ar, this message translates to:
+  /// **'الحد الأقصى للسرعة'**
+  String get alertDetailsSpeedLimit;
+
+  /// No description provided for @alertDetailsSubtitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'تفاصيل التنبيه'**
+  String get alertDetailsSubtitle;
+
+  /// No description provided for @alertFilter.
+  ///
+  /// In ar, this message translates to:
+  /// **'تصفية'**
+  String get alertFilter;
+
+  /// No description provided for @alertsNoSearchResults.
+  ///
+  /// In ar, this message translates to:
+  /// **'لم يتم العثور على تنبيهات وفقًا للمعايير المحددة. حاول تعديل البحث أو عوامل التصفية.'**
+  String get alertsNoSearchResults;
+
   /// No description provided for @assetDetailsRunning.
   ///
   /// In ar, this message translates to:
@@ -943,6 +1015,18 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'لا توجد تنبيهات لهذا الأصل.'**
   String get assetDetailsEmptyAlerts;
+
+  /// No description provided for @alertsLogUnavailable.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يوجد سجل تنبيهات متاح'**
+  String get alertsLogUnavailable;
+
+  /// No description provided for @deviceAlertsEmpty.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد تنبيهات لهذا الجهاز حاليا'**
+  String get deviceAlertsEmpty;
 
   /// No description provided for @assetPlaybackTitle.
   ///

@@ -105,6 +105,7 @@ flutter:
       # tracking API is delivered. Remove with it.
     - assets/fixtures/tracking/
     - assets/fixtures/play_back/
+    - assets/fixtures/history_alert/
 
   # Almarai is SIL OFL 1.1; assets/fonts/OFL.txt is the licence, and it ships
   # with the font as that licence requires. The family carries only 400 and

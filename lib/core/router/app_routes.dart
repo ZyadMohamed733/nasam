@@ -20,6 +20,8 @@ class AppRoutes {
   static const String passwordResetSuccess = '/password-reset-success';
 
   static const String home = '/';
+  static const String alertsLog = '/alerts-log';
+  static const String alertDetailsPattern = ':alertId';
   static const String error = '/error';
 
   /// Route patterns for the tracking screens, nested under [home] so opening one
@@ -43,6 +45,10 @@ class AppRoutes {
   /// lands on this route rather than on some other path.
   static String assetDetails(String assetId) =>
       '/assets/${Uri.encodeComponent(assetId)}';
+
+  /// `/alerts-log/<id>` opens one alert from the history list.
+  static String alertDetails(String alertId) =>
+      '$alertsLog/${Uri.encodeComponent(alertId)}';
 
   /// `/assets/<id>/playback`, with an optional `from`/`to` range as ISO dates.
   static String assetPlayback(String assetId, {DateTime? from, DateTime? to}) {

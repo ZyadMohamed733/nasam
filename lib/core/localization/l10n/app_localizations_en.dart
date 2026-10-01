@@ -385,6 +385,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get assetDetailsNotifications => 'Notifications';
 
   @override
+  String get manageAlerts => 'Manage alerts';
+
+  @override
   String get assetDetailsName => 'Asset name';
 
   @override
@@ -469,6 +472,40 @@ class AppLocalizationsEn extends AppLocalizations {
   String get assetDetailsAlertLocation => 'Location';
 
   @override
+  String get alertAsset => 'Asset';
+
+  @override
+  String get alertType => 'Type';
+
+  @override
+  String get alertValue => 'Value';
+
+  @override
+  String get alertTime => 'Time';
+
+  @override
+  String get alertLocation => 'Location';
+
+  @override
+  String get alertDetailsSpeedInfo => 'Speed information';
+
+  @override
+  String get alertDetailsRecordedSpeed => 'Recorded speed';
+
+  @override
+  String get alertDetailsSpeedLimit => 'Speed limit';
+
+  @override
+  String get alertDetailsSubtitle => 'Alert details';
+
+  @override
+  String get alertFilter => 'Filter';
+
+  @override
+  String get alertsNoSearchResults =>
+      'No alerts were found for the selected criteria. Try changing your search or filters.';
+
+  @override
   String get assetDetailsRunning => 'Running';
 
   @override
@@ -494,6 +531,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get assetDetailsEmptyAlerts => 'No notifications for this asset.';
+
+  @override
+  String get alertsLogUnavailable => 'No alerts log available';
+
+  @override
+  String get deviceAlertsEmpty =>
+      'There are currently no alerts for this device';
 
   @override
   String get assetPlaybackTitle => 'Playback';

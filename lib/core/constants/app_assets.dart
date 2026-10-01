@@ -14,6 +14,7 @@ abstract final class AppAssets {
   static const String mapArrow = 'assets/icons/map_arrow.svg';
   static const String mapArrowLeft = 'assets/icons/map_ arrow_ left.svg';
   static const String trackingMenu = 'assets/icons/tracking_menu.svg';
+  static const String filter = 'assets/icons/filter.svg';
   static const String mapLayers = 'assets/icons/layers.svg';
   static const String mapNotification = 'assets/icons/notification.svg';
   static const String mapZoomIn = 'assets/icons/zoom_in.svg';
@@ -32,7 +33,10 @@ abstract final class AppAssets {
   static const String email = 'assets/icons/email.svg';
   static const String phoneCalling = 'assets/icons/phone_ calling.svg';
   static const String calender = 'assets/icons/Calendar.svg';
-
+  static const String alertNotification = 'assets/icons/alert_notification.svg';
+  static const String speedAlert = 'assets/icons/speed_alert.svg';
+  static const String geofenceAlert = 'assets/icons/geofance_alert.svg';
+  static const String fuelAlert = 'assets/icons/fule_alert.svg';
   // Images.
   static const String successMark = '$_images/password_reset_success.png';
   static const String splashBackground = '$_images/splash_background.png';
@@ -58,6 +62,7 @@ abstract final class AppAssets {
     mapArrow,
     mapArrowLeft,
     trackingMenu,
+    filter,
     mapLayers,
     mapNotification,
     mapZoomIn,
@@ -76,6 +81,10 @@ abstract final class AppAssets {
     phoneCalling,
     calender,
     successMark,
+    alertNotification,
+    speedAlert,
+    geofenceAlert,
+    fuelAlert,
     splashBackground,
     splashParticles,
     logoMark,
