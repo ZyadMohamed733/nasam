@@ -32,6 +32,9 @@ class AppStatusChip extends StatelessWidget {
   static const double height = 32;
   static const double minWidth = 102;
   static const double padding = 8;
+
+  /// A plain status label's inset, as in a table cell (`14:367`).
+  static const double labelPadding = 4;
   static const double gap = 4;
   static const double badge = 16;
 
@@ -55,7 +58,9 @@ class AppStatusChip extends StatelessWidget {
             minWidth: onTap == null ? 0 : minWidth,
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: padding),
+            padding: EdgeInsets.symmetric(
+              horizontal: onTap == null ? labelPadding : padding,
+            ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,

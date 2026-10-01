@@ -51,7 +51,10 @@ abstract final class PoiImportLayout {
   static const double iconTile = 64;
   static const double iconTileGlyph = 24;
   static const double tileGap = 8;
-  static const double linkGap = 16;
+
+  /// The link's frame (`561:16939`) is 16 tall, 16 under the card, with
+  /// its 44 button overflowing it centred: so the button starts 2 below.
+  static const double linkGap = 2;
   static const double linkInset = 24;
 
   /// Columns with their design widths, labels in column order.

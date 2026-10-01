@@ -10,7 +10,8 @@ import '../../core/theme/app_text_styles.dart';
 ///
 /// Steps before [current] are done (a filled dot with a check), [current] is
 /// active (a filled dot with a white centre), the rest are still to come (a
-/// white dot with a grey centre). A [current] past the last step marks every
+/// grey ring: the screens override the component's white-with-grey-centre
+/// dot to a #D9D9D9 disc with a white centre, `561:5273`). A [current] past the last step marks every
 /// step done. The current step and those before it label in bold 14; the
 /// rest in regular 12.
 class AppStepper extends StatelessWidget {
@@ -139,7 +140,7 @@ class _Indicator extends StatelessWidget {
       alignment: Alignment.center,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: filled ? colors.stepperActive : s.containerBackground,
+        color: filled ? colors.stepperActive : colors.stepperInactiveRing,
       ),
       child: switch (state) {
         _State.done => Icon(
@@ -152,7 +153,7 @@ class _Indicator extends StatelessWidget {
           height: AppStepper.centre,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: filled ? s.primaryButtonText : colors.stepperInactive,
+            color: filled ? s.primaryButtonText : s.containerBackground,
           ),
         ),
       },

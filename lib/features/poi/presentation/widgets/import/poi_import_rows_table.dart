@@ -79,7 +79,12 @@ class PoiImportRowsTable extends StatelessWidget {
             label: PoiImportStatus.label(row.status, l),
           ),
         ),
-        if (withReason) text(PoiImportStatus.reason(row, l)),
+        if (withReason)
+          AppDataTable.text(
+            context,
+            PoiImportStatus.reason(row, l),
+            wrap: true,
+          ),
       ],
     );
   }

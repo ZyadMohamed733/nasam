@@ -52,6 +52,9 @@ class AppSummaryTile extends StatelessWidget {
             Text(
               label,
               textAlign: TextAlign.center,
+              // One line, running past the padding as the design lets it.
+              softWrap: false,
+              overflow: TextOverflow.visible,
               style: AppTextStyles.captionS.copyWith(
                 color: context.semanticColors.textPlaceholder,
               ),

@@ -18,11 +18,17 @@ import 'widget_harness.dart';
 PickedPoiWorkbook samplePoiWorkbook() => PickedPoiWorkbook('POIs.xlsx', [
   ['name', 'latitude', 'longitude', 'icon', 'notes'],
   for (var i = 0; i < 20; i++)
-    ['المستودع الرئيسي $i', '30.0626', '${31.2 + i / 100}', 'fuel', ''],
+    [
+      'المستودع الرئيسي',
+      '30.0626',
+      (31.2 + i / 100).toStringAsFixed(4),
+      'fuel',
+      '',
+    ],
   ['المستودع الرئيسي', '91', '31.2', 'fuel', ''],
   ['', '30.0626', '31.5', 'hospital', ''],
   ['Gps', '30.0626', '200', 'gps', ''],
-  ['المستودع الرئيسي 0', '30.0626', '31.2', 'fuel', ''],
+  ['المستودع الرئيسي', '30.0626', '31.2000', 'fuel', ''],
 ], size: 12 * 1024);
 
 /// Pumps the bulk upload on [size] over the fixture points, and returns its

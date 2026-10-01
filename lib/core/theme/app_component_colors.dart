@@ -27,6 +27,7 @@ class AppComponentColors extends ThemeExtension<AppComponentColors> {
     required this.stepperDoneLabel,
     required this.stepperInactive,
     required this.stepperInactiveLabel,
+    required this.stepperInactiveRing,
     required this.elevationShadow,
     required this.iconTileFill,
     required this.infoCardFill,
@@ -84,6 +85,9 @@ class AppComponentColors extends ThemeExtension<AppComponentColors> {
   /// Their labels (`561:5239`).
   final Color stepperInactiveLabel;
 
+  /// A step still to come: the ring around its white centre (`561:5273`).
+  final Color stepperInactiveRing;
+
   /// The 10% black under raised cards (`561:12184`, `561:16904`).
   final Color elevationShadow;
 
@@ -114,6 +118,7 @@ class AppComponentColors extends ThemeExtension<AppComponentColors> {
     stepperDoneLabel: AppColors.indigo700,
     stepperInactive: AppColors.neutral150Cool,
     stepperInactiveLabel: AppColors.neutral600,
+    stepperInactiveRing: AppColors.neutral200,
     elevationShadow: AppColors.transparentBlack10,
     iconTileFill: AppColors.bluePurple700,
     infoCardFill: AppColors.bluePurple50,
@@ -138,6 +143,7 @@ class AppComponentColors extends ThemeExtension<AppComponentColors> {
     stepperDoneLabel: AppColors.bluePurple200, // AWAITING DESIGN
     stepperInactive: AppColors.neutral600, // AWAITING DESIGN
     stepperInactiveLabel: AppColors.neutral300, // AWAITING DESIGN
+    stepperInactiveRing: AppColors.neutral600, // AWAITING DESIGN
     elevationShadow: AppColors.transparentBlack20, // AWAITING DESIGN
     iconTileFill: AppColors.bluePurple500, // AWAITING DESIGN
     infoCardFill: AppColors.bluePurple700, // AWAITING DESIGN
@@ -170,6 +176,7 @@ class AppComponentColors extends ThemeExtension<AppComponentColors> {
     Color? stepperDoneLabel,
     Color? stepperInactive,
     Color? stepperInactiveLabel,
+    Color? stepperInactiveRing,
     Color? elevationShadow,
     Color? iconTileFill,
     Color? infoCardFill,
@@ -192,6 +199,7 @@ class AppComponentColors extends ThemeExtension<AppComponentColors> {
     stepperDoneLabel: stepperDoneLabel ?? this.stepperDoneLabel,
     stepperInactive: stepperInactive ?? this.stepperInactive,
     stepperInactiveLabel: stepperInactiveLabel ?? this.stepperInactiveLabel,
+    stepperInactiveRing: stepperInactiveRing ?? this.stepperInactiveRing,
     elevationShadow: elevationShadow ?? this.elevationShadow,
     iconTileFill: iconTileFill ?? this.iconTileFill,
     infoCardFill: infoCardFill ?? this.infoCardFill,
@@ -226,6 +234,7 @@ class AppComponentColors extends ThemeExtension<AppComponentColors> {
         stepperInactiveLabel,
         other.stepperInactiveLabel,
       ),
+      stepperInactiveRing: mix(stepperInactiveRing, other.stepperInactiveRing),
       elevationShadow: mix(elevationShadow, other.elevationShadow),
       iconTileFill: mix(iconTileFill, other.iconTileFill),
       infoCardFill: mix(infoCardFill, other.infoCardFill),

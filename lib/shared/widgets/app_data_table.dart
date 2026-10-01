@@ -52,15 +52,19 @@ class AppDataTable extends StatelessWidget {
   static const double sortIcon = 12;
   static const double sortGap = 4;
 
-  /// A cell's plain value: 12 on a 20 line.
-  static Widget text(BuildContext context, String value) => Text(
-    value,
-    maxLines: 3,
-    overflow: TextOverflow.ellipsis,
-    style: AppTextStyles.bodySR20.copyWith(
-      color: context.semanticColors.textColor,
-    ),
-  );
+  /// A cell's plain value: 12 on a 20 line. One line, cut at the cell's
+  /// edge as the design draws it, unless [wrap] — for longer text such as
+  /// a reason.
+  static Widget text(BuildContext context, String value, {bool wrap = false}) =>
+      Text(
+        value,
+        softWrap: wrap,
+        maxLines: wrap ? null : 1,
+        overflow: TextOverflow.visible,
+        style: AppTextStyles.bodySR20.copyWith(
+          color: context.semanticColors.textColor,
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +85,7 @@ class AppDataTable extends StatelessWidget {
               ),
               padding: const EdgeInsets.symmetric(horizontal: cellPadding),
               alignment: AlignmentDirectional.centerStart,
+              clipBehavior: Clip.hardEdge,
               decoration: BoxDecoration(
                 color: fill,
                 border: Border.all(color: border ?? colors.tableBorder),
@@ -144,8 +149,8 @@ class _Header extends StatelessWidget {
           Flexible(
             child: Text(
               column.label,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
+              softWrap: false,
+              overflow: TextOverflow.visible,
               style: AppTextStyles.captionSB.copyWith(color: color),
             ),
           ),
