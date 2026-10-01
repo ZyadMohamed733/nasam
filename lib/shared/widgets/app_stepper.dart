@@ -5,7 +5,7 @@ import '../../core/theme/app_component_colors.dart';
 import '../../core/theme/app_text_styles.dart';
 
 /// A horizontal progress stepper (`561:5230`): a 16dp indicator per step,
-/// joined by 2dp lines, with its label under it. 36 tall, steps sharing the
+/// joined by 2dp lines, with its label under it. At least 36 tall, steps sharing the
 /// width equally, step 1 at the start (the right in RTL).
 ///
 /// Steps before [current] are done (a filled dot with a check), [current] is
@@ -31,8 +31,9 @@ class AppStepper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = AppComponentColors.of(context);
-    return SizedBox(
-      height: height,
+    return ConstrainedBox(
+      // 36 at the design's text scale; larger labels grow it.
+      constraints: const BoxConstraints(minHeight: height),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: paddingH),
         child: Row(
@@ -96,6 +97,7 @@ class _Step extends StatelessWidget {
       selected: state == _State.active,
       child: ExcludeSemantics(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(
               height: AppStepper.indicator,

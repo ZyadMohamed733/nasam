@@ -1,421 +1,152 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../core/constants/app_sizes.dart';
+
+import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_button.dart';
-import '../../../../shared/widgets/app_card.dart';
-import '../../domain/entities/poi_import_row.dart';
+import '../../../../shared/widgets/app_form_bottom_bar.dart';
+import '../../../../shared/widgets/app_page_header.dart';
+import '../../../../shared/widgets/app_stepper.dart';
 import '../cubit/poi_import_cubit.dart';
+import '../widgets/import/poi_import_layout.dart';
+import '../widgets/import/poi_import_legacy_steps.dart';
+import '../widgets/import/poi_import_upload_view.dart';
 
-class PoiImportPage extends StatefulWidget {
+/// The POI bulk upload (`647:7950`–`647:8007`): the header, the stepper,
+/// the current step's body and its actions. Each step's body is its own
+/// widget; this page only arranges them.
+class PoiImportPage extends StatelessWidget {
   const PoiImportPage({super.key});
-  @override
-  State<PoiImportPage> createState() => _PoiImportPageState();
-}
-
-class _PoiImportPageState extends State<PoiImportPage> {
-  PoiRowStatus? _filter;
-  int _page = 0;
-  bool _savingTemplate = false;
-  Future<void> _template() async {
-    if (_savingTemplate) return;
-    setState(() => _savingTemplate = true);
-    final l = AppLocalizations.of(context)!;
-    try {
-      final saved = await context.read<PoiImportCubit>().saveTemplate();
-      if (mounted && saved) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(l.poiFileSaved)));
-      }
-    } catch (_) {
-      if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(l.poiFileError)));
-      }
-    } finally {
-      if (mounted) setState(() => _savingTemplate = false);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
-    final theme = Theme.of(context);
-    final cubit = context.read<PoiImportCubit>();
-    return BlocConsumer<PoiImportCubit, PoiImportState>(
-      listenWhen: (before, after) =>
-          before.step != after.step || before.fileName != after.fileName,
-      listener: (_, state) => setState(() {
-        _page = 0;
-        _filter = null;
-      }),
-      builder: (context, state) => PopScope(
-        canPop: !state.busy,
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text(l.poiImportTitle, style: theme.textTheme.titleMedium),
-            leading: BackButton(
-              onPressed: state.busy ? null : () => context.pop(state.step == 3),
-            ),
-          ),
-          body: Align(
-            alignment: Alignment.topCenter,
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 800),
-              child: ListView(
-                padding: const EdgeInsets.all(AppSizes.p16),
+    final s = context.semanticColors;
+    return BlocBuilder<PoiImportCubit, PoiImportState>(
+      builder: (context, state) {
+        final done = state.step is PoiImportConfirmStep;
+        return PopScope(
+          canPop: !state.busy,
+          child: Scaffold(
+            backgroundColor: s.pageBackground,
+            body: SafeArea(
+              bottom: false,
+              child: Column(
                 children: [
-                  Text(l.poiImportSubtitle, style: theme.textTheme.bodySmall),
-                  const SizedBox(height: AppSizes.p20),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      for (var i = 0; i < 4; i++)
-                        Expanded(
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Divider(
-                                      color: i == 0
-                                          ? Colors.transparent
-                                          : theme.colorScheme.primary,
-                                    ),
-                                  ),
-                                  Semantics(
-                                    label: '${i + 1}',
-                                    selected: state.step == i,
-                                    child: CircleAvatar(
-                                      radius: 12,
-                                      backgroundColor: i <= state.step
-                                          ? theme.colorScheme.primary
-                                          : theme
-                                                .colorScheme
-                                                .surfaceContainerHighest,
-                                      child: Icon(
-                                        i < state.step
-                                            ? Icons.check
-                                            : Icons.circle,
-                                        size: i < state.step ? 14 : 6,
-                                        color: i <= state.step
-                                            ? theme.colorScheme.onPrimary
-                                            : theme
-                                                  .colorScheme
-                                                  .onSurfaceVariant,
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Divider(
-                                      color: i == 3
-                                          ? Colors.transparent
-                                          : theme.colorScheme.primary,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: AppSizes.p8),
-                              Text(
-                                [
-                                  l.poiUploadStep,
-                                  l.poiValidate,
-                                  l.poiPreview,
-                                  l.poiConfirm,
-                                ][i],
-                                textAlign: TextAlign.center,
-                                style: theme.textTheme.labelSmall,
-                              ),
-                            ],
-                          ),
-                        ),
-                    ],
+                  AppPageHeader(
+                    title: l.poiImportTitle,
+                    subtitle: l.poiImportSubtitle,
+                    showDivider: true,
+                    onBack: () {
+                      if (!state.busy) context.pop(done);
+                    },
                   ),
-                  const SizedBox(height: AppSizes.p24),
-                  if (state.error)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: AppSizes.p16),
-                      child: Text(
-                        state.step == 0 ? l.poiInvalidFile : l.errorGeneric,
-                        style: TextStyle(color: theme.colorScheme.error),
-                      ),
-                    ),
-                  if (state.step == 0) ...[
-                    AppCard(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(
-                            l.poiUploadStep,
-                            style: theme.textTheme.titleSmall,
-                          ),
-                          const SizedBox(height: AppSizes.p12),
-                          AppButton(
-                            label: l.poiTemplate,
-                            icon: Icons.download_outlined,
-                            variant: AppButtonVariant.secondary,
-                            isLoading: _savingTemplate,
-                            onPressed: state.busy ? null : _template,
-                          ),
-                          const SizedBox(height: AppSizes.p16),
-                          Text(
-                            l.poiFileLimits,
-                            style: theme.textTheme.bodySmall,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: AppSizes.p16),
-                    AppCard(
-                      child: Column(
-                        children: [
-                          Icon(
-                            Icons.upload_file_outlined,
-                            size: 40,
-                            color: theme.colorScheme.primary,
-                          ),
-                          const SizedBox(height: AppSizes.p12),
-                          Text(
-                            state.fileName ?? l.poiFileHint,
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: AppSizes.p16),
-                          AppButton(
-                            label: l.poiBrowse,
-                            variant: AppButtonVariant.secondary,
-                            isLoading: state.busy,
-                            onPressed: state.busy ? null : cubit.pick,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                  if (state.step == 1 || state.step == 2) ...[
-                    Text(
-                      state.step == 1
-                          ? l.poiValidationTitle
-                          : l.poiPreviewTitle,
-                      style: theme.textTheme.titleSmall,
-                    ),
-                    const SizedBox(height: AppSizes.p12),
-                    Text(l.poiValidOnly, style: theme.textTheme.bodySmall),
-                    const SizedBox(height: AppSizes.p12),
-                    if (state.step == 1)
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
-                        children: [
-                          for (final status in [null, ...PoiRowStatus.values])
-                            ChoiceChip(
-                              selected: _filter == status,
-                              label: Text(
-                                '${_label(status, l)} (${status == null ? state.rows.length : state.rows.where((r) => r.status == status).length})',
-                              ),
-                              onSelected: state.busy
-                                  ? null
-                                  : (_) => setState(() {
-                                      _filter = status;
-                                      _page = 0;
-                                    }),
-                            ),
-                        ],
-                      ),
-                    const SizedBox(height: AppSizes.p12),
-                    _table(state, l),
-                  ],
-                  if (state.step == 3)
-                    AppCard(
-                      child: Column(
-                        children: [
-                          Icon(
-                            Icons.check_circle_outline,
-                            size: 56,
-                            color: theme.colorScheme.primary,
-                          ),
-                          const SizedBox(height: AppSizes.p16),
-                          Text(
-                            l.poiImportComplete,
-                            style: theme.textTheme.titleMedium,
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: AppSizes.p24),
-                          Wrap(
-                            spacing: 24,
-                            runSpacing: 16,
-                            alignment: WrapAlignment.center,
-                            children: [
-                              for (final entry in {
-                                l.poiTotal: state.rows.length,
-                                l.poiImported: state.imported,
-                                l.poiSkipped:
-                                    state.rows.length - state.imported,
-                              }.entries)
-                                Column(
-                                  children: [
-                                    Text(
-                                      '${entry.value}',
-                                      style: theme.textTheme.headlineSmall,
-                                    ),
-                                    Text(entry.key),
-                                  ],
-                                ),
-                            ],
-                          ),
-                          const SizedBox(height: AppSizes.p24),
-                          TextButton(
-                            onPressed: () => context.pop(true),
-                            child: Text(l.poiShowPoints),
-                          ),
-                        ],
-                      ),
-                    ),
-                ],
-              ),
-            ),
-          ),
-          bottomNavigationBar: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(AppSizes.p16),
-              child: Row(
-                children: [
                   Expanded(
-                    flex: 3,
-                    child: AppButton(
-                      label: [
-                        l.poiValidate,
-                        l.poiPreview,
-                        l.poiConfirm,
-                        l.poiShowPoints,
-                      ][state.step],
-                      isLoading: state.busy,
-                      onPressed: state.busy
-                          ? null
-                          : switch (state.step) {
-                              0 =>
-                                state.fileName == null ? null : cubit.validate,
-                              1 => state.valid.isEmpty ? null : cubit.preview,
-                              2 => cubit.confirm,
-                              _ => () => context.pop(true),
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(
+                          maxWidth: PoiImportLayout.maxWidth,
+                        ),
+                        child: ListView(
+                          padding: const EdgeInsets.fromLTRB(
+                            PoiImportLayout.gutter,
+                            PoiImportLayout.contentTop,
+                            PoiImportLayout.gutter,
+                            PoiImportLayout.gutter,
+                          ),
+                          children: [
+                            AppStepper(
+                              steps: [
+                                l.poiUploadStep,
+                                l.poiValidate,
+                                l.poiPreview,
+                                l.poiConfirm,
+                              ],
+                              // Confirm is the end: every step done.
+                              current: done ? 4 : state.step.index,
+                            ),
+                            const SizedBox(height: PoiImportLayout.stepperGap),
+                            if (state.error) _Error(state: state),
+                            switch (state.step) {
+                              PoiImportUploadStep() => PoiImportUploadView(
+                                state: state,
+                              ),
+                              _ => PoiImportLegacySteps(state: state),
                             },
-                    ),
-                  ),
-                  if (state.step < 3) ...[
-                    const SizedBox(width: AppSizes.p8),
-                    Expanded(
-                      child: AppButton(
-                        label: state.step == 0 ? l.poiCancel : l.poiPrevious,
-                        variant: AppButtonVariant.secondary,
-                        onPressed: state.busy
-                            ? null
-                            : () {
-                                if (state.step == 0) {
-                                  context.pop();
-                                } else {
-                                  cubit.previous();
-                                }
-                              },
+                          ],
+                        ),
                       ),
                     ),
-                  ],
+                  ),
                 ],
               ),
             ),
+            bottomNavigationBar: _BottomBar(state: state),
           ),
+        );
+      },
+    );
+  }
+}
+
+class _Error extends StatelessWidget {
+  const _Error({required this.state});
+
+  final PoiImportState state;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: PoiImportLayout.stepperGap),
+      child: Text(
+        state.step is PoiImportUploadStep ? l.poiInvalidFile : l.errorGeneric,
+        style: AppTextStyles.bodyMR.copyWith(
+          color: context.semanticColors.failText,
         ),
       ),
     );
   }
+}
 
-  String _label(PoiRowStatus? status, AppLocalizations l) => switch (status) {
-    PoiRowStatus.valid => l.poiValid,
-    PoiRowStatus.invalid => l.poiInvalid,
-    PoiRowStatus.duplicate => l.poiDuplicate,
-    null => l.poiAll,
-  };
-  Widget _table(PoiImportState state, AppLocalizations l) {
-    final rows = state.step == 2
-        ? state.valid
-        : state.rows
-              .where((r) => _filter == null || r.status == _filter)
-              .toList();
-    final pages = (rows.length / 10).ceil().clamp(1, 500);
-    final page = _page.clamp(0, pages - 1);
-    return Column(
-      children: [
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: DataTable(
-            dataRowMinHeight: 48,
-            dataRowMaxHeight: 90,
-            columnSpacing: 20,
-            columns: [
-              for (final title in [
-                '#',
-                l.poiName,
-                l.poiLatitude,
-                l.poiLongitude,
-                l.poiIcon,
-                l.poiStatus,
-                l.poiReason,
-              ])
-                DataColumn(label: Text(title)),
-            ],
-            rows: [
-              for (final row in rows.skip(page * 10).take(10))
-                DataRow(
-                  cells: [
-                    for (final value in [
-                      '${row.number}',
-                      row.name,
-                      row.latitude,
-                      row.longitude,
-                      row.iconName,
-                      _label(row.status, l),
-                      row.status == PoiRowStatus.invalid
-                          ? l.poiInvalidRow
-                          : row.status == PoiRowStatus.duplicate
-                          ? l.poiDuplicate
-                          : '—',
-                    ])
-                      DataCell(
-                        ConstrainedBox(
-                          constraints: const BoxConstraints(maxWidth: 180),
-                          child: Text(
-                            value,
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-            ],
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            IconButton(
-              tooltip: MaterialLocalizations.of(context).previousPageTooltip,
-              onPressed: page == 0 || state.busy
-                  ? null
-                  : () => setState(() => _page--),
-              icon: const BackButtonIcon(),
-            ),
-            Text('${page + 1} / $pages'),
-            IconButton(
-              tooltip: MaterialLocalizations.of(context).nextPageTooltip,
-              onPressed: page + 1 >= pages || state.busy
-                  ? null
-                  : () => setState(() => _page++),
-              icon: Transform.flip(flipX: true, child: const BackButtonIcon()),
-            ),
-          ],
-        ),
-      ],
-    );
+/// Each step's actions; Confirm has none.
+class _BottomBar extends StatelessWidget {
+  const _BottomBar({required this.state});
+
+  final PoiImportState state;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+    final cubit = context.read<PoiImportCubit>();
+    final idle = !state.busy;
+    return switch (state.step) {
+      PoiImportUploadStep() => AppFormBottomBar(
+        primaryLabel: l.poiValidate,
+        onPrimary: idle && state.file != null ? cubit.validate : null,
+        loading: state.busy && state.file != null,
+        cancelLabel: l.poiCancel,
+        onCancel: idle ? () => context.pop() : null,
+      ),
+      PoiImportValidationStep() => AppFormBottomBar(
+        primaryLabel: l.poiPreview,
+        onPrimary: idle && state.validRows.isNotEmpty ? cubit.preview : null,
+        cancelLabel: l.poiPrevious,
+        cancelVariant: AppButtonVariant.tertiary,
+        onCancel: idle ? cubit.previous : null,
+      ),
+      PoiImportPreviewStep() => AppFormBottomBar(
+        primaryLabel: l.poiConfirm,
+        onPrimary: idle ? cubit.confirm : null,
+        loading: state.busy,
+        cancelLabel: l.poiPrevious,
+        cancelVariant: AppButtonVariant.tertiary,
+        onCancel: idle ? cubit.previous : null,
+      ),
+      PoiImportConfirmStep() => const SizedBox.shrink(),
+    };
   }
 }

@@ -2,6 +2,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../domain/entities/poi_limits.dart';
 import '../../domain/entities/point_of_interest.dart';
 import '../../domain/repositories/poi_files.dart';
 import 'poi_workbook.dart';
@@ -20,12 +21,12 @@ class PoiFileService implements PoiFiles {
     final file = result.files.single;
     final bytes = file.bytes;
     if (!file.name.toLowerCase().endsWith('.xlsx') ||
-        file.size > PoiWorkbook.maxBytes ||
+        file.size > PoiLimits.maxFileBytes ||
         bytes == null) {
       throw const FormatException('Invalid XLSX file');
     }
     final rows = await compute(PoiWorkbook.decode, bytes);
-    return PickedPoiWorkbook(file.name, rows);
+    return PickedPoiWorkbook(file.name, rows, size: file.size);
   }
 
   @override

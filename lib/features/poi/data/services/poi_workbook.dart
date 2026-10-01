@@ -3,11 +3,13 @@ import 'dart:typed_data';
 import 'package:archive/archive.dart';
 import 'package:xml/xml.dart';
 
+import '../../domain/entities/poi_limits.dart';
+
 /// Minimal XLSX interchange contract: first worksheet, plain cell values.
 /// No formulas, macros or external links are evaluated. Runs in an isolate.
 abstract final class PoiWorkbook {
-  static const maxBytes = 20 * 1024 * 1024;
-  static const maxRows = 5000;
+  static const maxBytes = PoiLimits.maxFileBytes;
+  static const maxRows = PoiLimits.maxRecords;
   static const headers = ['name', 'latitude', 'longitude', 'icon', 'notes'];
   static List<List<String>> decode(Uint8List bytes) {
     if (bytes.length > maxBytes || bytes.isEmpty) {

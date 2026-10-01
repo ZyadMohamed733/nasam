@@ -18,6 +18,7 @@ import '../../../../shared/widgets/app_form_field.dart';
 import '../../../../shared/widgets/app_map_preview.dart';
 import '../../../../shared/widgets/app_page_header.dart';
 import '../../domain/entities/poi_draft.dart';
+import '../../domain/entities/poi_validation.dart';
 import '../../domain/entities/point_of_interest.dart';
 import '../cubit/poi_editor_cubit.dart';
 import '../widgets/poi_icon.dart';
@@ -273,11 +274,11 @@ class _PoiEditorPageState extends State<PoiEditorPage> {
                   valueStyle: bold,
                   enabled: enabled,
                   onChanged: _edited,
-                  validator: (v) => v == null || v.trim().isEmpty
-                      ? l.poiRequired
-                      : v.trim().length > 200
-                      ? l.poiNameLimit
-                      : null,
+                  validator: (v) => switch (PoiValidator.name(v ?? '')) {
+                    PoiIssue.nameRequired => l.poiRequired,
+                    PoiIssue.nameTooLong => l.poiNameLimit,
+                    _ => null,
+                  },
                 ),
                 _LocationField(
                   latitude: _latitude,
@@ -313,8 +314,9 @@ class _PoiEditorPageState extends State<PoiEditorPage> {
                   valueStyle: bold,
                   enabled: enabled,
                   onChanged: _edited,
-                  validator: (v) =>
-                      (v?.length ?? 0) > 2000 ? l.poiNotesLimit : null,
+                  validator: (v) => PoiValidator.notes(v ?? '') == null
+                      ? null
+                      : l.poiNotesLimit,
                 ),
               ],
             ),
@@ -407,12 +409,13 @@ class _LocationField extends StatelessWidget {
       ),
       inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[-.0-9]'))],
       onChanged: onChanged,
-      validator: (v) {
-        final n = double.tryParse(v ?? '');
-        return n == null || !n.isFinite || n.abs() > (isLatitude ? 90 : 180)
-            ? l.poiInvalidCoordinate
-            : null;
-      },
+      validator: (v) =>
+          (isLatitude ? PoiValidator.latitude : PoiValidator.longitude)(
+                v ?? '',
+              ) ==
+              null
+          ? null
+          : l.poiInvalidCoordinate,
     );
 
     return Column(

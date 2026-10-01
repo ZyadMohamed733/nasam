@@ -1676,6 +1676,138 @@ abstract class AppLocalizations {
   /// **'سيتم استيراد السجلات الصحيحة فقط. لن يتم إنشاء السجلات غير الصحيحة أو المكررة.'**
   String get poiValidOnly;
 
+  /// No description provided for @poiDropTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'اسحب الملفات هنا أو انقر للاستعراض'**
+  String get poiDropTitle;
+
+  /// No description provided for @poiDropHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'{format} بحد أقصى {size} ميجابايت'**
+  String poiDropHint(String format, int size);
+
+  /// No description provided for @poiFormatLabel.
+  ///
+  /// In ar, this message translates to:
+  /// **'الصيغة المدعومة:'**
+  String get poiFormatLabel;
+
+  /// No description provided for @poiMaxSizeLabel.
+  ///
+  /// In ar, this message translates to:
+  /// **'الحد الأقصى لحجم الملف:'**
+  String get poiMaxSizeLabel;
+
+  /// No description provided for @poiMaxRecordsLabel.
+  ///
+  /// In ar, this message translates to:
+  /// **'الحد الأقصى للسجلات:'**
+  String get poiMaxRecordsLabel;
+
+  /// No description provided for @poiSizeMegabytes.
+  ///
+  /// In ar, this message translates to:
+  /// **'{size}MB'**
+  String poiSizeMegabytes(int size);
+
+  /// No description provided for @poiRemoveFile.
+  ///
+  /// In ar, this message translates to:
+  /// **'إزالة الملف'**
+  String get poiRemoveFile;
+
+  /// No description provided for @poiValidationDescription.
+  ///
+  /// In ar, this message translates to:
+  /// **'مراجعة نتائج التحقق لكل سجل في الملف {fileName}'**
+  String poiValidationDescription(String fileName);
+
+  /// No description provided for @poiValidationSummary.
+  ///
+  /// In ar, this message translates to:
+  /// **'{valid} سجلاً صحيحاً جاهز للاستيراد. {invalid} سجلات تحتوي على أخطاء ولن يتم استيرادها.'**
+  String poiValidationSummary(int valid, int invalid);
+
+  /// No description provided for @poiPreviewDescription.
+  ///
+  /// In ar, this message translates to:
+  /// **'راجع نقاط الاهتمام الصحيحة قبل استيرادها.'**
+  String get poiPreviewDescription;
+
+  /// No description provided for @poiTotalRecords.
+  ///
+  /// In ar, this message translates to:
+  /// **'إجمالي {count} poi'**
+  String poiTotalRecords(int count);
+
+  /// No description provided for @poiImportDoneDescription.
+  ///
+  /// In ar, this message translates to:
+  /// **'قم برفع نقاط اهتمام متعددة باستخدام قالب الإكسل المحدد مسبقًا'**
+  String get poiImportDoneDescription;
+
+  /// No description provided for @poiImportSucceeded.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم تنزيل بنجاح'**
+  String get poiImportSucceeded;
+
+  /// No description provided for @poiImportFailed.
+  ///
+  /// In ar, this message translates to:
+  /// **'فشلت'**
+  String get poiImportFailed;
+
+  /// No description provided for @poiImportDuplicates.
+  ///
+  /// In ar, this message translates to:
+  /// **'مكررة'**
+  String get poiImportDuplicates;
+
+  /// No description provided for @poiIssueNameRequired.
+  ///
+  /// In ar, this message translates to:
+  /// **'الاسم مطلوب'**
+  String get poiIssueNameRequired;
+
+  /// No description provided for @poiIssueNameTooLong.
+  ///
+  /// In ar, this message translates to:
+  /// **'يجب ألا يتجاوز الاسم 200 حرف'**
+  String get poiIssueNameTooLong;
+
+  /// No description provided for @poiIssueLatitude.
+  ///
+  /// In ar, this message translates to:
+  /// **'يجب أن يكون خط العرض بين -90 و90'**
+  String get poiIssueLatitude;
+
+  /// No description provided for @poiIssueLongitude.
+  ///
+  /// In ar, this message translates to:
+  /// **'يجب أن يكون خط الطول بين -180 و180'**
+  String get poiIssueLongitude;
+
+  /// No description provided for @poiIssueIcon.
+  ///
+  /// In ar, this message translates to:
+  /// **'الأيقونة غير معروفة'**
+  String get poiIssueIcon;
+
+  /// No description provided for @poiIssueNotesTooLong.
+  ///
+  /// In ar, this message translates to:
+  /// **'يجب ألا تتجاوز الملاحظات 2000 حرف'**
+  String get poiIssueNotesTooLong;
+
+  /// No description provided for @poiIssueDuplicate.
+  ///
+  /// In ar, this message translates to:
+  /// **'مكرر في الملف أو موجود مسبقاً'**
+  String get poiIssueDuplicate;
+
   /// No description provided for @poiImportComplete.
   ///
   /// In ar, this message translates to:

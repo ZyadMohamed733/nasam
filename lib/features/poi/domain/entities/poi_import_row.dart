@@ -1,4 +1,5 @@
 import 'poi_draft.dart';
+import 'poi_validation.dart';
 import 'point_of_interest.dart';
 
 enum PoiRowStatus { valid, invalid, duplicate }
@@ -11,11 +12,15 @@ class PoiImportRow {
     required this.longitude,
     required this.iconName,
     required this.status,
+    this.issues = const [],
     this.draft,
   });
   final int number;
   final String name, latitude, longitude, iconName;
   final PoiRowStatus status;
+
+  /// Why an invalid row will not be imported, in field order.
+  final List<PoiIssue> issues;
   final PoiDraft? draft;
 }
 
@@ -61,23 +66,26 @@ abstract final class PoiImportValidation {
       return index < 0 || index >= cells.length ? '' : cells[index].trim();
     }
 
-    final name = value('name'),
-        lat = double.tryParse(value('latitude')),
-        lon = double.tryParse(value('longitude'));
-    final iconName = value('icon').toLowerCase();
-    final icon = PoiIcon.values.where((i) => i.name == iconName).firstOrNull;
-    final draft = lat == null || lon == null || icon == null
+    final name = value('name');
+    final issues = PoiValidator.all(
+      name: name,
+      latitude: value('latitude'),
+      longitude: value('longitude'),
+      icon: value('icon'),
+      notes: value('notes'),
+    );
+    final draft = issues.isNotEmpty
         ? null
         : PoiDraft(
             name: name,
-            latitude: lat,
-            longitude: lon,
-            icon: icon,
+            latitude: double.parse(value('latitude')),
+            longitude: double.parse(value('longitude')),
+            icon: PoiValidator.icon(value('icon'))!,
             notes: value('notes'),
           );
-    final status = draft == null || !draft.isValid
+    final status = draft == null
         ? PoiRowStatus.invalid
-        : known.add(identity(name, lat!, lon!))
+        : known.add(identity(name, draft.latitude, draft.longitude))
         ? PoiRowStatus.valid
         : PoiRowStatus.duplicate;
     return PoiImportRow(
@@ -85,8 +93,9 @@ abstract final class PoiImportValidation {
       name: name,
       latitude: value('latitude'),
       longitude: value('longitude'),
-      iconName: iconName,
+      iconName: value('icon').toLowerCase(),
       status: status,
+      issues: List.unmodifiable(issues),
       draft: draft,
     );
   }

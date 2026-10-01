@@ -1,3 +1,6 @@
+import 'poi_limits.dart';
+import 'poi_validation.dart';
+
 /// Stable API values; localized labels belong to presentation.
 enum PoiIcon { location, hospital, library, fuel }
 
@@ -15,11 +18,10 @@ class PoiDraft {
   final PoiIcon icon;
   final String notes;
   bool get isValid =>
-      name.trim().isNotEmpty &&
-      name.trim().length <= 200 &&
+      PoiValidator.name(name) == null &&
+      PoiValidator.notes(notes) == null &&
       latitude.isFinite &&
       longitude.isFinite &&
-      latitude.abs() <= 90 &&
-      longitude.abs() <= 180 &&
-      notes.length <= 2000;
+      latitude.abs() <= PoiLimits.maxLatitude &&
+      longitude.abs() <= PoiLimits.maxLongitude;
 }

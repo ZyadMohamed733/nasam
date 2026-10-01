@@ -30,6 +30,7 @@ class AppComponentColors extends ThemeExtension<AppComponentColors> {
     required this.elevationShadow,
     required this.iconTileFill,
     required this.infoCardFill,
+    required this.emphasisText,
   });
 
   /// A section's title in a flow (`561:13775`).
@@ -92,6 +93,9 @@ class AppComponentColors extends ThemeExtension<AppComponentColors> {
   /// A result card (`561:16904`).
   final Color infoCardFill;
 
+  /// A stated value in black next to its grey label (`561:12175`).
+  final Color emphasisText;
+
   static const light = AppComponentColors(
     sectionTitle: AppColors.slate900,
     headerDivider: AppColors.neutral200,
@@ -113,6 +117,7 @@ class AppComponentColors extends ThemeExtension<AppComponentColors> {
     elevationShadow: AppColors.transparentBlack10,
     iconTileFill: AppColors.bluePurple700,
     infoCardFill: AppColors.bluePurple50,
+    emphasisText: AppColors.neutralBlack,
   );
 
   static const dark = AppComponentColors(
@@ -136,6 +141,7 @@ class AppComponentColors extends ThemeExtension<AppComponentColors> {
     elevationShadow: AppColors.transparentBlack20, // AWAITING DESIGN
     iconTileFill: AppColors.bluePurple500, // AWAITING DESIGN
     infoCardFill: AppColors.bluePurple700, // AWAITING DESIGN
+    emphasisText: AppColors.neutral50, // AWAITING DESIGN
   );
 
   /// The theme's, or the default for its brightness — never a null.
@@ -167,6 +173,7 @@ class AppComponentColors extends ThemeExtension<AppComponentColors> {
     Color? elevationShadow,
     Color? iconTileFill,
     Color? infoCardFill,
+    Color? emphasisText,
   }) => AppComponentColors(
     sectionTitle: sectionTitle ?? this.sectionTitle,
     headerDivider: headerDivider ?? this.headerDivider,
@@ -188,6 +195,7 @@ class AppComponentColors extends ThemeExtension<AppComponentColors> {
     elevationShadow: elevationShadow ?? this.elevationShadow,
     iconTileFill: iconTileFill ?? this.iconTileFill,
     infoCardFill: infoCardFill ?? this.infoCardFill,
+    emphasisText: emphasisText ?? this.emphasisText,
   );
 
   @override
@@ -221,6 +229,7 @@ class AppComponentColors extends ThemeExtension<AppComponentColors> {
       elevationShadow: mix(elevationShadow, other.elevationShadow),
       iconTileFill: mix(iconTileFill, other.iconTileFill),
       infoCardFill: mix(infoCardFill, other.infoCardFill),
+      emphasisText: mix(emphasisText, other.emphasisText),
     );
   }
 }

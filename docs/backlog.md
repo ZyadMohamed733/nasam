@@ -56,6 +56,17 @@ puts latitude first on all three, for one reading order across the flow.
 **To close:** design confirms latitude first, and updates View's frame to
 match.
 
+### POI bulk upload: states and copy the design does not cover
+- **A chosen file.** No frame shows the Upload step after a file is picked
+  (the Attachment component, `561:5443`, has only its empty variant). The
+  app shows a row under the drop zone: file icon, name, size and a remove
+  button, on the table fill (`PoiImportFileRow`).
+- **The drop zone's hint.** The design says "PDF، DOC، XLS، PNG، JPG بحد أقصى
+  25 ميجابايت لكل ملف" (`561:5451`), which is wrong for this flow. The app
+  states `.xlsx` and 20 MB from `PoiLimits`.
+
+**To close:** design draws the chosen-file state and corrects the hint.
+
 ### Dark secondary buttons on a container
 In dark mode `AppButton`'s secondary variant draws `secondaryButtonText`
 (`neutral400`) on `secondaryButtonBackground` (10% white). On the page

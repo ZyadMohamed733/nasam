@@ -888,6 +888,84 @@ class AppLocalizationsEn extends AppLocalizations {
       'Only valid records will be imported. Invalid or duplicate records will be skipped.';
 
   @override
+  String get poiDropTitle => 'Drag files here or tap to browse';
+
+  @override
+  String poiDropHint(String format, int size) {
+    return '$format, up to $size MB';
+  }
+
+  @override
+  String get poiFormatLabel => 'Supported format:';
+
+  @override
+  String get poiMaxSizeLabel => 'Maximum file size:';
+
+  @override
+  String get poiMaxRecordsLabel => 'Maximum records:';
+
+  @override
+  String poiSizeMegabytes(int size) {
+    return '$size MB';
+  }
+
+  @override
+  String get poiRemoveFile => 'Remove file';
+
+  @override
+  String poiValidationDescription(String fileName) {
+    return 'Review the validation result for every record in $fileName';
+  }
+
+  @override
+  String poiValidationSummary(int valid, int invalid) {
+    return '$valid valid records are ready to import. $invalid records have errors and will not be imported.';
+  }
+
+  @override
+  String get poiPreviewDescription =>
+      'Review the valid points of interest before importing them.';
+
+  @override
+  String poiTotalRecords(int count) {
+    return 'Total $count';
+  }
+
+  @override
+  String get poiImportDoneDescription =>
+      'Multiple points of interest were uploaded from the predefined Excel template';
+
+  @override
+  String get poiImportSucceeded => 'Imported';
+
+  @override
+  String get poiImportFailed => 'Failed';
+
+  @override
+  String get poiImportDuplicates => 'Duplicates';
+
+  @override
+  String get poiIssueNameRequired => 'Name is required';
+
+  @override
+  String get poiIssueNameTooLong => 'Name must be 200 characters or fewer';
+
+  @override
+  String get poiIssueLatitude => 'Latitude must be between -90 and 90';
+
+  @override
+  String get poiIssueLongitude => 'Longitude must be between -180 and 180';
+
+  @override
+  String get poiIssueIcon => 'Unknown icon';
+
+  @override
+  String get poiIssueNotesTooLong => 'Notes must be 2,000 characters or fewer';
+
+  @override
+  String get poiIssueDuplicate => 'Duplicate in the file or already saved';
+
+  @override
   String get poiImportComplete => 'POI import complete';
 
   @override

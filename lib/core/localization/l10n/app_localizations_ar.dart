@@ -899,6 +899,84 @@ class AppLocalizationsAr extends AppLocalizations {
       'سيتم استيراد السجلات الصحيحة فقط. لن يتم إنشاء السجلات غير الصحيحة أو المكررة.';
 
   @override
+  String get poiDropTitle => 'اسحب الملفات هنا أو انقر للاستعراض';
+
+  @override
+  String poiDropHint(String format, int size) {
+    return '$format بحد أقصى $size ميجابايت';
+  }
+
+  @override
+  String get poiFormatLabel => 'الصيغة المدعومة:';
+
+  @override
+  String get poiMaxSizeLabel => 'الحد الأقصى لحجم الملف:';
+
+  @override
+  String get poiMaxRecordsLabel => 'الحد الأقصى للسجلات:';
+
+  @override
+  String poiSizeMegabytes(int size) {
+    return '${size}MB';
+  }
+
+  @override
+  String get poiRemoveFile => 'إزالة الملف';
+
+  @override
+  String poiValidationDescription(String fileName) {
+    return 'مراجعة نتائج التحقق لكل سجل في الملف $fileName';
+  }
+
+  @override
+  String poiValidationSummary(int valid, int invalid) {
+    return '$valid سجلاً صحيحاً جاهز للاستيراد. $invalid سجلات تحتوي على أخطاء ولن يتم استيرادها.';
+  }
+
+  @override
+  String get poiPreviewDescription =>
+      'راجع نقاط الاهتمام الصحيحة قبل استيرادها.';
+
+  @override
+  String poiTotalRecords(int count) {
+    return 'إجمالي $count poi';
+  }
+
+  @override
+  String get poiImportDoneDescription =>
+      'قم برفع نقاط اهتمام متعددة باستخدام قالب الإكسل المحدد مسبقًا';
+
+  @override
+  String get poiImportSucceeded => 'تم تنزيل بنجاح';
+
+  @override
+  String get poiImportFailed => 'فشلت';
+
+  @override
+  String get poiImportDuplicates => 'مكررة';
+
+  @override
+  String get poiIssueNameRequired => 'الاسم مطلوب';
+
+  @override
+  String get poiIssueNameTooLong => 'يجب ألا يتجاوز الاسم 200 حرف';
+
+  @override
+  String get poiIssueLatitude => 'يجب أن يكون خط العرض بين -90 و90';
+
+  @override
+  String get poiIssueLongitude => 'يجب أن يكون خط الطول بين -180 و180';
+
+  @override
+  String get poiIssueIcon => 'الأيقونة غير معروفة';
+
+  @override
+  String get poiIssueNotesTooLong => 'يجب ألا تتجاوز الملاحظات 2000 حرف';
+
+  @override
+  String get poiIssueDuplicate => 'مكرر في الملف أو موجود مسبقاً';
+
+  @override
   String get poiImportComplete => 'اكتمل استيراد نقاط الاهتمام';
 
   @override

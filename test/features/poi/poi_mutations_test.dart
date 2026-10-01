@@ -81,9 +81,9 @@ void main() {
       );
       await cubit.validate();
       await cubit.confirm();
-      expect(cubit.state.step, 0);
+      expect(cubit.state.step, isA<PoiImportUploadStep>());
       await cubit.pick();
-      expect(cubit.state.fileName, isNull);
+      expect(cubit.state.file, isNull);
       files.fail = true;
       await cubit.pick();
       expect(cubit.state.error, true);
@@ -96,19 +96,19 @@ void main() {
       ]);
       await cubit.pick();
       await cubit.validate();
-      expect(cubit.state.step, 1);
-      expect(cubit.state.valid.length, 1);
+      expect(cubit.state.step, isA<PoiImportValidationStep>());
+      expect(cubit.state.validRows.length, 1);
       cubit.preview();
-      expect(cubit.state.step, 2);
+      expect(cubit.state.step, isA<PoiImportPreviewStep>());
       cubit.previous();
-      expect(cubit.state.step, 1);
+      expect(cubit.state.step, isA<PoiImportValidationStep>());
       cubit.preview();
       await Future.wait([cubit.confirm(), cubit.confirm()]);
-      expect(cubit.state.step, 3);
-      expect(cubit.state.imported, 1);
+      final done = cubit.state.step as PoiImportConfirmStep;
+      expect(done.summary.imported, 1);
       expect((await repository.getPoints()).getOrElse(() => []).length, 5);
       cubit.previous();
-      expect(cubit.state.step, 3);
+      expect(cubit.state.step, isA<PoiImportConfirmStep>());
       await cubit.close();
     },
   );

@@ -6,6 +6,7 @@ import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failure_mapper.dart';
 import '../../../../core/errors/failures.dart';
 import '../../domain/entities/poi_draft.dart';
+import '../../domain/entities/poi_limits.dart';
 import '../../domain/entities/point_of_interest.dart';
 import '../../domain/repositories/poi_repository.dart';
 import '../datasources/poi_datasource.dart';
@@ -90,7 +91,7 @@ class PoiRepositoryImpl implements PoiRepository {
   });
   @override
   Future<Either<Failure, int>> importPoints(List<PoiDraft> drafts) {
-    if (drafts.length > 5000 || drafts.any((d) => !d.isValid)) {
+    if (drafts.length > PoiLimits.maxRecords || drafts.any((d) => !d.isValid)) {
       return Future.value(
         const Left(ValidationFailure(message: 'Invalid POI import')),
       );
