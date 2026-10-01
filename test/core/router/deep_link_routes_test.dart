@@ -29,6 +29,7 @@ import 'package:nasam/features/poi/presentation/cubit/poi_cubit.dart';
 import 'package:nasam/features/poi/presentation/pages/poi_details_page.dart';
 import 'package:nasam/features/poi/presentation/pages/poi_editor_page.dart';
 import 'package:nasam/features/poi/presentation/pages/poi_page.dart';
+import 'package:nasam/features/poi/presentation/widgets/import/poi_import_confirm_view.dart';
 import 'package:nasam/features/play_back/presentation/pages/playback_page.dart';
 import 'package:nasam/features/play_back/presentation/pages/playback_map_page.dart';
 import 'package:nasam/features/play_back/presentation/utils/playback_range.dart';
@@ -311,7 +312,14 @@ void main() {
       expect(find.text('Bad'), findsNothing);
       await tester.tap(find.widgetWithText(AppButton, 'Confirm'));
       await tester.pumpAndSettle();
-      expect(find.text('POI import complete'), findsOneWidget);
+      final done = tester.widget<PoiImportConfirmView>(
+        find.byType(PoiImportConfirmView),
+      );
+      expect(
+        (done.summary.total, done.summary.imported),
+        (3, 1),
+        reason: 'the real import, not the file',
+      );
       await tester.tap(
         find.widgetWithText(AppButton, 'Show points on the map'),
       );

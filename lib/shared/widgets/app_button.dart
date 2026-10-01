@@ -51,6 +51,7 @@ class AppButton extends StatelessWidget {
     this.labelStyle,
     this.padding,
     this.primaryBackgroundColor,
+    this.labelColor,
   }) : assert(icon == null || assetIcon == null);
 
   final VoidCallback? onPressed;
@@ -90,6 +91,10 @@ class AppButton extends StatelessWidget {
 
   /// Optional screen-specific fill for enabled primary buttons.
   final Color? primaryBackgroundColor;
+
+  /// The text variant's enabled label colour, where the design draws a link
+  /// in the brand colour (`561:16941`). Defaults to the secondary text.
+  final Color? labelColor;
 
   bool get _enabled => onPressed != null && !isLoading;
 
@@ -203,7 +208,7 @@ class AppButton extends StatelessWidget {
       foregroundColor: WidgetStateProperty.resolveWith(
         (states) => states.contains(WidgetState.disabled)
             ? s.textPlaceholder
-            : s.secondaryButtonText,
+            : labelColor ?? s.secondaryButtonText,
       ),
       overlayColor: const WidgetStatePropertyAll(Colors.transparent),
     );
