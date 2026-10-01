@@ -40,6 +40,7 @@ import 'package:nasam/features/tracking/presentation/pages/tracking_page.dart';
 import 'package:nasam/features/tracking/presentation/widgets/tracking_asset_not_found.dart';
 import 'package:nasam/shared/widgets/app_button.dart';
 import 'package:nasam/shared/widgets/app_drawer.dart';
+import 'package:nasam/shared/widgets/app_status_chip.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../helpers/app_harness.dart';
@@ -299,9 +300,12 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.widgetWithText(AppButton, 'Validate'));
       await tester.pumpAndSettle();
-      expect(find.text('Valid (1)'), findsOneWidget);
-      expect(find.text('Invalid (1)'), findsOneWidget);
-      expect(find.text('Duplicate (1)'), findsOneWidget);
+      for (final status in ['valid', 'invalid', 'duplicate']) {
+        final chip = tester.widget<AppStatusChip>(
+          find.byKey(ValueKey('poi-import-filter-$status')),
+        );
+        expect(chip.count, 1, reason: status);
+      }
       await tester.tap(find.widgetWithText(AppButton, 'Preview'));
       await tester.pumpAndSettle();
       expect(find.text('Bad'), findsNothing);

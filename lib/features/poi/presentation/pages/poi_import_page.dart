@@ -13,6 +13,7 @@ import '../cubit/poi_import_cubit.dart';
 import '../widgets/import/poi_import_layout.dart';
 import '../widgets/import/poi_import_legacy_steps.dart';
 import '../widgets/import/poi_import_upload_view.dart';
+import '../widgets/import/poi_import_validation_view.dart';
 
 /// The POI bulk upload (`647:7950`–`647:8007`): the header, the stepper,
 /// the current step's body and its actions. Each step's body is its own
@@ -74,6 +75,8 @@ class PoiImportPage extends StatelessWidget {
                               PoiImportUploadStep() => PoiImportUploadView(
                                 state: state,
                               ),
+                              PoiImportValidationStep() =>
+                                PoiImportValidationView(state: state),
                               _ => PoiImportLegacySteps(state: state),
                             },
                           ],

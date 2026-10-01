@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../core/localization/l10n/app_localizations.dart';
 import '../../../../../shared/widgets/app_button.dart';
-import '../../../domain/entities/poi_import_row.dart';
 import '../../cubit/poi_import_cubit.dart';
 import 'poi_import_status.dart';
 
-/// TEMPORARY: the pre-redesign Validation, Preview and Confirm bodies, kept
+/// TEMPORARY: the pre-redesign Preview and Confirm bodies, kept
 /// working on the new state until each step is rebuilt. Deleted once
 /// Confirm is.
 class PoiImportLegacySteps extends StatelessWidget {
@@ -19,7 +17,6 @@ class PoiImportLegacySteps extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
-    final cubit = context.read<PoiImportCubit>();
     final summary = switch (state.step) {
       PoiImportConfirmStep(:final summary) => summary,
       _ => null,
@@ -38,25 +35,10 @@ class PoiImportLegacySteps extends StatelessWidget {
         ],
       );
     }
-    final validation = state.step is PoiImportValidationStep;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(validation ? l.poiValidationTitle : l.poiPreviewTitle),
-        if (validation)
-          Wrap(
-            spacing: 8,
-            children: [
-              for (final status in [null, ...PoiRowStatus.values])
-                ChoiceChip(
-                  selected: state.filter == status,
-                  label: Text(
-                    '${PoiImportStatus.label(status, l)} (${state.count(status)})',
-                  ),
-                  onSelected: (_) => cubit.filter(status),
-                ),
-            ],
-          ),
+        Text(l.poiPreviewTitle),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: DataTable(

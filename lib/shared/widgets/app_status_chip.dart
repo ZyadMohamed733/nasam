@@ -60,10 +60,14 @@ class AppStatusChip extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  label,
-                  style: AppTextStyles.bodySR20.copyWith(
-                    color: colors.foreground,
+                Flexible(
+                  child: Text(
+                    label,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTextStyles.bodySR20.copyWith(
+                      color: colors.foreground,
+                    ),
                   ),
                 ),
                 if (count != null) ...[
