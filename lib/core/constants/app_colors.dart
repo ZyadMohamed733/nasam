@@ -28,8 +28,33 @@ abstract final class AppColors {
   static const Color darkPurple700 = Color(0xFF380840);
   static const Color darkPurple800 = Color(0xFF25062A);
 
-  // Violet — the POI icon accent (POI row icon, `507:16788`).
+  // Violet — the POI icon accent (POI row icon, `507:16788`), and the info
+  // status tone's border and text (`561:13799`).
+  static const Color violet200 = Color(0xFFC6B6F7);
   static const Color violet500 = Color(0xFF7047EB);
+  static const Color violet700 = Color(0xFF4316CA);
+
+  // Deep blue-purples of the import flow: the active page (`561:13939`) and
+  // the stepper's done labels (`561:5304`).
+  static const Color bluePurple600 = Color(0xFF3E2A8B);
+  static const Color indigo700 = Color(0xFF391399);
+
+  // Status tones (`561:13777`, `561:16910`): fill, border, text.
+  static const Color amber50 = Color(0xFFFFF9EB);
+  static const Color amber200 = Color(0xFFFFDA85);
+  static const Color amber800 = Color(0xFF8A6100);
+  static const Color rose50 = Color(0xFFFEF0F4);
+  static const Color rose200 = Color(0xFFFBB1C4);
+  static const Color rose600 = Color(0xFFD50B3E);
+  static const Color mint50 = Color(0xFFEEFBF4);
+  static const Color mint200 = Color(0xFFB2EECC);
+  static const Color mint800 = Color(0xFF17663A);
+
+  // Slate — the import flow's titles and file drop zone (`561:5443`).
+  static const Color slate200 = Color(0xFFDDE3ED);
+  static const Color slate500 = Color(0xFF6B7A99);
+  static const Color slate900 = Color(0xFF1C2530);
+  static const Color slate950 = Color(0xFF0F1623);
 
   // Neutrals.
   static const Color neutralWhite = Color(0xFFFFFFFF);
@@ -38,6 +63,9 @@ abstract final class AppColors {
 
   /// The sheet drag handle (`175:4142`). Off the ramp: between 100 and 200.
   static const Color neutral150Handle = Color(0xFFDDDDDD);
+
+  /// The stepper's inactive line and dot (`561:5212`): a cool 150.
+  static const Color neutral150Cool = Color(0xFFE0E0E7);
   static const Color neutral200 = Color(0xFFD9D9D9);
   static const Color neutral300 = Color(0xFFC7C7C7);
   static const Color neutral400 = Color(0xFFB4B4B4);
@@ -55,6 +83,8 @@ abstract final class AppColors {
   // Gray — the search field's icon and text (`647:8279`, `647:8281`), the
   // page header title (`647:7887`) and the info value box (`553:4392`).
   static const Color gray25 = Color(0xFFF7F7F8);
+  static const Color gray100 = Color(0xFFF3F4F6);
+  static const Color gray200 = Color(0xFFE8EAF0);
   static const Color gray400 = Color(0xFF9CA3AF);
   static const Color gray700 = Color(0xFF374151);
   static const Color gray900 = Color(0xFF101828);

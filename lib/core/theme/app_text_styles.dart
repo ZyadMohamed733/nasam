@@ -66,4 +66,53 @@ abstract final class AppTextStyles {
     fontSize: 10.sp,
     height: normalLineHeight,
   );
+
+  /// Almarai Bold 18 on a 20 line — a section title (`561:13775`). The
+  /// design system's "Body XL B".
+  static TextStyle get bodyXLB => TextStyle(
+    fontFamily: _family,
+    letterSpacing: letterSpacing,
+    fontWeight: FontWeight.w700,
+    fontSize: 18.sp,
+    height: 20 / 18,
+  );
+
+  /// Almarai Medium 14 on a 20 line (`561:5449`, Inter Medium in the design).
+  /// Almarai has no 500, so this renders at the nearest weight it ships.
+  static TextStyle get bodyMM => TextStyle(
+    fontFamily: _family,
+    letterSpacing: letterSpacing,
+    fontWeight: FontWeight.w500,
+    fontSize: 14.sp,
+    height: 20 / 14,
+  );
+
+  /// Almarai Regular 12 on a 20 line: table values, step labels, chips and
+  /// the import's info rows (`561:12175`). Taller than [bodySR]'s 1.3.
+  static TextStyle get bodySR20 => TextStyle(
+    fontFamily: _family,
+    letterSpacing: letterSpacing,
+    fontWeight: FontWeight.w400,
+    fontSize: 12.sp,
+    height: 20 / 12,
+  );
+
+  /// Almarai Regular 13 on a 20 line — the design system's "Footnote"
+  /// (`561:13942`).
+  static TextStyle get footnote => TextStyle(
+    fontFamily: _family,
+    letterSpacing: letterSpacing,
+    fontWeight: FontWeight.w400,
+    fontSize: 13.sp,
+    height: 20 / 13,
+  );
+
+  /// "Caption S" in Bold: a table's column headers.
+  static TextStyle get captionSB => TextStyle(
+    fontFamily: _family,
+    letterSpacing: letterSpacing,
+    fontWeight: FontWeight.w700,
+    fontSize: 10.sp,
+    height: normalLineHeight,
+  );
 }

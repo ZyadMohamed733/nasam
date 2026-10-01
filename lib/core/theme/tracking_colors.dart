@@ -36,7 +36,7 @@ class TrackingColors extends ThemeExtension<TrackingColors> {
   final Color playbackPrimary;
 
   static const light = TrackingColors(
-    moving: Color(0xFF17663A),
+    moving: AppColors.mint800,
     idle: Color(0xFF8A5E00),
     stopped: Color(0xFFC20042),
     offline: AppColors.neutral700,

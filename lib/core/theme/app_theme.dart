@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../constants/app_colors.dart';
+import 'app_component_colors.dart';
 import 'app_drawer_theme.dart';
+import 'app_status_tones.dart';
 import 'app_theme_data.dart';
 import 'app_typography.dart';
 import 'poi_sheet_colors.dart';
@@ -106,6 +108,12 @@ class AppTheme {
         brightness == Brightness.dark
             ? PoiSheetColors.dark
             : PoiSheetColors.light,
+        brightness == Brightness.dark
+            ? AppStatusTones.dark
+            : AppStatusTones.light,
+        brightness == Brightness.dark
+            ? AppComponentColors.dark
+            : AppComponentColors.light,
       ],
       scaffoldBackgroundColor: semantic.pageBackground,
       textTheme: textTheme,
