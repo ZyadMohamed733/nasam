@@ -104,58 +104,58 @@ class PanelWidget extends StatelessWidget {
                   ],
                 )
               else if (state is PlaybackMapEmpty)
-                Text(l.assetPlaybackEmpty)
-              else if (loaded != null) ...[
-                _scrubber(context, loaded),
-                const SizedBox(height: AppSizes.p8),
-                Row(
-                  textDirection: ui.TextDirection.ltr,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    AppAssetsIconWidget(
-                      label: l.playbackPrevious,
-                      onPressed: context.read<PlaybackMapCubit>().previous,
-                      asset: AppAssets.skipPrevious,
-                      size: AppSizes.iconSm,
-                      boxDecoration: BoxDecoration(
-                        color: TrackingColors.of(context)
-                            .playbackPrimary
-                            .withValues(alpha: .16),
-                        borderRadius: BorderRadius.circular(AppSizes.r8),
-                      ),
-                    ),
-                    const SizedBox(width: AppSizes.p16),
-                    AppAssetsIconWidget(
-                      asset: loaded.isPlaying
-                          ? AppAssets.pauseIcon
-                          : AppAssets.playIcon,
-                      label: loaded.isPlaying
-                          ? l.assetPlaybackPause
-                          : l.assetPlaybackPlay,
-                      onPressed: context.read<PlaybackMapCubit>().toggle,
-                      containerSize: 46,
-                      size: AppSizes.iconSm,
-                      boxDecoration: BoxDecoration(
-                        color: TrackingColors.of(context).playbackPrimary,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                    const SizedBox(width: AppSizes.p16),
-                    AppAssetsIconWidget(
-                      asset: AppAssets.skipNext,
-                      label: l.playbackNext,
-                      onPressed: context.read<PlaybackMapCubit>().next,
-                      size: AppSizes.iconSm,
-                      boxDecoration: BoxDecoration(
-                        color: TrackingColors.of(context)
-                            .playbackPrimary
-                            .withValues(alpha: .16),
-                        borderRadius: BorderRadius.circular(AppSizes.r8),
-                      ),
+                  Text(l.assetPlaybackEmpty)
+                else if (loaded != null) ...[
+                    _scrubber(context, loaded),
+                    const SizedBox(height: AppSizes.p8),
+                    Row(
+                      textDirection: ui.TextDirection.ltr,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        AppAssetsIconWidget(
+                          label: l.playbackPrevious,
+                          onPressed: context.read<PlaybackMapCubit>().previous,
+                          asset: AppAssets.skipPrevious,
+                          size: AppSizes.iconSm,
+                          boxDecoration: BoxDecoration(
+                            color: TrackingColors.of(context)
+                                .playbackPrimary
+                                .withValues(alpha: .16),
+                            borderRadius: BorderRadius.circular(AppSizes.r8),
+                          ),
+                        ),
+                        const SizedBox(width: AppSizes.p16),
+                        AppAssetsIconWidget(
+                          asset: loaded.isPlaying
+                              ? AppAssets.pauseIcon
+                              : AppAssets.playIcon,
+                          label: loaded.isPlaying
+                              ? l.assetPlaybackPause
+                              : l.assetPlaybackPlay,
+                          onPressed: context.read<PlaybackMapCubit>().toggle,
+                          containerSize: 46,
+                          size: AppSizes.iconSm,
+                          boxDecoration: BoxDecoration(
+                            color: TrackingColors.of(context).playbackPrimary,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        const SizedBox(width: AppSizes.p16),
+                        AppAssetsIconWidget(
+                          asset: AppAssets.skipNext,
+                          label: l.playbackNext,
+                          onPressed: context.read<PlaybackMapCubit>().next,
+                          size: AppSizes.iconSm,
+                          boxDecoration: BoxDecoration(
+                            color: TrackingColors.of(context)
+                                .playbackPrimary
+                                .withValues(alpha: .16),
+                            borderRadius: BorderRadius.circular(AppSizes.r8),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
-                ),
-              ],
             ],
           ),
         );
