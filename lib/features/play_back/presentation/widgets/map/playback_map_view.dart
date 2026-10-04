@@ -2,6 +2,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
@@ -17,6 +18,7 @@ import '../../../../../shared/widgets/app_button.dart';
 import '../../../../tracking/domain/entities/tracked_asset.dart';
 import '../../../../tracking/presentation/widgets/tracking_controls.dart';
 import '../../cubit/playback_map_cubit.dart';
+import '../../cubit/playback_map_state.dart';
 import '../../utils/playback_range.dart';
 import '../playback_date_picker_sheet.dart';
 import '../playback_info_bottom_sheet.dart';
@@ -91,7 +93,11 @@ class PlaybackMapViewState extends State<PlaybackMapView> {
         leading: IconButton(
           onPressed: () => context.pop(),
           tooltip: l.playbackBack,
-          icon: const Icon(Icons.arrow_back),
+          icon: SvgPicture.asset(
+            AppAssets.arrowBackButton,
+            width: 8,
+            height: 16,
+          ),
         ),
         titleWidget: Column(
           mainAxisSize: MainAxisSize.min,

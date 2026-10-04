@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:go_router/go_router.dart';
 import 'package:nasam/core/constants/app_colors.dart';
 import 'package:nasam/core/router/app_routes.dart';
 
 import '../../../../core/constants/app_assets.dart';
-import '../../../../core/constants/app_icons.dart';
 import '../../../../core/di/injection_container.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 import '../../../../shared/widgets/action_icon.dart';
@@ -39,6 +39,7 @@ class _HistoryAlertPageState extends State<HistoryAlertPage> {
 
   void _clearFilters(BuildContext blocContext) {
     setState(() {
+      debugPrint('[HistoryAlertPage] setState: clear search query');
       _query = '';
       _searchController.clear();
     });
@@ -96,6 +97,7 @@ class _HistoryAlertPageState extends State<HistoryAlertPage> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('[HistoryAlertPage] build (query="$_query")');
     final l = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: NasamAppBar(
@@ -104,9 +106,10 @@ class _HistoryAlertPageState extends State<HistoryAlertPage> {
         leading: IconButton(
           tooltip: MaterialLocalizations.of(context).backButtonTooltip,
           onPressed: () => context.pop(),
-          icon: IconTheme(
-            data: IconThemeData(size: AppIconSize.medium.value),
-            child: const BackButtonIcon(),
+          icon: SvgPicture.asset(
+            AppAssets.arrowBackButton,
+            width: 8,
+            height: 16,
           ),
         ),
         titleWidget: Text(
@@ -191,7 +194,10 @@ class _HistoryAlertPageState extends State<HistoryAlertPage> {
           padding: const EdgeInsets.fromLTRB(12, 12, 12, 8),
           child: SearchBarWidget(
             controller: _searchController,
-            onSearchChanged: (value) => setState(() => _query = value),
+            onSearchChanged: (value) => setState(() {
+              debugPrint('[HistoryAlertPage] setState: search query changed');
+              _query = value;
+            }),
             onFilterPressed: () =>
                 _showDateFilter(context, alerts, selectedDate),
             isFilterActive: selectedDate != null,

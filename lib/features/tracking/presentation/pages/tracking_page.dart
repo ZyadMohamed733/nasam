@@ -133,12 +133,18 @@ class _TrackingViewState extends State<_TrackingView>
     );
   }
 
-  /// A drawer entry was tapped. This screen is the tracking dashboard, so
-  /// that entry just closes the drawer; others will navigate once their
-  /// screens exist.
+  /// A drawer entry was tapped. The dashboard entry closes this drawer;
+  /// the alerts log opens its page.
   void _onDrawerSelect(DrawerDestination destination) {
-    if (destination == DrawerDestination.trackingDashboard) {
-      _drawer.hideDrawer();
+    switch (destination) {
+      case DrawerDestination.trackingDashboard:
+        _drawer.hideDrawer();
+      case DrawerDestination.alertsLog:
+        context.push(AppRoutes.alertsLog);
+      case DrawerDestination.pointsOfInterest ||
+            DrawerDestination.geofences ||
+            DrawerDestination.settings:
+        break;
     }
   }
 
@@ -184,6 +190,10 @@ class _TrackingViewState extends State<_TrackingView>
             child: SessionDrawer(
               showBackground: false,
               selected: DrawerDestination.trackingDashboard,
+              available: const {
+                DrawerDestination.trackingDashboard,
+                DrawerDestination.alertsLog,
+              },
               onSelect: _onDrawerSelect,
             ),
           ),

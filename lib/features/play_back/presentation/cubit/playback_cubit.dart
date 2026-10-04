@@ -1,48 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/errors/failures.dart';
-import '../../domain/entities/playback_segment.dart';
 import '../../domain/usecases/get_playback_segments_usecase.dart';
-
-sealed class PlaybackState {
-  const PlaybackState();
-}
-
-final class PlaybackLoading extends PlaybackState {
-  const PlaybackLoading();
-
-  @override
-  bool operator ==(Object other) => other is PlaybackLoading;
-
-  @override
-  int get hashCode => (PlaybackLoading).hashCode;
-}
-
-final class PlaybackLoaded extends PlaybackState {
-  const PlaybackLoaded(this.segments);
-  final List<PlaybackSegment> segments;
-
-  @override
-  bool operator ==(Object other) =>
-      other is PlaybackLoaded && listEquals(other.segments, segments);
-
-  @override
-  int get hashCode => Object.hashAll(segments);
-}
-
-final class PlaybackFailure extends PlaybackState {
-  const PlaybackFailure(this.failure);
-  final Failure failure;
-
-  @override
-  bool operator ==(Object other) =>
-      other is PlaybackFailure && other.failure == failure;
-
-  @override
-  int get hashCode => Object.hash(PlaybackFailure, failure);
-}
+import 'playback_state.dart';
 
 /// Loads an asset's journey legs for a date range.
 ///
@@ -51,9 +11,9 @@ final class PlaybackFailure extends PlaybackState {
 /// dropped, so a slow answer for last week cannot overwrite today's.
 @injectable
 final class PlaybackCubit extends Cubit<PlaybackState> {
-  PlaybackCubit(this._getSegments) : super(const PlaybackLoading());
+  PlaybackCubit(this._getSegmentsUseCase) : super(const PlaybackLoading());
 
-  final GetPlaybackSegmentsUseCase _getSegments;
+  final GetPlaybackSegmentsUseCase _getSegmentsUseCase;
   int _request = 0;
 
   /// Legs whose start and end fall inside [from, to).
@@ -65,7 +25,7 @@ final class PlaybackCubit extends Cubit<PlaybackState> {
     final request = ++_request;
     emit(const PlaybackLoading());
 
-    final result = await _getSegments(assetId: assetId, from: from, to: to);
+    final result = await _getSegmentsUseCase(assetId: assetId, from: from, to: to);
     if (isClosed || request != _request) return;
 
     emit(

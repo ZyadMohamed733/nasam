@@ -83,6 +83,8 @@ class NasamAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: centerTitle,
       toolbarHeight: toolbarHeight,
       elevation: 0,
+      scrolledUnderElevation: 0,
+      surfaceTintColor: Colors.transparent,
       shadowColor: Theme.of(context).colorScheme.outline,
       backgroundColor: Theme.of(context).colorScheme.surface,
       leading:

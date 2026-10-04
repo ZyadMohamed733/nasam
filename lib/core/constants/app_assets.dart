@@ -12,6 +12,7 @@ abstract final class AppAssets {
   static const String _images = 'assets/images';
 
   static const String mapArrow = 'assets/icons/map_arrow.svg';
+  static const String arrowBackButton = 'assets/icons/arrow_back_button.svg';
   static const String mapArrowLeft = 'assets/icons/map_ arrow_ left.svg';
   static const String trackingMenu = 'assets/icons/tracking_menu.svg';
   static const String filter = 'assets/icons/filter.svg';
@@ -60,6 +61,7 @@ abstract final class AppAssets {
   static const List<String> all = <String>[
     drawerBottomBackground,
     mapArrow,
+    arrowBackButton,
     mapArrowLeft,
     trackingMenu,
     filter,
