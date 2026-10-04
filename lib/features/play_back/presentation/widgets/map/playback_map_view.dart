@@ -1,20 +1,14 @@
-import 'dart:ui' as ui;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:intl/intl.dart';
 import 'package:nasam/features/play_back/presentation/widgets/map/playback_googlemap.dart';
 import '../../../../../core/constants/app_assets.dart';
 import '../../../../../core/constants/app_sizes.dart';
 import '../../../../../core/localization/l10n/app_localizations.dart';
-import '../../../../../core/theme/tracking_colors.dart';
 import '../../../../../core/utils/bidi.dart';
-import '../../../../../shared/widgets/action_icon.dart';
 import '../../../../../shared/widgets/app_bar_widget.dart';
-import '../../../../../shared/widgets/app_button.dart';
 import '../../../../tracking/domain/entities/tracked_asset.dart';
 import '../../../../tracking/presentation/widgets/tracking_controls.dart';
 import '../../cubit/playback_map_cubit.dart';
@@ -22,9 +16,10 @@ import '../../cubit/playback_map_state.dart';
 import '../../utils/playback_range.dart';
 import '../playback_date_picker_sheet.dart';
 import '../playback_info_bottom_sheet.dart';
+import 'panel_widget.dart';
 
 class PlaybackMapView extends StatefulWidget {
-  const PlaybackMapView({required this.asset, required this.range});
+  const PlaybackMapView({super.key, required this.asset, required this.range});
   final TrackedAsset asset;
   final PlaybackRange range;
   @override
@@ -176,7 +171,7 @@ class PlaybackMapViewState extends State<PlaybackMapView> {
                           : () => _zoom(false),
                     ),
                     TrackingIconButton(
-                      asset: AppAssets.videoCameraRecord,
+                      asset: AppAssets.mapLayers,
                       label: l.trackingLayers,
                       onTap: () => setState(
                             () => _mapType = switch (_mapType) {
@@ -197,7 +192,15 @@ class PlaybackMapViewState extends State<PlaybackMapView> {
               );
             },
           ),
-          Align(alignment: Alignment.bottomCenter, child: _panel(context)),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: PanelWidget(
+              from: _from,
+              to: _to,
+              onPick: _pick,
+              onLoad: _load,
+            ),
+          ),
         ],
       ),
     );
@@ -223,179 +226,4 @@ class PlaybackMapViewState extends State<PlaybackMapView> {
     );
   }
 
-  Widget _panel(BuildContext context) {
-    final l = AppLocalizations.of(context)!;
-    final scheme = Theme.of(context).colorScheme;
-    final state = context.watch<PlaybackMapCubit>().state;
-    final loaded = state is PlaybackMapLoaded ? state : null;
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsetsDirectional.fromSTEB(
-        AppSizes.p16,
-        AppSizes.p16,
-        AppSizes.p16,
-        MediaQuery.paddingOf(context).bottom + AppSizes.p8,
-      ),
-      decoration: BoxDecoration(
-        color: scheme.surface,
-        borderRadius: const BorderRadius.vertical(
-          top: Radius.circular(AppSizes.r24),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: scheme.shadow.withValues(alpha: .12),
-            blurRadius: 12,
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          InkWell(
-            onTap: _pick,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: AppSizes.p4),
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.calendar_month_outlined,
-                    size: AppSizes.iconSm,
-                  ),
-                  const SizedBox(width: AppSizes.p8),
-                  Expanded(
-                    child: Text(
-                      '${DateFormat.yMMMMd(Localizations.localeOf(context).toString()).add_jm().format(_from)} - ${DateFormat.yMMMMd(Localizations.localeOf(context).toString()).add_jm().format(_to)}',
-                      maxLines: 2,
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodySmall?.copyWith(color: scheme.onSurface),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: AppSizes.p12),
-          if (state is PlaybackMapLoading)
-            const Padding(
-              padding: EdgeInsets.all(AppSizes.p8),
-              child: CircularProgressIndicator(),
-            )
-          else if (state is PlaybackMapFailure)
-            Row(
-              children: [
-                Expanded(child: Text(l.errorGeneric)),
-                SizedBox(
-                  width: 104,
-                  child: AppButton(
-                    onPressed: _load,
-                    label: l.retry,
-                    variant: AppButtonVariant.tertiary,
-                  ),
-                ),
-              ],
-            )
-          else if (state is PlaybackMapEmpty)
-              Text(l.assetPlaybackEmpty)
-            else if (loaded != null) ...[
-                _scrubber(context, loaded),
-                SizedBox(height: AppSizes.p8),
-                Row(
-                  textDirection: ui.TextDirection.ltr,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    AppAssetsIconWidget(
-                      label: l.playbackPrevious,
-                      onPressed: context.read<PlaybackMapCubit>().previous,
-                      asset: AppAssets.skipPrevious,
-                      size: AppSizes.iconSm,
-                      boxDecoration: BoxDecoration(
-                        color: TrackingColors.of(
-                          context,
-                        ).playbackPrimary.withValues(alpha: .16),
-                        borderRadius: BorderRadius.circular(AppSizes.r8),
-                      ),
-                    ),
-                    SizedBox(width: AppSizes.p16),
-                    AppAssetsIconWidget(
-                      asset: loaded.isPlaying
-                          ? AppAssets.pauseIcon
-                          : AppAssets.playIcon,
-                      label: loaded.isPlaying
-                          ? l.assetPlaybackPause
-                          : l.assetPlaybackPlay,
-                      onPressed: context.read<PlaybackMapCubit>().toggle,
-                      containerSize: 46,
-                      size: AppSizes.iconSm,
-                      boxDecoration: BoxDecoration(
-                        color: TrackingColors.of(context).playbackPrimary,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                    const SizedBox(width: AppSizes.p16),
-                    AppAssetsIconWidget(
-                      asset: AppAssets.skipNext,
-                      label: l.playbackNext,
-                      onPressed: context.read<PlaybackMapCubit>().next,
-                      size: AppSizes.iconSm,
-                      boxDecoration: BoxDecoration(
-                        color: TrackingColors.of(
-                          context,
-                        ).playbackPrimary.withValues(alpha: .16),
-                        borderRadius: BorderRadius.circular(AppSizes.r8),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-        ],
-      ),
-    );
-  }
-
-  Widget _scrubber(BuildContext context, PlaybackMapLoaded state) {
-    final points = state.points;
-    final start = points.first.recordedAt, end = points.last.recordedAt;
-    return Column(
-      children: [
-        SliderTheme(
-          data: SliderTheme.of(context).copyWith(
-            activeTrackColor: TrackingColors.of(context).playbackPrimary,
-            thumbColor: TrackingColors.of(context).playbackPrimary,
-            inactiveTrackColor: Theme.of(context).colorScheme.outlineVariant,
-            trackHeight: 3,
-            thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 5),
-          ),
-          child: Slider(
-            value: state.currentIndex.toDouble(),
-            min: 0,
-            max: (points.length - 1).toDouble(),
-            onChanged: (v) => context.read<PlaybackMapCubit>().seek(v.round()),
-            semanticFormatterCallback: (v) => DateFormat.Hm().format(
-              points[v.round().clamp(0, points.length - 1)].recordedAt,
-            ),
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              DateFormat.Hm().format(start),
-              semanticsLabel: '',
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: TrackingColors.of(context).playbackPrimary,
-              ),
-            ),
-            Text(
-              DateFormat.Hm().format(end),
-              semanticsLabel: '',
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: TrackingColors.of(context).playbackPrimary,
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
 }

@@ -14,7 +14,7 @@ class NasamAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.actions,
     this.titleWidget,
     this.leading,
-    this.centerTitle = true,
+    this.centerTitle = false,
     this.toolbarHeight = AppSizes.appBarHeight,
     this.bottom,
     this.trailing,
