@@ -1,46 +1,8 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import '../../../../core/errors/failures.dart';
-import '../../domain/entities/playback_point.dart';
 import '../../domain/usecases/get_playback_route_usecase.dart';
-
-sealed class PlaybackMapState {
-  const PlaybackMapState();
-}
-
-final class PlaybackMapLoading extends PlaybackMapState {
-  const PlaybackMapLoading();
-}
-
-final class PlaybackMapFailure extends PlaybackMapState {
-  const PlaybackMapFailure(this.failure);
-  final Failure failure;
-}
-
-final class PlaybackMapEmpty extends PlaybackMapState {
-  const PlaybackMapEmpty();
-}
-
-final class PlaybackMapLoaded extends PlaybackMapState {
-  const PlaybackMapLoaded({
-    required this.points,
-    this.currentIndex = 0,
-    this.isPlaying = false,
-    this.speed = 1,
-  });
-  final List<PlaybackPoint> points;
-  final int currentIndex;
-  final bool isPlaying;
-  final double speed;
-  PlaybackMapLoaded copyWith({int? currentIndex, bool? isPlaying}) =>
-      PlaybackMapLoaded(
-        points: points,
-        currentIndex: currentIndex ?? this.currentIndex,
-        isPlaying: isPlaying ?? this.isPlaying,
-        speed: speed,
-      );
-}
+import 'playback_map_state.dart';
 
 @injectable
 class PlaybackMapCubit extends Cubit<PlaybackMapState> {

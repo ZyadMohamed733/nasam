@@ -44,6 +44,7 @@ class AppSizes {
   static const double iconMd = 24.0;
   static const double iconLg = 32.0;
   static const double iconXl = 48.0;
+  static const double iconXXl = 64.0;
 
   // Button and Input Heights, measured from the Figma components.
   static const double buttonHeight = 44.0;

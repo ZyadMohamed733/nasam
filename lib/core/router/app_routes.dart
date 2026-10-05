@@ -20,6 +20,8 @@ class AppRoutes {
   static const String passwordResetSuccess = '/password-reset-success';
 
   static const String home = '/';
+  static const String alertsLog = '/alerts-log';
+  static const String alertDetailsPattern = ':alertId';
 
   /// A Home destination; query state preserves the existing asset route stack.
   static const String homeViewParam = 'view';
@@ -56,6 +58,10 @@ class AppRoutes {
   /// lands on this route rather than on some other path.
   static String assetDetails(String assetId) =>
       '/assets/${Uri.encodeComponent(assetId)}';
+
+  /// `/alerts-log/<id>` opens one alert from the history list.
+  static String alertDetails(String alertId) =>
+      '$alertsLog/${Uri.encodeComponent(alertId)}';
 
   /// `/assets/<id>/playback`, with an optional `from`/`to` range as ISO dates.
   static String assetPlayback(String assetId, {DateTime? from, DateTime? to}) {

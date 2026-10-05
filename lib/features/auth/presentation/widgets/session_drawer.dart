@@ -45,7 +45,7 @@ class SessionDrawer extends StatelessWidget {
         BlocProvider<LogoutCubit>(create: (_) => cubit ?? getIt<LogoutCubit>()),
         BlocProvider<CurrentUserCubit>(
           create: (_) =>
-              (currentUserCubit ?? getIt<CurrentUserCubit>())..load(),
+          (currentUserCubit ?? getIt<CurrentUserCubit>())..load(),
         ),
       ],
       child: Builder(

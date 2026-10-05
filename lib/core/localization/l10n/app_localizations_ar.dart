@@ -399,6 +399,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get assetDetailsNotifications => 'التنبيهات';
 
   @override
+  String get manageAlerts => 'إدارة التنبيهات';
+
+  @override
   String get assetDetailsName => 'اسم الأصل';
 
   @override
@@ -483,6 +486,40 @@ class AppLocalizationsAr extends AppLocalizations {
   String get assetDetailsAlertLocation => 'الموقع';
 
   @override
+  String get alertAsset => 'الأصل';
+
+  @override
+  String get alertType => 'النوع';
+
+  @override
+  String get alertValue => 'القيمة';
+
+  @override
+  String get alertTime => 'الوقت';
+
+  @override
+  String get alertLocation => 'الموقع';
+
+  @override
+  String get alertDetailsSpeedInfo => 'تفاصيل السرعة';
+
+  @override
+  String get alertDetailsRecordedSpeed => 'السرعة المسجلة';
+
+  @override
+  String get alertDetailsSpeedLimit => 'الحد الأقصى للسرعة';
+
+  @override
+  String get alertDetailsSubtitle => 'تفاصيل التنبيه';
+
+  @override
+  String get alertFilter => 'تصفية';
+
+  @override
+  String get alertsNoSearchResults =>
+      'لم يتم العثور على تنبيهات وفقًا للمعايير المحددة. حاول تعديل البحث أو عوامل التصفية.';
+
+  @override
   String get assetDetailsRunning => 'يعمل';
 
   @override
@@ -508,6 +545,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get assetDetailsEmptyAlerts => 'لا توجد تنبيهات لهذا الأصل.';
+
+  @override
+  String get alertsLogUnavailable => 'لا يوجد سجل تنبيهات متاح';
+
+  @override
+  String get deviceAlertsEmpty => 'لا توجد تنبيهات لهذا الجهاز حاليا';
 
   @override
   String get assetPlaybackTitle => 'إعادة التشغيل';

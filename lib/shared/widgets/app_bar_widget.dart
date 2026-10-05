@@ -14,8 +14,10 @@ class NasamAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.actions,
     this.titleWidget,
     this.leading,
+    this.centerTitle = false,
     this.toolbarHeight = AppSizes.appBarHeight,
     this.bottom,
+    this.trailing,
   });
 
   /// Optional: the design's auth screens carry a back affordance and no title.
@@ -30,6 +32,8 @@ class NasamAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget>? actions;
   final Widget? titleWidget;
   final Widget? leading;
+  final bool centerTitle;
+  final Widget? trailing;
   final double toolbarHeight;
   final PreferredSizeWidget? bottom;
 
@@ -76,9 +80,11 @@ class NasamAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
             ],
           ),
-      centerTitle: true,
+      centerTitle: centerTitle,
       toolbarHeight: toolbarHeight,
-      elevation: 0.5,
+      elevation: 0,
+      scrolledUnderElevation: 0,
+      surfaceTintColor: Colors.transparent,
       shadowColor: Theme.of(context).colorScheme.outline,
       backgroundColor: Theme.of(context).colorScheme.surface,
       leading:
@@ -93,7 +99,10 @@ class NasamAppBar extends StatelessWidget implements PreferredSizeWidget {
                   onPressed: () => Scaffold.of(context).openDrawer(),
                 )
               : null),
-      actions: actions,
+      actions: [
+        ...?actions,
+        ?trailing,
+      ],
       bottom: bottom,
     );
   }

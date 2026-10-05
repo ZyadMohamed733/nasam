@@ -11,6 +11,9 @@ import '../../features/auth/presentation/pages/otp_verification_page.dart';
 import '../../features/auth/presentation/pages/password_reset_success_page.dart';
 import '../../features/auth/presentation/pages/reset_code_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
+import '../../features/history_alert/presentation/pages/history_alert_page.dart';
+import '../../features/history_alert/presentation/pages/history_alert_details_page.dart';
+import '../../features/history_alert/domain/entities/history_alert.dart';
 import '../../features/onboarding/presentation/pages/onboarding_page.dart';
 import '../../features/play_back/presentation/cubit/playback_map_cubit.dart';
 import '../../features/play_back/presentation/pages/playback_map_page.dart';
@@ -160,6 +163,30 @@ class AppRouter {
           state: state,
           child: const PasswordResetSuccessPage(),
         ),
+      ),
+      GoRoute(
+        path: AppRoutes.alertsLog,
+        pageBuilder: (context, state) => appTransitionPage(
+          context: context,
+          state: state,
+          slide: true,
+          child: const HistoryAlertPage(),
+        ),
+        routes: [
+          GoRoute(
+            path: AppRoutes.alertDetailsPattern,
+            redirect: (context, state) =>
+                state.extra is HistoryAlertEntity ? null : AppRoutes.alertsLog,
+            pageBuilder: (context, state) => appTransitionPage(
+              context: context,
+              state: state,
+              slide: true,
+              child: HistoryAlertDetailsPage(
+                alert: state.extra! as HistoryAlertEntity,
+              ),
+            ),
+          ),
+        ],
       ),
       GoRoute(
         path: AppRoutes.home,
