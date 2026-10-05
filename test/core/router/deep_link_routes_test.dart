@@ -131,6 +131,30 @@ void main() {
     await tester.pumpAndSettle();
   }
 
+  for (final (from, page) in [
+    (AppRoutes.home, TrackingPage),
+    (AppRoutes.poi, PoiPage),
+  ]) {
+    testWidgets('the bell on $page opens the alerts log; back returns', (
+      tester,
+    ) async {
+      final router = await open(tester, from);
+      router.config.go(from);
+      await tester.pumpAndSettle();
+      await tester.tap(find.bySemanticsLabel('Notifications').hitTestable());
+      // The log may still be loading its fixture (real asset I/O), so wait
+      // out the page transition rather than for the page to settle.
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 600));
+      expect(location(router), AppRoutes.alertsLog);
+      expect(find.byType(HistoryAlertPage), findsOneWidget);
+      await back(tester);
+      expect(location(router), from);
+      expect(find.byType(page), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    });
+  }
+
   testWidgets('the drawer opens the alerts log over Home; back returns', (
     tester,
   ) async {
@@ -145,7 +169,9 @@ void main() {
     final menu = tester.widget<AppDrawer>(find.byType(AppDrawer));
     expect(menu.available, contains(DrawerDestination.alertsLog));
     await tester.tap(find.text('Alerts log'));
-    await tester.pumpAndSettle();
+    // As above: wait out the transition, not the log's loading.
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 600));
     expect(location(router), AppRoutes.alertsLog);
     expect(find.byType(HistoryAlertPage), findsOneWidget);
     expect(drawer.value.visible, isFalse, reason: 'the drawer closed first');

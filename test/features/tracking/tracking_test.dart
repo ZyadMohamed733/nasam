@@ -201,8 +201,8 @@ void main() {
         final buttons = tester.widgetList<TrackingIconButton>(
           find.byType(TrackingIconButton),
         );
-        // menu, layers, zoom in, zoom out.
-        expect(buttons.where((b) => b.onTap != null), hasLength(4));
+        // menu, notifications (the alerts log), layers, zoom in, zoom out.
+        expect(buttons.where((b) => b.onTap != null), hasLength(5));
         final menu = find.byWidgetPredicate(
           (w) => w is TrackingIconButton && w.menu,
         );

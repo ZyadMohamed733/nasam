@@ -212,6 +212,8 @@ class _TrackingViewState extends State<_TrackingView> {
           bottom: bottomInset,
           child: TrackingControls(
             openDrawer: widget.openDrawer,
+            // Pushed over Home, so back returns to this map.
+            onNotificationsTap: () => context.push(AppRoutes.alertsLog),
             onLayersTap: _cycleMapType,
             onZoomIn: _map.zoomIn,
             onZoomOut: _map.zoomOut,

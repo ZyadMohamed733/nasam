@@ -106,11 +106,15 @@ class TrackingControls extends StatelessWidget {
   const TrackingControls({
     super.key,
     required this.openDrawer,
+    required this.onNotificationsTap,
     required this.onLayersTap,
     required this.onZoomIn,
     required this.onZoomOut,
   });
   final VoidCallback openDrawer;
+
+  /// The bell: opens the alerts log.
+  final VoidCallback onNotificationsTap;
   final VoidCallback onLayersTap;
   final VoidCallback onZoomIn;
   final VoidCallback onZoomOut;
@@ -138,6 +142,7 @@ class TrackingControls extends StatelessWidget {
               child: TrackingIconButton(
                 asset: AppAssets.mapNotification,
                 label: l.trackingNotifications,
+                onTap: onNotificationsTap,
               ),
             ),
             // On the start side, with the menu: the right in Arabic.
