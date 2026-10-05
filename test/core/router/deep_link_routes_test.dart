@@ -16,6 +16,7 @@ import 'package:nasam/features/auth/domain/entities/auth_session_entity.dart';
 import 'package:nasam/features/auth/domain/entities/login_result.dart';
 import 'package:nasam/features/auth/domain/usecases/login_usecase.dart';
 import 'package:nasam/features/auth/presentation/pages/login_page.dart';
+import 'package:nasam/features/history_alert/presentation/pages/history_alert_page.dart';
 import 'package:nasam/features/home/presentation/pages/home_page.dart';
 import 'package:nasam/features/play_back/data/datasources/playback_datasource.dart';
 import 'package:nasam/features/play_back/data/datasources/playback_fixture_datasource.dart';
@@ -129,6 +130,30 @@ void main() {
     await tester.binding.handlePopRoute();
     await tester.pumpAndSettle();
   }
+
+  testWidgets('the drawer opens the alerts log over Home; back returns', (
+    tester,
+  ) async {
+    final router = await open(tester, AppRoutes.home);
+    router.config.go(AppRoutes.home);
+    await tester.pumpAndSettle();
+    final drawer = tester
+        .widget<AdvancedDrawer>(find.byType(AdvancedDrawer))
+        .controller!;
+    drawer.showDrawer();
+    await tester.pumpAndSettle();
+    final menu = tester.widget<AppDrawer>(find.byType(AppDrawer));
+    expect(menu.available, contains(DrawerDestination.alertsLog));
+    await tester.tap(find.text('Alerts log'));
+    await tester.pumpAndSettle();
+    expect(location(router), AppRoutes.alertsLog);
+    expect(find.byType(HistoryAlertPage), findsOneWidget);
+    expect(drawer.value.visible, isFalse, reason: 'the drawer closed first');
+    await back(tester);
+    expect(location(router), AppRoutes.home);
+    expect(find.byType(TrackingPage), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
 
   testWidgets(
     'Home drawer switches to POI and retains tracking and POI state',

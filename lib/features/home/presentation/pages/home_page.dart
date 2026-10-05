@@ -10,7 +10,8 @@ import '../../../poi/presentation/pages/poi_page.dart';
 import '../../../tracking/presentation/pages/tracking_page.dart';
 import '../widgets/home_scaffold.dart';
 
-/// Tracking and POI are destinations within Home, sharing a single drawer.
+/// Tracking and POI are destinations within Home, sharing a single drawer;
+/// the drawer's alerts log opens as its own page above Home.
 /// A visited map remains mounted so switching preserves camera/search state.
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -39,11 +40,16 @@ class _HomePageState extends State<HomePage> {
 
   void _select(DrawerDestination destination) {
     if (destination == widget.destination) return;
-    context.go(
-      destination == DrawerDestination.pointsOfInterest
-          ? AppRoutes.poi
-          : AppRoutes.home,
-    );
+    switch (destination) {
+      // The alerts log is its own page over Home, not a Home tab: pushed,
+      // so its back button returns to the map the user left.
+      case DrawerDestination.alertsLog:
+        context.push(AppRoutes.alertsLog);
+      case DrawerDestination.pointsOfInterest:
+        context.go(AppRoutes.poi);
+      case _:
+        context.go(AppRoutes.home);
+    }
   }
 
   @override
@@ -52,6 +58,7 @@ class _HomePageState extends State<HomePage> {
     available: const {
       DrawerDestination.trackingDashboard,
       DrawerDestination.pointsOfInterest,
+      DrawerDestination.alertsLog,
     },
     onSelect: _select,
     onBack: _isPoi ? () => _select(DrawerDestination.trackingDashboard) : null,
