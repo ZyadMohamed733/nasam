@@ -384,7 +384,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get trackingLogout => 'تسجيل الخروج';
 
   @override
-  String get assetDetailsInformation => 'المعلومات';
+  String get assetDetailsInformation => 'المعلومات الأساسية';
 
   @override
   String get assetDetailsTracking => 'التتبع';

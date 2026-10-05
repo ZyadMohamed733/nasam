@@ -695,7 +695,7 @@ abstract class AppLocalizations {
   /// No description provided for @assetDetailsInformation.
   ///
   /// In ar, this message translates to:
-  /// **'المعلومات'**
+  /// **'المعلومات الأساسية'**
   String get assetDetailsInformation;
 
   /// No description provided for @assetDetailsTracking.

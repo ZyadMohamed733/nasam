@@ -36,7 +36,8 @@ class NasamApp extends StatelessWidget {
             themeMode: settings.themeMode,
 
             // Localization configurations
-            locale: settings.locale,
+          locale: settings.locale,
+
             supportedLocales: AppLocalizationsSetup.supportedLocales,
             localizationsDelegates:
                 AppLocalizationsSetup.localizationsDelegates,

@@ -137,6 +137,7 @@ class _PlaybackViewState extends State<_PlaybackView> {
             onPressed: () => context.pop(),
             icon: SvgPicture.asset(
               AppAssets.arrowBackButton,
+              matchTextDirection: true,
               width: 8.r,
               height: 16.r,
             ),
@@ -190,7 +191,9 @@ class _PlaybackViewState extends State<_PlaybackView> {
                       ),
                     );
                   },
-                  assetIcon: _playingAll? AppAssets.pauseIcon : AppAssets.playIcon,
+                  assetIcon: _playingAll
+                      ? AppAssets.pauseIcon
+                      : AppAssets.playIcon,
                   height: kMinInteractiveDimension,
                   variant: AppButtonVariant.primary,
                   primaryBackgroundColor: TrackingColors.of(

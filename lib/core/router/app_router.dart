@@ -204,6 +204,9 @@ class AppRouter {
                       state.uri.queryParameters[AppRoutes.homeViewParam] ==
                           AppRoutes.poiView
                   ? DrawerDestination.pointsOfInterest
+                  : state.uri.queryParameters[AppRoutes.homeViewParam] ==
+                        AppRoutes.alertsView
+                  ? DrawerDestination.alertsLog
                   : DrawerDestination.trackingDashboard,
             ),
           ),

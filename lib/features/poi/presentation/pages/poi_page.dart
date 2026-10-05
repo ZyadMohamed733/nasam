@@ -200,7 +200,7 @@ class _PoiPageState extends State<PoiPage> {
                             asset: AppAssets.mapNotification,
                             label: l.trackingNotifications,
                             // Pushed over Home, so back returns to this map.
-                            onTap: () => context.push(AppRoutes.alertsLog),
+                            onTap: () => context.go(AppRoutes.alerts),
                           ),
                         ),
                         PositionedDirectional(

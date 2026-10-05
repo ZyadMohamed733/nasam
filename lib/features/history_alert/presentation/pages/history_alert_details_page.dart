@@ -2,11 +2,12 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/constants/app_icons.dart';
+import '../../../../core/constants/app_assets.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 import '../../../../shared/widgets/app_bar_widget.dart';
 import '../../domain/entities/history_alert.dart';
@@ -55,9 +56,11 @@ class HistoryAlertDetailsPage extends StatelessWidget {
           leading: IconButton(
             tooltip: MaterialLocalizations.of(context).backButtonTooltip,
             onPressed: () => context.pop(),
-            icon: IconTheme(
-              data: IconThemeData(size: AppIconSize.medium.value),
-              child: const BackButtonIcon(),
+            icon: SvgPicture.asset(
+              AppAssets.arrowBackButton,
+              matchTextDirection: true,
+              width: 8.w,
+              height: 16.h,
             ),
           ),
         ),

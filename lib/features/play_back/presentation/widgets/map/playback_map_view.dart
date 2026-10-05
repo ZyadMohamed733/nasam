@@ -90,6 +90,7 @@ class PlaybackMapViewState extends State<PlaybackMapView> {
           tooltip: l.playbackBack,
           icon: SvgPicture.asset(
             AppAssets.arrowBackButton,
+            matchTextDirection: true,
             width: 8,
             height: 16,
           ),
@@ -117,7 +118,7 @@ class PlaybackMapViewState extends State<PlaybackMapView> {
           Positioned.fill(
             child: BlocBuilder<PlaybackMapCubit, PlaybackMapState>(
               buildWhen: (a, b) =>
-              a.runtimeType != b.runtimeType ||
+                  a.runtimeType != b.runtimeType ||
                   a is PlaybackMapLoaded &&
                       b is PlaybackMapLoaded &&
                       (a.points != b.points ||
@@ -139,11 +140,11 @@ class PlaybackMapViewState extends State<PlaybackMapView> {
           Positioned.fill(
             child: BlocBuilder<PlaybackMapCubit, PlaybackMapState>(
               buildWhen: (previous, current) =>
-              previous.runtimeType != current.runtimeType,
+                  previous.runtimeType != current.runtimeType,
               builder: (context, state) => state is PlaybackMapLoading
                   ? const IgnorePointer(
-                child: Center(child: CircularProgressIndicator()),
-              )
+                      child: Center(child: CircularProgressIndicator()),
+                    )
                   : const SizedBox.shrink(),
             ),
           ),
@@ -174,7 +175,7 @@ class PlaybackMapViewState extends State<PlaybackMapView> {
                       asset: AppAssets.mapLayers,
                       label: l.trackingLayers,
                       onTap: () => setState(
-                            () => _mapType = switch (_mapType) {
+                        () => _mapType = switch (_mapType) {
                           MapType.normal => MapType.hybrid,
                           MapType.hybrid => MapType.terrain,
                           _ => MapType.normal,
@@ -225,5 +226,4 @@ class PlaybackMapViewState extends State<PlaybackMapView> {
       ),
     );
   }
-
 }

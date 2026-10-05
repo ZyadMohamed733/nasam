@@ -26,7 +26,9 @@ class AppRoutes {
   /// A Home destination; query state preserves the existing asset route stack.
   static const String homeViewParam = 'view';
   static const String poiView = 'poi';
+  static const String alertsView = 'alerts';
   static const String poi = '/?view=poi';
+  static const String alerts = '/?view=alerts';
   static const String poiCreate = '/poi/create?view=poi';
   static const String poiImport = '/poi/import?view=poi';
   static const String poiIdParam = 'poiId';

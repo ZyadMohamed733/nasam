@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
 import 'package:go_router/go_router.dart';
 import 'package:nasam/core/constants/app_colors.dart';
 import 'package:nasam/core/router/app_routes.dart';
@@ -21,7 +19,10 @@ import '../widget/search_bar_widget.dart';
 import '../../../play_back/presentation/widgets/playback_date_picker_sheet.dart';
 
 class HistoryAlertPage extends StatefulWidget {
-  const HistoryAlertPage({super.key});
+  const HistoryAlertPage({super.key, this.onBack, this.openDrawer});
+
+  final VoidCallback? onBack;
+  final VoidCallback? openDrawer;
 
   @override
   State<HistoryAlertPage> createState() => _HistoryAlertPageState();
@@ -97,20 +98,22 @@ class _HistoryAlertPageState extends State<HistoryAlertPage> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('[HistoryAlertPage] build (query="$_query")');
+
     final l = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: NasamAppBar(
         showLeading: false,
         centerTitle: false,
-        leading: IconButton(
-          tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-          onPressed: () => context.pop(),
-          icon: SvgPicture.asset(
-            AppAssets.arrowBackButton,
-            width: 8,
-            height: 16,
+        leading: AppAssetsIconWidget(
+          label: MaterialLocalizations.of(context).openAppDrawerTooltip,
+          asset: AppAssets.sideMenu,
+          size: 20,
+          containerSize: 40,
+          boxDecoration: BoxDecoration(
+            color: AppColors.neutral100,
+            borderRadius: BorderRadius.circular(8),
           ),
+          onPressed: widget.openDrawer ?? widget.onBack ?? () => context.pop(),
         ),
         titleWidget: Text(
           l.assetDetailsNotifications,
@@ -118,6 +121,8 @@ class _HistoryAlertPageState extends State<HistoryAlertPage> {
         ),
         trailing: AppAssetsIconWidget(
           label: l.drawerAlertsLog,
+          size: 20,
+          containerSize: 40,
           asset: AppAssets.mapNotification,
           boxDecoration: BoxDecoration(
             color: AppColors.neutral100,

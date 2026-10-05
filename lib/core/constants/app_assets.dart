@@ -27,6 +27,7 @@ abstract final class AppAssets {
   static const String poiPin = 'assets/icons/poi_pin.svg';
   static const String mapArrow = 'assets/icons/map_arrow.svg';
   static const String arrowBackButton = 'assets/icons/arrow_back_button.svg';
+  static const String sideMenu = 'assets/icons/side_menu.svg';
   static const String mapArrowLeft = 'assets/icons/map_ arrow_ left.svg';
   static const String trackingMenu = 'assets/icons/tracking_menu.svg';
   static const String filter = 'assets/icons/filter.svg';
@@ -89,6 +90,7 @@ abstract final class AppAssets {
     poiLibrary,
     mapArrow,
     arrowBackButton,
+    sideMenu,
     mapArrowLeft,
     trackingMenu,
     filter,
