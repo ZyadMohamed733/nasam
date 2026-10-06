@@ -13,8 +13,8 @@ abstract final class TrackingStyle {
     return switch (status) {
       VehicleStatus.moving => colors.moving,
       VehicleStatus.idle => colors.idle,
-      VehicleStatus.stopped => colors.stopped,
-      VehicleStatus.offline => colors.offline,
+      VehicleStatus.stopped => colors.offline,
+      VehicleStatus.offline => colors.stopped,
     };
   }
 
