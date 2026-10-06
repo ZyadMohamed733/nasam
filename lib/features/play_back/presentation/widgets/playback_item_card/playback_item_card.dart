@@ -2,7 +2,6 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:nasam/features/play_back/presentation/widgets/playback_item_card/time_label.dart';
 
@@ -11,11 +10,10 @@ import '../../../../../core/constants/app_icons.dart';
 import '../../../../../core/localization/l10n/app_localizations.dart';
 import '../../../../../core/theme/tracking_colors.dart';
 import '../../../../../shared/widgets/action_icon.dart';
+import '../../../../../shared/widgets/route_progress.dart';
 import '../../../domain/entities/playback_segment.dart';
 import 'asset_status_widget.dart';
 import 'location_label.dart';
-
-const _playbackTimelineColor = Color(0xFF8A8AA3);
 
 class PlaybackItemCard extends StatefulWidget {
   const PlaybackItemCard({
@@ -83,52 +81,9 @@ class _PlaybackItemCardState extends State<PlaybackItemCard> {
           ),
           SizedBox(height: 3.h),
           /// Playback timeline with its leading direction icon.
-          Row(
-            textDirection: ui.TextDirection.ltr,
-            children: [
-              Container(
-                width: 34.r,
-                height: 34.r,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: scheme.surfaceContainerHighest,
-                  border: Border.all(
-                    color: scheme.outlineVariant,
-                    width: 1.2.w,
-                  ),
-                  shape: BoxShape.circle,
-                ),
-                child: SvgPicture.asset(
-                  AppAssets.mapArrowLeft,
-                  width: AppIconSize.medium.value.r,
-                  height: AppIconSize.medium.value.r,
-                ),
-              ),
-              Expanded(
-                child: SliderTheme(
-                  data: SliderTheme.of(context).copyWith(
-                    activeTrackColor: _playbackTimelineColor,
-                    inactiveTrackColor: _playbackTimelineColor,
-                    thumbColor: _playbackTimelineColor,
-                    trackHeight: 2.5.h,
-                    thumbShape: RoundSliderThumbShape(enabledThumbRadius: 5.r),
-                    overlayShape: RoundSliderOverlayShape(overlayRadius: 10.r),
-                  ),
-                  child: Slider(
-                    value: _progress,
-                    onChanged: (value) => setState(() => _progress = value),
-                  ),
-                ),
-              ),
-              Container(
-                width: 8.r,
-                height: 8.r,
-                decoration: BoxDecoration(
-                  color: _playbackTimelineColor,
-                  shape: BoxShape.circle,
-                ),
-              ),
-            ],
+          RouteProgress(
+            progress: _progress,
+            onProgressChanged: (value) => setState(() => _progress = value),
           ),
           /// Start and end location labels below the timeline.
           Padding(
@@ -203,7 +158,3 @@ class _PlaybackItemCardState extends State<PlaybackItemCard> {
     );
   }
 }
-
-
-
-

@@ -352,6 +352,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get trackingAsset => 'Asset';
 
   @override
+  String get trackingLastUpdated => 'Last updated · 2 min ago';
+
+  @override
   String get trackingNotifications => 'Notifications';
 
   @override

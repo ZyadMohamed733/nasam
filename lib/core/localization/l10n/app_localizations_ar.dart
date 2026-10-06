@@ -366,6 +366,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get trackingAsset => 'الأصل';
 
   @override
+  String get trackingLastUpdated => 'آخر تحديث · منذ ٢ د';
+
+  @override
   String get trackingNotifications => 'الإشعارات';
 
   @override

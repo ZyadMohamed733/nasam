@@ -656,6 +656,12 @@ abstract class AppLocalizations {
   /// **'الأصل'**
   String get trackingAsset;
 
+  /// No description provided for @trackingLastUpdated.
+  ///
+  /// In ar, this message translates to:
+  /// **'آخر تحديث · منذ ٢ د'**
+  String get trackingLastUpdated;
+
   /// No description provided for @trackingNotifications.
   ///
   /// In ar, this message translates to:

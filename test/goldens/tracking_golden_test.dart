@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
+import 'package:nasam/features/play_back/presentation/utils/playback_range.dart';
 import 'package:nasam/features/tracking/domain/entities/tracked_asset.dart';
 import 'package:nasam/features/tracking/domain/entities/tracking_vehicle.dart';
-import 'package:nasam/features/play_back/presentation/utils/playback_range.dart';
 import 'package:nasam/features/tracking/presentation/widgets/tracking_asset_card.dart';
 import 'package:nasam/features/tracking/presentation/widgets/tracking_summary.dart';
 
@@ -18,8 +18,8 @@ import '../helpers/fake_map_platform.dart';
 import '../helpers/tracking_screen.dart';
 
 /// The tracking screens across every combination that can break them
-/// independently: English/LTR and Arabic/RTL, light and dark, text scale 1.0
-/// and 1.5, on a 360×640 phone and an 800×1280 tablet.
+/// independently: English/LTR and Arabic/RTL, light and dark, text scale 1.0,
+/// 1.3 and 1.5, on a 360×640 phone and an 800×1280 tablet.
 ///
 /// Written to `goldens/tracking/<screen>_<device>_<theme>_<locale>_<scale>.png`.
 /// Generated and compared on macOS only — other platforms rasterise text
@@ -43,6 +43,16 @@ void main() {
     assignedPerson: 'Aya Al-Rashidi',
     routeProgress: .4,
     statusDuration: Duration(minutes: 7, seconds: 9),
+  );
+
+  TrackedAsset cardWithStatus(VehicleStatus status) => TrackedAsset(
+    id: card.id,
+    name: card.name,
+    code: card.code,
+    status: status,
+    assignedPerson: card.assignedPerson,
+    routeProgress: card.routeProgress,
+    statusDuration: card.statusDuration,
   );
 
   Finder inSheet(String text) => find.descendant(
@@ -91,6 +101,15 @@ void main() {
             ),
           );
         },
+        for (final status in VehicleStatus.values)
+          'asset_card_${status.name}': (tester, pump, locale) async {
+            await pump(
+              SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: TrackingAssetCard(asset: cardWithStatus(status)),
+              ),
+            );
+          },
         'details_information': (tester, pump, locale) async {
           await pump(assetDetailsScreen());
         },
@@ -118,7 +137,7 @@ void main() {
     for (final MapEntry(key: device, value: size) in devices.entries) {
       for (final dark in [false, true]) {
         for (final locale in const [Locale('en'), Locale('ar')]) {
-          for (final scale in [1.0, 1.5]) {
+          for (final scale in [1.0, 1.3, 1.5]) {
             final theme = dark ? 'dark' : 'light';
             final name =
                 '${screen}_${device}_${theme}_${locale.languageCode}_$scale';
