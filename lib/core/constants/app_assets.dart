@@ -65,6 +65,17 @@ abstract final class AppAssets {
   static const String mapPlaceholder = '$_images/map_placeholder.png';
   static const String drawerBottomBackground =
       '$_images/drawerBottomBackground.png';
+  static const String noInternet = '$_images/no_internet.png';
+  //static const String noInternetIcon = 'assets/icons/no_internet_icon.svg';
+  static const String errorServer = 'assets/icons/server_error.svg';
+  static const String errorTimeout = 'assets/icons/timeout.svg';
+  static const String errorUnauthorized = 'assets/icons/unauthorized.svg';
+  static const String errorRateLimit = 'assets/icons/rate_limit.svg';
+  static const String errorMalformedPayload =
+      'assets/icons/malformed_payload.svg';
+  static const String errorUnknown = 'assets/icons/unknown_error.svg';
+  static const String emptyPlaybackRoute = 'assets/icons/route_empty.svg';
+  static const String emptyPlaybackSegments = 'assets/icons/segments_empty.svg';
 
   /// The full-bleed backdrop behind every auth screen. A real vector, unlike
   /// `logoVector` — no `<pattern>` fill, so flutter_svg draws it.
@@ -83,6 +94,16 @@ abstract final class AppAssets {
     poiEdit,
     poiDelete,
     drawerBottomBackground,
+    noInternet,
+    //noInternetIcon,
+    errorServer,
+    errorTimeout,
+    errorUnauthorized,
+    errorRateLimit,
+    errorMalformedPayload,
+    errorUnknown,
+    emptyPlaybackRoute,
+    emptyPlaybackSegments,
     poiPin,
     poiFuel,
     poiFuelMarker,

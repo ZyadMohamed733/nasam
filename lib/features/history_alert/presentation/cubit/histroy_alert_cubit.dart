@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:nasam/features/history_alert/domain/usecase/get_history_details_usecase.dart';
 import 'package:nasam/features/history_alert/domain/usecase/get_history_usecase.dart';
 import 'package:nasam/features/history_alert/presentation/cubit/hsitory_alert_state.dart';
+
 @injectable
 class HistoryAlertCubit extends Cubit<HistoryAlertState> {
   final GetHistoryUseCase _getHistoryUseCase;
@@ -12,13 +13,17 @@ class HistoryAlertCubit extends Cubit<HistoryAlertState> {
     : super(const HistoryAlertLoading());
 
   Future<void> getHistoryAlertData() async {
+    emit(const HistoryAlertLoading());
     final result = await _getHistoryUseCase.getHistoryAlert();
 
-    result.fold((failure) {
-      emit(HistoryAlertFailure(failure));
-    }, (historyList) {
-      emit(HistoryAlertLoaded(historyAlertDataList: historyList));
-    });
+    result.fold(
+      (failure) {
+        emit(HistoryAlertFailure(failure));
+      },
+      (historyList) {
+        emit(HistoryAlertLoaded(historyAlertDataList: historyList));
+      },
+    );
   }
 
   void updateDateFilter(DateTime? selectedDate) {
@@ -32,13 +37,19 @@ class HistoryAlertCubit extends Cubit<HistoryAlertState> {
     );
   }
 
-  Future<void> getHistoryAlertDetails() async {
-    final result = await _detailsUseCase.getHistoryAlertDetails();
+  Future<void> getHistoryAlertDetails({required String alertId}) async {
+    emit(const HistoryAlertLoading());
+    final result = await _detailsUseCase.getHistoryAlertDetails(
+      alertId: alertId,
+    );
 
-    result.fold((failure) {
-      emit(HistoryAlertFailure(failure));
-    }, (historyDetails) {
-      emit(HistoryAlertDetailLoaded(detailsEntity: historyDetails));
-    });
+    result.fold(
+      (failure) {
+        emit(HistoryAlertFailure(failure));
+      },
+      (historyDetails) {
+        emit(HistoryAlertDetailLoaded(detailsEntity: historyDetails));
+      },
+    );
   }
 }

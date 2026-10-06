@@ -1,30 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../../core/constants/app_assets.dart';
-import '../../../../shared/widgets/app_button.dart';
-import '../../../../core/router/app_routes.dart';
-import '../../../../shared/widgets/app_bar_widget.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
+import '../../../../core/router/app_routes.dart';
 import '../../../../core/theme/tracking_colors.dart';
-import '../../../../core/utils/bidi.dart';
+import '../../../../shared/widgets/app_button.dart';
+import '../../../../shared/widgets/loading_indicator_widget.dart';
+import '../../../../shared/widgets/error_widget.dart';
+import '../../../../shared/widgets/empty_result_widget.dart';
 import '../../../tracking/domain/entities/tracked_asset.dart';
+import '../../../tracking/presentation/widgets/tracked_asset_gate.dart';
 import '../cubit/playback_cubit.dart';
 import '../cubit/playback_state.dart';
 import '../utils/playback_range.dart';
-import '../widgets/playback_date_range_selector.dart';
+import '../widgets/playback_appbar.dart';
 import '../widgets/playback_date_picker_sheet.dart';
+import '../widgets/playback_date_range_selector.dart';
 import '../widgets/playback_item_card/playback_item_card.dart';
-import '../../../tracking/presentation/widgets/tracked_asset_gate.dart';
 
 /// An asset's journey legs over a date range, opened by id.
 ///
 /// Expects a TrackedAssetCubit (loaded by the route) and an
 /// [PlaybackCubit] above it. The starting range comes from the link's
 /// `?from=&to=`, already clamped to what the picker accepts.
-class PlaybackPage extends StatelessWidget {
+class PlaybackPage extends StatefulWidget {
   const PlaybackPage({
     super.key,
     required this.assetId,
@@ -35,42 +37,150 @@ class PlaybackPage extends StatelessWidget {
   final PlaybackRange initialRange;
 
   @override
-  Widget build(BuildContext context) => TrackedAssetGate(
-    assetId: assetId,
-    builder: (context, asset) =>
-        _PlaybackView(asset: asset, initialRange: initialRange),
-  );
+  State<PlaybackPage> createState() => PlaybackPageState();
 }
 
-class _PlaybackView extends StatefulWidget {
-  const _PlaybackView({required this.asset, required this.initialRange});
-
-  final TrackedAsset asset;
-  final PlaybackRange initialRange;
-
-  @override
-  State<_PlaybackView> createState() => _PlaybackViewState();
-}
-
-class _PlaybackViewState extends State<_PlaybackView> {
+class PlaybackPageState extends State<PlaybackPage> {
   late DateTime _fromDate = widget.initialRange.from;
   late DateTime _toDate = widget.initialRange.to;
   bool _playingAll = false;
   int? _playingSegmentIndex;
+  TrackedAsset? _asset;
+  String? _loadedAssetId;
 
   @override
-  void initState() {
-    super.initState();
-    _loadSegments();
+  Widget build(BuildContext context) {
+    return TrackedAssetGate(
+      assetId: widget.assetId,
+      builder: (context, asset) {
+        _asset = asset;
+        if (_loadedAssetId != asset.id) {
+          _loadedAssetId = asset.id;
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted && _loadedAssetId == asset.id) _loadSegments();
+          });
+        }
+        return _buildPage(context, asset);
+      },
+    );
+  }
+
+  Widget _buildPage(BuildContext context, TrackedAsset asset) {
+    final l = AppLocalizations.of(context)!;
+    final locale = Localizations.localeOf(context).toString();
+
+    final playbackTheme = Theme.of(context).copyWith(
+      colorScheme: Theme.of(context).colorScheme.copyWith(
+        primary: TrackingColors.of(context).playbackPrimary,
+      ),
+    );
+
+    return Theme(
+      data: playbackTheme,
+      child: Scaffold(
+        appBar: PlaybackAppbar(asset: asset),
+        body: SafeArea(
+          top: false,
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(14.w, 8.h, 14.w, 6.h),
+                child: PlaybackDateRangeSelector(
+                  startDate: _fromDate,
+                  endDate: _toDate,
+                  onStartDateTap: () => _chooseDate(isStart: true),
+                  onEndDateTap: () => _chooseDate(isStart: false),
+                ),
+              ),
+              Expanded(
+                child: BlocBuilder<PlaybackCubit, PlaybackState>(
+                  builder: (context, state) => switch (state) {
+                    PlaybackLoading() => const Center(
+                      child: LoadingIndicatorWidget(),
+                    ),
+                    PlaybackFailure(:final failure) => AppErrorWidget(
+                      message: l.errorGeneric,
+                      retryLabel: l.retry,
+                      onRetry: _loadSegments,
+                      type: AppErrorWidget.typeForFailure(failure),
+                    ),
+                    PlaybackLoaded(:final segments) when segments.isEmpty =>
+                      EmptyResultWidget(
+                        message: l.assetPlaybackEmpty,
+                        type: EmptyResultType.playbackSegments,
+                        retryLabel: l.retry,
+                        onRetry: _loadSegments,
+                      ),
+                    PlaybackLoaded(:final segments) => Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 14.w),
+                          child: AppButton(
+                            label: _playingAll
+                                ? l.assetPlaybackPause
+                                : l.assetPlaybackStart,
+                            onPressed: () => context.push(
+                              AppRoutes.assetPlaybackMap(
+                                asset.id,
+                                from: _fromDate,
+                                to: _toDate,
+                              ),
+                            ),
+                            assetIcon: _playingAll
+                                ? AppAssets.pauseIcon
+                                : AppAssets.playIcon,
+                            height: kMinInteractiveDimension,
+                            variant: AppButtonVariant.primary,
+                            primaryBackgroundColor: TrackingColors.of(
+                              context,
+                            ).playbackPrimary,
+                            labelStyle: TextStyle(fontSize: 13.sp),
+                          ),
+                        ),
+                        SizedBox(height: 8.h),
+                        Expanded(
+                          child: ListView.separated(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                              14.w,
+                              4.h,
+                              14.w,
+                              16.h,
+                            ),
+                            itemCount: segments.length,
+                            separatorBuilder: (context, index) =>
+                                SizedBox(height: 7.h),
+                            itemBuilder: (context, index) => PlaybackItemCard(
+                              segment: segments[index],
+                              locale: locale,
+                              playing:
+                                  _playingAll || _playingSegmentIndex == index,
+                              onPlayPressed: () => _toggleSegment(index),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   /// /The pickers are day-granular and inclusive, so the range sent is
   /// [from, to + 1 day).
-  void _loadSegments() => context.read<PlaybackCubit>().load(
-    assetId: widget.asset.id,
-    from: _fromDate,
-    to: _toDate.add(const Duration(days: 1)),
-  );
+  void _loadSegments() {
+    final asset = _asset;
+    if (asset == null) return;
+    context.read<PlaybackCubit>().load(
+      assetId: asset.id,
+      from: _fromDate,
+      to: _toDate.add(const Duration(days: 1)),
+    );
+  }
 
   Future<void> _chooseDate({required bool isStart}) async {
     final l = AppLocalizations.of(context)!;
@@ -104,154 +214,8 @@ class _PlaybackViewState extends State<_PlaybackView> {
     _loadSegments();
   }
 
-  void _togglePlayback() => setState(() {
-    _playingAll = !_playingAll;
-    if (_playingAll) _playingSegmentIndex = null;
-  });
-
   void _toggleSegment(int index) => setState(() {
     _playingAll = false;
     _playingSegmentIndex = _playingSegmentIndex == index ? null : index;
   });
-
-  @override
-  Widget build(BuildContext context) {
-    final l = AppLocalizations.of(context)!;
-    final locale = Localizations.localeOf(context).toString();
-
-    final playbackTheme = Theme.of(context).copyWith(
-      colorScheme: Theme.of(context).colorScheme.copyWith(
-        primary: TrackingColors.of(context).playbackPrimary,
-      ),
-    );
-
-    return Theme(
-      data: playbackTheme,
-      child: Scaffold(
-        appBar: NasamAppBar(
-          showLeading: false,
-          toolbarHeight: 64.h,
-          centerTitle: false,
-          leading: IconButton(
-            tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-            onPressed: () => context.pop(),
-            icon: SvgPicture.asset(
-              AppAssets.arrowBackButton,
-              matchTextDirection: true,
-              width: 8.r,
-              height: 16.r,
-            ),
-          ),
-          titleWidget: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                l.assetPlaybackTitle,
-                style: Theme.of(context).textTheme.titleSmall,
-              ),
-              Text(
-                joinIsolated([widget.asset.name, widget.asset.code], ' · '),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  fontSize: 10.sp,
-                ),
-              ),
-            ],
-          ),
-        ),
-        body: SafeArea(
-          top: false,
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(14.w, 8.h, 14.w, 6.h),
-                child: PlaybackDateRangeSelector(
-                  startDate: _fromDate,
-                  endDate: _toDate,
-                  onStartDateTap: () => _chooseDate(isStart: true),
-                  onEndDateTap: () => _chooseDate(isStart: false),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 14.w),
-                child: AppButton(
-                  label: _playingAll
-                      ? l.assetPlaybackPause
-                      : l.assetPlaybackStart,
-                  onPressed: () {
-                    //   _togglePlayback();
-                    context.push(
-                      AppRoutes.assetPlaybackMap(
-                        widget.asset.id,
-                        from: _fromDate,
-                        to: _toDate,
-                      ),
-                    );
-                  },
-                  assetIcon: _playingAll
-                      ? AppAssets.pauseIcon
-                      : AppAssets.playIcon,
-                  height: kMinInteractiveDimension,
-                  variant: AppButtonVariant.primary,
-                  primaryBackgroundColor: TrackingColors.of(
-                    context,
-                  ).playbackPrimary,
-                  labelStyle: TextStyle(fontSize: 13.sp),
-                ),
-              ),
-              SizedBox(height: 8.h),
-              Expanded(
-                child: BlocBuilder<PlaybackCubit, PlaybackState>(
-                  builder: (context, state) => switch (state) {
-                    PlaybackLoading() => const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                    PlaybackFailure() => Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(l.errorGeneric),
-                          // TextButton(
-                          //   onPressed: _loadSegments,
-                          //   child: Text(l.retry),
-                          // ),
-                          AppButton(
-                            onPressed: _loadSegments,
-                            label: l.retry,
-                            variant: AppButtonVariant.tertiary,
-                          ),
-                        ],
-                      ),
-                    ),
-                    PlaybackLoaded(:final segments) when segments.isEmpty =>
-                      Center(child: Text(l.assetPlaybackEmpty)),
-                    PlaybackLoaded(:final segments) => ListView.separated(
-                      padding: EdgeInsetsDirectional.fromSTEB(
-                        14.w,
-                        4.h,
-                        14.w,
-                        16.h,
-                      ),
-                      itemCount: segments.length,
-                      separatorBuilder: (context, index) =>
-                          SizedBox(height: 7.h),
-                      itemBuilder: (context, index) => PlaybackItemCard(
-                        segment: segments[index],
-                        locale: locale,
-                        playing: _playingAll || _playingSegmentIndex == index,
-                        onPlayPressed: () => _toggleSegment(index),
-                      ),
-                    ),
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 }

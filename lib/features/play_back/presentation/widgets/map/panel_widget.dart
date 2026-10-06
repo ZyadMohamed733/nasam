@@ -9,7 +9,6 @@ import '../../../../../core/constants/app_sizes.dart';
 import '../../../../../core/localization/l10n/app_localizations.dart';
 import '../../../../../core/theme/tracking_colors.dart';
 import '../../../../../shared/widgets/action_icon.dart';
-import '../../../../../shared/widgets/app_button.dart';
 import '../../cubit/playback_map_cubit.dart';
 import '../../cubit/playback_map_state.dart';
 
@@ -19,13 +18,11 @@ class PanelWidget extends StatelessWidget {
     required this.from,
     required this.to,
     required this.onPick,
-    required this.onLoad,
   });
 
   final DateTime from;
   final DateTime to;
   final VoidCallback onPick;
-  final VoidCallback onLoad;
 
   @override
   Widget build(BuildContext context) {
@@ -73,9 +70,7 @@ class PanelWidget extends StatelessWidget {
                         child: Text(
                           '${_dateFormat(context).format(from)} - ${_dateFormat(context).format(to)}',
                           maxLines: 2,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall
+                          style: Theme.of(context).textTheme.bodySmall
                               ?.copyWith(color: scheme.onSurface),
                         ),
                       ),
@@ -84,78 +79,57 @@ class PanelWidget extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: AppSizes.p12),
-              if (state is PlaybackMapLoading)
-                const Padding(
-                  padding: EdgeInsets.all(AppSizes.p8),
-                  child: CircularProgressIndicator(),
-                )
-              else if (state is PlaybackMapFailure)
+              if (loaded != null) ...[
+                _scrubber(context, loaded),
+                const SizedBox(height: AppSizes.p8),
                 Row(
+                  textDirection: ui.TextDirection.ltr,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Expanded(child: Text(l.errorGeneric)),
-                    SizedBox(
-                      width: 104,
-                      child: AppButton(
-                        onPressed: onLoad,
-                        label: l.retry,
-                        variant: AppButtonVariant.tertiary,
+                    AppAssetsIconWidget(
+                      label: l.playbackPrevious,
+                      onPressed: context.read<PlaybackMapCubit>().previous,
+                      asset: AppAssets.skipPrevious,
+                      size: AppSizes.iconSm,
+                      boxDecoration: BoxDecoration(
+                        color: TrackingColors.of(
+                          context,
+                        ).playbackPrimary.withValues(alpha: .16),
+                        borderRadius: BorderRadius.circular(AppSizes.r8),
+                      ),
+                    ),
+                    const SizedBox(width: AppSizes.p16),
+                    AppAssetsIconWidget(
+                      asset: loaded.isPlaying
+                          ? AppAssets.pauseIcon
+                          : AppAssets.playIcon,
+                      label: loaded.isPlaying
+                          ? l.assetPlaybackPause
+                          : l.assetPlaybackPlay,
+                      onPressed: context.read<PlaybackMapCubit>().toggle,
+                      containerSize: 46,
+                      size: AppSizes.iconSm,
+                      boxDecoration: BoxDecoration(
+                        color: TrackingColors.of(context).playbackPrimary,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    const SizedBox(width: AppSizes.p16),
+                    AppAssetsIconWidget(
+                      asset: AppAssets.skipNext,
+                      label: l.playbackNext,
+                      onPressed: context.read<PlaybackMapCubit>().next,
+                      size: AppSizes.iconSm,
+                      boxDecoration: BoxDecoration(
+                        color: TrackingColors.of(
+                          context,
+                        ).playbackPrimary.withValues(alpha: .16),
+                        borderRadius: BorderRadius.circular(AppSizes.r8),
                       ),
                     ),
                   ],
-                )
-              else if (state is PlaybackMapEmpty)
-                  Text(l.assetPlaybackEmpty)
-                else if (loaded != null) ...[
-                    _scrubber(context, loaded),
-                    const SizedBox(height: AppSizes.p8),
-                    Row(
-                      textDirection: ui.TextDirection.ltr,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        AppAssetsIconWidget(
-                          label: l.playbackPrevious,
-                          onPressed: context.read<PlaybackMapCubit>().previous,
-                          asset: AppAssets.skipPrevious,
-                          size: AppSizes.iconSm,
-                          boxDecoration: BoxDecoration(
-                            color: TrackingColors.of(context)
-                                .playbackPrimary
-                                .withValues(alpha: .16),
-                            borderRadius: BorderRadius.circular(AppSizes.r8),
-                          ),
-                        ),
-                        const SizedBox(width: AppSizes.p16),
-                        AppAssetsIconWidget(
-                          asset: loaded.isPlaying
-                              ? AppAssets.pauseIcon
-                              : AppAssets.playIcon,
-                          label: loaded.isPlaying
-                              ? l.assetPlaybackPause
-                              : l.assetPlaybackPlay,
-                          onPressed: context.read<PlaybackMapCubit>().toggle,
-                          containerSize: 46,
-                          size: AppSizes.iconSm,
-                          boxDecoration: BoxDecoration(
-                            color: TrackingColors.of(context).playbackPrimary,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                        const SizedBox(width: AppSizes.p16),
-                        AppAssetsIconWidget(
-                          asset: AppAssets.skipNext,
-                          label: l.playbackNext,
-                          onPressed: context.read<PlaybackMapCubit>().next,
-                          size: AppSizes.iconSm,
-                          boxDecoration: BoxDecoration(
-                            color: TrackingColors.of(context)
-                                .playbackPrimary
-                                .withValues(alpha: .16),
-                            borderRadius: BorderRadius.circular(AppSizes.r8),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                ),
+              ],
             ],
           ),
         );
@@ -163,9 +137,8 @@ class PanelWidget extends StatelessWidget {
     );
   }
 
-  DateFormat _dateFormat(BuildContext context) => DateFormat.yMMMMd(
-    Localizations.localeOf(context).toString(),
-  ).add_jm();
+  DateFormat _dateFormat(BuildContext context) =>
+      DateFormat.yMMMMd(Localizations.localeOf(context).toString()).add_jm();
 
   Widget _scrubber(BuildContext context, PlaybackMapLoaded state) {
     final points = state.points;
@@ -200,18 +173,16 @@ class PanelWidget extends StatelessWidget {
             Text(
               DateFormat.Hm().format(start),
               semanticsLabel: '',
-              style: Theme.of(context)
-                  .textTheme
-                  .labelSmall
-                  ?.copyWith(color: playbackColor),
+              style: Theme.of(
+                context,
+              ).textTheme.labelSmall?.copyWith(color: playbackColor),
             ),
             Text(
               DateFormat.Hm().format(end),
               semanticsLabel: '',
-              style: Theme.of(context)
-                  .textTheme
-                  .labelSmall
-                  ?.copyWith(color: playbackColor),
+              style: Theme.of(
+                context,
+              ).textTheme.labelSmall?.copyWith(color: playbackColor),
             ),
           ],
         ),

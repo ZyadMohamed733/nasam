@@ -4,5 +4,7 @@ import '../models/history_alert_detailed_model.dart';
 
 abstract interface class HistoryAlertDataSource {
   Future<List<HistoryAlertModel>> getHistoryAlert();
-  Future<HistoryAlertDetailsModel> getHistoryDetailed();
+  Future<HistoryAlertDetailsModel> getHistoryDetailed({
+    required String alertId,
+  });
 }

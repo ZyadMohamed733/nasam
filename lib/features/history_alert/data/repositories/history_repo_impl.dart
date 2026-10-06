@@ -12,9 +12,10 @@ import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failure_mapper.dart';
 import '../../domain/repositories/history_alert_repository.dart';
 import '../mappers/history_mapper.dart';
+
 @LazySingleton(as: HistoryAlertRepository)
-class HistoryRepoImpl  implements  HistoryAlertRepository{
-   HistoryRepoImpl( {required this.dataSource});
+class HistoryRepoImpl implements HistoryAlertRepository {
+  HistoryRepoImpl({required this.dataSource});
 
   final HistoryAlertDataSource dataSource;
   @override
@@ -30,26 +31,22 @@ class HistoryRepoImpl  implements  HistoryAlertRepository{
   }
 
   @override
-  Future<Either<Failure, HistoryAlertDetailsEntity>> getHistoryAlertDetails() async{
-
-    try{
-      final resultModel  = await dataSource.getHistoryDetailed();
+  Future<Either<Failure, HistoryAlertDetailsEntity>> getHistoryAlertDetails({
+    required String alertId,
+  }) async {
+    try {
+      final resultModel = await dataSource.getHistoryDetailed(alertId: alertId);
       final historyEntity = AlertMapper.details(resultModel);
       return Right(historyEntity);
-    }catch (error,stack){
+    } catch (error, stack) {
       return Left(mapException(error, stack));
     }
-
-
-
   }
 
-    Failure  mapException(Object e , StackTrace stack){
-       if (e is AppException){
-         return FailureMapper.fromException(e);
-       }
-       return UnknownFailure(message: e.toString(), stackTrace: stack);
-
+  Failure mapException(Object e, StackTrace stack) {
+    if (e is AppException) {
+      return FailureMapper.fromException(e);
     }
-
+    return UnknownFailure(message: e.toString(), stackTrace: stack);
+  }
 }

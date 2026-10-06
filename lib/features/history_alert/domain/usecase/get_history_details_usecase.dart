@@ -10,5 +10,7 @@ class GetHistoryDetailsUseCase {
   final HistoryAlertRepository _repository;
   GetHistoryDetailsUseCase(this._repository);
 
-  Future<Either<Failure,HistoryAlertDetailsEntity>> getHistoryAlertDetails() => _repository.getHistoryAlertDetails();
+  Future<Either<Failure, HistoryAlertDetailsEntity>> getHistoryAlertDetails({
+    required String alertId,
+  }) => _repository.getHistoryAlertDetails(alertId: alertId);
 }

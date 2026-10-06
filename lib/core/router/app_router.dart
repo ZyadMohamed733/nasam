@@ -13,6 +13,7 @@ import '../../features/auth/presentation/pages/reset_code_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/history_alert/presentation/pages/history_alert_page.dart';
 import '../../features/history_alert/presentation/pages/history_alert_details_page.dart';
+import '../../features/history_alert/presentation/cubit/histroy_alert_cubit.dart';
 import '../../features/history_alert/domain/entities/history_alert.dart';
 import '../../features/onboarding/presentation/pages/onboarding_page.dart';
 import '../../features/play_back/presentation/cubit/playback_map_cubit.dart';
@@ -181,8 +182,14 @@ class AppRouter {
               context: context,
               state: state,
               slide: true,
-              child: HistoryAlertDetailsPage(
-                alert: state.extra! as HistoryAlertEntity,
+              child: BlocProvider(
+                create: (_) => getIt<HistoryAlertCubit>()
+                  ..getHistoryAlertDetails(
+                    alertId: (state.extra! as HistoryAlertEntity).id,
+                  ),
+                child: HistoryAlertDetailsPage(
+                  alert: state.extra! as HistoryAlertEntity,
+                ),
               ),
             ),
           ),

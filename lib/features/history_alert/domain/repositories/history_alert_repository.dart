@@ -5,6 +5,8 @@ import 'package:nasam/features/history_alert/domain/entities/history_details.dar
 import '../entities/history_alert.dart';
 
 abstract interface class HistoryAlertRepository {
-  Future<Either<Failure,List<HistoryAlertEntity>>> getHistoryAlert();
-  Future<Either<Failure,HistoryAlertDetailsEntity>> getHistoryAlertDetails();
+  Future<Either<Failure, List<HistoryAlertEntity>>> getHistoryAlert();
+  Future<Either<Failure, HistoryAlertDetailsEntity>> getHistoryAlertDetails({
+    required String alertId,
+  });
 }

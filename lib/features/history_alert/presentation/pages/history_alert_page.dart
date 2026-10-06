@@ -9,11 +9,13 @@ import '../../../../core/di/injection_container.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 import '../../../../shared/widgets/action_icon.dart';
 import '../../../../shared/widgets/app_bar_widget.dart';
+import '../../../../shared/widgets/loading_indicator_widget.dart';
+import '../../../../shared/widgets/error_widget.dart';
+import '../../../../shared/widgets/empty_result_widget.dart';
 import '../../domain/entities/history_alert.dart';
 import '../cubit/histroy_alert_cubit.dart';
 import '../cubit/hsitory_alert_state.dart';
 import '../widget/history_alert_card.dart';
-import '../widget/NoEmptytDataWidget.dart';
 import '../widget/no_search_result_widget.dart';
 import '../widget/search_bar_widget.dart';
 import '../../../play_back/presentation/widgets/playback_date_picker_sheet.dart';
@@ -32,73 +34,12 @@ class _HistoryAlertPageState extends State<HistoryAlertPage> {
   final _searchController = TextEditingController();
   String _query = '';
 
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
 
-  void _clearFilters(BuildContext blocContext) {
-    setState(() {
-      debugPrint('[HistoryAlertPage] setState: clear search query');
-      _query = '';
-      _searchController.clear();
-    });
-    blocContext.read<HistoryAlertCubit>().updateDateFilter(null);
-  }
 
-  Future<void> _showDateFilter(
-    BuildContext blocContext,
-    List<HistoryAlertEntity> alerts,
-    DateTime? selectedDate,
-  ) async {
-    final dates = alerts.map(_saudiDate).toList()..sort();
-    final lastDate = dates.last;
-    // Allow dates without matching alerts too, so applying one can produce an
-    // empty-result state. The old data-only bounds collapsed to Jan 17, 2027
-    // because every fixture alert has that timestamp.
-    final firstDate = DateUtils.dateOnly(
-      lastDate.subtract(const Duration(days: 365)),
-    );
-    final today = DateUtils.dateOnly(DateTime.now());
-    final suggestedDate = selectedDate ?? today;
-    final initialDate = suggestedDate.isBefore(firstDate)
-        ? firstDate
-        : suggestedDate.isAfter(lastDate)
-        ? lastDate
-        : suggestedDate;
-    final l = AppLocalizations.of(context)!;
 
-    final pickedDate = await showModalBottomSheet<DateTime>(
-      context: blocContext,
-      isScrollControlled: true,
-      useSafeArea: true,
-      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
-      ),
-      builder: (context) => PlaybackDatePickerSheet(
-        title: l.playbackChooseDay,
-        initialDate: initialDate,
-        firstDate: firstDate,
-        lastDate: lastDate,
-      ),
-    );
-
-    if (pickedDate == null || !mounted || !blocContext.mounted) return;
-    blocContext.read<HistoryAlertCubit>().updateDateFilter(
-      DateUtils.dateOnly(pickedDate),
-    );
-  }
-
-  DateTime _saudiDate(HistoryAlertEntity alert) {
-    final timestamp = alert.timestamp.toUtc().add(const Duration(hours: 3));
-    return DateTime(timestamp.year, timestamp.month, timestamp.day);
-  }
 
   @override
   Widget build(BuildContext context) {
-
     final l = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: NasamAppBar(
@@ -136,30 +77,27 @@ class _HistoryAlertPageState extends State<HistoryAlertPage> {
         child: BlocBuilder<HistoryAlertCubit, HistoryAlertState>(
           builder: (context, state) => switch (state) {
             HistoryAlertLoading() => const Center(
-              child: CircularProgressIndicator(),
+              child: LoadingIndicatorWidget(),
             ),
             HistoryAlertLoaded(:final historyAlertDataList)
                 when historyAlertDataList.isEmpty =>
-              const NoEmptyDataWidget(),
+              EmptyResultWidget(
+                message: l.alertsLogUnavailable,
+                subtitle: l.deviceAlertsEmpty,
+                type: EmptyResultType.alerts,
+                imageHeight: 48,
+                padding: const EdgeInsets.all(24),
+              ),
             HistoryAlertLoaded(
               :final historyAlertDataList,
               :final selectedDate,
             ) =>
               _historyList(context, historyAlertDataList, selectedDate),
-            HistoryAlertFailure() => Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(l.errorGeneric),
-                  const SizedBox(height: 8),
-                  TextButton(
-                    onPressed: context
-                        .read<HistoryAlertCubit>()
-                        .getHistoryAlertData,
-                    child: Text(l.retry),
-                  ),
-                ],
-              ),
+            HistoryAlertFailure(:final failure) => AppErrorWidget(
+              message: l.errorGeneric,
+              retryLabel: l.retry,
+              onRetry: context.read<HistoryAlertCubit>().getHistoryAlertData,
+              type: AppErrorWidget.typeForFailure(failure),
             ),
             HistoryAlertDetailLoaded() => const SizedBox.shrink(),
           },
@@ -229,5 +167,69 @@ class _HistoryAlertPageState extends State<HistoryAlertPage> {
         ),
       ],
     );
+  }
+
+  void _clearFilters(BuildContext blocContext) {
+    setState(() {
+      debugPrint('[HistoryAlertPage] setState: clear search query');
+      _query = '';
+      _searchController.clear();
+    });
+    blocContext.read<HistoryAlertCubit>().updateDateFilter(null);
+  }
+
+  Future<void> _showDateFilter(
+      BuildContext blocContext,
+      List<HistoryAlertEntity> alerts,
+      DateTime? selectedDate,
+      ) async {
+    final dates = alerts.map(_saudiDate).toList()..sort();
+    final lastDate = dates.last;
+    // Allow dates without matching alerts too, so applying one can produce an
+    // empty-result state. The old data-only bounds collapsed to Jan 17, 2027
+    // because every fixture alert has that timestamp.
+    final firstDate = DateUtils.dateOnly(
+      lastDate.subtract(const Duration(days: 365)),
+    );
+    final today = DateUtils.dateOnly(DateTime.now());
+    final suggestedDate = selectedDate ?? today;
+    final initialDate = suggestedDate.isBefore(firstDate)
+        ? firstDate
+        : suggestedDate.isAfter(lastDate)
+        ? lastDate
+        : suggestedDate;
+    final l = AppLocalizations.of(context)!;
+
+    final pickedDate = await showModalBottomSheet<DateTime>(
+      context: blocContext,
+      isScrollControlled: true,
+      useSafeArea: true,
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+      ),
+      builder: (context) => PlaybackDatePickerSheet(
+        title: l.playbackChooseDay,
+        initialDate: initialDate,
+        firstDate: firstDate,
+        lastDate: lastDate,
+      ),
+    );
+
+    if (pickedDate == null || !mounted || !blocContext.mounted) return;
+    blocContext.read<HistoryAlertCubit>().updateDateFilter(
+      DateUtils.dateOnly(pickedDate),
+    );
+  }
+
+  DateTime _saudiDate(HistoryAlertEntity alert) {
+    final timestamp = alert.timestamp.toUtc().add(const Duration(hours: 3));
+    return DateTime(timestamp.year, timestamp.month, timestamp.day);
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 }
