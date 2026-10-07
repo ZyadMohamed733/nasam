@@ -1,10 +1,7 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injectable/injectable.dart';
 import '../../domain/usecases/get_playback_route_usecase.dart';
 import 'playback_map_state.dart';
-
-@injectable
 class PlaybackMapCubit extends Cubit<PlaybackMapState> {
   PlaybackMapCubit(this._getRoute) : super(const PlaybackMapLoading());
   final GetPlaybackRouteUseCase _getRoute;

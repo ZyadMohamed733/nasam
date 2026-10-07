@@ -1,11 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../domain/entities/login_result.dart';
 import '../../domain/usecases/login_usecase.dart';
 import 'auth_form_status.dart';
-
-@injectable
 class LoginCubit extends Cubit<AuthFormStatus> {
   LoginCubit(this._login) : super(const AuthFormIdle());
 

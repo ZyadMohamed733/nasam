@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../../../core/errors/exceptions.dart';
 import '../models/playback_point_model.dart';
@@ -11,7 +10,6 @@ import 'playback_datasource.dart';
 import 'playback_fixture_scenarios.dart';
 
 /// Fixture implementation used until the playback API is available.
-@LazySingleton(as: PlaybackDataSource)
 class PlaybackFixtureDataSource implements PlaybackDataSource {
   /// Choose list and map responses independently for device checks.
   /// See `docs/play_back.md` for supported values.
@@ -19,10 +17,10 @@ class PlaybackFixtureDataSource implements PlaybackDataSource {
   static const String deviceRouteScenario = PlaybackFixtureScenarios.success;
 
   PlaybackFixtureDataSource({
-    @ignoreParam AssetBundle? bundle,
-    @ignoreParam Duration? latency,
-    @ignoreParam bool? simulateFailure,
-    @ignoreParam String? scenario,
+    AssetBundle? bundle,
+    Duration? latency,
+    bool? simulateFailure,
+    String? scenario,
   }) : _bundle = bundle ?? rootBundle,
        _latency = latency ?? const Duration(milliseconds: 300),
        _segmentsScenario =

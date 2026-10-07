@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../domain/usecases/resend_otp_usecase.dart';
 import '../../domain/usecases/verify_otp_usecase.dart';
@@ -8,7 +7,6 @@ import 'auth_form_status.dart';
 /// The second factor of login (`POST /auth/verify-otp` /
 /// `POST /auth/resend-otp`), not part of password reset -- see
 /// docs/plans/AUTH_INTEGRATION_PLAN.md.
-@injectable
 class OtpCubit extends Cubit<AuthFormStatus> {
   OtpCubit(this._verify, this._resend) : super(const AuthFormIdle());
 

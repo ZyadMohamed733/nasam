@@ -7,7 +7,7 @@ import '../models/vehicle_model.dart';
 ///
 /// Its own file so the repository imports the interface and nothing else.
 /// Swapping the fixture for the real API is one binding: the class that
-/// carries `@LazySingleton(as: TrackingDataSource)`.
+/// is registered in tracking_dependencies.dart.
 abstract interface class TrackingDataSource {
   Future<List<VehicleModel>> getVehicles();
   Future<List<TrackedAssetModel>> getTrackedAssets();

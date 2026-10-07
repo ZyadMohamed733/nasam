@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
-import 'package:injectable/injectable.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../../app/app_config.dart';
@@ -10,8 +9,6 @@ import '../constants/app_constants.dart';
 import '../utils/app_logger.dart';
 
 enum WsConnectionState { connecting, connected, disconnected, error }
-
-@lazySingleton
 class WebSocketService {
   WebSocketService(this._config) {
     _emitState(WsConnectionState.disconnected);
@@ -130,7 +127,6 @@ class WebSocketService {
     _emitState(WsConnectionState.disconnected);
   }
 
-  @disposeMethod
   void dispose() {
     _isDisposed = true;
     disconnect();

@@ -8,9 +8,6 @@ import 'interceptors/error_interceptor.dart';
 import 'interceptors/language_interceptor.dart';
 import 'interceptors/logging_interceptor.dart';
 
-/// The injectable name of the client without the auth interceptor.
-const String bareDioName = 'bareDio';
-
 class DioClient {
   /// What every client talks to the API with: the flavor's host, the same
   /// timeouts, and the same headers. Shared so the refresh client cannot

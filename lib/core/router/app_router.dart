@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../features/auth/presentation/cubit/password_recovery_cubit.dart';
 import '../../features/auth/presentation/pages/forgot_password_page.dart';
@@ -39,8 +38,6 @@ import 'app_routes.dart';
 import 'app_transition_page.dart';
 import 'return_path.dart';
 import 'route_guard.dart';
-
-@lazySingleton
 class AppRouter {
   AppRouter(this._routeGuard, this._session);
 

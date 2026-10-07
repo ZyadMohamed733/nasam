@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../../domain/entities/tracked_asset_details.dart';
@@ -104,7 +103,6 @@ final class AssetDetailsFailure extends AssetDetailsState {
 /// The alerts are one tab of five: if only they fail, the other four stay
 /// usable and the alerts tab reports the failure with its own retry, which
 /// re-requests the alerts alone.
-@injectable
 class AssetDetailsCubit extends Cubit<AssetDetailsState> {
   AssetDetailsCubit(this._getDetails, this._getNotifications)
     : super(const AssetDetailsLoading());

@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../../../core/errors/exceptions.dart';
 import '../models/poi_model.dart';
@@ -9,9 +8,8 @@ import 'poi_datasource.dart';
 
 /// Temporary fixture binding, matching tracking until a POI API is supplied.
 /// This is sample data, not a server-backed collection or persistent storage.
-@LazySingleton(as: PoiDataSource)
 class PoiFixtureDataSource implements PoiDataSource {
-  PoiFixtureDataSource({@ignoreParam AssetBundle? bundle})
+  PoiFixtureDataSource({AssetBundle? bundle})
     : _bundle = bundle ?? rootBundle;
   final AssetBundle _bundle;
   List<PoiModel>? _points;

@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../utils/app_logger.dart';
 
@@ -10,7 +9,6 @@ import '../../utils/app_logger.dart';
 /// even built in release — the previous version logged full request bodies,
 /// which put login passwords and refresh tokens into the log verbatim, and
 /// masked only an exactly-cased `Authorization` header.
-@injectable
 class LoggingInterceptor extends Interceptor {
   /// Matched case-insensitively against header names and JSON body keys.
   static const List<String> _sensitiveKeys = [

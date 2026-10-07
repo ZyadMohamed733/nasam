@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../../../core/services/storage_service.dart';
 
@@ -34,8 +33,6 @@ class OnboardingState {
   @override
   int get hashCode => Object.hash(pageIndex, isComplete);
 }
-
-@injectable
 class OnboardingCubit extends Cubit<OnboardingState> {
   OnboardingCubit(this._storage) : super(const OnboardingState());
 
@@ -43,7 +40,7 @@ class OnboardingCubit extends Cubit<OnboardingState> {
 
   /// How many slides there are is the page's business — it owns the list — so
   /// the cubit only records which one is showing. It deliberately takes no
-  /// `pageCount` constructor argument: injectable ignores Dart default values
+  /// `pageCount` constructor argument: the registration uses the default value
   /// and would try to resolve an `int` from the container, which is not
   /// registered and throws when the page is built.
   void onPageChanged(int index) {

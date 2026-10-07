@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:dartz/dartz.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failure_mapper.dart';
@@ -12,8 +11,6 @@ import '../../domain/repositories/poi_repository.dart';
 import '../datasources/poi_datasource.dart';
 import '../mappers/poi_mapper.dart';
 import '../models/poi_model.dart';
-
-@LazySingleton(as: PoiRepository)
 class PoiRepositoryImpl implements PoiRepository {
   PoiRepositoryImpl(this._source);
   final PoiDataSource _source;
@@ -21,7 +18,6 @@ class PoiRepositoryImpl implements PoiRepository {
   @override
   Stream<void> get changes => _changes.stream;
   @override
-  @disposeMethod
   Future<void> dispose() => _changes.close();
   @override
   Future<Either<Failure, List<PointOfInterest>>> getPoints() async {

@@ -1,11 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../entities/playback_segment.dart';
 import '../repositories/playback_repository.dart';
-
-@lazySingleton
 class GetPlaybackSegmentsUseCase {
   const GetPlaybackSegmentsUseCase(this._repository);
   final PlaybackRepository _repository;

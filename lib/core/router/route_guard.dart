@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:injectable/injectable.dart';
 
 import '../auth/auth_session_notifier.dart';
 import '../services/auth_service.dart';
 import 'app_routes.dart';
 import 'return_path.dart';
-
-@injectable
 class RouteGuard {
   const RouteGuard(this._authService, this._session);
   final AuthService _authService;

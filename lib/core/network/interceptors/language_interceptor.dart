@@ -1,7 +1,6 @@
 import 'dart:ui' show PlatformDispatcher;
 
 import 'package:dio/dio.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../../app/app_settings_controller.dart';
 import '../../constants/app_strings.dart';
@@ -11,7 +10,6 @@ import '../../constants/app_strings.dart';
 /// the language the screen is in.
 ///
 /// Read per request, not once: the user can switch language at any time.
-@lazySingleton
 class LanguageInterceptor extends Interceptor {
   LanguageInterceptor(this._settings);
 

@@ -1,13 +1,10 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../domain/entities/poi_limits.dart';
 import '../../domain/entities/point_of_interest.dart';
 import '../../domain/repositories/poi_files.dart';
 import 'poi_workbook.dart';
-
-@LazySingleton(as: PoiFiles)
 class PoiFileService implements PoiFiles {
   @override
   Future<PickedPoiWorkbook?> pick() async {

@@ -2,25 +2,22 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../../../core/errors/exceptions.dart';
 import '../models/history_alert_detailed_model.dart';
 import '../models/histroy_alert_model.dart';
 import 'history_alert_datasource.dart';
 import 'history_alert_fixture_scenarios.dart';
-
-@LazySingleton(as: HistoryAlertDataSource)
 class FakeHistoryDatasource implements HistoryAlertDataSource {
   /// Change this static value to test an alert history response on device.
   static const String deviceTestScenario =
       HistoryAlertFixtureScenarios.success;
 
   FakeHistoryDatasource({
-    @ignoreParam AssetBundle? bundle,
-    @ignoreParam Duration? latency,
-    @ignoreParam bool? simulateFailure,
-    @ignoreParam String? scenario,
+    AssetBundle? bundle,
+    Duration? latency,
+    bool? simulateFailure,
+    String? scenario,
   }) : _bundle = bundle ?? rootBundle,
        _latency = latency ?? const Duration(seconds: 4),
        _scenario =

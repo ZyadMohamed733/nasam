@@ -2,10 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:injectable/injectable.dart';
 
 import '../errors/error_reporter.dart';
-import '../network/dio_client.dart';
 import '../services/secure_storage_service.dart';
 import 'auth_session_notifier.dart';
 
@@ -17,12 +15,11 @@ import 'auth_session_notifier.dart';
 ///
 /// It lives in core and takes no feature types: the interceptor is core, and
 /// core must not reach into `features/auth`.
-@lazySingleton
 class TokenRefresher {
   TokenRefresher(
     this._storage,
     this._session,
-    @Named(bareDioName) this._client,
+    this._client,
     this._errors,
   );
 

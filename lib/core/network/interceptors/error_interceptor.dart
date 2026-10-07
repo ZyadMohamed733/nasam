@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../errors/exception_mapper.dart';
 
@@ -9,7 +8,6 @@ import '../../errors/exception_mapper.dart';
 /// [DioException.error]: datasources translate transport errors themselves via
 /// [ExceptionMapper], so the error contract does not depend on this
 /// interceptor being present in the chain.
-@injectable
 class ErrorInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {

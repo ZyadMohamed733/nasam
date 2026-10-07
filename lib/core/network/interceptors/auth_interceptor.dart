@@ -1,23 +1,20 @@
 import 'package:dio/dio.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../auth/token_refresher.dart';
 import '../../constants/app_strings.dart';
 import '../../services/secure_storage_service.dart';
-import '../dio_client.dart';
 
 /// Attaches the access token and, on a 401, refreshes it once and retries.
 ///
-/// Registered as a `@lazySingleton` so every request shares one
+/// Registered as a lazy singleton so every request shares one
 /// [TokenRefresher]; the refresher is what keeps parallel 401s down to one
 /// refresh. Deciding whether the session is over is the refresher's job, not
 /// this class's.
-@lazySingleton
 class AuthInterceptor extends Interceptor {
   AuthInterceptor(
     this._storage,
     this._refresher,
-    @Named(bareDioName) this._retryClient,
+    this._retryClient,
   );
 
   final SecureStorageService _storage;

@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../../../core/auth/auth_session_notifier.dart';
 import '../../../../core/errors/exceptions.dart';
@@ -16,8 +15,6 @@ import '../datasources/remote/auth_remote_datasource.dart';
 import '../mappers/auth_mapper.dart';
 import '../models/auth_session_model.dart';
 import '../models/user_model.dart';
-
-@LazySingleton(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
   const AuthRepositoryImpl(this._remote, this._secureStorage, this._session);
 

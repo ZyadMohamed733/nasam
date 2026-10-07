@@ -72,16 +72,15 @@ and unwanted fields are dropped.
 
 ## Dependency injection
 
-- Blocs and cubits are `@injectable` (a new instance per page). Never
-  `@lazySingleton` — a shared one leaks state between screens.
-- Repositories, datasources and services are `@LazySingleton(as: Interface)`.
+- Blocs and cubits are registered as factories (a new instance per page). Never
+  share them as singletons — shared state would leak between screens.
+- Repositories, datasources and services are registered as lazy singletons,
+  using their interface type where appropriate.
 - Widgets receive dependencies **by constructor**. Do not call `getIt<T>()`
   inside `build()`; `AppScaffold` is the one place the shared chrome resolves
   its dependencies.
-- Injectable ignores Dart default values on constructor parameters. A
-  `const SomeCubit(this._dep, {this.count = 3})` generates `count: gh<int>()`
-  and throws at resolution, because no `int` is registered. Keep configuration
-  out of injected constructors.
+- Feature registration functions must pass only the dependencies a class
+  requires and leave optional configuration at its constructor defaults.
 
 Auth pages take an optional cubit (`LoginPage({this.cubit})`) and fall back to
 `getIt` when it is null. That keeps the page testable without a container while

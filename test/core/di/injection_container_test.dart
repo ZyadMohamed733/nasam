@@ -7,7 +7,7 @@ import 'package:nasam/core/auth/auth_session_notifier.dart';
 import 'package:nasam/core/auth/token_refresher.dart';
 import 'package:nasam/core/constants/app_strings.dart';
 import 'package:nasam/core/di/injection_container.dart';
-import 'package:nasam/core/network/dio_client.dart';
+import 'package:nasam/core/di/network_dependencies.dart';
 import 'package:nasam/core/network/interceptors/auth_interceptor.dart';
 import 'package:nasam/core/router/app_router.dart';
 import 'package:nasam/core/services/auth_service.dart';
@@ -122,11 +122,11 @@ void main() {
       test('the refresh client is built once, from AppConfig', () async {
         await configure();
 
-        final bare = getIt<Dio>(instanceName: bareDioName);
-        expect(getIt<Dio>(instanceName: bareDioName), same(bare));
-        expect(bare, isNot(same(getIt<Dio>())));
-        expect(bare.options.headers['X-Client'], 'mobile');
-        expect(bare.options.headers['x-tenant'], 'tenant-${flavor.name}');
+        final authless = getIt<Dio>(instanceName: authlessDioName);
+        expect(getIt<Dio>(instanceName: authlessDioName), same(authless));
+        expect(authless, isNot(same(getIt<Dio>())));
+        expect(authless.options.headers['X-Client'], 'mobile');
+        expect(authless.options.headers['x-tenant'], 'tenant-${flavor.name}');
         expect(
           getIt<Dio>().options.headers['x-tenant'],
           'tenant-${flavor.name}',

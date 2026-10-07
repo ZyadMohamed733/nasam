@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../../../../core/errors/exception_mapper.dart';
 import '../../../../../core/errors/exceptions.dart';
@@ -52,8 +51,6 @@ abstract class AuthRemoteDataSource {
     required String newPassword,
   });
 }
-
-@LazySingleton(as: AuthRemoteDataSource)
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   const AuthRemoteDataSourceImpl(this._dio);
 

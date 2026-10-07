@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../../domain/entities/tracked_asset.dart';
@@ -25,7 +24,6 @@ export 'tracking_state.dart';
 /// Depends on use cases only. Created through `getIt` by the route, so the
 /// widget tree receives it rather than building it — which is what lets a test
 /// hand the screen a cubit in any state it likes.
-@injectable
 class TrackingCubit extends Cubit<TrackingState> {
   TrackingCubit(this._getVehicles, this._getAssets)
     : super(const TrackingInitial());

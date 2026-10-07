@@ -63,15 +63,13 @@ Clean Architecture enforces a strict boundary between **what the app does** (dom
 |--------|-------------|
 | Event-driven domain | Fleet tracking is inherently event-driven: `VehicleLocationUpdated`, `TaskAssigned`, `WebSocketReconnected`. BLoC's explicit event model maps directly to these domain events. |
 | Auditability | Every state transition is traceable through `AppBlocObserver`. Critical for debugging real-time bugs. |
-| GetIt separation | BLoC + GetIt/Injectable are non-overlapping. Riverpod doubles as a DI container, creating architectural tension with Injectable. |
+| GetIt separation | BLoC and feature-scoped GetIt registration have distinct roles. Riverpod also acts as a DI container, creating architectural overlap. |
 | Stream support | `on<Event>()` with `emit.forEach()` handles WebSocket streams natively and cleanly. |
 | Team clarity | The Event → BLoC → State pattern is explicit and opinionated. Less "anything goes" ambiguity at team scale. |
 
-### Why Injectable over manual GetIt?
+### Dependency registration
 
-Manual GetIt registration centralizes all wiring into one growing file. By feature 8+, it becomes a 400-line unmaintainable mess with "forgot to register" runtime crashes.
-
-Injectable uses annotations (`@injectable`, `@lazySingleton`, `@module`) to auto-generate registration code via `build_runner`. Each class self-documents its own lifetime. Zero "forgot to register" bugs — they become compile errors.
+GetIt registrations are written by feature under each feature's `di/` folder, with shared app wiring under `core/di/`. This keeps each feature's bindings readable and local while making missing registrations visible in the registration smoke test.
 
 ### Why Freezed?
 
@@ -263,8 +261,7 @@ Future<void> main() async {
 |---------|---------|---------|
 | `flutter_bloc` | ^9.1.1 | BLoC/Cubit state management |
 | `bloc_concurrency` | ^0.3.0 | Event transformers: `droppable()`, `restartable()` for real-time events |
-| `get_it` | ^9.2.1 | Service locator (used under the hood by Injectable) |
-| `injectable` | ^3.0.0 | Annotation-based DI code generation on top of GetIt |
+| `get_it` | ^9.2.1 | Service locator for app and feature dependency registration |
 | `freezed_annotation` | ^3.1.0 | Immutable classes, sealed unions, copyWith, pattern matching |
 | `json_annotation` | ^4.12.0 | JSON serialization annotations for DTOs |
 | `dartz` | ^0.10.1 | `Either<Failure, T>` for typed functional error handling |
@@ -284,10 +281,9 @@ Future<void> main() async {
 
 | Package | Version | Purpose |
 |---------|---------|---------|
-| `build_runner` | ^2.4.9 | Code generation runner for Freezed, Injectable, json_serializable |
+| `build_runner` | ^2.4.9 | Code generation runner for Freezed and json_serializable |
 | `freezed` | ^3.2.5 | Generator for Freezed annotations |
 | `json_serializable` | ^6.8.0 | Generator for fromJson/toJson |
-| `injectable_generator` | ^3.0.2 | Generator for Injectable DI registrations |
 | `mocktail` | ^1.0.3 | Mock library for unit tests (no code-gen needed) |
 | `bloc_test` | ^10.0.0 | `blocTest()` helper for testing BLoC state sequences |
 | `faker` | ^2.1.0 | Realistic test data generation |
@@ -697,7 +693,6 @@ class VehicleModel with _$VehicleModel {
 ### Repository Implementation (Data)
 
 ```dart
-@Injectable(as: VehicleRepository)
 class VehicleRepositoryImpl implements VehicleRepository {
   const VehicleRepositoryImpl(this._remote);
   final VehicleRemoteDataSource _remote;
@@ -749,7 +744,6 @@ class VehicleState with _$VehicleState {
 }
 
 // BLoC
-@injectable
 class VehicleBloc extends Bloc<VehicleEvent, VehicleState> {
   VehicleBloc(this._getVehicles) : super(const VehicleState.initial()) {
     on<_Started>(_onStarted);
@@ -766,6 +760,16 @@ class VehicleBloc extends Bloc<VehicleEvent, VehicleState> {
     );
   }
 }
+
+// In the feature's DI function:
+getIt.registerLazySingleton<VehicleRepository>(
+  () => VehicleRepositoryImpl(getIt<VehicleRemoteDataSource>()),
+);
+
+// Register in the owning feature's dependencies function:
+getIt.registerFactory<VehicleBloc>(
+  () => VehicleBloc(getIt<GetVehiclesUseCase>()),
+);
 ```
 
 ---
@@ -1015,7 +1019,7 @@ Follow these steps in order. Do not skip any.
 4. Define **Use Cases** (Domain) — one file per use case, single `call()` method
 5. Create the **DTO Model** (Data) — Freezed + json_serializable, `fromJson` factory
 6. Create the **Mapper** (Data) — pure top-level functions, DTO → Entity only
-7. Create **DataSources** (Data) — abstract interface + `@Injectable` implementation
+7. Create **DataSources** (Data) — abstract interface + implementation registered in feature DI
 8. Implement the **Repository** (Data) — `try/catch` every call, map to `Failure`
 9. Create the **BLoC or Cubit** (Presentation) — a cubit where the screen calls one
    method per action, a bloc where events carry data worth logging or replaying;

@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:injectable/injectable.dart';
 
 import 'package:nasam/core/errors/failures.dart';
 import 'package:nasam/features/history_alert/data/datasources/history_alert_datasource.dart';
@@ -12,8 +11,6 @@ import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failure_mapper.dart';
 import '../../domain/repositories/history_alert_repository.dart';
 import '../mappers/history_mapper.dart';
-
-@LazySingleton(as: HistoryAlertRepository)
 class HistoryRepoImpl implements HistoryAlertRepository {
   HistoryRepoImpl({required this.dataSource});
 

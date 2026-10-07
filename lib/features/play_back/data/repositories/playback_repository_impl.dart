@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failure_mapper.dart';
@@ -9,8 +8,6 @@ import '../../domain/entities/playback_segment.dart';
 import '../../domain/repositories/playback_repository.dart';
 import '../datasources/playback_datasource.dart';
 import '../mappers/playback_mapper.dart';
-
-@LazySingleton(as: PlaybackRepository)
 class PlaybackRepositoryImpl implements PlaybackRepository {
   const PlaybackRepositoryImpl(this._dataSource);
 

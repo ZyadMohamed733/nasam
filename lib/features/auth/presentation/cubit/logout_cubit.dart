@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../domain/usecases/logout_usecase.dart';
 
@@ -31,7 +30,6 @@ final class LogoutDone extends LogoutState {
 ///
 /// It does not navigate. The repository tells `AuthSessionNotifier`, and the
 /// router's guard sends the user to login from wherever they are.
-@injectable
 class LogoutCubit extends Cubit<LogoutState> {
   LogoutCubit(this._logout) : super(const LogoutIdle());
 

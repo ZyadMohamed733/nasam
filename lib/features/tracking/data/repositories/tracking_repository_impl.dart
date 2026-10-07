@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failure_mapper.dart';
@@ -10,8 +9,6 @@ import '../../domain/entities/tracking_vehicle.dart';
 import '../../domain/repositories/tracking_repository.dart';
 import '../datasources/tracking_datasource.dart';
 import '../mappers/tracking_mapper.dart';
-
-@LazySingleton(as: TrackingRepository)
 class TrackingRepositoryImpl implements TrackingRepository {
   const TrackingRepositoryImpl(this._dataSource);
 

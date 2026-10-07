@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../domain/entities/poi_import_row.dart';
 import '../../domain/repositories/poi_files.dart';
@@ -11,7 +10,6 @@ export 'poi_import_state.dart';
 
 /// Drives a bulk upload: pick a workbook, validate its rows against the
 /// saved points, browse and preview them, then import the valid ones once.
-@injectable
 class PoiImportCubit extends Cubit<PoiImportState> {
   PoiImportCubit(this._files, this._get, this._import)
     : super(const PoiImportState());

@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../domain/usecases/forget_password_usecase.dart';
 import '../../domain/usecases/verify_reset_otp_usecase.dart';
@@ -79,13 +78,12 @@ class PasswordRecoveryState {
 /// login, or on to the success screen — closes it, and the token goes with
 /// it. The new password itself is submitted by `NewPasswordCubit`, which
 /// owns the password rules.
-@injectable
 class PasswordRecoveryCubit extends Cubit<PasswordRecoveryState> {
   PasswordRecoveryCubit(
     this._forgetPassword,
     this._verifyResetOtp, {
-    @ignoreParam PasswordRecoveryState initial = const PasswordRecoveryState(),
-    @ignoreParam String? resetToken,
+    PasswordRecoveryState initial = const PasswordRecoveryState(),
+    String? resetToken,
   }) : _resetToken = resetToken,
        super(initial.copyWith(hasResetToken: resetToken?.isNotEmpty ?? false));
 

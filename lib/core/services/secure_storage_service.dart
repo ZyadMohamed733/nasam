@@ -7,7 +7,7 @@ import '../utils/app_logger.dart';
 
 /// The session's credentials and profile, in the platform keychain.
 ///
-/// Registered through `StorageModule` with [open], not constructed directly:
+/// Registered through storage dependencies with [open], not constructed directly:
 /// [open] is what guarantees the reinstall check has run before anything can
 /// read a token.
 class SecureStorageService {

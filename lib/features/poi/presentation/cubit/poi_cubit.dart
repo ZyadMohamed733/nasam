@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../domain/repositories/poi_files.dart';
 import '../../domain/usecases/get_points_of_interest_usecase.dart';
@@ -8,8 +7,6 @@ import '../../domain/usecases/poi_operations.dart';
 import 'poi_state.dart';
 
 export 'poi_state.dart';
-
-@injectable
 class PoiCubit extends Cubit<PoiState> {
   PoiCubit(
     this._getPoints,

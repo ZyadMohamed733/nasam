@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../../domain/entities/tracked_asset.dart';
@@ -61,7 +60,6 @@ final class TrackedAssetFailure extends TrackedAssetState {
 /// The details and playback screens are reachable by link, which carries an
 /// id and nothing else, so each screen resolves its own asset rather than
 /// being handed one — and has to say something sensible when the id is wrong.
-@injectable
 class TrackedAssetCubit extends Cubit<TrackedAssetState> {
   TrackedAssetCubit(this._getAsset) : super(const TrackedAssetLoading());
 

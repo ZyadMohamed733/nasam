@@ -1,11 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:injectable/injectable.dart';
 import 'package:nasam/features/history_alert/domain/entities/history_details.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../repositories/history_alert_repository.dart';
-
-@lazySingleton
 class GetHistoryDetailsUseCase {
   final HistoryAlertRepository _repository;
   GetHistoryDetailsUseCase(this._repository);

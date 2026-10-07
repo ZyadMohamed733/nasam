@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../../domain/entities/poi_draft.dart';
@@ -31,8 +30,6 @@ class PoiEditorState {
       status == PoiEditorStatus.saving ||
       status == PoiEditorStatus.deleting;
 }
-
-@injectable
 class PoiEditorCubit extends Cubit<PoiEditorState> {
   PoiEditorCubit(this._get, this._save, this._delete)
     : super(const PoiEditorState());

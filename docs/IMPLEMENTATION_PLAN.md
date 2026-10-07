@@ -64,8 +64,8 @@ start the socket where a session begins.
 `AuthRemoteDataSource`. That is right while the API does not exist, but a prod build
 today would ship a fake login that accepts one hard-coded password.
 
-**Fix:** put it behind an injectable `@Environment` so a prod build fails loudly on
-the missing binding instead of authenticating.
+**Fix:** keep the fixture binding explicit and flavor-independent until the real
+authentication API is available; production must not silently accept fixture credentials.
 
 ### Home is still a placeholder — *open*
 

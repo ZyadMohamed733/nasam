@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../domain/usecases/get_playback_segments_usecase.dart';
 import 'playback_state.dart';
@@ -9,7 +8,6 @@ import 'playback_state.dart';
 /// The range is the page's — it owns the pickers — and it asks again whenever
 /// the range changes. A request that finishes after a newer one was made is
 /// dropped, so a slow answer for last week cannot overwrite today's.
-@injectable
 final class PlaybackCubit extends Cubit<PlaybackState> {
   PlaybackCubit(this._getSegmentsUseCase) : super(const PlaybackLoading());
 

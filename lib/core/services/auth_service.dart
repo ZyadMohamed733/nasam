@@ -1,4 +1,3 @@
-import 'package:injectable/injectable.dart';
 
 import 'secure_storage_service.dart';
 
@@ -24,8 +23,6 @@ abstract class AuthService {
   /// feature's own state instead (e.g. via its cubit).
   Future<String?> get currentUser;
 }
-
-@LazySingleton(as: AuthService)
 class AuthServiceImpl implements AuthService {
   AuthServiceImpl(this._secureStorage);
   final SecureStorageService _secureStorage;

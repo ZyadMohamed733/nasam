@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:injectable/injectable.dart';
 
 import '../utils/app_logger.dart';
 
@@ -39,9 +38,8 @@ class ApiContractViolation implements Exception {
   String toString() => 'ApiContractViolation($endpoint): $detail';
 }
 
-/// [reportError] as an injectable, for code that reports rather than throws
+/// [reportError] as a dependency, for code that reports rather than throws
 /// and wants the report checked in tests.
-@lazySingleton
 class ErrorReporter {
   void report(
     Object error,

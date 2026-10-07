@@ -11,7 +11,7 @@ import 'package:nasam/core/auth/auth_session_notifier.dart';
 import 'package:nasam/core/auth/token_refresher.dart';
 import 'package:nasam/core/constants/app_strings.dart';
 import 'package:nasam/core/di/injection_container.dart';
-import 'package:nasam/core/network/dio_client.dart';
+import 'package:nasam/core/di/network_dependencies.dart';
 import 'package:nasam/core/router/app_routes.dart';
 import 'package:nasam/core/services/auth_service.dart';
 import 'package:nasam/features/auth/data/datasources/remote/auth_remote_datasource.dart';
@@ -112,7 +112,7 @@ void main() {
     // both say 401.
     api = RecordingAdapter((_) => (401, {'message': 'Unauthorized'}));
     getIt<Dio>().httpClientAdapter = api;
-    getIt<Dio>(instanceName: bareDioName).httpClientAdapter = api;
+    getIt<Dio>(instanceName: authlessDioName).httpClientAdapter = api;
   });
 
   tearDown(() async {

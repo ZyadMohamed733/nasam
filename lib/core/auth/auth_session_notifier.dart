@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:injectable/injectable.dart';
 
 import '../services/secure_storage_service.dart';
 
@@ -22,7 +21,6 @@ enum AuthSessionStatus {
 ///
 /// It only reports; the credentials themselves are in [SecureStorageService],
 /// which the guard still reads. This never says "signed in" on its own.
-@lazySingleton
 class AuthSessionNotifier extends ValueNotifier<AuthSessionStatus> {
   AuthSessionNotifier(SecureStorageService storage)
     : super(

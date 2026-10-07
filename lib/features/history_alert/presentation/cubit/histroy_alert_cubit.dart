@@ -1,10 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injectable/injectable.dart';
 import 'package:nasam/features/history_alert/domain/usecase/get_history_details_usecase.dart';
 import 'package:nasam/features/history_alert/domain/usecase/get_history_usecase.dart';
 import 'package:nasam/features/history_alert/presentation/cubit/hsitory_alert_state.dart';
-
-@injectable
 class HistoryAlertCubit extends Cubit<HistoryAlertState> {
   final GetHistoryUseCase _getHistoryUseCase;
   final GetHistoryDetailsUseCase _detailsUseCase;

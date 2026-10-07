@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../domain/entities/user_entity.dart';
 import '../../domain/usecases/get_current_user_usecase.dart';
@@ -43,7 +42,6 @@ final class CurrentUserUnavailable extends CurrentUserState {
 }
 
 /// The signed-in user, for the drawer's profile block.
-@injectable
 class CurrentUserCubit extends Cubit<CurrentUserState> {
   CurrentUserCubit(this._getCurrentUser) : super(const CurrentUserLoading());
 

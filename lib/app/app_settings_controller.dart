@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:injectable/injectable.dart';
 
 import '../core/services/storage_service.dart';
 
@@ -8,7 +7,6 @@ import '../core/services/storage_service.dart';
 /// Without this, `StorageService.getLocale()` had no caller and `MaterialApp`
 /// hardcoded `ThemeMode.system` with no `locale:`, so an Arabic-speaking
 /// operator on an English phone had no way to switch the app to Arabic.
-@lazySingleton
 class AppSettingsController extends ChangeNotifier {
   AppSettingsController(this._storage)
     : _locale = _parseLocale(_storage.getLocale()),

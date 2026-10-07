@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../../../core/errors/exceptions.dart';
 import '../models/asset_details_model.dart';
@@ -17,7 +16,7 @@ import 'tracking_datasource.dart';
 /// the real endpoints must meet is docs/api/tracking_contract.md, generated
 /// from these fixtures by tool/tracking_contract.dart. Replace with a
 /// Dio-backed `TrackingRemoteDataSource` carrying the same
-/// `@LazySingleton(as: TrackingDataSource)` annotation and delete this class;
+/// the tracking API is ready, replace this binding and delete this class;
 /// nothing above the data source changes. The fixtures under
 /// `assets/fixtures/tracking/` are the working contract until then — each one
 /// is a response in the `{ data: ... }` envelope the auth endpoints use, so
@@ -32,12 +31,11 @@ import 'tracking_datasource.dart';
 /// theoretical. Run with `--dart-define=TRACKING_FIXTURE_FAIL=true` to make
 /// every call fail and walk the error states; the flag is ignored outside
 /// debug builds, so a release can never ship failing on purpose.
-@LazySingleton(as: TrackingDataSource)
 class TrackingFixtureDataSource implements TrackingDataSource {
   TrackingFixtureDataSource({
-    @ignoreParam AssetBundle? bundle,
-    @ignoreParam Duration? latency,
-    @ignoreParam bool? simulateFailure,
+    AssetBundle? bundle,
+    Duration? latency,
+    bool? simulateFailure,
   }) : _bundle = bundle ?? rootBundle,
        _latency = latency ?? const Duration(milliseconds: 300),
        _simulateFailure = simulateFailure ?? _failureFlag;

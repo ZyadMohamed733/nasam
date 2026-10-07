@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../../../core/utils/password_rules.dart';
 import '../../domain/usecases/reset_password_usecase.dart';
@@ -33,8 +32,6 @@ class NewPasswordState {
     matches: matches ?? this.matches,
   );
 }
-
-@injectable
 class NewPasswordCubit extends Cubit<NewPasswordState> {
   NewPasswordCubit(this._resetPassword) : super(const NewPasswordState());
 
