@@ -1,7 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nasam/features/history_alert/domain/entities/alert_history_filter.dart';
 import 'package:nasam/features/history_alert/domain/usecase/get_history_details_usecase.dart';
 import 'package:nasam/features/history_alert/domain/usecase/get_history_usecase.dart';
 import 'package:nasam/features/history_alert/presentation/cubit/hsitory_alert_state.dart';
+
 class HistoryAlertCubit extends Cubit<HistoryAlertState> {
   final GetHistoryUseCase _getHistoryUseCase;
   final GetHistoryDetailsUseCase _detailsUseCase;
@@ -23,13 +25,14 @@ class HistoryAlertCubit extends Cubit<HistoryAlertState> {
     );
   }
 
-  void updateDateFilter(DateTime? selectedDate) {
+  /// Narrows the loaded list. [AlertHistoryFilter.none] is Reset.
+  void applyFilter(AlertHistoryFilter filter) {
     final current = state;
     if (current is! HistoryAlertLoaded) return;
     emit(
       HistoryAlertLoaded(
         historyAlertDataList: current.historyAlertDataList,
-        selectedDate: selectedDate,
+        filter: filter,
       ),
     );
   }

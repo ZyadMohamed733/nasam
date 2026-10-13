@@ -9,16 +9,17 @@ import '../../../../core/di/injection_container.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 import '../../../../shared/widgets/action_icon.dart';
 import '../../../../shared/widgets/app_bar_widget.dart';
-import '../../../../shared/widgets/loading_indicator_widget.dart';
-import '../../../../shared/widgets/error_widget.dart';
 import '../../../../shared/widgets/empty_result_widget.dart';
+import '../../../../shared/widgets/error_widget.dart';
+import '../../../../shared/widgets/loading_indicator_widget.dart';
+import '../../domain/entities/alert_history_filter.dart';
 import '../../domain/entities/history_alert.dart';
 import '../cubit/histroy_alert_cubit.dart';
 import '../cubit/hsitory_alert_state.dart';
+import '../widget/alert_history_filter_sheet.dart';
 import '../widget/history_alert_card.dart';
 import '../widget/no_search_result_widget.dart';
 import '../widget/search_bar_widget.dart';
-import '../../../play_back/presentation/widgets/playback_date_picker_sheet.dart';
 
 class HistoryAlertPage extends StatefulWidget {
   const HistoryAlertPage({super.key, this.onBack, this.openDrawer});
@@ -33,10 +34,6 @@ class HistoryAlertPage extends StatefulWidget {
 class _HistoryAlertPageState extends State<HistoryAlertPage> {
   final _searchController = TextEditingController();
   String _query = '';
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -88,11 +85,8 @@ class _HistoryAlertPageState extends State<HistoryAlertPage> {
                 imageHeight: 48,
                 padding: const EdgeInsets.all(24),
               ),
-            HistoryAlertLoaded(
-              :final historyAlertDataList,
-              :final selectedDate,
-            ) =>
-              _historyList(context, historyAlertDataList, selectedDate),
+            HistoryAlertLoaded(:final historyAlertDataList, :final filter) =>
+              _historyList(context, historyAlertDataList, filter),
             HistoryAlertFailure(:final failure) => AppErrorWidget(
               message: l.errorGeneric,
               retryLabel: l.retry,
@@ -109,14 +103,12 @@ class _HistoryAlertPageState extends State<HistoryAlertPage> {
   Widget _historyList(
     BuildContext context,
     List<HistoryAlertEntity> alerts,
-    DateTime? selectedDate,
+    AlertHistoryFilter filter,
   ) {
     final query = _query.trim().toLowerCase();
     final filtered = alerts
         .where((alert) {
-          if (selectedDate != null && _saudiDate(alert) != selectedDate) {
-            return false;
-          }
+          if (!filter.matches(alert)) return false;
           if (query.isEmpty) return true;
           return [
             alert.title,
@@ -141,9 +133,8 @@ class _HistoryAlertPageState extends State<HistoryAlertPage> {
               debugPrint('[HistoryAlertPage] setState: search query changed');
               _query = value;
             }),
-            onFilterPressed: () =>
-                _showDateFilter(context, alerts, selectedDate),
-            isFilterActive: selectedDate != null,
+            onFilterPressed: () => _showFilter(context, filter),
+            isFilterActive: filter.isActive,
           ),
         ),
         Expanded(
@@ -175,56 +166,19 @@ class _HistoryAlertPageState extends State<HistoryAlertPage> {
       _query = '';
       _searchController.clear();
     });
-    blocContext.read<HistoryAlertCubit>().updateDateFilter(null);
+    blocContext.read<HistoryAlertCubit>().applyFilter(AlertHistoryFilter.none);
   }
 
-  Future<void> _showDateFilter(
-      BuildContext blocContext,
-      List<HistoryAlertEntity> alerts,
-      DateTime? selectedDate,
-      ) async {
-    final dates = alerts.map(_saudiDate).toList()..sort();
-    final lastDate = dates.last;
-    // Allow dates without matching alerts too, so applying one can produce an
-    // empty-result state. The old data-only bounds collapsed to Jan 17, 2027
-    // because every fixture alert has that timestamp.
-    final firstDate = DateUtils.dateOnly(
-      lastDate.subtract(const Duration(days: 365)),
+  Future<void> _showFilter(
+    BuildContext blocContext,
+    AlertHistoryFilter current,
+  ) async {
+    final filter = await showAlertHistoryFilterSheet(
+      blocContext,
+      current: current,
     );
-    final today = DateUtils.dateOnly(DateTime.now());
-    final suggestedDate = selectedDate ?? today;
-    final initialDate = suggestedDate.isBefore(firstDate)
-        ? firstDate
-        : suggestedDate.isAfter(lastDate)
-        ? lastDate
-        : suggestedDate;
-    final l = AppLocalizations.of(context)!;
-
-    final pickedDate = await showModalBottomSheet<DateTime>(
-      context: blocContext,
-      isScrollControlled: true,
-      useSafeArea: true,
-      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
-      ),
-      builder: (context) => PlaybackDatePickerSheet(
-        title: l.playbackChooseDay,
-        initialDate: initialDate,
-        firstDate: firstDate,
-        lastDate: lastDate,
-      ),
-    );
-
-    if (pickedDate == null || !mounted || !blocContext.mounted) return;
-    blocContext.read<HistoryAlertCubit>().updateDateFilter(
-      DateUtils.dateOnly(pickedDate),
-    );
-  }
-
-  DateTime _saudiDate(HistoryAlertEntity alert) {
-    final timestamp = alert.timestamp.toUtc().add(const Duration(hours: 3));
-    return DateTime(timestamp.year, timestamp.month, timestamp.day);
+    if (filter == null || !mounted || !blocContext.mounted) return;
+    blocContext.read<HistoryAlertCubit>().applyFilter(filter);
   }
 
   @override

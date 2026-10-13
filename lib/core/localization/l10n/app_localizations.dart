@@ -962,6 +962,114 @@ abstract class AppLocalizations {
   /// **'تصفية'**
   String get alertFilter;
 
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file (Bottom Sheet Filter, 988-17176).
+  ///
+  /// In ar, this message translates to:
+  /// **'تصفية اداره التنبيهات'**
+  String get alertFilterTitle;
+
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file (Bottom Sheet Filter, 988-17176).
+  ///
+  /// In ar, this message translates to:
+  /// **'اختاري التصفيه المطلوبه لعرض التنبيهات المرتبطه'**
+  String get alertFilterSubtitle;
+
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file (Bottom Sheet Filter, 988-17176).
+  ///
+  /// In ar, this message translates to:
+  /// **'نوع التنبيه'**
+  String get alertFilterType;
+
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file (Bottom Sheet Filter, 988-17176).
+  ///
+  /// In ar, this message translates to:
+  /// **'الكل'**
+  String get alertFilterTypeAll;
+
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file (Bottom Sheet Filter, 988-17176).
+  ///
+  /// In ar, this message translates to:
+  /// **'سرعه'**
+  String get alertFilterTypeSpeed;
+
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file (Bottom Sheet Filter, 988-17176).
+  ///
+  /// In ar, this message translates to:
+  /// **'حساس'**
+  String get alertFilterTypeSensor;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'توقف'**
+  String get alertFilterTypeDowntime;
+
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file (Bottom Sheet Filter, 988-17176).
+  ///
+  /// In ar, this message translates to:
+  /// **'التاريخ'**
+  String get alertFilterDate;
+
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file (Bottom Sheet Filter, 988-17176).
+  ///
+  /// In ar, this message translates to:
+  /// **'اليوم'**
+  String get alertFilterToday;
+
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file (Bottom Sheet Filter, 988-17176).
+  ///
+  /// In ar, this message translates to:
+  /// **'أمس'**
+  String get alertFilterYesterday;
+
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file (Bottom Sheet Filter, 988-17176).
+  ///
+  /// In ar, this message translates to:
+  /// **'اخر 7 ايام'**
+  String get alertFilterLast7Days;
+
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file (Bottom Sheet Filter, 988-17176).
+  ///
+  /// In ar, this message translates to:
+  /// **'آخر 30 يوم'**
+  String get alertFilterLast30Days;
+
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file (Bottom Sheet Filter, 988-17176).
+  ///
+  /// In ar, this message translates to:
+  /// **'تاريخ مخصص'**
+  String get alertFilterCustomDate;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'من'**
+  String get alertFilterFrom;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'إلى'**
+  String get alertFilterTo;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'يجب أن يكون تاريخ النهاية في نفس يوم تاريخ البداية أو بعده.'**
+  String get alertFilterInvalidRange;
+
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file (Bottom Sheet Filter, 988-17176).
+  ///
+  /// In ar, this message translates to:
+  /// **'تطبيق'**
+  String get alertFilterApply;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'إعادة تعيين'**
+  String get alertFilterReset;
+
   /// No description provided for @alertsNoSearchResults.
   ///
   /// In ar, this message translates to:

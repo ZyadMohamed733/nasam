@@ -1,14 +1,15 @@
 import 'package:flutter/foundation.dart';
+import 'package:nasam/features/history_alert/domain/entities/alert_history_filter.dart';
 import 'package:nasam/features/history_alert/domain/entities/history_alert.dart';
 import 'package:nasam/features/history_alert/domain/entities/history_details.dart';
 
 import '../../../../core/errors/failures.dart';
 
-sealed class HistoryAlertState{
+sealed class HistoryAlertState {
   const HistoryAlertState();
 }
 
-class HistoryAlertLoading extends HistoryAlertState{
+class HistoryAlertLoading extends HistoryAlertState {
   const HistoryAlertLoading();
   @override
   bool operator ==(Object other) => other is HistoryAlertLoading;
@@ -16,23 +17,25 @@ class HistoryAlertLoading extends HistoryAlertState{
   @override
   int get hashCode => runtimeType.hashCode;
 }
+
 class HistoryAlertLoaded extends HistoryAlertState {
   final List<HistoryAlertEntity> historyAlertDataList;
-  final DateTime? selectedDate;
+  final AlertHistoryFilter filter;
   const HistoryAlertLoaded({
     required this.historyAlertDataList,
-    this.selectedDate,
+    this.filter = AlertHistoryFilter.none,
   });
 
   @override
   bool operator ==(Object other) =>
       other is HistoryAlertLoaded &&
-          listEquals(other.historyAlertDataList, historyAlertDataList) &&
-          other.selectedDate == selectedDate;
+      listEquals(other.historyAlertDataList, historyAlertDataList) &&
+      other.filter == filter;
 
   @override
-  int get hashCode => Object.hash(Object.hashAll(historyAlertDataList), selectedDate);
+  int get hashCode => Object.hash(Object.hashAll(historyAlertDataList), filter);
 }
+
 class HistoryAlertDetailLoaded extends HistoryAlertState {
   final HistoryAlertDetailsEntity detailsEntity;
   const HistoryAlertDetailLoaded({required this.detailsEntity});
@@ -44,6 +47,7 @@ class HistoryAlertDetailLoaded extends HistoryAlertState {
   @override
   int get hashCode => detailsEntity.hashCode;
 }
+
 final class HistoryAlertFailure extends HistoryAlertState {
   const HistoryAlertFailure(this.failure);
   final Failure failure;

@@ -334,6 +334,78 @@
   "alertDetailsSpeedLimit": "الحد الأقصى للسرعة",
   "alertDetailsSubtitle": "تفاصيل التنبيه",
   "alertFilter": "تصفية",
+  "alertFilterTitle": "تصفية اداره التنبيهات",
+  "@alertFilterTitle": {
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file (Bottom Sheet Filter, 988-17176)."
+  },
+  "alertFilterSubtitle": "اختاري التصفيه المطلوبه لعرض التنبيهات المرتبطه",
+  "@alertFilterSubtitle": {
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file (Bottom Sheet Filter, 988-17176)."
+  },
+  "alertFilterType": "نوع التنبيه",
+  "@alertFilterType": {
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file (Bottom Sheet Filter, 988-17176)."
+  },
+  "alertFilterTypeAll": "الكل",
+  "@alertFilterTypeAll": {
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file (Bottom Sheet Filter, 988-17176)."
+  },
+  "alertFilterTypeSpeed": "سرعه",
+  "@alertFilterTypeSpeed": {
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file (Bottom Sheet Filter, 988-17176)."
+  },
+  "alertFilterTypeSensor": "حساس",
+  "@alertFilterTypeSensor": {
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file (Bottom Sheet Filter, 988-17176)."
+  },
+  "alertFilterTypeDowntime": "توقف",
+  "@alertFilterTypeDowntime": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
+  "alertFilterDate": "التاريخ",
+  "@alertFilterDate": {
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file (Bottom Sheet Filter, 988-17176)."
+  },
+  "alertFilterToday": "اليوم",
+  "@alertFilterToday": {
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file (Bottom Sheet Filter, 988-17176)."
+  },
+  "alertFilterYesterday": "أمس",
+  "@alertFilterYesterday": {
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file (Bottom Sheet Filter, 988-17176)."
+  },
+  "alertFilterLast7Days": "اخر 7 ايام",
+  "@alertFilterLast7Days": {
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file (Bottom Sheet Filter, 988-17176)."
+  },
+  "alertFilterLast30Days": "آخر 30 يوم",
+  "@alertFilterLast30Days": {
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file (Bottom Sheet Filter, 988-17176)."
+  },
+  "alertFilterCustomDate": "تاريخ مخصص",
+  "@alertFilterCustomDate": {
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file (Bottom Sheet Filter, 988-17176)."
+  },
+  "alertFilterFrom": "من",
+  "@alertFilterFrom": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
+  "alertFilterTo": "إلى",
+  "@alertFilterTo": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
+  "alertFilterInvalidRange": "يجب أن يكون تاريخ النهاية في نفس يوم تاريخ البداية أو بعده.",
+  "@alertFilterInvalidRange": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
+  "alertFilterApply": "تطبيق",
+  "@alertFilterApply": {
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file (Bottom Sheet Filter, 988-17176)."
+  },
+  "alertFilterReset": "إعادة تعيين",
+  "@alertFilterReset": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
   "alertsNoSearchResults": "لم يتم العثور على تنبيهات وفقًا للمعايير المحددة. حاول تعديل البحث أو عوامل التصفية.",
   "assetDetailsRunning": "يعمل",
   "assetDetailsOpen": "مفتوح",

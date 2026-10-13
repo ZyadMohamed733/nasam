@@ -519,6 +519,62 @@ class AppLocalizationsAr extends AppLocalizations {
   String get alertFilter => 'تصفية';
 
   @override
+  String get alertFilterTitle => 'تصفية اداره التنبيهات';
+
+  @override
+  String get alertFilterSubtitle =>
+      'اختاري التصفيه المطلوبه لعرض التنبيهات المرتبطه';
+
+  @override
+  String get alertFilterType => 'نوع التنبيه';
+
+  @override
+  String get alertFilterTypeAll => 'الكل';
+
+  @override
+  String get alertFilterTypeSpeed => 'سرعه';
+
+  @override
+  String get alertFilterTypeSensor => 'حساس';
+
+  @override
+  String get alertFilterTypeDowntime => 'توقف';
+
+  @override
+  String get alertFilterDate => 'التاريخ';
+
+  @override
+  String get alertFilterToday => 'اليوم';
+
+  @override
+  String get alertFilterYesterday => 'أمس';
+
+  @override
+  String get alertFilterLast7Days => 'اخر 7 ايام';
+
+  @override
+  String get alertFilterLast30Days => 'آخر 30 يوم';
+
+  @override
+  String get alertFilterCustomDate => 'تاريخ مخصص';
+
+  @override
+  String get alertFilterFrom => 'من';
+
+  @override
+  String get alertFilterTo => 'إلى';
+
+  @override
+  String get alertFilterInvalidRange =>
+      'يجب أن يكون تاريخ النهاية في نفس يوم تاريخ البداية أو بعده.';
+
+  @override
+  String get alertFilterApply => 'تطبيق';
+
+  @override
+  String get alertFilterReset => 'إعادة تعيين';
+
+  @override
   String get alertsNoSearchResults =>
       'لم يتم العثور على تنبيهات وفقًا للمعايير المحددة. حاول تعديل البحث أو عوامل التصفية.';
 

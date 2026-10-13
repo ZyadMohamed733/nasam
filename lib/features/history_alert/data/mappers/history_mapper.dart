@@ -57,6 +57,7 @@ abstract final class AlertMapper {
     'speed' => AlertType.speed,
     'sensor' => AlertType.sensor,
     'geofence' => AlertType.geofence,
+    'downtime' => AlertType.downtime,
     _ => AlertType.unknown,
   };
 }

@@ -18,6 +18,8 @@ class HistoryAlertCard extends StatelessWidget {
     AlertType.speed => AppAssets.speedAlert,
     AlertType.geofence => AppAssets.geofenceAlert,
     AlertType.sensor => AppAssets.fuelAlert,
+    // The design has no downtime icon yet.
+    AlertType.downtime => AppAssets.alertNotification,
     AlertType.unknown => AppAssets.speedAlert,
   };
 

@@ -505,6 +505,62 @@ class AppLocalizationsEn extends AppLocalizations {
   String get alertFilter => 'Filter';
 
   @override
+  String get alertFilterTitle => 'Filter alerts';
+
+  @override
+  String get alertFilterSubtitle =>
+      'Choose the filters to show the matching alerts';
+
+  @override
+  String get alertFilterType => 'Alert type';
+
+  @override
+  String get alertFilterTypeAll => 'All';
+
+  @override
+  String get alertFilterTypeSpeed => 'Speed';
+
+  @override
+  String get alertFilterTypeSensor => 'Sensor';
+
+  @override
+  String get alertFilterTypeDowntime => 'Downtime';
+
+  @override
+  String get alertFilterDate => 'Date';
+
+  @override
+  String get alertFilterToday => 'Today';
+
+  @override
+  String get alertFilterYesterday => 'Yesterday';
+
+  @override
+  String get alertFilterLast7Days => 'Last 7 days';
+
+  @override
+  String get alertFilterLast30Days => 'Last 30 days';
+
+  @override
+  String get alertFilterCustomDate => 'Custom date';
+
+  @override
+  String get alertFilterFrom => 'From';
+
+  @override
+  String get alertFilterTo => 'To';
+
+  @override
+  String get alertFilterInvalidRange =>
+      'To Date must be on or after From Date.';
+
+  @override
+  String get alertFilterApply => 'Apply';
+
+  @override
+  String get alertFilterReset => 'Reset';
+
+  @override
   String get alertsNoSearchResults =>
       'No alerts were found for the selected criteria. Try changing your search or filters.';
 

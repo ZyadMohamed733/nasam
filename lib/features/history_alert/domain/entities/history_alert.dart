@@ -2,6 +2,7 @@ enum AlertType {
   speed,
   sensor,
   geofence,
+  downtime,
   unknown;
 
   static AlertType fromString(String value) {
