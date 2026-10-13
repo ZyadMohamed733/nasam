@@ -124,8 +124,9 @@ class _PlaybackDatePickerSheetState extends State<PlaybackDatePickerSheet> {
 
   List<DateTime> get _calendarDays {
     final firstOfMonth = DateTime(_visibleMonth.year, _visibleMonth.month);
-    // Saturday is the first column in the Arabic calendar design.
-    final leadingDays = (firstOfMonth.weekday + 1) % 7;
+    // Sunday first, as the design lays the week out; the rows follow the
+    // text direction, so in Arabic Sunday is the right-most column.
+    final leadingDays = firstOfMonth.weekday % 7;
     final firstCell = firstOfMonth.subtract(Duration(days: leadingDays));
     return List<DateTime>.generate(
       42,
@@ -168,7 +169,7 @@ class _PlaybackDatePickerSheetState extends State<PlaybackDatePickerSheet> {
     final monthName = DateFormat.MMMM(locale).format(_visibleMonth);
     final weekdays = List<DateTime>.generate(
       7,
-      (index) => DateTime(2024, 1, 6 - index), // Saturday through Sunday.
+      (index) => DateTime(2023, 12, 31 + index), // Sunday through Saturday.
     );
     final calendarDays = _calendarDays;
 
@@ -274,7 +275,6 @@ class _PlaybackDatePickerSheetState extends State<PlaybackDatePickerSheet> {
                       borderRadius: BorderRadius.circular(8.r),
                     ),
                     child: Row(
-                      textDirection: ui.TextDirection.ltr,
                       children: [
                         for (final day in weekdays)
                           Expanded(
@@ -295,7 +295,6 @@ class _PlaybackDatePickerSheetState extends State<PlaybackDatePickerSheet> {
                     SizedBox(
                       height: 36.h,
                       child: Row(
-                        textDirection: ui.TextDirection.ltr,
                         children: [
                           for (var weekday = 0; weekday < 7; weekday++)
                             Expanded(
