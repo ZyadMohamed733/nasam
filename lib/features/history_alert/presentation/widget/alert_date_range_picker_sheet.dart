@@ -178,21 +178,33 @@ class _AlertDateRangePickerSheetState extends State<AlertDateRangePickerSheet> {
                     ),
                   ),
                 ),
-                OutlinedButton.icon(
+                // The design's "اليوم ↓": a label in a box, not an action.
+                Container(
                   key: AlertDateRangePickerSheet.todayKey,
-                  onPressed: () => setState(() => _month = _lastMonth),
-                  // The theme's buttons are full width; this one hugs its
-                  // label in the header row.
-                  style: OutlinedButton.styleFrom(
-                    minimumSize: const Size(0, AppSizes.iconButtonMedium),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppSizes.p12,
-                    ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSizes.p12,
+                    vertical: AppSizes.p4,
                   ),
-                  icon: const Icon(Icons.arrow_downward, size: AppSizes.iconSm),
-                  label: Text(
-                    l.alertFilterToday,
-                    style: AppTextStyles.bodySR.copyWith(color: s.textColor),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: s.containerBorder),
+                    borderRadius: BorderRadius.circular(AppSizes.r8),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        l.alertFilterToday,
+                        style: AppTextStyles.bodySR.copyWith(
+                          color: s.textColor,
+                        ),
+                      ),
+                      const SizedBox(width: AppSizes.p4),
+                      Icon(
+                        Icons.arrow_downward,
+                        size: AppSizes.iconSm,
+                        color: s.iconSecondary,
+                      ),
+                    ],
                   ),
                 ),
                 IconButton(

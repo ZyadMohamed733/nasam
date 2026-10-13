@@ -1,4 +1,4 @@
-import 'dart:ui' show Tristate;
+import 'dart:ui' show SemanticsAction, Tristate;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -196,15 +196,35 @@ void main() {
     ));
   });
 
-  testWidgets('paging back, then Today returns to this month', (tester) async {
+  testWidgets('paging back shows the months before', (tester) async {
     await openPicker(tester);
     await tester.tap(find.byKey(Picker.previousKey));
     await tester.pump();
     expect(find.text('August 2026'), findsOneWidget);
+    expect(find.text('September 2026'), findsOneWidget);
     expect(find.text('October 2026'), findsNothing);
-    await tester.tap(find.byKey(Picker.todayKey));
-    await tester.pump();
-    expect(find.text('October 2026'), findsOneWidget);
+  });
+
+  testWidgets('"Today" is a label, not a button', (tester) async {
+    final handle = tester.ensureSemantics();
+    await openPicker(tester);
+    final today = find.byKey(Picker.todayKey);
+    expect(
+      find.descendant(of: today, matching: find.text('Today')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(of: today, matching: find.byType(InkWell)),
+      findsNothing,
+    );
+    expect(
+      tester
+          .getSemantics(today)
+          .getSemanticsData()
+          .hasAction(SemanticsAction.tap),
+      isFalse,
+    );
+    handle.dispose();
   });
 
   testWidgets('Arabic: Arabic numerals, Sunday first from the right', (
