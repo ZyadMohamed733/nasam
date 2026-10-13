@@ -575,6 +575,54 @@ class AppLocalizationsAr extends AppLocalizations {
   String get alertFilterReset => 'إعادة تعيين';
 
   @override
+  String get alertTypeGeofence => 'نطاق جغرافي';
+
+  @override
+  String get alertTypeUnknown => 'أخرى';
+
+  @override
+  String get alertLocationUnavailable => 'الموقع غير متاح لهذا التنبيه.';
+
+  @override
+  String get alertLoadMoreFailed => 'تعذر تحميل المزيد من التنبيهات.';
+
+  @override
+  String get alertDetailsSensorInfo => 'تفاصيل الحساس';
+
+  @override
+  String get alertDetailsSensor => 'الحساس';
+
+  @override
+  String get alertDetailsSensorType => 'نوع الحساس';
+
+  @override
+  String get alertDetailsTriggeredValue => 'القيمة المسجلة';
+
+  @override
+  String get alertDetailsCondition => 'الشرط المحدد';
+
+  @override
+  String get alertDetailsDowntimeInfo => 'تفاصيل التوقف';
+
+  @override
+  String get alertDetailsDuration => 'المدة';
+
+  @override
+  String alertDurationMinutes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count دقيقة',
+      many: '$count دقيقة',
+      few: '$count دقائق',
+      two: 'دقيقتان',
+      one: 'دقيقة واحدة',
+      zero: '0 دقيقة',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get alertsNoSearchResults =>
       'لم يتم العثور على تنبيهات وفقًا للمعايير المحددة. حاول تعديل البحث أو عوامل التصفية.';
 

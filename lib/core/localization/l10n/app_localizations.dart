@@ -1070,6 +1070,78 @@ abstract class AppLocalizations {
   /// **'إعادة تعيين'**
   String get alertFilterReset;
 
+  /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
+  ///
+  /// In ar, this message translates to:
+  /// **'نطاق جغرافي'**
+  String get alertTypeGeofence;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'أخرى'**
+  String get alertTypeUnknown;
+
+  /// NASAM-621 story copy. AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'الموقع غير متاح لهذا التنبيه.'**
+  String get alertLocationUnavailable;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذر تحميل المزيد من التنبيهات.'**
+  String get alertLoadMoreFailed;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'تفاصيل الحساس'**
+  String get alertDetailsSensorInfo;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'الحساس'**
+  String get alertDetailsSensor;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'نوع الحساس'**
+  String get alertDetailsSensorType;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'القيمة المسجلة'**
+  String get alertDetailsTriggeredValue;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'الشرط المحدد'**
+  String get alertDetailsCondition;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'تفاصيل التوقف'**
+  String get alertDetailsDowntimeInfo;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'المدة'**
+  String get alertDetailsDuration;
+
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.
+  ///
+  /// In ar, this message translates to:
+  /// **'{count, plural, zero{0 دقيقة} one{دقيقة واحدة} two{دقيقتان} few{{count} دقائق} many{{count} دقيقة} other{{count} دقيقة}}'**
+  String alertDurationMinutes(int count);
+
   /// No description provided for @alertsNoSearchResults.
   ///
   /// In ar, this message translates to:

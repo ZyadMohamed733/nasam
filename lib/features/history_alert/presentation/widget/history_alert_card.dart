@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../core/constants/app_assets.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
 import '../../domain/entities/history_alert.dart';
+import '../utils/alert_history_format.dart';
 
 class HistoryAlertCard extends StatelessWidget {
   const HistoryAlertCard({super.key, required this.alert, this.onTap});
@@ -26,11 +26,7 @@ class HistoryAlertCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
-    final locale = Localizations.localeOf(context).toString();
-    // Alerts are recorded in Saudi Arabia (+03:00). Keep that event time
-    // stable when the user views the history from another device timezone.
-    final saudiTime = alert.timestamp.toUtc().add(const Duration(hours: 3));
-    final time = DateFormat('d MMMM yyyy — hh:mm a', locale).format(saudiTime);
+    final time = AlertHistoryFormat.time(context, alert.occurredAt);
 
     final detail = TextStyle(
       color: AppColors.neutral600,
@@ -66,7 +62,7 @@ class HistoryAlertCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      alert.title,
+                      AlertHistoryFormat.text(context, alert.alertName),
                       style: TextStyle(
                         color: AppColors.neutralBlack,
                         fontSize: 14.sp,
@@ -74,15 +70,25 @@ class HistoryAlertCard extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 4.h),
-                    Text('${l.alertAsset}: ${alert.assetName}', style: detail),
                     Text(
-                      '${l.alertType}: ${alert.alertTypeLabel}',
+                      '${l.alertAsset}: '
+                      '${AlertHistoryFormat.asset(context, alert.asset)}',
                       style: detail,
                     ),
-                    Text('${l.alertValue}: ${alert.valueLabel}', style: detail),
+                    Text(
+                      '${l.alertType}: '
+                      '${AlertHistoryFormat.typeLabel(l, alert.alertType)}',
+                      style: detail,
+                    ),
+                    Text(
+                      '${l.alertValue}: '
+                      '${AlertHistoryFormat.text(context, alert.triggeredValue)}',
+                      style: detail,
+                    ),
                     Text('${l.alertTime}: $time', style: detail),
                     Text(
-                      '${l.alertLocation}: ${alert.location}',
+                      '${l.alertLocation}: '
+                      '${AlertHistoryFormat.location(l, alert.location)}',
                       style: detail,
                     ),
                   ],

@@ -406,6 +406,59 @@
   "@alertFilterReset": {
     "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
   },
+  "alertTypeGeofence": "نطاق جغرافي",
+  "@alertTypeGeofence": {
+    "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file."
+  },
+  "alertTypeUnknown": "أخرى",
+  "@alertTypeUnknown": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
+  "alertLocationUnavailable": "الموقع غير متاح لهذا التنبيه.",
+  "@alertLocationUnavailable": {
+    "description": "NASAM-621 story copy. AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
+  "alertLoadMoreFailed": "تعذر تحميل المزيد من التنبيهات.",
+  "@alertLoadMoreFailed": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
+  "alertDetailsSensorInfo": "تفاصيل الحساس",
+  "@alertDetailsSensorInfo": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
+  "alertDetailsSensor": "الحساس",
+  "@alertDetailsSensor": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
+  "alertDetailsSensorType": "نوع الحساس",
+  "@alertDetailsSensorType": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
+  "alertDetailsTriggeredValue": "القيمة المسجلة",
+  "@alertDetailsTriggeredValue": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
+  "alertDetailsCondition": "الشرط المحدد",
+  "@alertDetailsCondition": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
+  "alertDetailsDowntimeInfo": "تفاصيل التوقف",
+  "@alertDetailsDowntimeInfo": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
+  "alertDetailsDuration": "المدة",
+  "@alertDetailsDuration": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
+  },
+  "alertDurationMinutes": "{count, plural, zero{0 دقيقة} one{دقيقة واحدة} two{دقيقتان} few{{count} دقائق} many{{count} دقيقة} other{{count} دقيقة}}",
+  "@alertDurationMinutes": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "alertsNoSearchResults": "لم يتم العثور على تنبيهات وفقًا للمعايير المحددة. حاول تعديل البحث أو عوامل التصفية.",
   "assetDetailsRunning": "يعمل",
   "assetDetailsOpen": "مفتوح",

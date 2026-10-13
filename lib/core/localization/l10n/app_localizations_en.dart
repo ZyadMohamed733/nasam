@@ -561,6 +561,51 @@ class AppLocalizationsEn extends AppLocalizations {
   String get alertFilterReset => 'Reset';
 
   @override
+  String get alertTypeGeofence => 'Geofence';
+
+  @override
+  String get alertTypeUnknown => 'Other';
+
+  @override
+  String get alertLocationUnavailable =>
+      'Location is not available for this alert.';
+
+  @override
+  String get alertLoadMoreFailed => 'Couldn\'t load more alerts.';
+
+  @override
+  String get alertDetailsSensorInfo => 'Sensor details';
+
+  @override
+  String get alertDetailsSensor => 'Sensor';
+
+  @override
+  String get alertDetailsSensorType => 'Sensor type';
+
+  @override
+  String get alertDetailsTriggeredValue => 'Triggered value';
+
+  @override
+  String get alertDetailsCondition => 'Configured condition';
+
+  @override
+  String get alertDetailsDowntimeInfo => 'Downtime details';
+
+  @override
+  String get alertDetailsDuration => 'Duration';
+
+  @override
+  String alertDurationMinutes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count minutes',
+      one: '1 minute',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get alertsNoSearchResults =>
       'No alerts were found for the selected criteria. Try changing your search or filters.';
 

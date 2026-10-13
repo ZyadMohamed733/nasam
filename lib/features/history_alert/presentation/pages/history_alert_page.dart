@@ -13,9 +13,8 @@ import '../../../../shared/widgets/empty_result_widget.dart';
 import '../../../../shared/widgets/error_widget.dart';
 import '../../../../shared/widgets/loading_indicator_widget.dart';
 import '../../domain/entities/alert_history_filter.dart';
-import '../../domain/entities/history_alert.dart';
-import '../cubit/histroy_alert_cubit.dart';
-import '../cubit/hsitory_alert_state.dart';
+import '../cubit/alert_history_list_cubit.dart';
+import '../cubit/alert_history_list_state.dart';
 import '../widget/alert_history_filter_sheet.dart';
 import '../widget/history_alert_card.dart';
 import '../widget/no_search_result_widget.dart';
@@ -33,7 +32,6 @@ class HistoryAlertPage extends StatefulWidget {
 
 class _HistoryAlertPageState extends State<HistoryAlertPage> {
   final _searchController = TextEditingController();
-  String _query = '';
 
   @override
   Widget build(BuildContext context) {
@@ -70,103 +68,108 @@ class _HistoryAlertPageState extends State<HistoryAlertPage> {
         ),
       ),
       body: BlocProvider(
-        create: (_) => getIt<HistoryAlertCubit>()..getHistoryAlertData(),
-        child: BlocBuilder<HistoryAlertCubit, HistoryAlertState>(
-          builder: (context, state) => switch (state) {
-            HistoryAlertLoading() => const Center(
-              child: LoadingIndicatorWidget(),
-            ),
-            HistoryAlertLoaded(:final historyAlertDataList)
-                when historyAlertDataList.isEmpty =>
-              EmptyResultWidget(
-                message: l.alertsLogUnavailable,
-                subtitle: l.deviceAlertsEmpty,
-                type: EmptyResultType.alerts,
-                imageHeight: 48,
-                padding: const EdgeInsets.all(24),
-              ),
-            HistoryAlertLoaded(:final historyAlertDataList, :final filter) =>
-              _historyList(context, historyAlertDataList, filter),
-            HistoryAlertFailure(:final failure) => AppErrorWidget(
-              message: l.errorGeneric,
-              retryLabel: l.retry,
-              onRetry: context.read<HistoryAlertCubit>().getHistoryAlertData,
-              type: AppErrorWidget.typeForFailure(failure),
-            ),
-            HistoryAlertDetailLoaded() => const SizedBox.shrink(),
+        create: (_) => getIt<AlertHistoryListCubit>()..load(),
+        child: BlocBuilder<AlertHistoryListCubit, AlertHistoryListState>(
+          builder: (context, state) {
+            final cubit = context.read<AlertHistoryListCubit>();
+            return Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 12, 12, 8),
+                  child: SearchBarWidget(
+                    controller: _searchController,
+                    onSearchChanged: cubit.onSearchChanged,
+                    onFilterPressed: () => _showFilter(context, state.filter),
+                    isFilterActive: state.filter.isActive,
+                  ),
+                ),
+                Expanded(child: _body(context, state)),
+              ],
+            );
           },
         ),
       ),
     );
   }
 
-  Widget _historyList(
-    BuildContext context,
-    List<HistoryAlertEntity> alerts,
-    AlertHistoryFilter filter,
-  ) {
-    final query = _query.trim().toLowerCase();
-    final filtered = alerts
-        .where((alert) {
-          if (!filter.matches(alert)) return false;
-          if (query.isEmpty) return true;
-          return [
-            alert.title,
-            alert.assetName,
-            alert.alertTypeLabel,
-            alert.valueLabel,
-            alert.value?.toString() ?? '',
-            alert.unit ?? '',
-            alert.timestamp.toIso8601String(),
-            alert.location,
-          ].any((value) => value.toString().toLowerCase().contains(query));
-        })
-        .toList(growable: false);
-
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 12, 12, 8),
-          child: SearchBarWidget(
-            controller: _searchController,
-            onSearchChanged: (value) => setState(() {
-              debugPrint('[HistoryAlertPage] setState: search query changed');
-              _query = value;
-            }),
-            onFilterPressed: () => _showFilter(context, filter),
-            isFilterActive: filter.isActive,
+  Widget _body(BuildContext context, AlertHistoryListState state) {
+    final l = AppLocalizations.of(context)!;
+    final cubit = context.read<AlertHistoryListCubit>();
+    return switch (state.status) {
+      AlertHistoryStatus.loading => const Center(
+        child: LoadingIndicatorWidget(),
+      ),
+      AlertHistoryStatus.failure => AppErrorWidget(
+        message: l.errorGeneric,
+        retryLabel: l.retry,
+        onRetry: cubit.load,
+        type: AppErrorWidget.typeForFailure(state.failure!),
+      ),
+      AlertHistoryStatus.loaded when state.alerts.isEmpty && state.isNarrowed =>
+        NoSearchResultWidget(
+          historyList: state.alerts,
+          onClearFilters: () => _clearFilters(cubit),
+        ),
+      AlertHistoryStatus.loaded when state.alerts.isEmpty => RefreshIndicator(
+        onRefresh: cubit.refresh,
+        child: LayoutBuilder(
+          builder: (context, constraints) => SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: SizedBox(
+              height: constraints.maxHeight,
+              child: EmptyResultWidget(
+                message: l.alertsLogUnavailable,
+                subtitle: l.deviceAlertsEmpty,
+                type: EmptyResultType.alerts,
+                imageHeight: 48,
+                padding: const EdgeInsets.all(24),
+              ),
+            ),
           ),
         ),
-        Expanded(
-          child: filtered.isEmpty
-              ? NoSearchResultWidget(
-                  historyList: filtered,
-                  onClearFilters: () => _clearFilters(context),
-                )
-              : ListView.separated(
-                  padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-                  itemCount: filtered.length,
-                  separatorBuilder: (_, _) => const SizedBox(height: 8),
-                  itemBuilder: (context, index) => HistoryAlertCard(
-                    alert: filtered[index],
-                    onTap: () => context.push(
-                      AppRoutes.alertDetails(filtered[index].id),
-                      extra: filtered[index],
-                    ),
-                  ),
-                ),
+      ),
+      AlertHistoryStatus.loaded => _list(context, state),
+    };
+  }
+
+  Widget _list(BuildContext context, AlertHistoryListState state) {
+    final cubit = context.read<AlertHistoryListCubit>();
+    final footer = state.hasMore || state.loadMoreFailed;
+    return NotificationListener<ScrollNotification>(
+      // Ask for the next page while a screenful is still left to read.
+      onNotification: (notification) {
+        if (notification.metrics.extentAfter < 400) cubit.loadMore();
+        return false;
+      },
+      child: RefreshIndicator(
+        onRefresh: cubit.refresh,
+        child: ListView.separated(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+          itemCount: state.alerts.length + (footer ? 1 : 0),
+          separatorBuilder: (_, _) => const SizedBox(height: 8),
+          itemBuilder: (context, index) {
+            if (index == state.alerts.length) {
+              return _LoadMoreFooter(
+                failed: state.loadMoreFailed,
+                onRetry: cubit.loadMore,
+              );
+            }
+            final alert = state.alerts[index];
+            return HistoryAlertCard(
+              alert: alert,
+              onTap: () =>
+                  context.push(AppRoutes.alertDetails(alert.id), extra: alert),
+            );
+          },
         ),
-      ],
+      ),
     );
   }
 
-  void _clearFilters(BuildContext blocContext) {
-    setState(() {
-      debugPrint('[HistoryAlertPage] setState: clear search query');
-      _query = '';
-      _searchController.clear();
-    });
-    blocContext.read<HistoryAlertCubit>().applyFilter(AlertHistoryFilter.none);
+  void _clearFilters(AlertHistoryListCubit cubit) {
+    _searchController.clear();
+    cubit.clearAll();
   }
 
   Future<void> _showFilter(
@@ -178,12 +181,43 @@ class _HistoryAlertPageState extends State<HistoryAlertPage> {
       current: current,
     );
     if (filter == null || !mounted || !blocContext.mounted) return;
-    blocContext.read<HistoryAlertCubit>().applyFilter(filter);
+    await blocContext.read<AlertHistoryListCubit>().applyFilter(filter);
   }
 
   @override
   void dispose() {
     _searchController.dispose();
     super.dispose();
+  }
+}
+
+/// The row after the last alert: a spinner while the next page loads, or
+/// a retry when it failed.
+class _LoadMoreFooter extends StatelessWidget {
+  const _LoadMoreFooter({required this.failed, required this.onRetry});
+
+  final bool failed;
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      child: Center(
+        child: failed
+            ? Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    l.alertLoadMoreFailed,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  TextButton(onPressed: onRetry, child: Text(l.retry)),
+                ],
+              )
+            : const LoadingIndicatorWidget(),
+      ),
+    );
   }
 }

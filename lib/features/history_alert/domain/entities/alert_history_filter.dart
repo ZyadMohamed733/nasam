@@ -41,16 +41,6 @@ class AlertHistoryFilter {
     return from == null || to == null || !to.isBefore(from);
   }
 
-  bool matches(HistoryAlertEntity alert) {
-    if (type != null && alert.alertType != type) return false;
-    final from = this.from;
-    final to = this.to;
-    final at = alert.timestamp;
-    if (from != null && at.isBefore(from)) return false;
-    if (to != null && at.isAfter(to)) return false;
-    return true;
-  }
-
   /// [preset]'s inclusive bounds around [now], counted in whole days on the
   /// calendar [utcOffset] ahead of UTC. "Last 7 days" is today and the six
   /// before it.

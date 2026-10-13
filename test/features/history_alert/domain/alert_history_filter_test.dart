@@ -2,18 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:nasam/features/history_alert/domain/entities/alert_history_filter.dart';
 import 'package:nasam/features/history_alert/domain/entities/history_alert.dart';
 
-HistoryAlertEntity alertAt(DateTime at, {AlertType type = AlertType.speed}) =>
-    HistoryAlertEntity(
-      id: 'a',
-      title: 'title',
-      alertType: type,
-      alertTypeLabel: type.name,
-      assetName: 'asset',
-      valueLabel: '',
-      timestamp: at,
-      location: '',
-    );
-
 void main() {
   // 01:30 on 13 Oct in Riyadh, still 12 Oct in UTC.
   final now = DateTime.utc(2026, 10, 12, 22, 30);
@@ -57,42 +45,6 @@ void main() {
       AlertHistoryFilter.instantOf(DateTime(2026, 10, 13, 9, 15)),
       DateTime.utc(2026, 10, 13, 6, 15),
     );
-  });
-
-  group('matches', () {
-    final today = AlertHistoryFilter.rangeFor(AlertDatePreset.today, now);
-    final filter = AlertHistoryFilter(
-      type: AlertType.speed,
-      datePreset: AlertDatePreset.today,
-      from: today.from,
-      to: today.to,
-    );
-
-    test('keeps an alert of the type inside the range, bounds included', () {
-      expect(filter.matches(alertAt(today.from)), isTrue);
-      expect(filter.matches(alertAt(today.to)), isTrue);
-    });
-
-    test('drops other types and alerts outside the range', () {
-      expect(
-        filter.matches(alertAt(today.from, type: AlertType.sensor)),
-        isFalse,
-      );
-      expect(
-        filter.matches(
-          alertAt(today.from.subtract(const Duration(milliseconds: 1))),
-        ),
-        isFalse,
-      );
-      expect(
-        filter.matches(alertAt(today.to.add(const Duration(milliseconds: 1)))),
-        isFalse,
-      );
-    });
-
-    test('none keeps everything', () {
-      expect(AlertHistoryFilter.none.matches(alertAt(DateTime(2000))), isTrue);
-    });
   });
 
   test('counts one badge per narrowing choice', () {
