@@ -8,10 +8,10 @@ import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_button.dart';
 import '../../../../shared/widgets/hit_target.dart';
 import '../../../../shared/widgets/map_sheet_header.dart';
-import '../../../play_back/presentation/widgets/playback_date_picker_sheet.dart';
 import '../../domain/entities/alert_history_filter.dart';
 import '../../domain/entities/history_alert.dart';
 import '../utils/alert_history_format.dart';
+import 'alert_date_range_picker_sheet.dart';
 
 /// A custom range as wall-clock times on the alerts' calendar, or null when
 /// the user backed out of picking.
@@ -377,41 +377,15 @@ class _CustomRange extends StatelessWidget {
   }
 }
 
-/// Picks a custom range with the date and time picker, From then To, as
-/// wall-clock times on the alerts' calendar.
+/// Picks a custom range with the design's range picker, as wall-clock
+/// times on the alerts' calendar. Days after today cannot be picked.
 Future<({DateTime from, DateTime to})?> pickAlertCustomRange(
   BuildContext context, {
   DateTime? from,
   DateTime? to,
-}) async {
-  final l = AppLocalizations.of(context)!;
-  final now = DateTime.now().toUtc().add(AlertHistoryFilter.saudiUtcOffset);
-  final lastDate = DateTime(now.year, now.month, now.day);
-  // The story sets no limit on how far back; the picker needs a first page.
-  final firstDate = DateTime(2000);
-
-  Future<DateTime?> pick(String title, DateTime? initial) =>
-      showModalBottomSheet<DateTime>(
-        context: context,
-        isScrollControlled: true,
-        useSafeArea: true,
-        backgroundColor: context.colorScheme.surfaceContainerLow,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(AppSizes.r12),
-          ),
-        ),
-        builder: (_) => PlaybackDatePickerSheet(
-          title: title,
-          initialDate: initial ?? lastDate,
-          firstDate: firstDate,
-          lastDate: lastDate,
-        ),
-      );
-
-  final pickedFrom = await pick(l.alertFilterFrom, from);
-  if (pickedFrom == null || !context.mounted) return null;
-  final pickedTo = await pick(l.alertFilterTo, to ?? pickedFrom);
-  if (pickedTo == null) return null;
-  return (from: pickedFrom, to: pickedTo);
-}
+}) => showAlertDateRangePicker(
+  context,
+  today: DateTime.now().toUtc().add(AlertHistoryFilter.saudiUtcOffset),
+  from: from,
+  to: to,
+);
