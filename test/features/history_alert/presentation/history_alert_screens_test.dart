@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:nasam/core/di/injection_container.dart';
 import 'package:nasam/features/history_alert/data/datasources/history_alert_datasource.dart';
 import 'package:nasam/features/history_alert/data/repositories/history_repo_impl.dart';
+import 'package:nasam/features/history_alert/domain/entities/alert_history_filter.dart';
 import 'package:nasam/features/history_alert/domain/entities/history_alert.dart';
 import 'package:nasam/features/history_alert/domain/usecase/get_history_details_usecase.dart';
 import 'package:nasam/features/history_alert/domain/usecase/get_history_usecase.dart';
@@ -12,7 +13,10 @@ import 'package:nasam/features/history_alert/presentation/cubit/alert_history_li
 import 'package:nasam/features/history_alert/presentation/cubit/histroy_alert_cubit.dart';
 import 'package:nasam/features/history_alert/presentation/pages/history_alert_details_page.dart';
 import 'package:nasam/features/history_alert/presentation/pages/history_alert_page.dart';
+import 'package:nasam/features/history_alert/presentation/widget/alert_history_filter_sheet.dart';
+import 'package:nasam/features/history_alert/presentation/widget/applied_filter_chips.dart';
 import 'package:nasam/features/history_alert/presentation/widget/history_alert_card.dart';
+import 'package:nasam/features/history_alert/presentation/widget/search_bar_widget.dart';
 
 import '../../../helpers/recording_adapter.dart';
 import '../../../helpers/widget_harness.dart';
@@ -155,6 +159,55 @@ void main() {
       await tester.tap(find.text('إعادة المحاولة'));
       await tester.pumpAndSettle();
       expect(find.byType(HistoryAlertCard), findsOneWidget);
+    });
+
+    testWidgets('applied filters show as chips with a count; a chip\'s × '
+        'drops its filter and reloads', (tester) async {
+      adapter.respond = (_) => (200, pageJson([alertJson()]));
+      await pumpList(tester);
+      expect(find.byKey(SearchBarWidget.badgeKey), findsNothing);
+
+      await tester.tap(find.byKey(SearchBarWidget.filterButtonKey));
+      await tester.pumpAndSettle();
+      await tester.tap(
+        find.byKey(AlertHistoryFilterSheet.typeKey(AlertType.speed)),
+      );
+      await tester.tap(
+        find.byKey(AlertHistoryFilterSheet.presetKey(AlertDatePreset.today)),
+      );
+      await tester.pump();
+      await tester.tap(find.byKey(AlertHistoryFilterSheet.applyKey));
+      await tester.pumpAndSettle();
+
+      expect(adapter.requests.last.uri.queryParameters['alertType'], 'SPEED');
+      expect(
+        find.descendant(
+          of: find.byKey(SearchBarWidget.badgeKey),
+          matching: find.text('2'),
+        ),
+        findsOneWidget,
+      );
+      expect(find.byKey(AppliedFilterChips.typeKey), findsOneWidget);
+      expect(find.byKey(AppliedFilterChips.dateKey), findsOneWidget);
+
+      await tester.tap(find.byKey(AppliedFilterChips.typeKey));
+      await tester.pumpAndSettle();
+      final query = adapter.requests.last.uri.queryParameters;
+      expect(query.containsKey('alertType'), isFalse);
+      expect(query.containsKey('from'), isTrue);
+      expect(find.byKey(AppliedFilterChips.typeKey), findsNothing);
+      expect(
+        find.descendant(
+          of: find.byKey(SearchBarWidget.badgeKey),
+          matching: find.text('1'),
+        ),
+        findsOneWidget,
+      );
+
+      await tester.tap(find.byKey(AppliedFilterChips.dateKey));
+      await tester.pumpAndSettle();
+      expect(adapter.requests.last.uri.queryParameters.keys, ['page', 'limit']);
+      expect(find.byKey(SearchBarWidget.badgeKey), findsNothing);
     });
   });
 

@@ -4,7 +4,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/constants/app_assets.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/localization/l10n/app_localizations.dart';
+import '../../../../core/theme/app_text_styles.dart';
 
 class SearchBarWidget extends StatelessWidget {
   const SearchBarWidget({
@@ -12,13 +14,24 @@ class SearchBarWidget extends StatelessWidget {
     required this.controller,
     required this.onSearchChanged,
     required this.onFilterPressed,
-    this.isFilterActive = false,
+    this.filterCount = 0,
   });
 
   final TextEditingController controller;
   final ValueChanged<String> onSearchChanged;
   final VoidCallback onFilterPressed;
-  final bool isFilterActive;
+
+  /// How many filters are applied, shown as a badge on the filter button
+  /// when there are any ("Alert — Filter Applied", `988-17176`).
+  final int filterCount;
+
+  static const filterButtonKey = ValueKey('alert-search-filter-button');
+  static const badgeKey = ValueKey('alert-search-filter-badge');
+  static const double badgeSize = 18;
+
+  /// How far the badge's centre sits in from the button's top-end corner —
+  /// the left in Arabic, as the design draws it.
+  static const double badgeInset = 4;
 
   @override
   Widget build(BuildContext context) {
@@ -60,31 +73,70 @@ class SearchBarWidget extends StatelessWidget {
           ),
         ),
         SizedBox(width: 8.w),
-        SizedBox(
-          width: 44.w,
-          height: 44.h,
-          child: IconButton(
-            tooltip: l.alertFilter,
-            onPressed: onFilterPressed,
-            padding: EdgeInsets.zero,
-            style: IconButton.styleFrom(
-              backgroundColor: isFilterActive
-                  ? Theme.of(context).colorScheme.primaryContainer
-                  : null,
-              side: const BorderSide(color: AppColors.neutral200),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.r),
+        Stack(
+          clipBehavior: Clip.none,
+          children: [
+            SizedBox(
+              width: 44.w,
+              height: 44.h,
+              child: Semantics(
+                value: filterCount > 0 ? '$filterCount' : null,
+                child: IconButton(
+                  key: filterButtonKey,
+                  tooltip: l.alertFilter,
+                  onPressed: onFilterPressed,
+                  padding: EdgeInsets.zero,
+                  style: IconButton.styleFrom(
+                    side: const BorderSide(color: AppColors.neutral200),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                  ),
+                  icon: SvgPicture.asset(
+                    AppAssets.filter,
+                    width: 18.r,
+                    height: 18.r,
+                    excludeFromSemantics: true,
+                  ),
+                ),
               ),
             ),
-            icon: SvgPicture.asset(
-              AppAssets.filter,
-              width: 18.r,
-              height: 18.r,
-              excludeFromSemantics: true,
-            ),
-          ),
+            if (filterCount > 0)
+              PositionedDirectional(
+                end: badgeInset - badgeSize / 2,
+                top: badgeInset - badgeSize / 2,
+                child: ExcludeSemantics(
+                  child: _CountBadge(key: badgeKey, count: filterCount),
+                ),
+              ),
+          ],
         ),
       ],
+    );
+  }
+}
+
+/// The applied-filter count: white on the brand colour, in a circle.
+class _CountBadge extends StatelessWidget {
+  const _CountBadge({super.key, required this.count});
+
+  final int count;
+
+  @override
+  Widget build(BuildContext context) {
+    final s = context.semanticColors;
+    return Container(
+      width: SearchBarWidget.badgeSize,
+      height: SearchBarWidget.badgeSize,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: s.primaryButtonBackground,
+        shape: BoxShape.circle,
+      ),
+      child: Text(
+        '$count',
+        style: AppTextStyles.captionSB.copyWith(color: s.primaryButtonText),
+      ),
     );
   }
 }

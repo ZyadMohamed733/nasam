@@ -162,6 +162,7 @@
   "alertFilterInvalidRange": "To Date must be on or after From Date.",
   "alertFilterApply": "Apply",
   "alertFilterReset": "Reset",
+  "alertFilterRemove": "Remove filter: {filter}",
   "alertTypeGeofence": "Geofence",
   "alertTypeUnknown": "Other",
   "alertLocationUnavailable": "Location is not available for this alert.",

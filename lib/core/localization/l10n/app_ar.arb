@@ -406,6 +406,15 @@
   "@alertFilterReset": {
     "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording."
   },
+  "alertFilterRemove": "إزالة التصفية: {filter}",
+  "@alertFilterRemove": {
+    "description": "AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording. Screen-reader label for a chip's remove button.",
+    "placeholders": {
+      "filter": {
+        "type": "String"
+      }
+    }
+  },
   "alertTypeGeofence": "نطاق جغرافي",
   "@alertTypeGeofence": {
     "description": "DESIGN-VERIFIED. This Arabic is verbatim from the design file."

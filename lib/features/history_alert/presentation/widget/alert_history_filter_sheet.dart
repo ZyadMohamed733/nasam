@@ -11,6 +11,7 @@ import '../../../../shared/widgets/map_sheet_header.dart';
 import '../../../play_back/presentation/widgets/playback_date_picker_sheet.dart';
 import '../../domain/entities/alert_history_filter.dart';
 import '../../domain/entities/history_alert.dart';
+import '../utils/alert_history_format.dart';
 
 /// A custom range as wall-clock times on the alerts' calendar, or null when
 /// the user backed out of picking.
@@ -194,7 +195,7 @@ class _AlertHistoryFilterSheetState extends State<AlertHistoryFilterSheet> {
                     for (final type in AlertHistoryFilterSheet.types)
                       _Choice(
                         key: AlertHistoryFilterSheet.typeKey(type),
-                        label: _typeLabel(l, type),
+                        label: AlertHistoryFormat.typeLabel(l, type),
                         selected: _draft.type == type,
                         onTap: () => _selectType(type),
                       ),
@@ -207,7 +208,7 @@ class _AlertHistoryFilterSheetState extends State<AlertHistoryFilterSheet> {
                     for (final preset in AlertHistoryFilterSheet.presets)
                       _Choice(
                         key: AlertHistoryFilterSheet.presetKey(preset),
-                        label: _presetLabel(l, preset),
+                        label: AlertHistoryFormat.presetLabel(l, preset),
                         selected: _draft.datePreset == preset,
                         onTap: () => _selectPreset(preset),
                       ),
@@ -255,27 +256,6 @@ class _AlertHistoryFilterSheetState extends State<AlertHistoryFilterSheet> {
       ),
     );
   }
-
-  static String _typeLabel(AppLocalizations l, AlertType type) =>
-      switch (type) {
-        AlertType.speed => l.alertFilterTypeSpeed,
-        AlertType.sensor => l.alertFilterTypeSensor,
-        AlertType.downtime => l.alertFilterTypeDowntime,
-        AlertType.geofence || AlertType.unknown => throw ArgumentError.value(
-          type,
-          'type',
-          'Not offered as a filter.',
-        ),
-      };
-
-  static String _presetLabel(AppLocalizations l, AlertDatePreset preset) =>
-      switch (preset) {
-        AlertDatePreset.today => l.alertFilterToday,
-        AlertDatePreset.yesterday => l.alertFilterYesterday,
-        AlertDatePreset.last7Days => l.alertFilterLast7Days,
-        AlertDatePreset.last30Days => l.alertFilterLast30Days,
-        AlertDatePreset.custom => l.alertFilterCustomDate,
-      };
 }
 
 /// A section label, then its choices wrapping onto as many lines as they

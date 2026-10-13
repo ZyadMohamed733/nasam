@@ -15,6 +15,36 @@ abstract final class AlertHistoryFormat {
     AlertType.unknown => l.alertTypeUnknown,
   };
 
+  static String presetLabel(AppLocalizations l, AlertDatePreset preset) =>
+      switch (preset) {
+        AlertDatePreset.today => l.alertFilterToday,
+        AlertDatePreset.yesterday => l.alertFilterYesterday,
+        AlertDatePreset.last7Days => l.alertFilterLast7Days,
+        AlertDatePreset.last30Days => l.alertFilterLast30Days,
+        AlertDatePreset.custom => l.alertFilterCustomDate,
+      };
+
+  /// The applied date filter's chip: the preset's name, or a custom range's
+  /// first and last day on the Saudi calendar.
+  static String dateChip(BuildContext context, AlertHistoryFilter filter) {
+    final l = AppLocalizations.of(context)!;
+    final preset = filter.datePreset!;
+    final from = filter.from;
+    final to = filter.to;
+    if (preset != AlertDatePreset.custom || from == null || to == null) {
+      return presetLabel(l, preset);
+    }
+    final format = DateFormat(
+      'd MMM',
+      Localizations.localeOf(context).toString(),
+    );
+    String day(DateTime instant) =>
+        format.format(instant.toUtc().add(AlertHistoryFilter.saudiUtcOffset));
+    final first = day(from);
+    final last = day(to);
+    return first == last ? first : '$first – $last';
+  }
+
   /// The vehicle's name in the screen's language, then its code.
   static String asset(BuildContext context, AlertAsset asset) {
     final name = asset.name.of(_language(context));

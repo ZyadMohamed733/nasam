@@ -16,6 +16,7 @@ import '../../domain/entities/alert_history_filter.dart';
 import '../cubit/alert_history_list_cubit.dart';
 import '../cubit/alert_history_list_state.dart';
 import '../widget/alert_history_filter_sheet.dart';
+import '../widget/applied_filter_chips.dart';
 import '../widget/history_alert_card.dart';
 import '../widget/no_search_result_widget.dart';
 import '../widget/search_bar_widget.dart';
@@ -80,9 +81,17 @@ class _HistoryAlertPageState extends State<HistoryAlertPage> {
                     controller: _searchController,
                     onSearchChanged: cubit.onSearchChanged,
                     onFilterPressed: () => _showFilter(context, state.filter),
-                    isFilterActive: state.filter.isActive,
+                    filterCount: state.filter.activeCount,
                   ),
                 ),
+                if (state.filter.isActive)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
+                    child: AppliedFilterChips(
+                      filter: state.filter,
+                      onChanged: cubit.applyFilter,
+                    ),
+                  ),
                 Expanded(child: _body(context, state)),
               ],
             );

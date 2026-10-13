@@ -575,6 +575,11 @@ class AppLocalizationsAr extends AppLocalizations {
   String get alertFilterReset => 'إعادة تعيين';
 
   @override
+  String alertFilterRemove(String filter) {
+    return 'إزالة التصفية: $filter';
+  }
+
+  @override
   String get alertTypeGeofence => 'نطاق جغرافي';
 
   @override

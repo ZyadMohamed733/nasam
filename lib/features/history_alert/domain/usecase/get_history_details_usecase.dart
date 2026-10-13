@@ -3,6 +3,7 @@ import 'package:nasam/features/history_alert/domain/entities/history_details.dar
 
 import '../../../../core/errors/failures.dart';
 import '../repositories/history_alert_repository.dart';
+
 class GetHistoryDetailsUseCase {
   final HistoryAlertRepository _repository;
   GetHistoryDetailsUseCase(this._repository);

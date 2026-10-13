@@ -1070,6 +1070,12 @@ abstract class AppLocalizations {
   /// **'إعادة تعيين'**
   String get alertFilterReset;
 
+  /// AWAITING DESIGN COPY. Arabic here is a back-translation of invented English, not design copy. Do not treat it as approved wording. Screen-reader label for a chip's remove button.
+  ///
+  /// In ar, this message translates to:
+  /// **'إزالة التصفية: {filter}'**
+  String alertFilterRemove(String filter);
+
   /// DESIGN-VERIFIED. This Arabic is verbatim from the design file.
   ///
   /// In ar, this message translates to:

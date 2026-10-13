@@ -561,6 +561,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get alertFilterReset => 'Reset';
 
   @override
+  String alertFilterRemove(String filter) {
+    return 'Remove filter: $filter';
+  }
+
+  @override
   String get alertTypeGeofence => 'Geofence';
 
   @override
