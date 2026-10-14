@@ -25,6 +25,9 @@ import '../../features/poi/presentation/cubit/poi_import_cubit.dart';
 import '../../features/poi/presentation/pages/poi_details_page.dart';
 import '../../features/poi/presentation/pages/poi_editor_page.dart';
 import '../../features/poi/presentation/pages/poi_import_page.dart';
+import '../../features/geofence/presentation/cubit/geofence_editor_cubit.dart';
+import '../../features/geofence/presentation/pages/geofence_editor_page.dart';
+import '../../features/geofence/presentation/pages/geofence_details_page.dart';
 import '../../features/splash/presentation/pages/splash_page.dart';
 import '../../features/tracking/presentation/cubit/asset_details_cubit.dart';
 import '../../features/tracking/presentation/cubit/tracked_asset_cubit.dart';
@@ -204,9 +207,13 @@ class AppRouter {
             create: (_) => getIt<TrackingCubit>()..load(),
             child: HomePage(
               destination:
-                  state.uri.path.startsWith('/poi/') ||
+                  state.uri.path.startsWith('/geofence/') ||
                       state.uri.queryParameters[AppRoutes.homeViewParam] ==
-                          AppRoutes.poiView
+                          AppRoutes.geofenceView
+                  ? DrawerDestination.geofences
+                  : state.uri.path.startsWith('/poi/') ||
+                        state.uri.queryParameters[AppRoutes.homeViewParam] ==
+                            AppRoutes.poiView
                   ? DrawerDestination.pointsOfInterest
                   : state.uri.queryParameters[AppRoutes.homeViewParam] ==
                         AppRoutes.alertsView
@@ -231,6 +238,26 @@ class AppRouter {
                 child: const PoiEditorPage(),
               ),
             ),
+          ),
+          GoRoute(
+            path: 'geofence/create',
+            pageBuilder: (context, state) => appTransitionPage(
+              context: context, state: state, slide: true,
+              child: BlocProvider(create: (_) => getIt<GeofenceEditorCubit>(), child: const GeofenceEditorPage()),
+            ),
+          ),
+          GoRoute(
+            path: AppRoutes.geofenceDetailsPattern,
+            pageBuilder: (context, state) {
+              final id = state.pathParameters[AppRoutes.geofenceIdParam]!;
+              return appTransitionPage(context: context, state: state, slide: true,
+                child: BlocProvider(create: (_) => getIt<GeofenceEditorCubit>()..load(id), child: GeofenceDetailsPage(geofenceId: id)));
+            },
+            routes: [GoRoute(path: 'edit', pageBuilder: (context,state) {
+              final id=state.pathParameters[AppRoutes.geofenceIdParam]!;
+              return appTransitionPage(context:context,state:state,slide:true,
+                child:BlocProvider(create:(_)=>getIt<GeofenceEditorCubit>()..load(id),child:GeofenceEditorPage(geofenceId:id)));
+            })],
           ),
           GoRoute(
             path: 'poi/import',

@@ -151,3 +151,6 @@ scheme but are unconfirmed.
 **To close:** get the real socket hosts per environment and update
 `config/<flavor>.json`. Dev can then fail on a host mismatch the way staging
 and prod already do.
+
+## Geofence design gaps
+- Confirm dark-theme geofence swatch values, drawing-tool states, asset-picker behavior, and detailed speed/time monitoring requirements with design and product.

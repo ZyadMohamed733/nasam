@@ -6,6 +6,7 @@ import '../../features/history_alert/di/history_alert_dependencies.dart';
 import '../../features/onboarding/di/onboarding_dependencies.dart';
 import '../../features/play_back/di/play_back_dependencies.dart';
 import '../../features/poi/di/poi_dependencies.dart';
+import '../../features/geofence/di/geofence_dependencies.dart';
 import '../../features/tracking/di/tracking_dependencies.dart';
 import 'app_dependencies.dart';
 import 'network_dependencies.dart';
@@ -27,5 +28,7 @@ Future<void> configureDependencies(AppConfig config) async {
   registerOnboardingDependencies(getIt);
   registerPlayBackDependencies(getIt);
   registerPoiDependencies(getIt);
+  registerGeofenceDependencies(getIt);
   registerTrackingDependencies(getIt);
 }
+

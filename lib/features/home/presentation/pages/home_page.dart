@@ -7,6 +7,8 @@ import '../../../../core/router/app_routes.dart';
 import '../../../../shared/widgets/app_drawer.dart';
 import '../../../poi/presentation/cubit/poi_cubit.dart';
 import '../../../poi/presentation/pages/poi_page.dart';
+import '../../../geofence/presentation/cubit/geofence_cubit.dart';
+import '../../../geofence/presentation/pages/geofence_page.dart';
 import '../../../history_alert/presentation/pages/history_alert_page.dart';
 import '../../../tracking/presentation/pages/tracking_page.dart';
 import '../widgets/home_scaffold.dart';
@@ -26,20 +28,24 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool _poiVisited = false;
+  bool _geofenceVisited = false;
   bool _alertsVisited = false;
   @override
   void initState() {
     super.initState();
     _poiVisited = _isPoi;
+    _geofenceVisited = _isGeofence;
     _alertsVisited = _isAlerts;
   }
 
   bool get _isPoi => widget.destination == DrawerDestination.pointsOfInterest;
+  bool get _isGeofence => widget.destination == DrawerDestination.geofences;
   bool get _isAlerts => widget.destination == DrawerDestination.alertsLog;
   @override
   void didUpdateWidget(HomePage oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (_isPoi) _poiVisited = true;
+    if (_isGeofence) _geofenceVisited = true;
     if (_isAlerts) _alertsVisited = true;
   }
 
@@ -50,6 +56,8 @@ class _HomePageState extends State<HomePage> {
         context.go(AppRoutes.alerts);
       case DrawerDestination.pointsOfInterest:
         context.go(AppRoutes.poi);
+      case DrawerDestination.geofences:
+        context.go(AppRoutes.geofences);
       case _:
         context.go(AppRoutes.home);
     }
@@ -61,15 +69,18 @@ class _HomePageState extends State<HomePage> {
     available: const {
       DrawerDestination.trackingDashboard,
       DrawerDestination.pointsOfInterest,
+      DrawerDestination.geofences,
       DrawerDestination.alertsLog,
     },
     onSelect: _select,
-    onBack: _isPoi || _isAlerts
+    onBack: _isPoi || _isGeofence || _isAlerts
         ? () => _select(DrawerDestination.trackingDashboard)
         : null,
     builder: (context, openDrawer) => IndexedStack(
       index: _isPoi
           ? 1
+          : _isGeofence
+          ? 3
           : _isAlerts
           ? 2
           : 0,
@@ -86,6 +97,13 @@ class _HomePageState extends State<HomePage> {
           HistoryAlertPage(
             onBack: () => _select(DrawerDestination.trackingDashboard),
             openDrawer: openDrawer,
+          )
+        else
+          const SizedBox.shrink(),
+        if (_geofenceVisited)
+          BlocProvider(
+            create: (_) => getIt<GeofenceCubit>()..load(),
+            child: GeofencePage(openDrawer: openDrawer),
           )
         else
           const SizedBox.shrink(),

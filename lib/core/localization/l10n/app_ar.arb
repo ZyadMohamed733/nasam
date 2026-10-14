@@ -482,9 +482,13 @@
   "deviceAlertsEmpty": "لا توجد تنبيهات لهذا الجهاز حاليا",
   "assetPlaybackTitle": "إعادة التشغيل",
   "playbackPrevious": "الموقع السابق",
-  "@playbackPrevious": {"description": "AWAITING DESIGN COPY"},
+  "@playbackPrevious": {
+    "description": "AWAITING DESIGN COPY"
+  },
   "playbackNext": "الموقع التالي",
-  "@playbackNext": {"description": "AWAITING DESIGN COPY"},
+  "@playbackNext": {
+    "description": "AWAITING DESIGN COPY"
+  },
   "playbackInfo": "معلومات المسار",
   "playbackInfoAssetInformation": "معلومات الأصل",
   "playbackInfoDate": "اليوم",
@@ -498,9 +502,13 @@
   "playbackInfoMoving": "متحرك",
   "playbackInfoIgnitionOn": "تشغيل",
   "playbackInfoIgnitionOff": "إيقاف",
-  "@playbackInfo": {"description": "AWAITING DESIGN COPY"},
+  "@playbackInfo": {
+    "description": "AWAITING DESIGN COPY"
+  },
   "playbackBack": "رجوع",
-  "@playbackBack": {"description": "AWAITING DESIGN COPY"},
+  "@playbackBack": {
+    "description": "AWAITING DESIGN COPY"
+  },
   "assetPlaybackFrom": "تاريخ البداية",
   "assetPlaybackTo": "تاريخ النهاية",
   "assetPlaybackStart": "بدء التشغيل",
@@ -760,20 +768,56 @@
   "poiValidOnly": "سيتم استيراد السجلات الصحيحة فقط. لن يتم إنشاء السجلات غير الصحيحة أو المكررة.",
   "poiDropTitle": "اسحب الملفات هنا أو انقر للاستعراض",
   "poiDropHint": "{format} بحد أقصى {size} ميجابايت",
-  "@poiDropHint": {"placeholders": {"format": {"type": "String"}, "size": {"type": "int"}}},
+  "@poiDropHint": {
+    "placeholders": {
+      "format": {
+        "type": "String"
+      },
+      "size": {
+        "type": "int"
+      }
+    }
+  },
   "poiFormatLabel": "الصيغة المدعومة:",
   "poiMaxSizeLabel": "الحد الأقصى لحجم الملف:",
   "poiMaxRecordsLabel": "الحد الأقصى للسجلات:",
   "poiSizeMegabytes": "{size}MB",
-  "@poiSizeMegabytes": {"placeholders": {"size": {"type": "int"}}},
+  "@poiSizeMegabytes": {
+    "placeholders": {
+      "size": {
+        "type": "int"
+      }
+    }
+  },
   "poiRemoveFile": "إزالة الملف",
   "poiValidationDescription": "مراجعة نتائج التحقق لكل سجل في الملف {fileName}",
-  "@poiValidationDescription": {"placeholders": {"fileName": {"type": "String"}}},
+  "@poiValidationDescription": {
+    "placeholders": {
+      "fileName": {
+        "type": "String"
+      }
+    }
+  },
   "poiValidationSummary": "{valid} سجلاً صحيحاً جاهز للاستيراد. {invalid} سجلات تحتوي على أخطاء ولن يتم استيرادها.",
-  "@poiValidationSummary": {"placeholders": {"valid": {"type": "int"}, "invalid": {"type": "int"}}},
+  "@poiValidationSummary": {
+    "placeholders": {
+      "valid": {
+        "type": "int"
+      },
+      "invalid": {
+        "type": "int"
+      }
+    }
+  },
   "poiPreviewDescription": "راجع نقاط الاهتمام الصحيحة قبل استيرادها.",
   "poiTotalRecords": "إجمالي {count} poi",
-  "@poiTotalRecords": {"placeholders": {"count": {"type": "int"}}},
+  "@poiTotalRecords": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "poiImportDoneDescription": "قم برفع نقاط اهتمام متعددة باستخدام قالب الإكسل المحدد مسبقًا",
   "poiImportSucceeded": "تم تنزيل بنجاح",
   "poiImportFailed": "فشلت",
@@ -795,5 +839,45 @@
   "poiFileError": "تعذر حفظ الملف. حاول مرة أخرى.",
   "poiReason": "السبب",
   "poiInvalidRow": "تحقق من الاسم والإحداثيات والأيقونة وطول الملاحظات",
-  "poiStatus": "الحالة"
+  "poiStatus": "الحالة",
+  "geofenceAlways": "دائماً نشط",
+  "geofenceExit": "اكتشاف الخروج",
+  "geofenceStepsReview": "المراجعة",
+  "geofenceDelete": "حذف المنطقة الجغرافية",
+  "geofenceView": "عرض المنطقة",
+  "geofenceAssets": "الأصول (أدخل المعرفات مفصولة بفواصل)",
+  "geofencePrevious": "السابق",
+  "geofenceSettings": "إعدادات التفعيل",
+  "geofenceRadius": "نطاق المنطقة (متر)",
+  "geofenceNext": "التالي",
+  "geofenceTime": "مراقبة الوقت",
+  "geofenceName": "اسم المنطقة الجغرافية",
+  "geofenceStepsInfo": "المعلومات",
+  "geofenceColor": "لون المنطقة",
+  "geofenceNameHint": "مثال: منطقة جدة",
+  "geofenceNoResults": "لا توجد مناطق جغرافية مطابقة للبحث",
+  "geofenceActivate": "تفعيل المنطقة الجغرافية",
+  "geofenceScheduled": "جدول محدد",
+  "geofenceStepsTime": "الوقت",
+  "geofenceSave": "إنشاء المنطقة الجغرافية",
+  "geofenceCancel": "إلغاء",
+  "geofenceNotifications": "الإشعارات",
+  "geofenceSearch": "بحث",
+  "geofenceDrawTitle": "رسم المنطقة على الخريطة",
+  "geofenceDetails": "تفاصيل المنطقة الجغرافية",
+  "geofenceCircle": "نقاط ونطاق",
+  "geofenceTitle": "مناطق جغرافية",
+  "geofenceEmpty": "لا توجد مناطق جغرافية حتى الآن",
+  "geofenceCreateTitle": "إنشاء منطقة جغرافية",
+  "geofenceSaveChanges": "حفظ التغييرات",
+  "geofenceSpeed": "مراقبة السرعة",
+  "geofenceStepsSettings": "الإعدادات",
+  "geofencePolygon": "مضلع",
+  "geofenceEditTitle": "تعديل المنطقة الجغرافية",
+  "geofenceCreate": "إضافة منطقة جغرافية",
+  "geofenceNotFound": "لم يتم العثور على المنطقة الجغرافية",
+  "geofenceStepsDraw": "رسم",
+  "geofenceAssetIdsHint": "أدخل معرفات الأصول مفصولة بفواصل",
+  "geofenceScheduledSummary": "08:00 – 17:00",
+  "geofenceShowOnMap": "عرض"
 }

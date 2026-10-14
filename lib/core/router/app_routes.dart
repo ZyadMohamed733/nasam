@@ -27,8 +27,17 @@ class AppRoutes {
   static const String homeViewParam = 'view';
   static const String poiView = 'poi';
   static const String alertsView = 'alerts';
+  static const String geofenceView = 'geofence';
   static const String poi = '/?view=poi';
   static const String alerts = '/?view=alerts';
+  static const String geofences = '/?view=geofence';
+  static const String geofenceCreate = '/geofence/create?view=geofence';
+  static const String geofenceIdParam = 'geofenceId';
+  static const String geofenceDetailsPattern = 'geofence/:$geofenceIdParam';
+  static String geofenceDetails(String id) =>
+      '/geofence/${Uri.encodeComponent(id)}?view=geofence';
+  static String geofenceEdit(String id) =>
+      '/geofence/${Uri.encodeComponent(id)}/edit?view=geofence';
   static const String poiCreate = '/poi/create?view=poi';
   static const String poiImport = '/poi/import?view=poi';
   static const String poiIdParam = 'poiId';
@@ -104,3 +113,4 @@ class AppRoutes {
       '${d.month.toString().padLeft(2, '0')}-'
       '${d.day.toString().padLeft(2, '0')}';
 }
+

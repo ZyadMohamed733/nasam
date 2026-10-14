@@ -1151,4 +1151,124 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get poiStatus => 'Status';
+
+  @override
+  String get geofenceAlways => 'Always active';
+
+  @override
+  String get geofenceExit => 'Exit detection';
+
+  @override
+  String get geofenceStepsReview => 'Review';
+
+  @override
+  String get geofenceDelete => 'Delete geofence';
+
+  @override
+  String get geofenceView => 'View geofence';
+
+  @override
+  String get geofenceAssets => 'Assets (enter IDs separated by commas)';
+
+  @override
+  String get geofencePrevious => 'Back';
+
+  @override
+  String get geofenceSettings => 'Activation settings';
+
+  @override
+  String get geofenceRadius => 'Radius (meters)';
+
+  @override
+  String get geofenceNext => 'Next';
+
+  @override
+  String get geofenceTime => 'Time monitoring';
+
+  @override
+  String get geofenceName => 'Geofence name';
+
+  @override
+  String get geofenceStepsInfo => 'Information';
+
+  @override
+  String get geofenceColor => 'Area color';
+
+  @override
+  String get geofenceNameHint => 'Example: Jeddah area';
+
+  @override
+  String get geofenceNoResults => 'No matching geofences';
+
+  @override
+  String get geofenceActivate => 'Activate geofence';
+
+  @override
+  String get geofenceScheduled => 'Scheduled';
+
+  @override
+  String get geofenceStepsTime => 'Time';
+
+  @override
+  String get geofenceSave => 'Create geofence';
+
+  @override
+  String get geofenceCancel => 'Cancel';
+
+  @override
+  String get geofenceNotifications => 'Notifications';
+
+  @override
+  String get geofenceSearch => 'Search';
+
+  @override
+  String get geofenceDrawTitle => 'Draw the area on the map';
+
+  @override
+  String get geofenceDetails => 'Geofence details';
+
+  @override
+  String get geofenceCircle => 'Point and radius';
+
+  @override
+  String get geofenceTitle => 'Geofences';
+
+  @override
+  String get geofenceEmpty => 'No geofences yet';
+
+  @override
+  String get geofenceCreateTitle => 'Create geofence';
+
+  @override
+  String get geofenceSaveChanges => 'Save changes';
+
+  @override
+  String get geofenceSpeed => 'Speed monitoring';
+
+  @override
+  String get geofenceStepsSettings => 'Settings';
+
+  @override
+  String get geofencePolygon => 'Polygon';
+
+  @override
+  String get geofenceEditTitle => 'Edit geofence';
+
+  @override
+  String get geofenceCreate => 'Add geofence';
+
+  @override
+  String get geofenceNotFound => 'Geofence not found';
+
+  @override
+  String get geofenceStepsDraw => 'Draw';
+
+  @override
+  String get geofenceAssetIdsHint => 'Enter asset IDs separated by commas';
+
+  @override
+  String get geofenceScheduledSummary => '08:00 – 17:00';
+
+  @override
+  String get geofenceShowOnMap => 'Show';
 }

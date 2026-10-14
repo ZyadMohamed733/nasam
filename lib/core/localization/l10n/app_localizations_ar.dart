@@ -1165,4 +1165,124 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get poiStatus => 'الحالة';
+
+  @override
+  String get geofenceAlways => 'دائماً نشط';
+
+  @override
+  String get geofenceExit => 'اكتشاف الخروج';
+
+  @override
+  String get geofenceStepsReview => 'المراجعة';
+
+  @override
+  String get geofenceDelete => 'حذف المنطقة الجغرافية';
+
+  @override
+  String get geofenceView => 'عرض المنطقة';
+
+  @override
+  String get geofenceAssets => 'الأصول (أدخل المعرفات مفصولة بفواصل)';
+
+  @override
+  String get geofencePrevious => 'السابق';
+
+  @override
+  String get geofenceSettings => 'إعدادات التفعيل';
+
+  @override
+  String get geofenceRadius => 'نطاق المنطقة (متر)';
+
+  @override
+  String get geofenceNext => 'التالي';
+
+  @override
+  String get geofenceTime => 'مراقبة الوقت';
+
+  @override
+  String get geofenceName => 'اسم المنطقة الجغرافية';
+
+  @override
+  String get geofenceStepsInfo => 'المعلومات';
+
+  @override
+  String get geofenceColor => 'لون المنطقة';
+
+  @override
+  String get geofenceNameHint => 'مثال: منطقة جدة';
+
+  @override
+  String get geofenceNoResults => 'لا توجد مناطق جغرافية مطابقة للبحث';
+
+  @override
+  String get geofenceActivate => 'تفعيل المنطقة الجغرافية';
+
+  @override
+  String get geofenceScheduled => 'جدول محدد';
+
+  @override
+  String get geofenceStepsTime => 'الوقت';
+
+  @override
+  String get geofenceSave => 'إنشاء المنطقة الجغرافية';
+
+  @override
+  String get geofenceCancel => 'إلغاء';
+
+  @override
+  String get geofenceNotifications => 'الإشعارات';
+
+  @override
+  String get geofenceSearch => 'بحث';
+
+  @override
+  String get geofenceDrawTitle => 'رسم المنطقة على الخريطة';
+
+  @override
+  String get geofenceDetails => 'تفاصيل المنطقة الجغرافية';
+
+  @override
+  String get geofenceCircle => 'نقاط ونطاق';
+
+  @override
+  String get geofenceTitle => 'مناطق جغرافية';
+
+  @override
+  String get geofenceEmpty => 'لا توجد مناطق جغرافية حتى الآن';
+
+  @override
+  String get geofenceCreateTitle => 'إنشاء منطقة جغرافية';
+
+  @override
+  String get geofenceSaveChanges => 'حفظ التغييرات';
+
+  @override
+  String get geofenceSpeed => 'مراقبة السرعة';
+
+  @override
+  String get geofenceStepsSettings => 'الإعدادات';
+
+  @override
+  String get geofencePolygon => 'مضلع';
+
+  @override
+  String get geofenceEditTitle => 'تعديل المنطقة الجغرافية';
+
+  @override
+  String get geofenceCreate => 'إضافة منطقة جغرافية';
+
+  @override
+  String get geofenceNotFound => 'لم يتم العثور على المنطقة الجغرافية';
+
+  @override
+  String get geofenceStepsDraw => 'رسم';
+
+  @override
+  String get geofenceAssetIdsHint => 'أدخل معرفات الأصول مفصولة بفواصل';
+
+  @override
+  String get geofenceScheduledSummary => '08:00 – 17:00';
+
+  @override
+  String get geofenceShowOnMap => 'عرض';
 }

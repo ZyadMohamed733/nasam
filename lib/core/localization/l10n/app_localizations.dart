@@ -2149,6 +2149,246 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'الحالة'**
   String get poiStatus;
+
+  /// No description provided for @geofenceAlways.
+  ///
+  /// In ar, this message translates to:
+  /// **'دائماً نشط'**
+  String get geofenceAlways;
+
+  /// No description provided for @geofenceExit.
+  ///
+  /// In ar, this message translates to:
+  /// **'اكتشاف الخروج'**
+  String get geofenceExit;
+
+  /// No description provided for @geofenceStepsReview.
+  ///
+  /// In ar, this message translates to:
+  /// **'المراجعة'**
+  String get geofenceStepsReview;
+
+  /// No description provided for @geofenceDelete.
+  ///
+  /// In ar, this message translates to:
+  /// **'حذف المنطقة الجغرافية'**
+  String get geofenceDelete;
+
+  /// No description provided for @geofenceView.
+  ///
+  /// In ar, this message translates to:
+  /// **'عرض المنطقة'**
+  String get geofenceView;
+
+  /// No description provided for @geofenceAssets.
+  ///
+  /// In ar, this message translates to:
+  /// **'الأصول (أدخل المعرفات مفصولة بفواصل)'**
+  String get geofenceAssets;
+
+  /// No description provided for @geofencePrevious.
+  ///
+  /// In ar, this message translates to:
+  /// **'السابق'**
+  String get geofencePrevious;
+
+  /// No description provided for @geofenceSettings.
+  ///
+  /// In ar, this message translates to:
+  /// **'إعدادات التفعيل'**
+  String get geofenceSettings;
+
+  /// No description provided for @geofenceRadius.
+  ///
+  /// In ar, this message translates to:
+  /// **'نطاق المنطقة (متر)'**
+  String get geofenceRadius;
+
+  /// No description provided for @geofenceNext.
+  ///
+  /// In ar, this message translates to:
+  /// **'التالي'**
+  String get geofenceNext;
+
+  /// No description provided for @geofenceTime.
+  ///
+  /// In ar, this message translates to:
+  /// **'مراقبة الوقت'**
+  String get geofenceTime;
+
+  /// No description provided for @geofenceName.
+  ///
+  /// In ar, this message translates to:
+  /// **'اسم المنطقة الجغرافية'**
+  String get geofenceName;
+
+  /// No description provided for @geofenceStepsInfo.
+  ///
+  /// In ar, this message translates to:
+  /// **'المعلومات'**
+  String get geofenceStepsInfo;
+
+  /// No description provided for @geofenceColor.
+  ///
+  /// In ar, this message translates to:
+  /// **'لون المنطقة'**
+  String get geofenceColor;
+
+  /// No description provided for @geofenceNameHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'مثال: منطقة جدة'**
+  String get geofenceNameHint;
+
+  /// No description provided for @geofenceNoResults.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد مناطق جغرافية مطابقة للبحث'**
+  String get geofenceNoResults;
+
+  /// No description provided for @geofenceActivate.
+  ///
+  /// In ar, this message translates to:
+  /// **'تفعيل المنطقة الجغرافية'**
+  String get geofenceActivate;
+
+  /// No description provided for @geofenceScheduled.
+  ///
+  /// In ar, this message translates to:
+  /// **'جدول محدد'**
+  String get geofenceScheduled;
+
+  /// No description provided for @geofenceStepsTime.
+  ///
+  /// In ar, this message translates to:
+  /// **'الوقت'**
+  String get geofenceStepsTime;
+
+  /// No description provided for @geofenceSave.
+  ///
+  /// In ar, this message translates to:
+  /// **'إنشاء المنطقة الجغرافية'**
+  String get geofenceSave;
+
+  /// No description provided for @geofenceCancel.
+  ///
+  /// In ar, this message translates to:
+  /// **'إلغاء'**
+  String get geofenceCancel;
+
+  /// No description provided for @geofenceNotifications.
+  ///
+  /// In ar, this message translates to:
+  /// **'الإشعارات'**
+  String get geofenceNotifications;
+
+  /// No description provided for @geofenceSearch.
+  ///
+  /// In ar, this message translates to:
+  /// **'بحث'**
+  String get geofenceSearch;
+
+  /// No description provided for @geofenceDrawTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'رسم المنطقة على الخريطة'**
+  String get geofenceDrawTitle;
+
+  /// No description provided for @geofenceDetails.
+  ///
+  /// In ar, this message translates to:
+  /// **'تفاصيل المنطقة الجغرافية'**
+  String get geofenceDetails;
+
+  /// No description provided for @geofenceCircle.
+  ///
+  /// In ar, this message translates to:
+  /// **'نقاط ونطاق'**
+  String get geofenceCircle;
+
+  /// No description provided for @geofenceTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'مناطق جغرافية'**
+  String get geofenceTitle;
+
+  /// No description provided for @geofenceEmpty.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد مناطق جغرافية حتى الآن'**
+  String get geofenceEmpty;
+
+  /// No description provided for @geofenceCreateTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'إنشاء منطقة جغرافية'**
+  String get geofenceCreateTitle;
+
+  /// No description provided for @geofenceSaveChanges.
+  ///
+  /// In ar, this message translates to:
+  /// **'حفظ التغييرات'**
+  String get geofenceSaveChanges;
+
+  /// No description provided for @geofenceSpeed.
+  ///
+  /// In ar, this message translates to:
+  /// **'مراقبة السرعة'**
+  String get geofenceSpeed;
+
+  /// No description provided for @geofenceStepsSettings.
+  ///
+  /// In ar, this message translates to:
+  /// **'الإعدادات'**
+  String get geofenceStepsSettings;
+
+  /// No description provided for @geofencePolygon.
+  ///
+  /// In ar, this message translates to:
+  /// **'مضلع'**
+  String get geofencePolygon;
+
+  /// No description provided for @geofenceEditTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعديل المنطقة الجغرافية'**
+  String get geofenceEditTitle;
+
+  /// No description provided for @geofenceCreate.
+  ///
+  /// In ar, this message translates to:
+  /// **'إضافة منطقة جغرافية'**
+  String get geofenceCreate;
+
+  /// No description provided for @geofenceNotFound.
+  ///
+  /// In ar, this message translates to:
+  /// **'لم يتم العثور على المنطقة الجغرافية'**
+  String get geofenceNotFound;
+
+  /// No description provided for @geofenceStepsDraw.
+  ///
+  /// In ar, this message translates to:
+  /// **'رسم'**
+  String get geofenceStepsDraw;
+
+  /// No description provided for @geofenceAssetIdsHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'أدخل معرفات الأصول مفصولة بفواصل'**
+  String get geofenceAssetIdsHint;
+
+  /// No description provided for @geofenceScheduledSummary.
+  ///
+  /// In ar, this message translates to:
+  /// **'08:00 – 17:00'**
+  String get geofenceScheduledSummary;
+
+  /// No description provided for @geofenceShowOnMap.
+  ///
+  /// In ar, this message translates to:
+  /// **'عرض'**
+  String get geofenceShowOnMap;
 }
 
 class _AppLocalizationsDelegate
